@@ -1,0 +1,7 @@
+node_modules
+
+/.cache
+/build
+/public/build
+.env
+frontend-poll-15de8-afad50206847.json
