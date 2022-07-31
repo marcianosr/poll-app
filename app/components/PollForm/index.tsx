@@ -131,9 +131,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 					</>
 				</>
 
-				<select name="type">
-					<option value="radio">radio</option>
-					<option value="checkbox">checkbox</option>
+				<select
+					name="type"
+					defaultValue={poll?.type === "radio" ? "radio" : "checkbox"}
+				>
+					<option value="radio">Single answer</option>
+					<option value="checkbox">Multiple answers</option>
 				</select>
 				<button
 					type="submit"
