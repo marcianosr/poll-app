@@ -1,14 +1,12 @@
 import { FC } from "react";
-import { CorrectAnswerType, NewPollType } from "~/routes/poll/new";
+import { CorrectAnswerType, NewPollType } from "../PollForm";
 
 type Props = {
-	inputRef: React.RefObject<HTMLInputElement>;
 	markCorrectAnswer: CorrectAnswerType[];
 	setMarkCorrectAnswer: (markedAnswers: CorrectAnswerType[]) => void;
 	field: NewPollType;
 };
 const MarkButton: FC<Props> = ({
-	inputRef,
 	markCorrectAnswer,
 	setMarkCorrectAnswer,
 	field,
@@ -17,7 +15,6 @@ const MarkButton: FC<Props> = ({
 		<button
 			type="button"
 			onClick={() => {
-				const input = inputRef.current?.value || "";
 				const id = field.id;
 
 				const getItem = markCorrectAnswer.find(
@@ -37,7 +34,7 @@ const MarkButton: FC<Props> = ({
 					}),
 					{
 						id,
-						value: input,
+						value: field.value || "",
 					},
 				]);
 			}}

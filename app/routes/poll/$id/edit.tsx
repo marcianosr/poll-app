@@ -1,21 +1,36 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import PollForm from "~/components/PollForm";
-import { getPollById } from "~/utils/polls";
+import { getPollById, PollData, updatePollById } from "~/utils/polls";
+import styles from "~/styles/new-poll.css";
+
+export function links() {
+	return [{ rel: "stylesheet", href: styles }];
+}
 
 export const action: ActionFunction = async ({ request, params }) => {
 	console.log("id:", params.id);
-
-	const pollId = params.id;
 
 	let formData = await request.formData();
 
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
+	const answers = [];
 
-	console.log("question", question);
-	console.log("correctAnswers", correctAnswers);
-	//update document by id
+	for (var [key, value] of formData.entries()) {
+		if (key.includes("answer")) {
+			answers.push({
+				id: key.split("answer-")[1], // ID of the the field
+				value: value as string,
+			});
+		}
+	}
+
+	const updatePoll = await updatePollById(params.id || "", {
+		question,
+		correctAnswers: JSON.parse(correctAnswers),
+		answers,
+	});
 
 	return {
 		ok: true,

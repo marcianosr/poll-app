@@ -49,3 +49,9 @@ export const getPollById = async (id: string) => {
 		return snapshot.data();
 	}
 };
+
+export const updatePollById = async (id: string, payload: any) => {
+	const snapshot = await db.collection("polls").doc(id).update(payload);
+
+	return snapshot;
+};

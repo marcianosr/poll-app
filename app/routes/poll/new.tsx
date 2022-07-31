@@ -16,8 +16,6 @@ export const action: ActionFunction = async ({ request }) => {
 	let formData = await request.formData();
 	let errors: Partial<Errors> = {};
 
-	console.log("hi");
-
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type") as string;
@@ -32,12 +30,13 @@ export const action: ActionFunction = async ({ request }) => {
 	};
 
 	for (var [key, value] of formData.entries()) {
-		console.log("----->>>>>", key, value);
+		// console.log("----->>>>>", key, value);
 
 		if (!value) errors[key] = true;
+
 		if (key.includes("answer")) {
 			pollData.answers.push({
-				id: uuidv4(),
+				id: key.split("answer-")[1], // ID of the the field
 				value: value as string,
 			});
 		}

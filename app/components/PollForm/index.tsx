@@ -1,14 +1,15 @@
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import { FC, Fragment, useRef, useState } from "react";
+import { FC, Fragment, useEffect, useState } from "react";
 import { InputTypes, PollData } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
 
 export type NewPollType = {
 	id: string;
-	type: InputTypes;
-	placeholder: string;
+	type?: InputTypes;
+	placeholder?: string;
+	value?: string;
 };
 export type CorrectAnswerType = {
 	id: string;
@@ -28,23 +29,23 @@ type Props = {
 const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
 
-	const inputRef = useRef<HTMLInputElement>(null);
 	const [mode, setMode] = useState<Mode>("edit");
 	const [fields, setFields] = useState<NewPollType[]>([
-		// poll && (poll.answers[0] as any),
 		{
-			id: uuidv4(),
+			id: "eioozak-ojnab",
 			type: "radio",
 			placeholder: "Add option",
+			value: "",
 		},
 	]);
-	const [answers, setAnswers] = useState(poll?.answers || []);
 
 	const [markCorrectAnswer, setMarkCorrectAnswer] = useState<
 		CorrectAnswerType[]
-	>((poll?.correctAnswers as any) || []);
+	>((poll && (poll?.correctAnswers as any)) || []);
 
-	console.log(markCorrectAnswer, answers);
+	useEffect(() => {
+		if (poll?.answers) setFields(poll?.answers);
+	}, [poll?.answers]);
 
 	const addField = () => {
 		setFields([
@@ -53,31 +54,13 @@ const PollForm: FC<Props> = ({ poll }) => {
 				id: uuidv4(),
 				type: "radio",
 				placeholder: `Add option`,
+				value: "",
 			},
 		]);
 	};
 
 	return (
 		<>
-			{answers.map((answer) => (
-				<Fragment key={answer.id}>
-					<input type="text" defaultValue={answer.value} />
-					<button
-						id={answer.id}
-						onClick={(e) =>
-							answers.filter((answer) => {
-								setAnswers([
-									...answers.filter(
-										(a) => a.id !== e.currentTarget.id
-									),
-								]);
-							})
-						}
-					>
-						X
-					</button>
-				</Fragment>
-			))}
 			<Form method="post">
 				<input
 					type="text"
@@ -96,7 +79,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 					{action?.ok === false && <span>errors</span>}
 
 					<>
-						{fields.map((field, idx) => (
+						{fields.map((field) => (
 							<Fragment key={field.id}>
 								<input
 									type="text"
@@ -105,10 +88,25 @@ const PollForm: FC<Props> = ({ poll }) => {
 											(item) => item.id === field.id
 										) && "correct"
 									}
-									ref={inputRef}
 									placeholder={field.placeholder}
 									disabled={mode === "mark"}
-									name={`answer-${idx}`}
+									name={`answer-${field.id}`}
+									id={field.id}
+									value={field.value}
+									onChange={(e: React.ChangeEvent) => {
+										setFields([
+											...fields.map((f) =>
+												f.id === field.id
+													? {
+															...f,
+															value: (
+																e.target as HTMLInputElement
+															).value,
+													  }
+													: f
+											),
+										]);
+									}}
 								/>
 
 								{fields.length > 1 && mode === "edit" && (
@@ -121,7 +119,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 								{mode === "mark" && (
 									<MarkButton
-										inputRef={inputRef}
 										markCorrectAnswer={markCorrectAnswer}
 										setMarkCorrectAnswer={
 											setMarkCorrectAnswer
