@@ -50,7 +50,10 @@ export const getPollById = async (id: string) => {
 	}
 };
 
-export const updatePollById = async (id: string, payload: any) => {
+export const updatePollById = async (
+	id: string,
+	payload: Partial<PollData>
+) => {
 	const snapshot = await db.collection("polls").doc(id).update(payload);
 
 	return snapshot;

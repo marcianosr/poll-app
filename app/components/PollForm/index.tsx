@@ -41,7 +41,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	const [markCorrectAnswer, setMarkCorrectAnswer] = useState<
 		CorrectAnswerType[]
-	>((poll && (poll?.correctAnswers as any)) || []);
+	>((poll && poll?.correctAnswers) || []);
+
+	console.log(poll?.correctAnswers);
 
 	useEffect(() => {
 		if (poll?.answers) setFields(poll?.answers);

@@ -23,13 +23,13 @@ const MarkButton: FC<Props> = ({
 
 				if (getItem) {
 					return setMarkCorrectAnswer([
-						...markCorrectAnswer.filter((item: any) => {
+						...markCorrectAnswer.filter((item) => {
 							return item.id !== id;
 						}),
 					]);
 				}
 				return setMarkCorrectAnswer([
-					...markCorrectAnswer.filter((item: any) => {
+					...markCorrectAnswer.filter((item) => {
 						return item.id !== id;
 					}),
 					{

@@ -16,7 +16,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
-	const type = formData.get("type");
+	const type = formData.get("type") as string;
 	const answers = [];
 
 	for (var [key, value] of formData.entries()) {
