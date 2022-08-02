@@ -1,9 +1,21 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { db } from "~/utils/db.server";
+import { collection, getDoc, doc } from "firebase/firestore";
 import { getPollById } from "~/utils/polls";
+import {
+	GoogleAuthProvider,
+	onAuthStateChanged,
+	signInWithPopup,
+} from "firebase/auth";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth, User } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { firebaseConfig } from "~/utils/config.client";
+import { useState } from "react";
 
-// Page to submit poll for the users
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 export const action: ActionFunction = async ({ request }) => {
 	console.log("action");
@@ -16,11 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export async function getPoll(id: string) {
 	console.log("id", id);
-	// const snapshot = await db.collection("polls").get();
-	// const data: any = [];
-	// snapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }));
-
-	const snapshot = await db.collection("polls").doc(id).get();
+	const snapshot = await getDoc(doc(db, "polls", id));
 
 	if (!snapshot.exists) {
 		throw Error("no doc exists");
@@ -31,13 +39,47 @@ export async function getPoll(id: string) {
 
 export default function PollDetail() {
 	const { poll } = useLoaderData();
+	const [user, setUser] = useState<User | null>();
 
-	console.log("poll", poll);
+	console.log(user, "user");
+
+	const provider = new GoogleAuthProvider();
+	const googleLogin = () => {
+		signInWithPopup(auth, provider)
+			.then((result) => {
+				// This gives you a Google Access Token. You can use it to access the Google API.
+				const credential =
+					GoogleAuthProvider.credentialFromResult(result);
+				const token = credential?.accessToken;
+				// The signed-in user info.
+				const user = result.user;
+
+				console.log("result", result);
+				// ...
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+
+				console.log(error);
+				// The email of the user's account used.
+				const email = error.customData.email;
+				// The AuthCredential type that was used.
+				const credential =
+					GoogleAuthProvider.credentialFromError(error);
+				// ...
+			});
+	};
+
+	onAuthStateChanged(auth, (result) => {
+		result ? setUser(result) : setUser(null);
+	});
 
 	return (
 		<section>
+			<button onClick={googleLogin}>Login</button>
 			<h1>Poll #{poll.pollNumber}</h1>
-
 			<>
 				<h3>{poll.question}</h3>
 				<ul>

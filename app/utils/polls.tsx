@@ -1,4 +1,13 @@
-import { db } from "./db.server";
+// import { db } from "./firebase.client";
+import {
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	getFirestore,
+	setDoc,
+} from "firebase/firestore";
 
 export type InputTypes = "radio" | "checkbox";
 export type PollData = {
@@ -13,35 +22,34 @@ export type PollData = {
 	type: InputTypes | string;
 };
 
-export async function getAmountOfPolls() {
-	const snapshot = await db.collection("polls").get();
+const db = getFirestore();
 
-	return snapshot.size;
+export async function getAmountOfPolls() {
+	const ids = await (await getDocs(collection(db, "polls"))).size;
+
+	return ids;
 }
 
 export async function createPoll(data: PollData) {
-	const doc = db.collection("polls");
-	doc.add({ ...data });
+	await addDoc(collection(db, "polls"), data);
 	console.info("created poll!");
 }
 
 export async function getAllPolls() {
-	const snapshot = await db.collection("polls").get();
+	const querySnapshot = await getDocs(collection(db, "polls"));
 
-	return snapshot.docs.map((item) => item.data());
+	return querySnapshot.docs.map((item) => item.data());
 }
 
 export const getDocumentPollIds = async () => {
-	const ids = await (
-		await db.collection("polls").listDocuments()
-	).map((doc) => doc.id);
+	const ids = await getDocs(collection(db, "polls"));
 
-	console.log("d ids", ids);
-	return ids;
+	return ids.docs.map((item) => item.id);
 };
 
 export const getPollById = async (id: string) => {
-	const snapshot = await db.collection("polls").doc(id).get();
+	const docRef = await doc(db, "polls", id);
+	const snapshot = await getDoc(docRef);
 
 	if (!snapshot.exists) {
 		throw new Error("Snapshot doesn't exist");
@@ -51,7 +59,7 @@ export const getPollById = async (id: string) => {
 };
 
 export const updatePollById = async (id: string, payload: any) => {
-	const snapshot = await db.collection("polls").doc(id).update(payload);
+	const snapshot = await setDoc(doc(db, "polls", id), payload);
 
 	return snapshot;
 };
