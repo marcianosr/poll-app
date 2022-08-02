@@ -4,9 +4,8 @@ import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getAllPolls();
-	const ids = await getDocumentPollIds();
 
-	console.log(ids);
+	const ids = await getDocumentPollIds();
 
 	return { polls: data, docId: ids };
 };
