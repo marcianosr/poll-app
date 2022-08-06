@@ -5,9 +5,9 @@ import {
 	doc,
 	getDoc,
 	getDocs,
-	getFirestore,
 	setDoc,
 } from "firebase/firestore";
+import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";
 export type PollData = {
@@ -21,8 +21,6 @@ export type PollData = {
 	pollNumber: number | null;
 	type: InputTypes | string;
 };
-
-const db = getFirestore();
 
 export async function getAmountOfPolls() {
 	const ids = await (await getDocs(collection(db, "polls"))).size;

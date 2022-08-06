@@ -1,21 +1,10 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { getPollById } from "~/utils/polls";
-import {
-	GoogleAuthProvider,
-	onAuthStateChanged,
-	signInWithPopup,
-} from "firebase/auth";
-import { getApp, getApps, initializeApp } from "firebase/app";
-import { getAuth, User } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { firebaseConfig } from "~/utils/config.client";
-import { useState } from "react";
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-const auth = getAuth(app);
+import { useAuth } from "~/providers/AuthProvider";
+import { db } from "~/utils/firebase";
 
 export const action: ActionFunction = async ({ request }) => {
 	console.log("action");
@@ -39,46 +28,12 @@ export async function getPoll(id: string) {
 
 export default function PollDetail() {
 	const { poll } = useLoaderData();
-	const [user, setUser] = useState<User | null>();
+	const { user } = useAuth();
 
-	console.log(user, "user");
-
-	const provider = new GoogleAuthProvider();
-	const googleLogin = () => {
-		signInWithPopup(auth, provider)
-			.then((result) => {
-				// This gives you a Google Access Token. You can use it to access the Google API.
-				const credential =
-					GoogleAuthProvider.credentialFromResult(result);
-				const token = credential?.accessToken;
-				// The signed-in user info.
-				const user = result.user;
-
-				console.log("result", result);
-				// ...
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-
-				console.log(error);
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential =
-					GoogleAuthProvider.credentialFromError(error);
-				// ...
-			});
-	};
-
-	onAuthStateChanged(auth, (result) => {
-		result ? setUser(result) : setUser(null);
-	});
+	console.log("user", user);
 
 	return (
 		<section>
-			<button onClick={googleLogin}>Login</button>
 			<h1>Poll #{poll.pollNumber}</h1>
 			<>
 				<h3>{poll.question}</h3>
@@ -96,6 +51,10 @@ export default function PollDetail() {
 						</li>
 					))}
 				</ul>
+				<button disabled={!user} onClick={() => {}}>
+					Submit
+				</button>
+				{!user && <small>Please login to submit your answer.</small>}
 			</>
 		</section>
 	);
