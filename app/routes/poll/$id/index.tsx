@@ -1,9 +1,10 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { db } from "~/utils/db.server";
+import { getDoc, doc } from "firebase/firestore";
 import { getPollById } from "~/utils/polls";
 
-// Page to submit poll for the users
+import { useAuth } from "~/providers/AuthProvider";
+import { db } from "~/utils/firebase";
 
 export const action: ActionFunction = async ({ request }) => {
 	console.log("action");
@@ -16,11 +17,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export async function getPoll(id: string) {
 	console.log("id", id);
-	// const snapshot = await db.collection("polls").get();
-	// const data: any = [];
-	// snapshot.forEach((doc) => data.push({ ...doc.data(), id: doc.id }));
-
-	const snapshot = await db.collection("polls").doc(id).get();
+	const snapshot = await getDoc(doc(db, "polls", id));
 
 	if (!snapshot.exists) {
 		throw Error("no doc exists");
@@ -31,13 +28,13 @@ export async function getPoll(id: string) {
 
 export default function PollDetail() {
 	const { poll } = useLoaderData();
+	const { user } = useAuth();
 
-	console.log("poll", poll);
+	console.log("user", user);
 
 	return (
 		<section>
 			<h1>Poll #{poll.pollNumber}</h1>
-
 			<>
 				<h3>{poll.question}</h3>
 				<ul>
@@ -54,6 +51,10 @@ export default function PollDetail() {
 						</li>
 					))}
 				</ul>
+				<button disabled={!user} onClick={() => {}}>
+					Submit
+				</button>
+				{!user && <small>Please login to submit your answer.</small>}
 			</>
 		</section>
 	);

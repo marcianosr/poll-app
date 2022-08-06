@@ -1,8 +1,9 @@
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/components/PollForm";
 import { getPollById, PollData, updatePollById } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
+import { getAdminUser } from "~/utils/user";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -51,6 +52,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
+	const isAdmin =
+		(await (await getAdminUser()).map((user) => user.role)[0]) === "admin";
+
+	if (!isAdmin) {
+		return redirect("/");
+	}
+
 	const data = await getPollById(params.id || "");
 
 	return { poll: data };
