@@ -6,6 +6,8 @@ import {
 	getDoc,
 	getDocs,
 	setDoc,
+	query,
+	orderBy,
 } from "firebase/firestore";
 import { db } from "~/utils/firebase";
 
@@ -36,7 +38,9 @@ export async function createPoll(data: PollData) {
 }
 
 export async function getAllPolls() {
-	const querySnapshot = await getDocs(collection(db, "polls"));
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, orderBy("pollNumber", "desc"));
+	const querySnapshot = await getDocs(getQuery);
 
 	return querySnapshot.docs.map((item) => item.data());
 }

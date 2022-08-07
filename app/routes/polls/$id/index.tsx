@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { getDoc, doc } from "firebase/firestore";
 import { getPollById } from "~/utils/polls";
 
@@ -34,6 +34,7 @@ export default function PollDetail() {
 
 	return (
 		<section>
+			<Link to="/polls">Back to list of polls</Link>
 			<h1>Poll #{poll.pollNumber}</h1>
 			{poll.status === "closed" && (
 				<>

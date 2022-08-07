@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/components/PollForm";
 import { getPollById, PollData, updatePollById } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
@@ -72,6 +72,8 @@ export default function EditPoll() {
 	// console.log("edit", poll);
 	return (
 		<section>
+			<Link to="/polls">Back to list of polls</Link>
+
 			<h1>Edit poll #{poll.pollNumber}</h1>
 			<PollForm poll={poll} />
 		</section>

@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import FormPoll, { Errors } from "../../components/PollForm";
 import {
@@ -26,7 +26,6 @@ export const action: ActionFunction = async ({ request }) => {
 	const type = formData.get("type") as string;
 	const status = formData.get("status") as PollStatus;
 
-	console.log("PollStatus", status);
 	const pollData: PollData = {
 		id,
 		question,
@@ -82,6 +81,8 @@ export default function NewPoll() {
 
 	return (
 		<section>
+			<Link to="/polls">Back to list of polls</Link>
+
 			<h1>Poll #{totalPolls + 1}</h1>
 			<FormPoll />
 		</section>
