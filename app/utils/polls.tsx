@@ -46,7 +46,10 @@ export async function getAllPolls() {
 }
 
 export const getDocumentPollIds = async () => {
-	const ids = await getDocs(collection(db, "polls"));
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, orderBy("pollNumber", "desc"));
+
+	const ids = await getDocs(getQuery);
 
 	return ids.docs.map((item) => item.id);
 };

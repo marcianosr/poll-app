@@ -36,14 +36,19 @@ export default function PollDetail() {
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
 			<h1>Poll #{poll.pollNumber}</h1>
-			{poll.status === "closed" && (
-				<>
-					<span>
-						Status: {poll.status} - it is not possible to submit to
-						the poll anymore
-					</span>
-				</>
-			)}
+
+			<>
+				<span>
+					Status: {poll.status} -{" "}
+					{poll.status === "closed" ? (
+						<span>
+							it is not possible to submit to the poll anymore
+						</span>
+					) : (
+						<span>the poll is open for responses!</span>
+					)}
+				</span>
+			</>
 			<>
 				<h3>{poll.question}</h3>
 				<ul>
