@@ -10,6 +10,7 @@ import {
 import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";
+export type PollStatus = "open" | "closed";
 export type PollData = {
 	id: string;
 	question: string;
@@ -20,6 +21,7 @@ export type PollData = {
 	correctAnswers: string[];
 	pollNumber: number | null;
 	type: InputTypes | string;
+	status: PollStatus;
 };
 
 export async function getAmountOfPolls() {

@@ -1,7 +1,7 @@
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import { FC, Fragment, useEffect, useState } from "react";
-import { InputTypes, PollData } from "~/utils/polls";
+import { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
 
@@ -30,6 +30,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
 
 	const [mode, setMode] = useState<Mode>("edit");
+	const [pollStatus, setPollStatus] = useState<PollStatus>(
+		(poll && poll?.status) || "closed"
+	);
 	const [fields, setFields] = useState<NewPollType[]>([
 		{
 			id: "eioozak-ojnab",
@@ -59,6 +62,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
+	const updatePollStatus = () =>
+		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
+
 	return (
 		<>
 			<Form method="post">
@@ -74,6 +80,31 @@ const PollForm: FC<Props> = ({ poll }) => {
 					name="correctAnswers"
 					defaultValue={JSON.stringify(markCorrectAnswer)}
 				/>
+
+				<label htmlFor="status">
+					{pollStatus === "closed"
+						? "Not accepting responses"
+						: "Accepting responses"}
+				</label>
+				<input
+					type="checkbox"
+					name="status"
+					value={pollStatus}
+					checked={pollStatus === "open"}
+					onClick={updatePollStatus}
+					id="status"
+				/>
+				{pollStatus === "closed" ? (
+					<input type="hidden" value="closed" name="status" />
+				) : (
+					<input
+						type="hidden"
+						name="status"
+						value="open"
+						onClick={updatePollStatus}
+						id="status"
+					/>
+				)}
 
 				<>
 					{action?.ok === false && <span>errors</span>}
@@ -138,6 +169,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 					<option value="radio">Single answer</option>
 					<option value="checkbox">Multiple answers</option>
 				</select>
+
 				<button
 					type="submit"
 					disabled={mode === "mark" || markCorrectAnswer.length === 0}

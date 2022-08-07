@@ -18,6 +18,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type");
+	const status = formData.get("status");
 	const answers = [];
 
 	for (var [key, value] of formData.entries()) {
@@ -39,11 +40,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 			},
 		};
 
+	// Add old pollData
 	const updatePoll = await updatePollById(params.id || "", {
 		question,
 		correctAnswers: JSON.parse(correctAnswers),
 		answers,
 		type,
+		status,
 	});
 
 	return {
@@ -66,7 +69,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function EditPoll() {
 	const { poll } = useLoaderData();
-	console.log("edit", poll);
+	// console.log("edit", poll);
 	return (
 		<section>
 			<h1>Edit poll #{poll.pollNumber}</h1>

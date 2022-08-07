@@ -1,14 +1,15 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import FormPoll, { Errors } from "../../components/PollForm";
-
-import styles from "~/styles/new-poll.css";
-import { createPoll, getAmountOfPolls, PollData } from "~/utils/polls";
-
-import { useAuth } from "~/providers/AuthProvider";
-import { useEffect } from "react";
+import {
+	createPoll,
+	getAmountOfPolls,
+	PollData,
+	PollStatus,
+} from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
+import styles from "~/styles/new-poll.css";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -23,7 +24,9 @@ export const action: ActionFunction = async ({ request }) => {
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type") as string;
+	const status = formData.get("status") as PollStatus;
 
+	console.log("PollStatus", status);
 	const pollData: PollData = {
 		id,
 		question,
@@ -31,6 +34,7 @@ export const action: ActionFunction = async ({ request }) => {
 		correctAnswers: JSON.parse(correctAnswers),
 		pollNumber: pollsLength + 1,
 		type,
+		status,
 	};
 
 	for (var [key, value] of formData.entries()) {

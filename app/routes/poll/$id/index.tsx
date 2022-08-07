@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export async function getPoll(id: string) {
-	console.log("id", id);
+	// console.log("id", id);
 	const snapshot = await getDoc(doc(db, "polls", id));
 
 	if (!snapshot.exists) {
@@ -35,12 +35,21 @@ export default function PollDetail() {
 	return (
 		<section>
 			<h1>Poll #{poll.pollNumber}</h1>
+			{poll.status === "closed" && (
+				<>
+					<span>
+						Status: {poll.status} - it is not possible to submit to
+						the poll anymore
+					</span>
+				</>
+			)}
 			<>
 				<h3>{poll.question}</h3>
 				<ul>
 					{poll.answers.map((answer: any, idx: number) => (
 						<li key={idx}>
 							<input
+								disabled={poll.status === "closed"}
 								type={poll.type}
 								id={idx.toString()}
 								name="answer"
@@ -51,9 +60,15 @@ export default function PollDetail() {
 						</li>
 					))}
 				</ul>
-				<button disabled={!user} onClick={() => {}}>
-					Submit
-				</button>
+
+				{user && (
+					<button
+						disabled={poll.status === "closed"}
+						onClick={() => {}}
+					>
+						Submit
+					</button>
+				)}
 				{!user && <small>Please login to submit your answer.</small>}
 			</>
 		</section>
