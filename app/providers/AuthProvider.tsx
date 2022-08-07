@@ -35,6 +35,7 @@ type UserData = {
 	correctPollsAnswered: number;
 	pixels: number;
 	role: "user" | "admin";
+	pollIds: [];
 };
 
 export async function addUser(data: UserData) {
@@ -81,6 +82,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					correctPollsAnswered: 0,
 					pixels: 0,
 					role: "user",
+					pollIds: [],
 				});
 				// ...
 			})
