@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import { getDoc, doc } from "firebase/firestore";
 import { getPollById } from "~/utils/polls";
 
@@ -7,7 +7,16 @@ import { useAuth } from "~/providers/AuthProvider";
 import { db } from "~/utils/firebase";
 
 export const action: ActionFunction = async ({ request }) => {
-	console.log("action");
+	let formData = await request.formData();
+
+	const answersGiven = [];
+	for (const [key, value] of formData.entries()) {
+		if (key.includes("answer")) answersGiven.push(value);
+	}
+
+	return {
+		error: answersGiven.length === 0 ? true : false,
+	};
 };
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
@@ -16,7 +25,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export async function getPoll(id: string) {
-	// console.log("id", id);
 	const snapshot = await getDoc(doc(db, "polls", id));
 
 	if (!snapshot.exists) {
@@ -29,8 +37,7 @@ export async function getPoll(id: string) {
 export default function PollDetail() {
 	const { poll } = useLoaderData();
 	const { user } = useAuth();
-
-	console.log("user", user);
+	const action = useActionData();
 
 	return (
 		<section>
@@ -49,8 +56,11 @@ export default function PollDetail() {
 					)}
 				</span>
 			</>
-			<>
+			<Form method="post">
 				<h3>{poll.question}</h3>
+				{action?.error && (
+					<span>Please at least fill out one answer to submit</span>
+				)}
 				<ul>
 					{poll.answers.map((answer: any, idx: number) => (
 						<li key={idx}>
@@ -58,7 +68,8 @@ export default function PollDetail() {
 								disabled={poll.status === "closed"}
 								type={poll.type}
 								id={idx.toString()}
-								name="answer"
+								name={`answer-${idx}`}
+								value={answer.value}
 							/>
 							<label htmlFor={idx.toString()}>
 								{answer.value}
@@ -76,7 +87,7 @@ export default function PollDetail() {
 					</button>
 				)}
 				{!user && <small>Please login to submit your answer.</small>}
-			</>
+			</Form>
 		</section>
 	);
 }
