@@ -21,7 +21,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const status = formData.get("status");
 	const answers = [];
 
-	for (var [key, value] of formData.entries()) {
+	for (const [key, value] of formData.entries()) {
 		if (!value) errors[key] = true;
 
 		if (key.includes("answer")) {
