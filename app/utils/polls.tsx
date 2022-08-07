@@ -59,7 +59,9 @@ export const getPollById = async (id: string) => {
 };
 
 export const updatePollById = async (id: string, payload: any) => {
-	const snapshot = await setDoc(doc(db, "polls", id), payload);
+	const snapshot = await setDoc(doc(db, "polls", id), payload, {
+		merge: true,
+	});
 
 	return snapshot;
 };
