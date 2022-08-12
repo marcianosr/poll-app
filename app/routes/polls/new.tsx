@@ -36,7 +36,7 @@ export const action: ActionFunction = async ({ request }) => {
 		status,
 	};
 
-	for (var [key, value] of formData.entries()) {
+	for (const [key, value] of formData.entries()) {
 		// console.log("----->>>>>", key, value);
 
 		if (!value) errors[key] = true;
@@ -45,6 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
 			pollData.answers.push({
 				id: key.split("answer-")[1], // ID of the the field
 				value: value as string,
+				votedBy: [],
 			});
 		}
 	}

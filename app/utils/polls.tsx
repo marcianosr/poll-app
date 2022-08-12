@@ -13,13 +13,15 @@ import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";
 export type PollStatus = "open" | "closed";
+export type Answer = {
+	id: string;
+	value: string;
+	votedBy: string[];
+};
 export type PollData = {
 	id: string;
 	question: string;
-	answers: {
-		id: string;
-		value: string;
-	}[];
+	answers: Answer[];
 	correctAnswers: string[];
 	pollNumber: number | null;
 	type: InputTypes | string;
@@ -65,10 +67,16 @@ export const getPollById = async (id: string) => {
 	}
 };
 
-export const updatePollById = async (id: string, payload: any) => {
+export const updatePollById = async (
+	id: string,
+	payload: any,
+	merge = true
+) => {
 	const snapshot = await setDoc(doc(db, "polls", id), payload, {
-		merge: true,
+		merge,
 	});
+
+	console.log(payload);
 
 	return snapshot;
 };

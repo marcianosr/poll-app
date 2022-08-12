@@ -28,6 +28,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 			answers.push({
 				id: key.split("answer-")[1], // ID of the the field
 				value: value as string,
+				votedBy: [],
 			});
 		}
 	}

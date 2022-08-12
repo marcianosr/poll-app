@@ -1,22 +1,32 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
-import { getDoc, doc } from "firebase/firestore";
-import { getPollById } from "~/utils/polls";
-
+import { Answer, getPollById, PollData, updatePollById } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
-import { db } from "~/utils/firebase";
+import React, { useState } from "react";
 
-export const action: ActionFunction = async ({ request }) => {
-	let formData = await request.formData();
+export const action: ActionFunction = async ({ request, params }) => {
+	const formData = await request.formData();
+	const answers = formData.get("answers") as string;
+	const uid = formData.get("uid") as string;
+	const paramId = params.id || "";
+	const parsedAnswers = JSON.parse(answers) as Answer[];
 
-	const answersGiven = [];
-	for (const [key, value] of formData.entries()) {
-		if (key.includes("answer")) answersGiven.push(value);
-	}
+	const hasVoted = parsedAnswers
+		.map((answer) => answer.votedBy)
+		.find((ids) => ids.includes(uid || ""))?.length;
+
+	await getPollById(paramId);
+	await updatePollById(paramId, {
+		answers: [...parsedAnswers],
+	});
 
 	return {
-		error: answersGiven.length === 0 ? true : false,
+		error: !hasVoted,
 	};
+};
+
+type LoaderData = {
+	poll: PollData;
 };
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
@@ -24,20 +34,48 @@ export const loader: LoaderFunction = async ({ params }) => {
 	return { poll: data };
 };
 
-export async function getPoll(id: string) {
-	const snapshot = await getDoc(doc(db, "polls", id));
-
-	if (!snapshot.exists) {
-		throw Error("no doc exists");
-	} else {
-		return snapshot.data();
-	}
-}
-
 export default function PollDetail() {
-	const { poll } = useLoaderData();
+	const { poll } = useLoaderData() as LoaderData;
 	const { user } = useAuth();
 	const action = useActionData();
+	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
+
+	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.checked) {
+			const updated = currentAnswers.map((answer) => {
+				if (answer.id === e.target.id) {
+					return {
+						...answer,
+						votedBy: [user?.uid || ""],
+					};
+				}
+				return answer;
+			});
+
+			setCurrentAnswers(updated);
+		} else {
+			const updated = currentAnswers.map((answer) => {
+				if (answer.id === e.target.id) {
+					return {
+						...answer,
+						votedBy: answer.votedBy.filter(
+							(id: string) => answer.id === id
+						),
+					};
+				}
+				return answer;
+			});
+
+			setCurrentAnswers(updated);
+		}
+	};
+
+	const isDefaultChecked = (answer: Answer) =>
+		!!answer.votedBy.find((id) => id === user?.uid);
+
+	const userHasVoted = currentAnswers
+		.map((answer) => answer.votedBy)
+		.find((ids) => ids.includes(user?.uid || ""))?.length;
 
 	return (
 		<section>
@@ -62,31 +100,37 @@ export default function PollDetail() {
 					<span>Please at least fill out one answer to submit</span>
 				)}
 				<ul>
-					{poll.answers.map((answer: any, idx: number) => (
+					{currentAnswers.map((answer, idx: number) => (
 						<li key={idx}>
 							<input
 								disabled={poll.status === "closed"}
 								type={poll.type}
-								id={idx.toString()}
-								name={`answer-${idx}`}
+								id={answer.id}
+								onChange={isChecked}
+								checked={isDefaultChecked(answer)}
+								name="answer"
 								value={answer.value}
 							/>
-							<label htmlFor={idx.toString()}>
-								{answer.value}
-							</label>
+
+							<label htmlFor={answer.id}>{answer.value}</label>
 						</li>
 					))}
 				</ul>
 
 				{user && (
 					<button
-						disabled={poll.status === "closed"}
-						onClick={() => {}}
+						disabled={poll.status === "closed" || !userHasVoted}
 					>
 						Submit
 					</button>
 				)}
 				{!user && <small>Please login to submit your answer.</small>}
+				<input
+					type="hidden"
+					name="answers"
+					defaultValue={JSON.stringify(currentAnswers)}
+				/>
+				<input type="hidden" name="uid" defaultValue={user?.uid} />
 			</Form>
 		</section>
 	);
