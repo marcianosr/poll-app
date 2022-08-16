@@ -4,6 +4,7 @@ import PollForm, { Errors } from "~/components/PollForm";
 import { getPollById, PollData, updatePollById } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
 import { getAdminUser } from "~/utils/user";
+import { useAuth } from "~/providers/AuthProvider";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -55,12 +56,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-	const isAdmin =
-		(await (await getAdminUser()).map((user) => user.role)[0]) === "admin";
+	// const isAdmin =
+	// 	(await (await getAdminUser()).map((user) => user.role)[0]) === "admin";
 
-	if (!isAdmin) {
-		return redirect("/");
-	}
+	// if (!isAdmin) {
+	// 	return redirect("/");
+	// }
 
 	const data = await getPollById(params.id || "");
 
@@ -69,6 +70,11 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function EditPoll() {
 	const { poll } = useLoaderData();
+	const { isAdmin } = useAuth();
+
+	if (!isAdmin) {
+		return <h1>404 Not Found</h1>;
+	}
 	// console.log("edit", poll);
 	return (
 		<section>

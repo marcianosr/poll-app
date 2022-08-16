@@ -7,14 +7,15 @@ import {
 	User,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
-import React, { createContext } from "react";
+import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
-import { getUserByID } from "~/utils/user";
+import { getAdminUser, getUserByID } from "~/utils/user";
 
 type AuthContextState = {
 	user: User | null;
 	googleLogin: () => void;
 	error: string | null;
+	isAdmin: boolean;
 };
 
 type AuthProviderProps = {};
@@ -23,6 +24,7 @@ export const AuthContext = createContext<AuthContextState>({
 	user: null,
 	googleLogin: () => {},
 	error: null,
+	isAdmin: false,
 });
 
 type UserData = {
@@ -55,6 +57,16 @@ export async function addUser(data: UserData) {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = React.useState<User | null>();
 	const [error, setError] = React.useState<string | null>();
+	const [isAdmin, setAdmin] = React.useState(false);
+
+	useEffect(() => {
+		if (user?.uid) {
+			const isAdmin = getAdminUser(user?.uid || "").then((result) => {
+				console.log("result", result);
+				return setAdmin(!!result);
+			});
+		}
+	}, [user?.uid]);
 
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -112,6 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				user: user || null,
 				googleLogin,
 				error: error || null,
+				isAdmin,
 			}}
 		>
 			{children}

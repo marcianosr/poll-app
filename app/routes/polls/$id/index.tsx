@@ -1,93 +1,198 @@
+import React, { useEffect, useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
-import { getDoc, doc } from "firebase/firestore";
-import { getPollById } from "~/utils/polls";
-
+import {
+	Answer,
+	Voted,
+	getPollById,
+	PollData,
+	updatePollById,
+} from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
-import { db } from "~/utils/firebase";
+import PollStatus from "~/components/PollStatus";
+import { getUsers } from "~/utils/user";
+import { isAdmin } from "@firebase/util";
 
-export const action: ActionFunction = async ({ request }) => {
-	let formData = await request.formData();
+type ScreenState = "poll" | "results";
 
-	const answersGiven = [];
-	for (const [key, value] of formData.entries()) {
-		if (key.includes("answer")) answersGiven.push(value);
-	}
+export const action: ActionFunction = async ({ request, params }) => {
+	const formData = await request.formData();
+	const voted = formData.get("voted") as string;
+	const uid = formData.get("uid") as string;
+	const paramId = params.id || "";
+	const parsedVoted = JSON.parse(voted) as Voted[];
+
+	await updatePollById(paramId, {
+		voted: [...parsedVoted],
+	});
+
+	const getUserIdsByVote = parsedVoted.map((votes) => votes.userId).flat();
+	const hasVoted = getUserIdsByVote.includes(uid);
 
 	return {
-		error: answersGiven.length === 0 ? true : false,
+		error: !hasVoted,
 	};
+};
+
+type LoaderData = {
+	poll: PollData;
+	responses: number;
+	users: any; // !TODO: type this
 };
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
+	const users = await getUsers();
 
-	return { poll: data };
+	const getUserIdsByVote = data?.voted
+		.map((votes: Voted) => votes.userId)
+		.flat();
+
+	const responses = new Set([...getUserIdsByVote]).size;
+
+	return { poll: data, responses, users };
 };
 
-export async function getPoll(id: string) {
-	const snapshot = await getDoc(doc(db, "polls", id));
-
-	if (!snapshot.exists) {
-		throw Error("no doc exists");
-	} else {
-		return snapshot.data();
-	}
-}
-
 export default function PollDetail() {
-	const { poll } = useLoaderData();
-	const { user } = useAuth();
+	const { poll, responses, users } = useLoaderData() as LoaderData;
+	const { user, isAdmin } = useAuth();
 	const action = useActionData();
+
+	const [screenState, setScreenState] = useState<ScreenState>("poll");
+
+	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
+	const [currentVoted, setCurrentVoted] = useState<Voted[]>(poll.voted);
+
+	// Can't check this server-side unless uid is stored somewhere in a cookie or something
+	const userHasVoted = poll.voted.find((voted) => voted.userId === user?.uid);
+
+	useEffect(() => {
+		if (userHasVoted) setScreenState("results");
+	}, [user?.uid, userHasVoted]);
+
+	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.checked) {
+			setCurrentVoted([
+				...currentVoted,
+				{
+					answerId: e.target.id,
+					userId: user?.uid || "",
+				},
+			]);
+		} else {
+			const votedPoll = currentVoted.filter(
+				(voted) => voted.answerId !== e.target.id
+			);
+
+			setCurrentVoted(votedPoll);
+		}
+	};
+
+	const isDefaultChecked = (answer: Answer) => {
+		const findVotedAnswer = currentVoted
+			.filter((voted) => voted.answerId === answer.id)
+			.filter((voted) => voted.userId === user?.uid);
+
+		return findVotedAnswer.length > 0;
+	};
+
+	const getLengthOfAnswersById = (answerId: string) =>
+		currentVoted.filter((voted) => voted.answerId === answerId);
+
+	const getCorrectAnswers = (answerId: string) =>
+		!!poll.correctAnswers.find((correct) => correct.id === answerId);
+
+	const getVotesByUser = (answerId: string) => {
+		return poll.voted
+			.filter((vote) => vote.answerId === answerId)
+			.map((vote) => vote.userId)
+			.map((id) => users.find((user) => user.id === id));
+	};
 
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
 			<h1>Poll #{poll.pollNumber}</h1>
-
-			<>
-				<span>
-					Status: {poll.status} -{" "}
-					{poll.status === "closed" ? (
+			<PollStatus status={poll.status} />
+			{screenState === "poll" && (
+				<Form method="post">
+					<h3>{poll.question}</h3>
+					{action?.error && (
 						<span>
-							it is not possible to submit to the poll anymore
+							Please at least fill out one answer to submit
 						</span>
-					) : (
-						<span>the poll is open for responses!</span>
 					)}
-				</span>
-			</>
-			<Form method="post">
-				<h3>{poll.question}</h3>
-				{action?.error && (
-					<span>Please at least fill out one answer to submit</span>
-				)}
-				<ul>
-					{poll.answers.map((answer: any, idx: number) => (
-						<li key={idx}>
-							<input
-								disabled={poll.status === "closed"}
-								type={poll.type}
-								id={idx.toString()}
-								name={`answer-${idx}`}
-								value={answer.value}
-							/>
-							<label htmlFor={idx.toString()}>
-								{answer.value}
-							</label>
-						</li>
-					))}
-				</ul>
+					<ul>
+						{currentAnswers.map((answer, idx: number) => (
+							<li key={idx}>
+								<input
+									disabled={poll.status === "closed"}
+									type={poll.type}
+									id={answer.id}
+									onChange={isChecked}
+									checked={isDefaultChecked(answer)}
+									name="answer"
+									value={answer.value}
+								/>
 
-				{user && (
-					<button
-						disabled={poll.status === "closed"}
-						onClick={() => {}}
-					>
-						Submit
-					</button>
-				)}
-				{!user && <small>Please login to submit your answer.</small>}
-			</Form>
+								<label htmlFor={answer.id}>
+									{answer.value}
+								</label>
+							</li>
+						))}
+					</ul>
+
+					{user && (
+						<button
+							disabled={
+								poll.status === "closed" ||
+								currentVoted.length === 0
+							}
+						>
+							Submit
+						</button>
+					)}
+					{!user && (
+						<small>Please login to submit your answer.</small>
+					)}
+					<input
+						type="hidden"
+						name="answers"
+						defaultValue={JSON.stringify(currentAnswers)}
+					/>
+					<input
+						type="hidden"
+						name="voted"
+						defaultValue={JSON.stringify(currentVoted)}
+					/>
+					<input type="hidden" name="uid" defaultValue={user?.uid} />
+				</Form>
+			)}
+			{screenState === "results" && (
+				<>
+					<ul>
+						{currentAnswers.map((answer, idx) => (
+							<li key={answer.id}>
+								{answer.value} -{" "}
+								{getLengthOfAnswersById(answer.id).length} -{" "}
+								{getCorrectAnswers(answer.id) && (
+									<span>correct</span>
+								)}{" "}
+								{isAdmin && (
+									<>
+										voted by:{" "}
+										{getVotesByUser(answer.id).map(
+											(user) => (
+												<strong>{user.email} </strong>
+											)
+										)}
+									</>
+								)}
+							</li>
+						))}
+					</ul>
+					<span>{responses} users voted</span>
+				</>
+			)}
 		</section>
 	);
 }

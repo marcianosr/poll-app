@@ -90,7 +90,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 					type="checkbox"
 					name="status"
 					value={pollStatus}
-					checked={pollStatus === "open"}
+					defaultChecked={pollStatus === "open"}
 					onClick={updatePollStatus}
 					id="status"
 				/>
