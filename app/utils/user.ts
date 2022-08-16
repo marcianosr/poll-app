@@ -26,6 +26,18 @@ export const getUserByID = async (id: string) => {
 	}
 };
 
+export const getUsers = async () => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+	const ref = collection(db, "users");
+	const getQuery = query(ref);
+	const querySnapshot = await getDocs(getQuery);
+
+	return querySnapshot.docs.map((item) => item.data());
+};
+
 export const getAdminUser = async (id: string) => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();

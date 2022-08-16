@@ -10,6 +10,8 @@ import {
 } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
+import { getUsers } from "~/utils/user";
+import { isAdmin } from "@firebase/util";
 
 type ScreenState = "poll" | "results";
 
@@ -35,9 +37,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 type LoaderData = {
 	poll: PollData;
 	responses: number;
+	users: any; // !TODO: type this
 };
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
+	const users = await getUsers();
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
@@ -45,12 +49,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses };
+	return { poll: data, responses, users };
 };
 
 export default function PollDetail() {
-	const { poll, responses } = useLoaderData() as LoaderData;
-	const { user } = useAuth();
+	const { poll, responses, users } = useLoaderData() as LoaderData;
+	const { user, isAdmin } = useAuth();
 	const action = useActionData();
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
@@ -96,6 +100,13 @@ export default function PollDetail() {
 
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
+
+	const getVotesByUser = (answerId: string) => {
+		return poll.voted
+			.filter((vote) => vote.answerId === answerId)
+			.map((vote) => vote.userId)
+			.map((id) => users.find((user) => user.id === id));
+	};
 
 	return (
 		<section>
@@ -166,6 +177,16 @@ export default function PollDetail() {
 								{getCorrectAnswers(answer.id) && (
 									<span>correct</span>
 								)}{" "}
+								{isAdmin && (
+									<>
+										voted by:{" "}
+										{getVotesByUser(answer.id).map(
+											(user) => (
+												<strong>{user.email} </strong>
+											)
+										)}
+									</>
+								)}
 							</li>
 						))}
 					</ul>
