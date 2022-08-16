@@ -16,16 +16,25 @@ export type PollStatus = "open" | "closed";
 export type Answer = {
 	id: string;
 	value: string;
-	votedBy: string[];
+};
+export type Voted = {
+	answerId: string;
+	userId: string;
+};
+
+export type CorrectAnswers = {
+	id: string;
+	value: string;
 };
 export type PollData = {
 	id: string;
 	question: string;
 	answers: Answer[];
-	correctAnswers: string[];
+	correctAnswers: CorrectAnswers[];
 	pollNumber: number | null;
 	type: InputTypes | string;
 	status: PollStatus;
+	voted: Voted[];
 };
 
 export async function getAmountOfPolls() {

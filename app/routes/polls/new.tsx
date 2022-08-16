@@ -30,6 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
 		id,
 		question,
 		answers: [],
+		voted: [],
 		correctAnswers: JSON.parse(correctAnswers),
 		pollNumber: pollsLength + 1,
 		type,
@@ -45,7 +46,6 @@ export const action: ActionFunction = async ({ request }) => {
 			pollData.answers.push({
 				id: key.split("answer-")[1], // ID of the the field
 				value: value as string,
-				votedBy: [],
 			});
 		}
 	}
