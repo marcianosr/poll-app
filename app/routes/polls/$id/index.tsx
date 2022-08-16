@@ -56,7 +56,6 @@ export default function PollDetail() {
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
-	console.log(poll);
 	const [currentVoted, setCurrentVoted] = useState<Voted[]>(poll.voted);
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
@@ -65,10 +64,6 @@ export default function PollDetail() {
 	useEffect(() => {
 		if (userHasVoted) setScreenState("results");
 	}, [user?.uid, userHasVoted]);
-
-	useEffect(() => {
-		console.log("current voted", currentVoted);
-	}, [currentVoted]);
 
 	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked) {
@@ -136,7 +131,12 @@ export default function PollDetail() {
 					</ul>
 
 					{user && (
-						<button disabled={poll.status === "closed"}>
+						<button
+							disabled={
+								poll.status === "closed" ||
+								currentVoted.length === 0
+							}
+						>
 							Submit
 						</button>
 					)}

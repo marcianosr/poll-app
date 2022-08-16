@@ -10,6 +10,7 @@ import {
 } from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
 import styles from "~/styles/new-poll.css";
+import { useAuth } from "~/providers/AuthProvider";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -66,19 +67,18 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
-	const isAdmin =
-		(await (await getAdminUser()).map((user) => user.role)[0]) === "admin";
-	if (!isAdmin) {
-		return redirect("/");
-	}
-
 	const data = await getAmountOfPolls();
 
 	return { totalPolls: data };
 };
 
 export default function NewPoll() {
+	const { isAdmin } = useAuth();
 	const { totalPolls } = useLoaderData();
+
+	if (!isAdmin) {
+		return <h1>404 Not Found</h1>;
+	}
 
 	return (
 		<section>
