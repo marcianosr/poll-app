@@ -54,13 +54,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 		if (poll?.answers) setFields(poll?.answers);
 	}, [poll?.answers]);
 
-	console.log(fields);
-
-	const updateBlockTypeByField = (id: string) => {
-		console.log("id", id);
-		console.log("block", blockType);
-	};
-
 	const addField = () => {
 		setFields([
 			...fields,

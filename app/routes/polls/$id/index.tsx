@@ -11,7 +11,6 @@ import {
 import { useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
 import { getUsers } from "~/utils/user";
-import { isAdmin } from "@firebase/util";
 
 type ScreenState = "poll" | "results";
 
