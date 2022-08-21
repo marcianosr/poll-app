@@ -1,13 +1,15 @@
 import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import { FC, Fragment, useEffect, useState } from "react";
+import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
 import { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
 
+export type BlockType = "text" | "code";
 export type NewPollType = {
 	id: string;
 	type?: InputTypes;
+	blockType?: BlockType;
 	placeholder?: string;
 	value?: string;
 };
@@ -30,6 +32,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
 
 	const [mode, setMode] = useState<Mode>("edit");
+	const [blockType, setBlockType] = useState<BlockType>("text");
 	const [pollStatus, setPollStatus] = useState<PollStatus>(
 		(poll && poll?.status) || "closed"
 	);
@@ -37,6 +40,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 		{
 			id: "eioozak-ojnab",
 			type: "radio",
+			blockType: "text",
 			placeholder: "Add option",
 			value: "",
 		},
@@ -50,12 +54,20 @@ const PollForm: FC<Props> = ({ poll }) => {
 		if (poll?.answers) setFields(poll?.answers);
 	}, [poll?.answers]);
 
+	console.log(fields);
+
+	const updateBlockTypeByField = (id: string) => {
+		console.log("id", id);
+		console.log("block", blockType);
+	};
+
 	const addField = () => {
 		setFields([
 			...fields,
 			{
 				id: uuidv4(),
 				type: "radio",
+				blockType: "text",
 				placeholder: `Add option`,
 				value: "",
 			},
@@ -108,37 +120,92 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 				<>
 					{action?.ok === false && <span>errors</span>}
-
 					<>
 						{fields.map((field) => (
 							<Fragment key={field.id}>
-								<input
-									type="text"
-									className={
-										markCorrectAnswer.find(
-											(item) => item.id === field.id
-										) && "correct"
-									}
-									placeholder={field.placeholder}
-									disabled={mode === "mark"}
-									name={`answer-${field.id}`}
-									id={field.id}
-									value={field.value}
-									onChange={(e: React.ChangeEvent) => {
-										setFields([
-											...fields.map((f) =>
-												f.id === field.id
-													? {
-															...f,
-															value: (
-																e.target as HTMLInputElement
-															).value,
-													  }
-													: f
-											),
-										]);
+								{field.blockType === "text" ? (
+									<input
+										type="text"
+										className={
+											markCorrectAnswer.find(
+												(item) => item.id === field.id
+											) && "correct"
+										}
+										placeholder={field.placeholder}
+										disabled={mode === "mark"}
+										name={`answer-${field.id}`}
+										id={field.id}
+										value={field.value}
+										onChange={(e: React.ChangeEvent) => {
+											setFields([
+												...fields.map((f) =>
+													f.id === field.id
+														? {
+																...f,
+																value: (
+																	e.target as HTMLInputElement
+																).value,
+														  }
+														: f
+												),
+											]);
+										}}
+									/>
+								) : (
+									<textarea
+										className={
+											markCorrectAnswer.find(
+												(item) => item.id === field.id
+											) && "correct"
+										}
+										placeholder={field.placeholder}
+										disabled={mode === "mark"}
+										name={`answer-${field.id}`}
+										id={field.id}
+										value={field.value}
+										onChange={(e: React.ChangeEvent) => {
+											setFields([
+												...fields.map((f) =>
+													f.id === field.id
+														? {
+																...f,
+																value: (
+																	e.target as HTMLInputElement
+																).value,
+														  }
+														: f
+												),
+											]);
+										}}
+									></textarea>
+								)}
+								<button
+									onClick={(e: React.MouseEvent) => {
+										e.preventDefault();
+
+										return setFields((prev) => {
+											console.log("pre", prev);
+
+											return [
+												...fields.map((f, idx) =>
+													f.id === field.id
+														? {
+																...f,
+																blockType:
+																	prev[idx]
+																		.blockType ===
+																	"text"
+																		? "code"
+																		: ("text" as any),
+														  }
+														: f
+												),
+											];
+										});
 									}}
-								/>
+								>
+									Toggle {field.blockType}
+								</button>
 
 								{fields.length > 1 && mode === "edit" && (
 									<DeleteButton
@@ -161,6 +228,13 @@ const PollForm: FC<Props> = ({ poll }) => {
 						))}
 					</>
 				</>
+
+				{/* Required because more fields are needed (e.g blockType field), sd stringify. Reason: Don't want to lose Remix flexibility of forms. Should be checked on how to improve this.  */}
+				<input
+					type="hidden"
+					name="answers"
+					value={JSON.stringify(fields)}
+				/>
 
 				<select
 					name="type"

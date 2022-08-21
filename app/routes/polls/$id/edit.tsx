@@ -20,17 +20,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type");
 	const status = formData.get("status");
-	const answers = [];
+	const answers = formData.get("answers") as string;
 
 	for (const [key, value] of formData.entries()) {
 		if (!value) errors[key] = true;
-
-		if (key.includes("answer")) {
-			answers.push({
-				id: key.split("answer-")[1], // ID of the the field
-				value: value as string,
-			});
-		}
 	}
 
 	if (Object.keys(errors).length)
@@ -45,7 +38,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const updatePoll = await updatePollById(params.id || "", {
 		question,
 		correctAnswers: JSON.parse(correctAnswers),
-		answers,
+		answers: JSON.parse(answers),
 		type,
 		status,
 	});
