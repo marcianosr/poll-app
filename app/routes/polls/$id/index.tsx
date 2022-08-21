@@ -11,7 +11,6 @@ import {
 import { useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
 import { getUsers } from "~/utils/user";
-import { isAdmin } from "@firebase/util";
 
 type ScreenState = "poll" | "results";
 
@@ -39,6 +38,7 @@ type LoaderData = {
 	responses: number;
 	users: any; // !TODO: type this
 };
+
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const users = await getUsers();
@@ -50,6 +50,27 @@ export const loader: LoaderFunction = async ({ params }) => {
 	const responses = new Set([...getUserIdsByVote]).size;
 
 	return { poll: data, responses, users };
+};
+
+export const transformToCodeTags = (value: string, idx?: number) => {
+	const code = value.split(" ").join(" ");
+
+	if (code.startsWith("```")) {
+		const value = code.split("```");
+		return <pre>{value}</pre>;
+	}
+
+	const words = value.split(" ");
+
+	const wrapWords = words.map((word) => {
+		if (word.startsWith("`")) {
+			return <code>{word.split("`")[1]} </code>;
+		}
+
+		return <>{word + " "}</>;
+	});
+
+	return wrapWords;
 };
 
 export default function PollDetail() {
@@ -113,9 +134,10 @@ export default function PollDetail() {
 			<Link to="/polls">Back to list of polls</Link>
 			<h1>Poll #{poll.pollNumber}</h1>
 			<PollStatus status={poll.status} />
+			<h3> {transformToCodeTags(poll.question)}</h3>
+
 			{screenState === "poll" && (
 				<Form method="post">
-					<h3>{poll.question}</h3>
 					{action?.error && (
 						<span>
 							Please at least fill out one answer to submit
@@ -135,7 +157,11 @@ export default function PollDetail() {
 								/>
 
 								<label htmlFor={answer.id}>
-									{answer.value}
+									{answer.blockType === "code" ? (
+										<pre>{answer.value}</pre>
+									) : (
+										answer.value
+									)}
 								</label>
 							</li>
 						))}
@@ -172,7 +198,9 @@ export default function PollDetail() {
 					<ul>
 						{currentAnswers.map((answer, idx) => (
 							<li key={answer.id}>
-								{answer.value} -{" "}
+								<span>
+									{transformToCodeTags(answer.value, idx)}-{" "}
+								</span>
 								{getLengthOfAnswersById(answer.id).length} -{" "}
 								{getCorrectAnswers(answer.id) && (
 									<span>correct</span>

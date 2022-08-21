@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
+import { transformToCodeTags } from "./$id";
 
 export const loader: LoaderFunction = async ({ params }) => {
 	// const isAdmin =
@@ -35,7 +36,8 @@ export default function AllPolls() {
 				{polls.map((poll: PollData, idx: number) => (
 					<li key={poll.id}>
 						<p>
-							#{poll.pollNumber} - {poll.question}
+							#{poll.pollNumber} -{" "}
+							{transformToCodeTags(poll.question, idx)}
 						</p>
 						{isAdmin && (
 							<Link to={`/polls/${docId[idx]}/edit`}>Edit</Link>

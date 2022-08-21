@@ -9,6 +9,7 @@ import {
 	query,
 	orderBy,
 } from "firebase/firestore";
+import { BlockType } from "~/components/PollForm";
 import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";
@@ -16,6 +17,7 @@ export type PollStatus = "open" | "closed";
 export type Answer = {
 	id: string;
 	value: string;
+	blockType?: BlockType;
 };
 export type Voted = {
 	answerId: string;

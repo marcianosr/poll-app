@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import FormPoll, { Errors } from "../../components/PollForm";
+import FormPoll, { BlockType, Errors } from "../../components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
@@ -25,12 +25,15 @@ export const action: ActionFunction = async ({ request }) => {
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type") as string;
+	const blockTypes = formData.get("blockType") as BlockType;
 	const status = formData.get("status") as PollStatus;
+	const answers = formData.get("answers") as string;
+	const parsedAnswers = JSON.parse(answers);
 
 	const pollData: PollData = {
 		id,
 		question,
-		answers: [],
+		answers: parsedAnswers,
 		voted: [],
 		correctAnswers: JSON.parse(correctAnswers),
 		pollNumber: pollsLength + 1,
@@ -42,14 +45,8 @@ export const action: ActionFunction = async ({ request }) => {
 		// console.log("----->>>>>", key, value);
 
 		if (!value) errors[key] = true;
-
-		if (key.includes("answer")) {
-			pollData.answers.push({
-				id: key.split("answer-")[1], // ID of the the field
-				value: value as string,
-			});
-		}
 	}
+	console.log("errors", errors);
 
 	if (Object.keys(errors).length)
 		return {
@@ -58,6 +55,8 @@ export const action: ActionFunction = async ({ request }) => {
 				...errors,
 			},
 		};
+
+	console.log(pollData);
 
 	await createPoll(pollData);
 	return {
