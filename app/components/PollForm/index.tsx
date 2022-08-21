@@ -237,6 +237,15 @@ const PollForm: FC<Props> = ({ poll }) => {
 					<option value="checkbox">Multiple answers</option>
 				</select>
 
+				<select name="category" defaultValue={poll?.category}>
+					<option value="html">HTML</option>
+					<option value="css">CSS</option>
+					<option value="javascript">JavaScript</option>
+					<option value="typescript">TypeScript</option>
+					<option value="general-frontend">General frontend</option>
+					<option value="react">React</option>
+				</select>
+
 				<button
 					type="submit"
 					disabled={mode === "mark" || markCorrectAnswer.length === 0}

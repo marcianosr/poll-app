@@ -1,7 +1,12 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/components/PollForm";
-import { getPollById, PollData, updatePollById } from "~/utils/polls";
+import {
+	getPollById,
+	PollCategory,
+	PollData,
+	updatePollById,
+} from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
 import { getAdminUser } from "~/utils/user";
 import { useAuth } from "~/providers/AuthProvider";
@@ -21,6 +26,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const type = formData.get("type");
 	const status = formData.get("status");
 	const answers = formData.get("answers") as string;
+	const category = formData.get("category") as PollCategory;
 
 	for (const [key, value] of formData.entries()) {
 		if (!value) errors[key] = true;
@@ -41,6 +47,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		answers: JSON.parse(answers),
 		type,
 		status,
+		category,
 	});
 
 	return {

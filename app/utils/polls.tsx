@@ -13,6 +13,13 @@ import { BlockType } from "~/components/PollForm";
 import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";
+export type PollCategory =
+	| "html"
+	| "css"
+	| "javascript"
+	| "typescript"
+	| "general frontend"
+	| "react";
 export type PollStatus = "open" | "closed";
 export type Answer = {
 	id: string;
@@ -37,6 +44,7 @@ export type PollData = {
 	type: InputTypes | string;
 	status: PollStatus;
 	voted: Voted[];
+	category: PollCategory;
 };
 
 export async function getAmountOfPolls() {

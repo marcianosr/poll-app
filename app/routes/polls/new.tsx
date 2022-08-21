@@ -5,6 +5,7 @@ import FormPoll, { BlockType, Errors } from "../../components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
+	PollCategory,
 	PollData,
 	PollStatus,
 } from "~/utils/polls";
@@ -29,6 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const status = formData.get("status") as PollStatus;
 	const answers = formData.get("answers") as string;
 	const parsedAnswers = JSON.parse(answers);
+	const category = formData.get("category") as PollCategory;
 
 	const pollData: PollData = {
 		id,
@@ -39,6 +41,7 @@ export const action: ActionFunction = async ({ request }) => {
 		pollNumber: pollsLength + 1,
 		type,
 		status,
+		category,
 	};
 
 	for (const [key, value] of formData.entries()) {
