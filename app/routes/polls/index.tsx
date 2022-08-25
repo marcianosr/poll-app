@@ -30,22 +30,35 @@ export default function AllPolls() {
 	const { isAdmin } = useAuth();
 	return (
 		<section>
-			<h1>All polls</h1>
-			{isAdmin && <Link to="/polls/new">Create new poll</Link>}
-			<ul>
-				{polls.map((poll: PollData, idx: number) => (
-					<li key={poll.id}>
-						<p>
-							#{poll.pollNumber} -{" "}
-							{transformToCodeTags(poll.question, idx)}
-						</p>
-						{isAdmin && (
-							<Link to={`/polls/${docId[idx]}/edit`}>Edit</Link>
-						)}
-						<Link to={`/polls/${docId[idx]}`}>Go to poll</Link>
-					</li>
-				))}
-			</ul>
+			{isAdmin ? (
+				<>
+					<h1>All polls</h1>
+
+					<Link to="/polls/new">Create new poll</Link>
+					<ul>
+						{polls.map((poll: PollData, idx: number) => (
+							<li key={poll.id}>
+								<p>
+									#{poll.pollNumber} -{" "}
+									{transformToCodeTags(poll.question, idx)}
+								</p>
+								{isAdmin && (
+									<Link to={`/polls/${docId[idx]}/edit`}>
+										Edit
+									</Link>
+								)}
+								<Link to={`/polls/${docId[idx]}`}>
+									Go to poll
+								</Link>
+							</li>
+						))}
+					</ul>
+				</>
+			) : (
+				<>
+					<h1>Your polls answered (coming soon 🚧)</h1>
+				</>
+			)}
 		</section>
 	);
 }
