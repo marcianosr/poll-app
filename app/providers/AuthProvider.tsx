@@ -4,6 +4,7 @@ import {
 	GoogleAuthProvider,
 	onAuthStateChanged,
 	signInWithPopup,
+	signOut,
 	User,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
@@ -12,7 +13,7 @@ import { firebaseConfig } from "~/utils/config.client";
 import { getAdminUser, getUserByID } from "~/utils/user";
 
 type AuthContextState = {
-	user: User | null;
+	user: (User & FirebaseUser) | null;
 	googleLogin: () => void;
 	error: string | null;
 	isAdmin: boolean;
@@ -27,20 +28,28 @@ export const AuthContext = createContext<AuthContextState>({
 	isAdmin: false,
 });
 
-type UserData = {
+export type FirebaseUserFields = {
 	id: string;
 	displayName: string;
 	email: string;
 	photoURL: string;
-	streak: number;
-	pollsAnswered: number;
-	correctPollsAnswered: number;
+	polls: {
+		total: number;
+		maxStreak: number;
+		currentStreak: number;
+		correct: number;
+		answeredById: string[];
+	};
 	pixels: number;
 	role: "user" | "admin";
-	pollIds: [];
+	lastPollSubmit: number;
 };
 
-export async function addUser(data: UserData) {
+type FirebaseUser = {
+	firebase: FirebaseUserFields;
+};
+
+export async function addUser(data: FirebaseUserFields) {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
@@ -55,18 +64,42 @@ export async function addUser(data: UserData) {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const [user, setUser] = React.useState<User | null>();
+	const [googleUser, setGoogleUser] = React.useState<User | null>();
+	const [user, setUser] = React.useState<(User & FirebaseUser) | null>();
 	const [error, setError] = React.useState<string | null>();
 	const [isAdmin, setAdmin] = React.useState(false);
 
 	useEffect(() => {
-		if (user?.uid) {
-			const isAdmin = getAdminUser(user?.uid || "").then((result) => {
-				console.log("result", result);
+		if (googleUser?.uid) {
+			getAdminUser(googleUser?.uid || "").then((result) => {
 				return setAdmin(!!result);
 			});
+
+			// fetch firebase user data
+			getUserByID(googleUser?.uid).then((result) => {
+				return setUser({
+					// ! Improve this later: Can we do this a different way?
+					...googleUser,
+					firebase: {
+						id: result?.id,
+						displayName: result?.displayName,
+						email: result?.email,
+						photoURL: result?.photoURL,
+						pixels: result?.pixels,
+						polls: {
+							answeredById: result?.polls.answer,
+							correct: result?.polls.correct,
+							currentStreak: result?.polls.currentStreak,
+							maxStreak: result?.polls.maxStreak,
+							total: result?.polls.total,
+						},
+						role: result?.role,
+						lastPollSubmit: result?.lastPollSubmit,
+					},
+				});
+			});
 		}
-	}, [user?.uid]);
+	}, [googleUser?.uid]);
 
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -81,20 +114,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					GoogleAuthProvider.credentialFromResult(result);
 				const token = credential?.accessToken;
 				// The signed-in user info.
-				const user = result.user;
 				console.log("result", result);
 
 				return addUser({
+					id: result.user.uid,
 					displayName: result.user.displayName || "",
 					email: result.user.email || "",
-					id: result.user.uid,
 					photoURL: result.user.photoURL || "",
-					streak: 0,
-					pollsAnswered: 0,
-					correctPollsAnswered: 0,
+					polls: {
+						total: 0,
+						maxStreak: 0,
+						currentStreak: 0,
+						correct: 0,
+						answeredById: [],
+					},
 					pixels: 0,
 					role: "user",
-					pollIds: [],
+					lastPollSubmit: 0,
 				});
 				// ...
 			})
@@ -114,8 +150,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			});
 	};
 
+	// signOut(auth)
+	// 	.then(() => {
+	// 		// Sign-out successful.
+	// 	})
+	// 	.catch((error) => {
+	// 		// An error happened.
+	// 	});
+
 	onAuthStateChanged(auth, (result) => {
-		result ? setUser(result) : setUser(null);
+		result ? setGoogleUser(result) : setGoogleUser(null);
 	});
 
 	return (

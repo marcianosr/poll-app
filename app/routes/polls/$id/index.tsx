@@ -8,12 +8,20 @@ import {
 	PollData,
 	updatePollById,
 } from "~/utils/polls";
-import { useAuth } from "~/providers/AuthProvider";
+import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
-import { getUsers } from "~/utils/user";
+import { getUserByID, getUsers, updateUserById } from "~/utils/user";
+import { DeepPartial } from "~/utils/types";
 
 type ScreenState = "poll" | "results";
 
+export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
+
+const calculate = () => {
+	// calculate points based on polls
+
+	return 0;
+};
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
 	const voted = formData.get("voted") as string;
@@ -21,8 +29,27 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const paramId = params.id || "";
 	const parsedVoted = JSON.parse(voted) as Voted[];
 
+	const polls = (await getPollById(paramId)) as PollData;
+
+	const getAmountOfCorrectAnswers = polls.correctAnswers.filter((answer) =>
+		parsedVoted.find((voted) => answer.id === voted.answerId)
+	).length;
+
 	await updatePollById(paramId, {
 		voted: [...parsedVoted],
+	});
+
+	const currentUser = await getUserByID(uid);
+
+	await updateUserById<UpdateScore>({
+		id: uid,
+		polls: {
+			answeredById: [...currentUser?.polls.answeredById, paramId],
+			total: currentUser?.polls.total + 1,
+			correct: currentUser?.polls.correct + getAmountOfCorrectAnswers,
+		},
+		pixels: calculate(),
+		lastPollSubmit: Date.now(),
 	});
 
 	const getUserIdsByVote = parsedVoted.map((votes) => votes.userId).flat();
@@ -123,10 +150,13 @@ export default function PollDetail() {
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
 
 	const getVotesByUser = (answerId: string) => {
-		return poll.voted
-			.filter((vote) => vote.answerId === answerId)
-			.map((vote) => vote.userId)
-			.map((id) => users.find((user) => user.id === id));
+		return (
+			poll.voted
+				.filter((vote) => vote.answerId === answerId)
+				.map((vote) => vote.userId)
+				// ! improve
+				.map((id) => users.find((user) => user.id === id))
+		);
 	};
 
 	return (
@@ -210,7 +240,10 @@ export default function PollDetail() {
 										voted by:{" "}
 										{getVotesByUser(answer.id).map(
 											(user) => (
-												<strong>{user.email} </strong>
+												<strong>
+													{console.log(user)}
+													{user.email}{" "}
+												</strong>
 											)
 										)}
 									</>

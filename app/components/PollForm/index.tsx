@@ -32,7 +32,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
 
 	const [mode, setMode] = useState<Mode>("edit");
-	const [blockType, setBlockType] = useState<BlockType>("text");
 	const [pollStatus, setPollStatus] = useState<PollStatus>(
 		(poll && poll?.status) || "closed"
 	);

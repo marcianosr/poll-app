@@ -14,6 +14,15 @@ const Header = () => {
 						height={50}
 					/>
 					<span>{user.displayName}</span>
+					<section>
+						<span>
+							Total answered polls: {user.firebase.polls.total}
+						</span>
+						<span>
+							Total correct answered polls:{" "}
+							{user.firebase.polls.correct}
+						</span>
+					</section>
 				</section>
 			) : (
 				<button onClick={googleLogin}>Login</button>
