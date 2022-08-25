@@ -7,7 +7,9 @@ import {
 	where,
 	collection,
 	query,
+	setDoc,
 } from "firebase/firestore";
+import { UpdateScore } from "~/routes/polls/$id";
 import { firebaseConfig } from "~/utils/config.client";
 // import { db as serverDb } from "~/utils/firebase";
 
@@ -36,6 +38,22 @@ export const getUsers = async () => {
 	const querySnapshot = await getDocs(getQuery);
 
 	return querySnapshot.docs.map((item) => item.data());
+};
+
+export const updateUserById = async <T extends UpdateScore>(payload: T) => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+	const snapshot = await setDoc(
+		doc(db, "users", payload.id as string),
+		payload,
+		{
+			merge: true,
+		}
+	);
+
+	return snapshot;
 };
 
 export const getAdminUser = async (id: string) => {
