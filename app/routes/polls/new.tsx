@@ -26,7 +26,6 @@ export const action: ActionFunction = async ({ request }) => {
 	const question = formData.get("question") as string;
 	const correctAnswers = formData.get("correctAnswers") as string;
 	const type = formData.get("type") as string;
-	const blockTypes = formData.get("blockType") as BlockType;
 	const status = formData.get("status") as PollStatus;
 	const answers = formData.get("answers") as string;
 	const parsedAnswers = JSON.parse(answers);
