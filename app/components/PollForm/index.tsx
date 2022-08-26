@@ -289,7 +289,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 				</aside>
 			</Form>
 			<section className="button-group">
-				<button onClick={addField}>Add answer field</button>
 				<button
 					onClick={() => {
 						if (mode === "edit") setMode("mark");
