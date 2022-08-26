@@ -21,14 +21,17 @@ button {
 	background: rgba(0, 128, 0, 0.352);
 }
 
+.incorrect > *:first-child {
+	background: rgba(128, 0, 0, 0.352);
+}
+
 .text-question-answer {
 	font-size: 1.25rem;
 	display: flex;
 	align-items: center;
-	/* padding: 1rem; */
 }
 
-.results .text-question-answer {
+.text-question-answer {
 	background: #313131;
 	padding: 1rem;
 }
