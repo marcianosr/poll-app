@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import {
@@ -13,6 +13,7 @@ import PollStatus from "~/components/PollStatus";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
+import classNames from "classnames";
 
 type ScreenState = "poll" | "results";
 
@@ -90,17 +91,17 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 
 	if (code.startsWith("```")) {
 		const value = code.split("```");
-		return <pre>{value}</pre>;
+		return <pre key={idx}>{value}</pre>;
 	}
 
 	const words = value.split(" ");
 
-	const wrapWords = words.map((word) => {
+	const wrapWords = words.map((word, idx) => {
 		if (word.startsWith("`")) {
-			return <code>{word.split("`")[1]} </code>;
+			return <code key={idx}>{word.split("`")[1]} </code>;
 		}
 
-		return <>{word + " "}</>;
+		return <Fragment key={idx}>{word + " "}</Fragment>;
 	});
 
 	return wrapWords;
@@ -141,11 +142,13 @@ export default function PollDetail() {
 		}
 	};
 
+	//! Re-check this fn
 	const isDefaultChecked = (answer: Answer) => {
 		const findVotedAnswer = currentVoted
 			.filter((voted) => voted.answerId === answer.id)
 			.filter((voted) => voted.userId === user?.uid);
 
+		console.log("find answer", findVotedAnswer);
 		return findVotedAnswer.length > 0;
 	};
 
@@ -179,7 +182,7 @@ export default function PollDetail() {
 							Please at least fill out one answer to submit
 						</span>
 					)}
-					<ul>
+					<ul className="choices-list">
 						{currentAnswers.map((answer, idx: number) => (
 							<li key={idx} className="option-answer">
 								<input
@@ -187,7 +190,7 @@ export default function PollDetail() {
 									type={poll.type}
 									id={answer.id}
 									onChange={isChecked}
-									checked={isDefaultChecked(answer)}
+									// checked={isDefaultChecked(answer)}
 									name="answer"
 									value={answer.value}
 								/>
@@ -196,7 +199,12 @@ export default function PollDetail() {
 									{answer.blockType === "code" ? (
 										<pre>{answer.value}</pre>
 									) : (
-										answer.value
+										<span className="text-question-answer">
+											{transformToCodeTags(
+												answer.value,
+												idx
+											)}
+										</span>
 									)}
 								</label>
 							</li>
@@ -231,23 +239,32 @@ export default function PollDetail() {
 			)}
 			{screenState === "results" && (
 				<>
-					<ul>
+					<ul className="choices-list results">
 						{currentAnswers.map((answer, idx) => (
-							<li key={answer.id}>
+							<li
+								key={answer.id}
+								className={classNames("option-answer", {
+									correct: getCorrectAnswers(answer.id),
+								})}
+							>
+								{answer.blockType === "code" ? (
+									<pre>{answer.value}</pre>
+								) : (
+									<span className="text-question-answer">
+										{transformToCodeTags(answer.value, idx)}
+									</span>
+								)}
 								<span>
-									{transformToCodeTags(answer.value, idx)}-{" "}
+									{getLengthOfAnswersById(answer.id).length}{" "}
+									votes
 								</span>
-								{getLengthOfAnswersById(answer.id).length} -{" "}
-								{getCorrectAnswers(answer.id) && (
-									<span>correct</span>
-								)}{" "}
+
 								{isAdmin && (
 									<>
 										voted by:{" "}
 										{getVotesByUser(answer.id).map(
 											(user) => (
-												<strong>
-													{console.log(user)}
+												<strong key={user.id}>
 													{user.email}{" "}
 												</strong>
 											)

@@ -2,10 +2,33 @@
 	display: flex;
 	align-items: center;
 	gap: 1rem;
+	/* background: var(--secondary-black); */
 }
 
 button {
 	width: 400px;
 	height: 3rem;
 	font-size: 1.25rem;
+}
+
+.choices-list {
+	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.correct > *:first-child {
+	background: rgba(0, 128, 0, 0.352);
+}
+
+.text-question-answer {
+	font-size: 1.25rem;
+	display: flex;
+	align-items: center;
+	/* padding: 1rem; */
+}
+
+.results .text-question-answer {
+	background: #313131;
+	padding: 1rem;
 }

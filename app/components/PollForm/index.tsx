@@ -35,6 +35,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 	const [pollStatus, setPollStatus] = useState<PollStatus>(
 		(poll && poll?.status) || "closed"
 	);
+
 	const [fields, setFields] = useState<NewPollType[]>([
 		{
 			id: "eioozak-ojnab",
@@ -66,8 +67,8 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
-	const hasFocus = () => {
-		console.log("has focus");
+	const onCMDAndEnterPressed = (e: React.KeyboardEvent) => {
+		if (e.metaKey && e.key === "Enter") addField();
 	};
 
 	const updatePollStatus = () =>
@@ -113,7 +114,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
-											onFocus={hasFocus}
+											onKeyDown={(e) =>
+												onCMDAndEnterPressed(e)
+											}
 											onChange={(
 												e: React.ChangeEvent
 											) => {
@@ -144,7 +147,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
-											onFocus={hasFocus}
+											onKeyDown={(e) =>
+												onCMDAndEnterPressed(e)
+											}
 											onChange={(
 												e: React.ChangeEvent
 											) => {
@@ -284,7 +289,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 				</aside>
 			</Form>
 			<section className="button-group">
-				<button onClick={addField}>Add answer field</button>
 				<button
 					onClick={() => {
 						if (mode === "edit") setMode("mark");

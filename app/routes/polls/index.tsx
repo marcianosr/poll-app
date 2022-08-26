@@ -28,6 +28,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function AllPolls() {
 	const { polls, docId } = useLoaderData();
 	const { isAdmin } = useAuth();
+
 	return (
 		<section>
 			{isAdmin ? (
