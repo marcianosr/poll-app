@@ -66,6 +66,10 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
+	const hasFocus = () => {
+		console.log("has focus");
+	};
+
 	const updatePollStatus = () =>
 		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
 
@@ -109,6 +113,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
+											onFocus={hasFocus}
 											onChange={(
 												e: React.ChangeEvent
 											) => {
@@ -139,6 +144,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
+											onFocus={hasFocus}
 											onChange={(
 												e: React.ChangeEvent
 											) => {

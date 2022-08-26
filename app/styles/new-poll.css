@@ -45,19 +45,10 @@ select {
 	padding: 0.7rem;
 }
 
-input[type="checkbox"] {
-	width: 30px;
-	height: 30px;
-}
-
 .options {
 	max-width: 300px;
 	border-left: 1px solid var(--primary-border-color);
 	padding-left: 1rem;
-}
-
-button {
-	height: 2rem;
 }
 
 .button-group {

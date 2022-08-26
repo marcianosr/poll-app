@@ -1,5 +1,6 @@
 :root {
 	--primary-black: #212424;
+	--secondary-black: #3d3e3e;
 	--text-color: #e1e1e1;
 	--primary-border-color: #cecdcc;
 }
@@ -7,4 +8,20 @@
 body {
 	background-color: var(--primary-black);
 	color: var(--text-color);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	width: 1.25rem;
+	height: 1.25rem;
+}
+
+pre {
+	background-color: var(--secondary-black);
+	padding: 1.5rem;
+	border-radius: 0.25rem;
+}
+
+button {
+	height: 2rem;
 }
