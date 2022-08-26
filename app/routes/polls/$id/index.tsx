@@ -142,6 +142,7 @@ export default function PollDetail() {
 		}
 	};
 
+	//! Re-check this fn
 	const isDefaultChecked = (answer: Answer) => {
 		const findVotedAnswer = currentVoted
 			.filter((voted) => voted.answerId === answer.id)
@@ -263,7 +264,7 @@ export default function PollDetail() {
 										voted by:{" "}
 										{getVotesByUser(answer.id).map(
 											(user) => (
-												<strong key={answer.id}>
+												<strong key={user.id}>
 													{user.email}{" "}
 												</strong>
 											)
