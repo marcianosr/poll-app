@@ -27,3 +27,8 @@ button {
 	align-items: center;
 	/* padding: 1rem; */
 }
+
+.results .text-question-answer {
+	background: #313131;
+	padding: 1rem;
+}

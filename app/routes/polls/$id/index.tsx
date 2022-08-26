@@ -238,7 +238,7 @@ export default function PollDetail() {
 			)}
 			{screenState === "results" && (
 				<>
-					<ul className="choices-list">
+					<ul className="choices-list results">
 						{currentAnswers.map((answer, idx) => (
 							<li
 								key={answer.id}
