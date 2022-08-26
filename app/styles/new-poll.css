@@ -2,6 +2,71 @@
 	border: 3px solid green;
 }
 
-body {
-	accent-color: coral;
+.container {
+	margin: 0 auto;
+	/* max-width: 1000px; */
+	display: grid;
+	border: 1px solid var(--primary-border-color);
+	padding: 2rem;
+}
+
+.form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.questions-and-answers {
+	display: grid;
+	gap: 1rem;
+	flex: 2;
+}
+
+.answer-container {
+	display: flex;
+	gap: 1rem;
+}
+
+.answer-container input,
+.answer-container textarea {
+	flex: 2;
+}
+
+.open-closed-toggle {
+	display: flex;
+	align-items: center;
+}
+
+input,
+textarea,
+select {
+	border-radius: 0.5rem;
+	padding: 0.7rem;
+}
+
+input[type="checkbox"] {
+	width: 30px;
+	height: 30px;
+}
+
+.options {
+	max-width: 300px;
+	border-left: 1px solid var(--primary-border-color);
+	padding-left: 1rem;
+}
+
+button {
+	height: 2rem;
+}
+
+.button-group {
+	display: flex;
+	gap: 1rem;
+}
+
+aside {
+	display: grid;
+	grid-auto-columns: 300px;
+	gap: 1rem;
 }

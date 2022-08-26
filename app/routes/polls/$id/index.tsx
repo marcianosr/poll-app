@@ -22,6 +22,7 @@ const calculate = () => {
 
 	return 0;
 };
+
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
 	const voted = formData.get("voted") as string;
