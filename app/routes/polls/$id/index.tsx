@@ -158,7 +158,8 @@ export default function PollDetail() {
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
 
-	const getVotesByUser = (answerId: string) => {
+	// ? For future: it would be cool if these functions happen on the server because they can be quite expensive on the frontend. UID on the server is needed
+	const getVotesFromAllUsers = (answerId: string) => {
 		return (
 			poll.voted
 				.filter((vote) => vote.answerId === answerId)
@@ -167,6 +168,12 @@ export default function PollDetail() {
 				.map((id) => users.find((user) => user.id === id))
 		);
 	};
+	// ? For future: it would be cool if these functions happen on the server because they can be quite expensive on the frontend. UID on the server is needed
+	const getGivenVotesByUser = poll.voted
+		.filter((voted) => user?.uid === voted.userId)
+		.map((voted) =>
+			currentAnswers.find((answer) => answer.id === voted.answerId)
+		);
 
 	return (
 		<section>
@@ -262,7 +269,7 @@ export default function PollDetail() {
 								{isAdmin && (
 									<>
 										voted by:{" "}
-										{getVotesByUser(answer.id).map(
+										{getVotesFromAllUsers(answer.id).map(
 											(user) => (
 												<strong key={user.id}>
 													{user.email}{" "}
@@ -275,6 +282,33 @@ export default function PollDetail() {
 						))}
 					</ul>
 					<span>{responses} users voted</span>
+
+					<ul className="choices-list results">
+						<h1>You voted for:</h1>
+
+						{getGivenVotesByUser.map((vote, idx) => (
+							<li
+								key={vote?.id}
+								className={classNames("option-answer", {
+									correct: getCorrectAnswers(vote?.id || ""),
+									incorrect: !getCorrectAnswers(
+										vote?.id || ""
+									),
+								})}
+							>
+								{vote?.blockType === "code" ? (
+									<pre>{vote?.value}</pre>
+								) : (
+									<span className="text-question-answer">
+										{transformToCodeTags(
+											vote?.value || "",
+											idx
+										)}
+									</span>
+								)}
+							</li>
+						))}
+					</ul>
 				</>
 			)}
 		</section>
