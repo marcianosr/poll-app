@@ -263,7 +263,9 @@ export default function PollDetail() {
 										voted by:{" "}
 										{getVotesByUser(answer.id).map(
 											(user) => (
-												<strong>{user.email} </strong>
+												<strong key={answer.id}>
+													{user.email}{" "}
+												</strong>
 											)
 										)}
 									</>
