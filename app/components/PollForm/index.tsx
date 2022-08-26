@@ -66,203 +66,235 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
+	const hasFocus = () => {
+		console.log("has focus");
+	};
+
 	const updatePollStatus = () =>
 		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
 
 	return (
-		<>
-			<Form method="post">
-				<input
-					type="text"
-					placeholder="question"
-					name="question"
-					defaultValue={poll?.question}
-				/>
+		<section className="container">
+			<Form method="post" className="form">
+				<section className="questions-and-answers">
+					<input
+						type="text"
+						placeholder="Question"
+						name="question"
+						defaultValue={poll?.question}
+						className="question"
+					/>
 
-				<input
-					type="hidden"
-					name="correctAnswers"
-					defaultValue={JSON.stringify(markCorrectAnswer)}
-				/>
-
-				<label htmlFor="status">
-					{pollStatus === "closed"
-						? "Not accepting responses"
-						: "Accepting responses"}
-				</label>
-				<input
-					type="checkbox"
-					name="status"
-					value={pollStatus}
-					defaultChecked={pollStatus === "open"}
-					onClick={updatePollStatus}
-					id="status"
-				/>
-				{pollStatus === "closed" ? (
-					<input type="hidden" value="closed" name="status" />
-				) : (
 					<input
 						type="hidden"
-						name="status"
-						value="open"
-						onClick={updatePollStatus}
-						id="status"
+						name="correctAnswers"
+						defaultValue={JSON.stringify(markCorrectAnswer)}
 					/>
-				)}
 
-				<>
-					{action?.ok === false && <span>errors</span>}
 					<>
-						{fields.map((field) => (
-							<Fragment key={field.id}>
-								{field.blockType === "text" ? (
-									<input
-										type="text"
-										className={
-											markCorrectAnswer.find(
-												(item) => item.id === field.id
-											) && "correct"
-										}
-										placeholder={field.placeholder}
-										disabled={mode === "mark"}
-										name={`answer-${field.id}`}
-										id={field.id}
-										value={field.value}
-										onChange={(e: React.ChangeEvent) => {
-											setFields([
-												...fields.map((f) =>
-													f.id === field.id
-														? {
-																...f,
-																value: (
-																	e.target as HTMLInputElement
-																).value,
-														  }
-														: f
-												),
-											]);
-										}}
-									/>
-								) : (
-									<textarea
-										className={
-											markCorrectAnswer.find(
-												(item) => item.id === field.id
-											) && "correct"
-										}
-										placeholder={field.placeholder}
-										disabled={mode === "mark"}
-										name={`answer-${field.id}`}
-										id={field.id}
-										value={field.value}
-										onChange={(e: React.ChangeEvent) => {
-											setFields([
-												...fields.map((f) =>
-													f.id === field.id
-														? {
-																...f,
-																value: (
-																	e.target as HTMLInputElement
-																).value,
-														  }
-														: f
-												),
-											]);
-										}}
-									></textarea>
-								)}
-								<button
-									onClick={(e: React.MouseEvent) => {
-										e.preventDefault();
-
-										return setFields((prev) => {
-											console.log("pre", prev);
-
-											return [
-												...fields.map((f, idx) =>
-													f.id === field.id
-														? {
-																...f,
-																blockType:
-																	prev[idx]
-																		.blockType ===
-																	"text"
-																		? "code"
-																		: ("text" as any),
-														  }
-														: f
-												),
-											];
-										});
-									}}
+						{action?.ok === false && <span>errors</span>}
+						<>
+							{fields.map((field) => (
+								<section
+									className="answer-container"
+									key={field.id}
 								>
-									Toggle {field.blockType}
-								</button>
+									{field.blockType === "text" ? (
+										<input
+											type="text"
+											className={
+												markCorrectAnswer.find(
+													(item) =>
+														item.id === field.id
+												) && "correct"
+											}
+											placeholder={field.placeholder}
+											disabled={mode === "mark"}
+											name={`answer-${field.id}`}
+											id={field.id}
+											value={field.value}
+											onFocus={hasFocus}
+											onChange={(
+												e: React.ChangeEvent
+											) => {
+												setFields([
+													...fields.map((f) =>
+														f.id === field.id
+															? {
+																	...f,
+																	value: (
+																		e.target as HTMLInputElement
+																	).value,
+															  }
+															: f
+													),
+												]);
+											}}
+										/>
+									) : (
+										<textarea
+											className={
+												markCorrectAnswer.find(
+													(item) =>
+														item.id === field.id
+												) && "correct"
+											}
+											placeholder={field.placeholder}
+											disabled={mode === "mark"}
+											name={`answer-${field.id}`}
+											id={field.id}
+											value={field.value}
+											onFocus={hasFocus}
+											onChange={(
+												e: React.ChangeEvent
+											) => {
+												setFields([
+													...fields.map((f) =>
+														f.id === field.id
+															? {
+																	...f,
+																	value: (
+																		e.target as HTMLInputElement
+																	).value,
+															  }
+															: f
+													),
+												]);
+											}}
+										></textarea>
+									)}
+									<button
+										onClick={(e: React.MouseEvent) => {
+											e.preventDefault();
 
-								{fields.length > 1 && mode === "edit" && (
-									<DeleteButton
-										fieldId={field.id}
-										fields={fields}
-										setFields={setFields}
-									/>
-								)}
+											return setFields((prev) => {
+												console.log("pre", prev);
 
-								{mode === "mark" && (
-									<MarkButton
-										markCorrectAnswer={markCorrectAnswer}
-										setMarkCorrectAnswer={
-											setMarkCorrectAnswer
-										}
-										field={field}
-									/>
-								)}
-							</Fragment>
-						))}
+												return [
+													...fields.map((f, idx) =>
+														f.id === field.id
+															? {
+																	...f,
+																	blockType:
+																		prev[
+																			idx
+																		]
+																			.blockType ===
+																		"text"
+																			? "code"
+																			: ("text" as any),
+															  }
+															: f
+													),
+												];
+											});
+										}}
+									>
+										Toggle {field.blockType}
+									</button>
+
+									{fields.length > 1 && mode === "edit" && (
+										<DeleteButton
+											fieldId={field.id}
+											fields={fields}
+											setFields={setFields}
+										/>
+									)}
+
+									{mode === "mark" && (
+										<MarkButton
+											markCorrectAnswer={
+												markCorrectAnswer
+											}
+											setMarkCorrectAnswer={
+												setMarkCorrectAnswer
+											}
+											field={field}
+										/>
+									)}
+								</section>
+							))}
+						</>
 					</>
-				</>
 
-				{/* Required because more fields are needed (e.g blockType field), sd stringify. Reason: Don't want to lose Remix flexibility of forms. Should be checked on how to improve this.  */}
-				<input
-					type="hidden"
-					name="answers"
-					value={JSON.stringify(fields)}
-				/>
+					{/* Required because more fields are needed (e.g blockType field), sd stringify. Reason: Don't want to lose Remix flexibility of forms. Should be checked on how to improve this.  */}
+					<input
+						type="hidden"
+						name="answers"
+						value={JSON.stringify(fields)}
+					/>
 
-				<select
-					name="type"
-					defaultValue={poll?.type === "radio" ? "radio" : "checkbox"}
-				>
-					<option value="radio">Single answer</option>
-					<option value="checkbox">Multiple answers</option>
-				</select>
+					<button
+						type="submit"
+						disabled={
+							mode === "mark" || markCorrectAnswer.length === 0
+						}
+					>
+						Submit
+					</button>
+				</section>{" "}
+				<aside className="options">
+					<div className="open-closed-toggle">
+						<label htmlFor="status">
+							{pollStatus === "closed"
+								? "Not accepting responses"
+								: "Accepting responses"}
+						</label>
+						<input
+							type="checkbox"
+							name="status"
+							value={pollStatus}
+							defaultChecked={pollStatus === "open"}
+							onClick={updatePollStatus}
+							id="status"
+						/>
+						{pollStatus === "closed" ? (
+							<input type="hidden" value="closed" name="status" />
+						) : (
+							<input
+								type="hidden"
+								name="status"
+								value="open"
+								onClick={updatePollStatus}
+								id="status"
+							/>
+						)}
+					</div>
 
-				<select name="category" defaultValue={poll?.category}>
-					<option value="html">HTML</option>
-					<option value="css">CSS</option>
-					<option value="javascript">JavaScript</option>
-					<option value="typescript">TypeScript</option>
-					<option value="general-frontend">General frontend</option>
-					<option value="react">React</option>
-				</select>
+					<select
+						name="type"
+						defaultValue={
+							poll?.type === "radio" ? "radio" : "checkbox"
+						}
+					>
+						<option value="radio">Single answer</option>
+						<option value="checkbox">Multiple answers</option>
+					</select>
 
-				<button
-					type="submit"
-					disabled={mode === "mark" || markCorrectAnswer.length === 0}
-				>
-					Submit
-				</button>
+					<select name="category" defaultValue={poll?.category}>
+						<option value="html">HTML</option>
+						<option value="css">CSS</option>
+						<option value="javascript">JavaScript</option>
+						<option value="typescript">TypeScript</option>
+						<option value="general-frontend">
+							General frontend
+						</option>
+						<option value="react">React</option>
+					</select>
+				</aside>
 			</Form>
-
-			<button
-				onClick={() => {
-					if (mode === "edit") setMode("mark");
-					if (mode === "mark") setMode("edit");
-				}}
-			>
-				{mode === "edit" ? "Mark answers" : "Done"}
-			</button>
-			<button onClick={addField}>Toevoegen</button>
-		</>
+			<section className="button-group">
+				<button onClick={addField}>Add answer field</button>
+				<button
+					onClick={() => {
+						if (mode === "edit") setMode("mark");
+						if (mode === "mark") setMode("edit");
+					}}
+				>
+					{mode === "edit" ? "Mark answers" : "Done"}
+				</button>
+			</section>
+		</section>
 	);
 };
 

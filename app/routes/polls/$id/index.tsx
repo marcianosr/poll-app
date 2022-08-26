@@ -12,16 +12,22 @@ import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
+import styles from "~/styles/poll.css";
 
 type ScreenState = "poll" | "results";
 
 export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
+
+export function links() {
+	return [{ rel: "stylesheet", href: styles }];
+}
 
 const calculate = () => {
 	// calculate points based on polls
 
 	return 0;
 };
+
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
 	const voted = formData.get("voted") as string;
@@ -175,7 +181,7 @@ export default function PollDetail() {
 					)}
 					<ul>
 						{currentAnswers.map((answer, idx: number) => (
-							<li key={idx}>
+							<li key={idx} className="option-answer">
 								<input
 									disabled={poll.status === "closed"}
 									type={poll.type}

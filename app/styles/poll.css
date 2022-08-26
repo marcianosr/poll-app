@@ -1,0 +1,11 @@
+.option-answer {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+button {
+	width: 400px;
+	height: 3rem;
+	font-size: 1.25rem;
+}

@@ -10,6 +10,11 @@ import {
 } from "@remix-run/react";
 import Header from "./components/Header";
 import { AuthProvider } from "./providers/AuthProvider";
+import styles from "~/styles/shared.css";
+
+export function links() {
+	return [{ rel: "stylesheet", href: styles }];
+}
 
 export const meta: MetaFunction = () => ({
 	charset: "utf-8",
