@@ -17,9 +17,18 @@ input[type="radio"] {
 }
 
 pre {
-	background-color: var(--secondary-black);
 	padding: 1.5rem;
+}
+
+pre,
+code {
+	background-color: var(--secondary-black);
 	border-radius: 0.25rem;
+}
+
+code {
+	padding: 0.5rem;
+	margin: 0 1rem;
 }
 
 button {
