@@ -95,6 +95,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 					<>
 						{action?.ok === false && <span>errors</span>}
 						<>
+							<textarea
+								placeholder="Insert code example"
+								name="codeBlock"
+								id="codeBlock"
+								defaultValue={poll?.codeBlock}
+							></textarea>
 							{fields.map((field) => (
 								<section
 									className="answer-container"

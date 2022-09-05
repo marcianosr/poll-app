@@ -45,6 +45,7 @@ export type PollData = {
 	status: PollStatus;
 	voted: Voted[];
 	category: PollCategory;
+	codeBlock: string;
 };
 
 export async function getAmountOfPolls() {

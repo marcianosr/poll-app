@@ -183,6 +183,7 @@ export default function PollDetail() {
 							Please at least fill out one answer to submit
 						</span>
 					)}
+					{poll.codeBlock && <pre>{poll.codeBlock}</pre>}
 					<ul className="choices-list">
 						{currentAnswers.map((answer, idx: number) => (
 							<li key={idx} className="option-answer">
