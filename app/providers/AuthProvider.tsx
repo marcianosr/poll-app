@@ -7,7 +7,12 @@ import {
 	signOut,
 	User,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import {
+	getFirestore,
+	doc,
+	setDoc,
+	connectFirestoreEmulator,
+} from "firebase/firestore";
 import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
 import { getAdminUser, getUserByID } from "~/utils/user";
@@ -57,6 +62,12 @@ export async function addUser(data: FirebaseUserFields) {
 
 	const db = getFirestore(app);
 
+	if (document.location.hostname === "localhost") {
+		// Point to the RTDB emulator running on localhost.
+		connectFirestoreEmulator(db, "localhost", 8080);
+		console.info("Using an emulated database");
+	}
+
 	if (userExists) return;
 
 	await setDoc(doc(db, "users", data.id), data);
@@ -76,28 +87,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			});
 
 			// fetch firebase user data
-			getUserByID(googleUser?.uid).then((result) => {
-				return setUser({
-					// ! Improve this later: Can we do this a different way?
-					...googleUser,
-					firebase: {
-						id: result?.id,
-						displayName: result?.displayName,
-						email: result?.email,
-						photoURL: result?.photoURL,
-						pixels: result?.pixels,
-						polls: {
-							answeredById: result?.polls.answer,
-							correct: result?.polls.correct,
-							currentStreak: result?.polls.currentStreak,
-							maxStreak: result?.polls.maxStreak,
-							total: result?.polls.total,
+			getUserByID(googleUser?.uid)
+				.then((result) => {
+					console.log("res", result);
+					return setUser({
+						// ! Improve this later: Can we do this a different way?
+						...googleUser,
+						firebase: {
+							id: result?.id,
+							displayName: result?.displayName,
+							email: result?.email,
+							photoURL: result?.photoURL,
+							pixels: result?.pixels,
+							polls: {
+								answeredById: result?.polls.answer,
+								correct: result?.polls.correct,
+								currentStreak: result?.polls.currentStreak,
+								maxStreak: result?.polls.maxStreak,
+								total: result?.polls.total,
+							},
+							role: result?.role,
+							lastPollSubmit: result?.lastPollSubmit,
 						},
-						role: result?.role,
-						lastPollSubmit: result?.lastPollSubmit,
-					},
-				});
-			});
+					});
+				})
+				.catch((error) => console.log("get user by id error:", error));
 		}
 	}, [googleUser?.uid]);
 
