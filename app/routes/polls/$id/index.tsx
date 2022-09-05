@@ -23,12 +23,6 @@ export function links() {
 	return [{ rel: "stylesheet", href: styles }];
 }
 
-const calculate = () => {
-	// calculate points based on polls
-
-	return 0;
-};
-
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
 	const voted = formData.get("voted") as string;
@@ -55,7 +49,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 			total: currentUser?.polls.total + 1,
 			correct: currentUser?.polls.correct + getAmountOfCorrectAnswers,
 		},
-		pixels: calculate(),
+		pixels: 0,
 		lastPollSubmit: Date.now(),
 	});
 
@@ -193,7 +187,7 @@ export default function PollDetail() {
 						{currentAnswers.map((answer, idx: number) => (
 							<li key={idx} className="option-answer">
 								<input
-									disabled={poll.status === "closed"}
+									disabled={poll.status !== "open"}
 									type={poll.type}
 									id={answer.id}
 									onChange={isChecked}
@@ -221,7 +215,7 @@ export default function PollDetail() {
 					{user && (
 						<button
 							disabled={
-								poll.status === "closed" ||
+								poll.status !== "open" ||
 								currentVoted.length === 0
 							}
 						>
