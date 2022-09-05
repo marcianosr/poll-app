@@ -20,7 +20,7 @@ export type PollCategory =
 	| "typescript"
 	| "general frontend"
 	| "react";
-export type PollStatus = "open" | "closed";
+export type PollStatus = "open" | "closed" | "new" | "needs-revision";
 export type Answer = {
 	id: string;
 	value: string;

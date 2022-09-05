@@ -7,7 +7,7 @@ type Props = {
 const PollStatus: FC<Props> = ({ status }) => (
 	<span>
 		Status: {status} -{" "}
-		{status === "closed" ? (
+		{status !== "open" ? (
 			<span>it is not possible to submit to the poll anymore ⚠️</span>
 		) : (
 			<span>the poll is open for responses! ✅ </span>
