@@ -48,9 +48,8 @@ export const action: ActionFunction = async ({ request }) => {
 	for (const [key, value] of formData.entries()) {
 		// console.log("----->>>>>", key, value);
 
-		if (!value) errors[key] = true;
+		if (!value && key !== "codeBlock") errors[key] = true;
 	}
-	console.log("errors", errors);
 
 	if (Object.keys(errors).length)
 		return {
@@ -62,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 	console.log(pollData);
 
-	await createPoll(pollData);
+	// await createPoll(pollData);
 	return {
 		ok: true,
 		...pollData,
