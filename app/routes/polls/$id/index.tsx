@@ -36,6 +36,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 		parsedVoted.find((voted) => answer.id === voted.answerId)
 	).length;
 
+	const isEveryAnswerCorrect = parsedVoted
+		.map((voted) =>
+			polls.correctAnswers.find((answer) => answer.id === voted.answerId)
+		)
+		.every((answer) => answer);
+
 	await updatePollById(paramId, {
 		voted: [...parsedVoted],
 	});
@@ -47,9 +53,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			correct: currentUser?.polls.correct + getAmountOfCorrectAnswers,
+			correct: isEveryAnswerCorrect
+				? currentUser?.polls.correct + 1
+				: currentUser?.polls.correct,
 		},
-		pixels: 0,
 		lastPollSubmit: Date.now(),
 	});
 
