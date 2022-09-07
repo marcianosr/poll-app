@@ -40,9 +40,9 @@ export type FirebaseUserFields = {
 		correct: number;
 		answeredById: string[];
 	};
-	pixels: number;
 	role: "user" | "admin";
 	lastPollSubmit: number;
+	awards: [];
 };
 
 type FirebaseUser = {
@@ -85,7 +85,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						displayName: result?.displayName,
 						email: result?.email,
 						photoURL: result?.photoURL,
-						pixels: result?.pixels,
 						polls: {
 							answeredById: result?.polls.answer,
 							correct: result?.polls.correct,
@@ -95,6 +94,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						},
 						role: result?.role,
 						lastPollSubmit: result?.lastPollSubmit,
+						awards: [],
 					},
 				});
 			});
@@ -128,9 +128,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						correct: 0,
 						answeredById: [],
 					},
-					pixels: 0,
 					role: "user",
 					lastPollSubmit: 0,
+					awards: [],
 				});
 				// ...
 			})
