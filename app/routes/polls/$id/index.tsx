@@ -25,10 +25,10 @@ export function links() {
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
-	const voted = formData.get("voted") as string;
+	const selectedVotes = formData.get("selectedVotes") as string;
 	const uid = formData.get("uid") as string;
 	const paramId = params.id || "";
-	const parsedVoted = JSON.parse(voted) as Voted[];
+	const parsedVoted = JSON.parse(selectedVotes) as Voted[];
 
 	const polls = (await getPollById(paramId)) as PollData;
 
@@ -43,7 +43,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		.every((answer) => answer);
 
 	await updatePollById(paramId, {
-		voted: [...parsedVoted],
+		voted: [...polls.voted, ...parsedVoted],
 	});
 
 	const currentUser = await getUserByID(uid);
@@ -116,7 +116,7 @@ export default function PollDetail() {
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
-	const [currentVoted, setCurrentVoted] = useState<Voted[]>(poll.voted);
+	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
 	const userHasVoted = poll.voted.find((voted) => voted.userId === user?.uid);
@@ -126,26 +126,38 @@ export default function PollDetail() {
 	}, [user?.uid, userHasVoted]);
 
 	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.checked) {
-			setCurrentVoted([
-				...currentVoted,
+		if (e.target.checked && poll.type === "radio") {
+			return setSelectedVotes([
+				...selectedVotes.filter(
+					(selected) => selected.answerId === e.target.id
+				),
 				{
 					answerId: e.target.id,
-					userId: user?.uid || "",
+					userId: user?.uid || "empty",
+				},
+			]);
+		}
+
+		if (e.target.checked && poll.type === "checkbox") {
+			setSelectedVotes([
+				...selectedVotes,
+				{
+					answerId: e.target.id,
+					userId: user?.uid || "empty",
 				},
 			]);
 		} else {
-			const votedPoll = currentVoted.filter(
-				(voted) => voted.answerId !== e.target.id
+			const selectedPoll = selectedVotes.filter(
+				(selected) => selected.answerId !== e.target.id
 			);
 
-			setCurrentVoted(votedPoll);
+			setSelectedVotes(selectedPoll);
 		}
 	};
 
 	//! Re-check this fn
 	const isDefaultChecked = (answer: Answer) => {
-		const findVotedAnswer = currentVoted
+		const findVotedAnswer = poll.voted
 			.filter((voted) => voted.answerId === answer.id)
 			.filter((voted) => voted.userId === user?.uid);
 
@@ -154,7 +166,7 @@ export default function PollDetail() {
 	};
 
 	const getLengthOfAnswersById = (answerId: string) =>
-		currentVoted.filter((voted) => voted.answerId === answerId);
+		poll.voted.filter((voted) => voted.answerId === answerId);
 
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
@@ -224,7 +236,7 @@ export default function PollDetail() {
 						<button
 							disabled={
 								poll.status !== "open" ||
-								currentVoted.length === 0
+								selectedVotes.length === 0
 							}
 						>
 							Submit
@@ -240,8 +252,8 @@ export default function PollDetail() {
 					/>
 					<input
 						type="hidden"
-						name="voted"
-						defaultValue={JSON.stringify(currentVoted)}
+						name="selectedVotes"
+						defaultValue={JSON.stringify(selectedVotes)}
 					/>
 					<input type="hidden" name="uid" defaultValue={user?.uid} />
 				</Form>
