@@ -28,6 +28,8 @@ const findCurrentStreakLength = (streak: boolean[]) => {
 	for (let i = 0; i < streak.length; i++) {
 		if (!streak[i]) return i;
 	}
+
+	return streak.length;
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
