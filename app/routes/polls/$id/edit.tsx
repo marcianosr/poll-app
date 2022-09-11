@@ -50,6 +50,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		status,
 		category,
 		codeBlock,
+		openingTime: status === "open" ? Date.now() : null,
 	});
 
 	return {

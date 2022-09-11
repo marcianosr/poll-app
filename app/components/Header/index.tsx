@@ -22,6 +22,10 @@ const Header = () => {
 							Total correct answered polls:{" "}
 							{user.firebase.polls.correct}
 						</span>
+						<span>
+							Current streak {user.firebase.polls.currentStreak}
+						</span>
+						{/* <span>Max streak {user.firebase.polls.maxStreak}</span> */}
 					</section>
 				</section>
 			) : (
