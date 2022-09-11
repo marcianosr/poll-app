@@ -7,6 +7,7 @@ import {
 	getPollById,
 	PollData,
 	updatePollById,
+	getPollsByOpeningTime,
 } from "~/utils/polls";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
@@ -22,6 +23,12 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
 }
+
+const findCurrentStreakLength = (streak: boolean[]) => {
+	for (let i = 0; i < streak.length; i++) {
+		if (!streak[i]) return i;
+	}
+};
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
@@ -47,12 +54,28 @@ export const action: ActionFunction = async ({ request, params }) => {
 	});
 
 	const currentUser = await getUserByID(uid);
+	const pollsStartedByDate = await getPollsByOpeningTime();
+
+	const getVotedPollsByUser = pollsStartedByDate
+		.map((poll) =>
+			poll.voted
+				.filter((vote: Voted) => vote.userId === uid)
+				.map((vote: Voted) => vote.userId)
+				.filter(
+					(userId: string, index: number, array: string[]) =>
+						array.indexOf(userId) === index
+				)
+				.some((userIds: string[]) => userIds.length > 0)
+		)
+		.slice()
+		.reverse();
 
 	await updateUserById<UpdateScore>({
 		id: uid,
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
+			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: isEveryAnswerCorrect
 				? currentUser?.polls.correct + 1
 				: currentUser?.polls.correct,

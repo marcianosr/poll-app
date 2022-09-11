@@ -48,6 +48,16 @@ export type PollData = {
 	codeBlock: string;
 };
 
+export async function getPollsByOpeningTime() {
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, orderBy("openingTime", "asc"));
+	const querySnapshot = await getDocs(getQuery);
+
+	return querySnapshot.docs
+		.map((item) => item.data())
+		.filter((poll) => poll.openingTime);
+}
+
 export async function getAmountOfPolls() {
 	const ids = await (await getDocs(collection(db, "polls"))).size;
 
