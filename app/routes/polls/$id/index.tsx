@@ -1,6 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useParams,
+} from "@remix-run/react";
 import {
 	Answer,
 	Voted,
@@ -8,12 +14,23 @@ import {
 	PollData,
 	updatePollById,
 } from "~/utils/polls";
+import Countdown from "react-countdown";
+import classNames from "classnames";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
-import classNames from "classnames";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import {
+	collection,
+	doc,
+	getFirestore,
+	setDoc,
+	onSnapshot,
+} from "firebase/firestore";
+import { firebaseConfig } from "~/utils/config.client";
+import useCountDown from "react-countdown-hook";
 
 type ScreenState = "poll" | "results";
 
@@ -53,6 +70,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
+			currentStreak: currentUser?.polls.currentStreak + 1,
 			correct: isEveryAnswerCorrect
 				? currentUser?.polls.correct + 1
 				: currentUser?.polls.correct,
@@ -72,11 +90,15 @@ type LoaderData = {
 	poll: PollData;
 	responses: number;
 	users: any; // !TODO: type this
+	timer: number;
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const users = await getUsers();
+
+	const eightHours = 0.1 * 60 * 60 * 1000;
+	const timer = data?.openingTime + eightHours;
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
@@ -84,7 +106,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses, users };
+	return { poll: data, responses, users, timer };
 };
 
 export const transformToCodeTags = (value: string, idx?: number) => {
@@ -108,15 +130,35 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 	return wrapWords;
 };
 
+const closePoll = async (pollId: string) => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+
+	const ref = collection(db, "polls");
+
+	await setDoc(
+		doc(db, "polls", pollId),
+		{ status: "closed" },
+		{ merge: true }
+	);
+};
+
 export default function PollDetail() {
-	const { poll, responses, users } = useLoaderData() as LoaderData;
+	const { poll, responses, users, timer } = useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
-
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
-
+	const params = useParams();
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
+	const [pollStatus, setPollStatus] = useState(poll.status);
+	const eightHours = 0.01 * 60 * 60 * 1000;
+	const [timeLeft, { start, pause, resume, reset }] = useCountDown(
+		timer + eightHours,
+		1000
+	);
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
 	const userHasVoted = poll.voted.find((voted) => voted.userId === user?.uid);
@@ -188,12 +230,50 @@ export default function PollDetail() {
 			currentAnswers.find((answer) => answer.id === voted.answerId)
 		);
 
+	useEffect(() => {
+		const app =
+			getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+		const db = getFirestore(app);
+		start();
+
+		onSnapshot(doc(db, "polls", params?.id || ""), (doc) => {
+			setPollStatus(doc.data()?.status);
+		});
+	}, []);
+
+	useEffect(() => {
+		if (timeLeft === 0) closePoll(params.id || "");
+	}, [timeLeft]);
+
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
 			<h1>Poll #{poll.pollNumber}</h1>
-			<PollStatus status={poll.status} />
+			<PollStatus status={pollStatus} />
 			<h3> {transformToCodeTags(poll.question)}</h3>
+
+			{timeLeft}
+
+			{/* <Countdown
+				date={timer}
+				renderer={({ hours, minutes, seconds, completed }) => {
+					if (completed && pollStatus === "open") {
+						closePoll(params.id || "");
+
+						// Render a completed state
+						return <h1>COmplete</h1>;
+					} else {
+						// Render a countdown
+						return (
+							<span>
+								{hours} {minutes} {seconds}hours left until the
+								poll will be closed! ⚠️
+							</span>
+						);
+					}
+				}}
+			/> */}
 
 			{screenState === "poll" && (
 				<Form method="post">
@@ -207,7 +287,7 @@ export default function PollDetail() {
 						{currentAnswers.map((answer, idx: number) => (
 							<li key={idx} className="option-answer">
 								<input
-									disabled={poll.status !== "open"}
+									disabled={pollStatus !== "open"}
 									type={poll.type}
 									id={answer.id}
 									onChange={isChecked}
@@ -235,7 +315,7 @@ export default function PollDetail() {
 					{user && (
 						<button
 							disabled={
-								poll.status !== "open" ||
+								pollStatus !== "open" ||
 								selectedVotes.length === 0
 							}
 						>

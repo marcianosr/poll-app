@@ -46,6 +46,7 @@ export type PollData = {
 	voted: Voted[];
 	category: PollCategory;
 	codeBlock: string;
+	openingTime: number | null;
 };
 
 export async function getAmountOfPolls() {
@@ -76,6 +77,15 @@ export const getDocumentPollIds = async () => {
 	return ids.docs.map((item) => item.id);
 };
 
+// export const getDocumentTestPollIds = async () => {
+// 	const ref = collection(db, "test_polls");
+// 	const getQuery = query(ref);
+
+// 	const ids = await getDocs(getQuery);
+
+// 	return ids.docs.map((item) => item.id);
+// };
+
 export const getPollById = async (id: string) => {
 	const docRef = await doc(db, "polls", id);
 	const snapshot = await getDoc(docRef);
@@ -100,3 +110,17 @@ export const updatePollById = async (
 
 	return snapshot;
 };
+
+// export const updateTestPollById = async (
+// 	id: string,
+// 	payload: any,
+// 	merge = true
+// ) => {
+// 	const snapshot = await setDoc(doc(db, "test_polls", id), payload, {
+// 		merge,
+// 	});
+
+// 	console.log(payload);
+
+// 	return snapshot;
+// };

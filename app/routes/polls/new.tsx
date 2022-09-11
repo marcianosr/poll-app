@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import FormPoll, { BlockType, Errors } from "../../components/PollForm";
+import PollForm, { BlockType, Errors } from "../../components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
@@ -43,6 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
 		status,
 		category,
 		codeBlock: codeBlock || "",
+		openingTime: status === "open" ? Date.now() : null,
 	};
 
 	for (const [key, value] of formData.entries()) {
@@ -88,7 +89,7 @@ export default function NewPoll() {
 			<Link to="/polls">Back to list of polls</Link>
 
 			<h1>Poll #{totalPolls + 1}</h1>
-			<FormPoll />
+			<PollForm />
 		</section>
 	);
 }
