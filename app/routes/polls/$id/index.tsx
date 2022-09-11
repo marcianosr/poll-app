@@ -8,6 +8,7 @@ import {
 	PollData,
 	updatePollById,
 	getPollsByOpeningTime,
+	getAmountOfClosedPolls,
 } from "~/utils/polls";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
@@ -102,6 +103,9 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const users = await getUsers();
+	const openedPollNumber = await getAmountOfClosedPolls();
+
+	console.log(openedPollNumber);
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
@@ -109,7 +113,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses, users };
+	return { poll: data, responses, users, openedPollNumber };
 };
 
 export const transformToCodeTags = (value: string, idx?: number) => {
