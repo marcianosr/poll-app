@@ -98,14 +98,13 @@ type LoaderData = {
 	poll: PollData;
 	responses: number;
 	users: any; // !TODO: type this
+	openedPollNumber: number;
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const users = await getUsers();
 	const openedPollNumber = await getAmountOfClosedPolls();
-
-	console.log(openedPollNumber);
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
@@ -138,7 +137,8 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users } = useLoaderData() as LoaderData;
+	const { poll, responses, users, openedPollNumber } =
+		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
 
@@ -220,10 +220,9 @@ export default function PollDetail() {
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
-			<h1>Poll #{poll.pollNumber}</h1>
 			<PollStatus status={poll.status} />
 			<h3> {transformToCodeTags(poll.question)}</h3>
-
+			<h1>Poll #{openedPollNumber}</h1>
 			{screenState === "poll" && (
 				<Form method="post">
 					{action?.error && (
@@ -354,6 +353,7 @@ export default function PollDetail() {
 					</ul>
 				</>
 			)}
+			<small>No. {poll.pollNumber}</small>
 		</section>
 	);
 }
