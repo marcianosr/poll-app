@@ -1,6 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useTransition,
+} from "@remix-run/react";
 import {
 	Answer,
 	Voted,
@@ -141,6 +147,7 @@ export default function PollDetail() {
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
+	const transition = useTransition();
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 
@@ -264,10 +271,15 @@ export default function PollDetail() {
 						<button
 							disabled={
 								poll.status !== "open" ||
-								selectedVotes.length === 0
+								selectedVotes.length === 0 ||
+								transition.state === "submitting" ||
+								transition.state === "loading"
 							}
 						>
-							Submit
+							{transition.state === "submitting" ||
+							transition.state === "loading"
+								? "Submitting... No button mashing! NEENER NEENER!"
+								: "Submit"}
 						</button>
 					)}
 					{!user && (
