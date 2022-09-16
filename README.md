@@ -1,6 +1,6 @@
 # Welcome to Remix!
 
-- [Remix Docs](https://remix.run/docs)
+-   [Remix Docs](https://remix.run/docs)
 
 ## Development
 
@@ -34,8 +34,8 @@ If you're familiar with deploying node applications, the built-in Remix app serv
 
 Make sure to deploy the output of `remix build`
 
-- `build/`
-- `public/build/`
+-   `build/`
+-   `public/build/`
 
 ### Using a Template
 
@@ -51,3 +51,11 @@ rm -rf app
 # copy your app over
 cp -R ../my-old-remix-app/app app
 ```
+
+### Firestore deploy
+
+`firebase deploy --only firestore:rules`
+
+### App deploy
+
+App runs at Vercel: poll-app-ivory.vercel.app
