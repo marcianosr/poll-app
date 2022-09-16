@@ -1,0 +1,32 @@
+.block {
+	border-radius: 0.2rem;
+	width: 15px;
+	height: 15px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.level-1 {
+	background: #ffe38b;
+	border: 1px solid #c1ac67;
+}
+
+.level-2 {
+	background-color: #f4c430;
+	border: 1px solid #cc9900;
+}
+
+.level-3 {
+	background: #6f5300;
+	border: 1px solid #8e6b03;
+}
+
+.level-4 {
+	background-color: #403000;
+	border: 1px solid #6c550c;
+}
+
+.locked {
+	background: transparent;
+	border: 1px dashed white;
+}

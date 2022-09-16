@@ -15,6 +15,7 @@ import {
 	updatePollById,
 	getPollsByOpeningTime,
 	getAmountOfClosedPolls,
+	getAllPolls,
 } from "~/utils/polls";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
@@ -22,13 +23,17 @@ import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
 import classNames from "classnames";
+import {
+	AwardsBoard,
+	links as awardsBoardLinks,
+} from "~/components/AwardsBoard";
 
 type ScreenState = "poll" | "results";
 
 export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
-	return [{ rel: "stylesheet", href: styles }];
+	return [...awardsBoardLinks(), { rel: "stylesheet", href: styles }];
 }
 
 const findCurrentStreakLength = (streak: boolean[]) => {
@@ -48,9 +53,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	const polls = (await getPollById(paramId)) as PollData;
 
-	const getAmountOfCorrectAnswers = polls.correctAnswers.filter((answer) =>
-		parsedVoted.find((voted) => answer.id === voted.answerId)
-	).length;
+	// const getAmountOfCorrectAnswers = polls.correctAnswers.filter((answer) =>
+	// 	parsedVoted.find((voted) => answer.id === voted.answerId)
+	// ).length;
 
 	const isEveryAnswerCorrect = parsedVoted
 		.map((voted) =>
@@ -102,6 +107,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 type LoaderData = {
 	poll: PollData;
+	polls: PollData[];
 	responses: number;
 	users: any; // !TODO: type this
 	openedPollNumber: number;
@@ -109,6 +115,7 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
+	const polls = await getAllPolls();
 	const users = await getUsers();
 	const openedPollNumber = await getAmountOfClosedPolls();
 
@@ -118,7 +125,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses, users, openedPollNumber };
+	return { poll: data, responses, users, openedPollNumber, polls };
 };
 
 export const transformToCodeTags = (value: string, idx?: number) => {
@@ -143,7 +150,7 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users, openedPollNumber } =
+	const { poll, responses, users, openedPollNumber, polls } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
@@ -192,14 +199,14 @@ export default function PollDetail() {
 	};
 
 	//! Re-check this fn
-	const isDefaultChecked = (answer: Answer) => {
-		const findVotedAnswer = poll.voted
-			.filter((voted) => voted.answerId === answer.id)
-			.filter((voted) => voted.userId === user?.uid);
+	// const isDefaultChecked = (answer: Answer) => {
+	// 	const findVotedAnswer = poll.voted
+	// 		.filter((voted) => voted.answerId === answer.id)
+	// 		.filter((voted) => voted.userId === user?.uid);
 
-		console.log("find answer", findVotedAnswer);
-		return findVotedAnswer.length > 0;
-	};
+	// 	console.log("find answer", findVotedAnswer);
+	// 	return findVotedAnswer.length > 0;
+	// };
 
 	const getLengthOfAnswersById = (answerId: string) =>
 		poll.voted.filter((voted) => voted.answerId === answerId);
@@ -224,9 +231,11 @@ export default function PollDetail() {
 			currentAnswers.find((answer) => answer.id === voted.answerId)
 		);
 
+	console.log("poll detail");
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
+			<AwardsBoard users={users} polls={polls} />
 			<PollStatus status={poll.status} />
 			<h3> {transformToCodeTags(poll.question)}</h3>
 			<h1>Poll #{openedPollNumber}</h1>
