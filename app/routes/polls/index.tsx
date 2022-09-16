@@ -44,9 +44,12 @@ export default function AllPolls() {
 									{transformToCodeTags(poll.question, idx)}
 								</p>
 								{isAdmin && (
-									<Link to={`/polls/${docId[idx]}/edit`}>
-										Edit
-									</Link>
+									<span>
+										<span>{poll.status}</span>
+										<Link to={`/polls/${docId[idx]}/edit`}>
+											Edit
+										</Link>
+									</span>
 								)}
 								<Link to={`/polls/${docId[idx]}`}>
 									Go to poll

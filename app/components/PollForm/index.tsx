@@ -33,7 +33,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	const [mode, setMode] = useState<Mode>("edit");
 	const [pollStatus, setPollStatus] = useState<PollStatus>(
-		(poll && poll?.status) || "closed"
+		(poll && poll?.status) || "new"
 	);
 
 	const [fields, setFields] = useState<NewPollType[]>([
@@ -95,6 +95,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 					<>
 						{action?.ok === false && <span>errors</span>}
 						<>
+							<textarea
+								placeholder="Insert code example"
+								name="codeBlock"
+								id="codeBlock"
+								defaultValue={poll?.codeBlock}
+							></textarea>
 							{fields.map((field) => (
 								<section
 									className="answer-container"
@@ -241,29 +247,18 @@ const PollForm: FC<Props> = ({ poll }) => {
 				<aside className="options">
 					<div className="open-closed-toggle">
 						<label htmlFor="status">
-							{pollStatus === "closed"
+							{pollStatus !== "open"
 								? "Not accepting responses"
 								: "Accepting responses"}
 						</label>
-						<input
-							type="checkbox"
-							name="status"
-							value={pollStatus}
-							defaultChecked={pollStatus === "open"}
-							onClick={updatePollStatus}
-							id="status"
-						/>
-						{pollStatus === "closed" ? (
-							<input type="hidden" value="closed" name="status" />
-						) : (
-							<input
-								type="hidden"
-								name="status"
-								value="open"
-								onClick={updatePollStatus}
-								id="status"
-							/>
-						)}
+						<select name="status" defaultValue={pollStatus}>
+							<option value="open">open</option>
+							<option value="closed">closed</option>
+							<option value="needs-revision">
+								needs revision
+							</option>
+							<option value="new">new</option>
+						</select>
 					</div>
 
 					<select

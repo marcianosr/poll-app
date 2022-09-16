@@ -8,6 +8,7 @@ import {
 	setDoc,
 	query,
 	orderBy,
+	where,
 } from "firebase/firestore";
 import { BlockType } from "~/components/PollForm";
 import { db } from "~/utils/firebase";
@@ -20,7 +21,7 @@ export type PollCategory =
 	| "typescript"
 	| "general frontend"
 	| "react";
-export type PollStatus = "open" | "closed";
+export type PollStatus = "open" | "closed" | "new" | "needs-revision";
 export type Answer = {
 	id: string;
 	value: string;
@@ -45,7 +46,28 @@ export type PollData = {
 	status: PollStatus;
 	voted: Voted[];
 	category: PollCategory;
+	codeBlock: string;
+	openingTime: number | null;
 };
+
+export async function getPollsByOpeningTime() {
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, orderBy("openingTime", "asc"));
+	const querySnapshot = await getDocs(getQuery);
+
+	return querySnapshot.docs
+		.map((item) => item.data())
+		.filter((poll) => poll.openingTime);
+}
+
+export async function getAmountOfClosedPolls() {
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, where("status", "==", "closed"));
+
+	const ids = await getDocs(getQuery);
+
+	return ids.size;
+}
 
 export async function getAmountOfPolls() {
 	const ids = await (await getDocs(collection(db, "polls"))).size;

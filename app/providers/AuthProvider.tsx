@@ -45,9 +45,9 @@ export type FirebaseUserFields = {
 		correct: number;
 		answeredById: string[];
 	};
-	pixels: number;
 	role: "user" | "admin";
 	lastPollSubmit: number;
+	awards: [];
 };
 
 type FirebaseUser = {
@@ -87,31 +87,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			});
 
 			// fetch firebase user data
-			getUserByID(googleUser?.uid)
-				.then((result) => {
-					console.log("res", result);
-					return setUser({
-						// ! Improve this later: Can we do this a different way?
-						...googleUser,
-						firebase: {
-							id: result?.id,
-							displayName: result?.displayName,
-							email: result?.email,
-							photoURL: result?.photoURL,
-							pixels: result?.pixels,
-							polls: {
-								answeredById: result?.polls.answer,
-								correct: result?.polls.correct,
-								currentStreak: result?.polls.currentStreak,
-								maxStreak: result?.polls.maxStreak,
-								total: result?.polls.total,
-							},
-							role: result?.role,
-							lastPollSubmit: result?.lastPollSubmit,
+			getUserByID(googleUser?.uid).then((result) => {
+				return setUser({
+					// ! Improve this later: Can we do this a different way?
+					...googleUser,
+					firebase: {
+						id: result?.id,
+						displayName: result?.displayName,
+						email: result?.email,
+						photoURL: result?.photoURL,
+						polls: {
+							answeredById: result?.polls.answer,
+							correct: result?.polls.correct,
+							currentStreak: result?.polls.currentStreak,
+							maxStreak: result?.polls.maxStreak,
+							total: result?.polls.total,
 						},
-					});
-				})
-				.catch((error) => console.log("get user by id error:", error));
+						role: result?.role,
+						lastPollSubmit: result?.lastPollSubmit,
+						awards: [],
+					},
+				});
+			});
 		}
 	}, [googleUser?.uid]);
 
@@ -142,9 +139,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						correct: 0,
 						answeredById: [],
 					},
-					pixels: 0,
 					role: "user",
 					lastPollSubmit: 0,
+					awards: [],
 				});
 				// ...
 			})

@@ -30,6 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const answers = formData.get("answers") as string;
 	const parsedAnswers = JSON.parse(answers);
 	const category = formData.get("category") as PollCategory;
+	const codeBlock = formData.get("codeBlock") as string | null;
 
 	const pollData: PollData = {
 		id,
@@ -41,15 +42,17 @@ export const action: ActionFunction = async ({ request }) => {
 		type,
 		status,
 		category,
+		codeBlock: codeBlock || "",
+		openingTime: status === "open" ? Date.now() : null,
 	};
 
 	for (const [key, value] of formData.entries()) {
 		// console.log("----->>>>>", key, value);
 
-		if (!value) errors[key] = true;
+		if (!value && key !== "codeBlock") errors[key] = true;
 	}
-	console.log("errors", errors);
 
+	console.log(errors);
 	if (Object.keys(errors).length)
 		return {
 			ok: false,

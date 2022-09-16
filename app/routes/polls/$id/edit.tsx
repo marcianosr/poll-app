@@ -27,9 +27,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const status = formData.get("status");
 	const answers = formData.get("answers") as string;
 	const category = formData.get("category") as PollCategory;
+	const codeBlock = formData.get("codeBlock") as string | null;
 
 	for (const [key, value] of formData.entries()) {
-		if (!value) errors[key] = true;
+		if (!value && key !== "codeBlock") errors[key] = true;
 	}
 
 	if (Object.keys(errors).length)
@@ -48,6 +49,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 		type,
 		status,
 		category,
+		codeBlock,
+		openingTime: status === "open" ? Date.now() : null,
 	});
 
 	return {

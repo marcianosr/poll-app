@@ -1,12 +1,20 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import {
+	Form,
+	Link,
+	useActionData,
+	useLoaderData,
+	useTransition,
+} from "@remix-run/react";
 import {
 	Answer,
 	Voted,
 	getPollById,
 	PollData,
 	updatePollById,
+	getPollsByOpeningTime,
+	getAmountOfClosedPolls,
 } from "~/utils/polls";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
 import PollStatus from "~/components/PollStatus";
@@ -23,18 +31,20 @@ export function links() {
 	return [{ rel: "stylesheet", href: styles }];
 }
 
-const calculate = () => {
-	// calculate points based on polls
+const findCurrentStreakLength = (streak: boolean[]) => {
+	for (let i = 0; i < streak.length; i++) {
+		if (!streak[i]) return i;
+	}
 
-	return 0;
+	return streak.length;
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
-	const voted = formData.get("voted") as string;
+	const selectedVotes = formData.get("selectedVotes") as string;
 	const uid = formData.get("uid") as string;
 	const paramId = params.id || "";
-	const parsedVoted = JSON.parse(voted) as Voted[];
+	const parsedVoted = JSON.parse(selectedVotes) as Voted[];
 
 	const polls = (await getPollById(paramId)) as PollData;
 
@@ -42,20 +52,43 @@ export const action: ActionFunction = async ({ request, params }) => {
 		parsedVoted.find((voted) => answer.id === voted.answerId)
 	).length;
 
+	const isEveryAnswerCorrect = parsedVoted
+		.map((voted) =>
+			polls.correctAnswers.find((answer) => answer.id === voted.answerId)
+		)
+		.every((answer) => answer);
+
 	await updatePollById(paramId, {
-		voted: [...parsedVoted],
+		voted: [...polls.voted, ...parsedVoted],
 	});
 
 	const currentUser = await getUserByID(uid);
+	const pollsStartedByDate = await getPollsByOpeningTime();
+
+	const getVotedPollsByUser = pollsStartedByDate
+		.map((poll) =>
+			poll.voted
+				.filter((vote: Voted) => vote.userId === uid)
+				.map((vote: Voted) => vote.userId)
+				.filter(
+					(userId: string, index: number, array: string[]) =>
+						array.indexOf(userId) === index
+				)
+				.some((userIds: string[]) => userIds.length > 0)
+		)
+		.slice()
+		.reverse();
 
 	await updateUserById<UpdateScore>({
 		id: uid,
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			correct: currentUser?.polls.correct + getAmountOfCorrectAnswers,
+			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
+			correct: isEveryAnswerCorrect
+				? currentUser?.polls.correct + 1
+				: currentUser?.polls.correct,
 		},
-		pixels: calculate(),
 		lastPollSubmit: Date.now(),
 	});
 
@@ -71,11 +104,13 @@ type LoaderData = {
 	poll: PollData;
 	responses: number;
 	users: any; // !TODO: type this
+	openedPollNumber: number;
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const users = await getUsers();
+	const openedPollNumber = await getAmountOfClosedPolls();
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
@@ -83,7 +118,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses, users };
+	return { poll: data, responses, users, openedPollNumber };
 };
 
 export const transformToCodeTags = (value: string, idx?: number) => {
@@ -108,14 +143,16 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users } = useLoaderData() as LoaderData;
+	const { poll, responses, users, openedPollNumber } =
+		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
+	const transition = useTransition();
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
-	const [currentVoted, setCurrentVoted] = useState<Voted[]>(poll.voted);
+	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
 	const userHasVoted = poll.voted.find((voted) => voted.userId === user?.uid);
@@ -125,26 +162,38 @@ export default function PollDetail() {
 	}, [user?.uid, userHasVoted]);
 
 	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.checked) {
-			setCurrentVoted([
-				...currentVoted,
+		if (e.target.checked && poll.type === "radio") {
+			return setSelectedVotes([
+				...selectedVotes.filter(
+					(selected) => selected.answerId === e.target.id
+				),
 				{
 					answerId: e.target.id,
-					userId: user?.uid || "",
+					userId: user?.uid || "empty",
+				},
+			]);
+		}
+
+		if (e.target.checked && poll.type === "checkbox") {
+			setSelectedVotes([
+				...selectedVotes,
+				{
+					answerId: e.target.id,
+					userId: user?.uid || "empty",
 				},
 			]);
 		} else {
-			const votedPoll = currentVoted.filter(
-				(voted) => voted.answerId !== e.target.id
+			const selectedPoll = selectedVotes.filter(
+				(selected) => selected.answerId !== e.target.id
 			);
 
-			setCurrentVoted(votedPoll);
+			setSelectedVotes(selectedPoll);
 		}
 	};
 
 	//! Re-check this fn
 	const isDefaultChecked = (answer: Answer) => {
-		const findVotedAnswer = currentVoted
+		const findVotedAnswer = poll.voted
 			.filter((voted) => voted.answerId === answer.id)
 			.filter((voted) => voted.userId === user?.uid);
 
@@ -153,7 +202,7 @@ export default function PollDetail() {
 	};
 
 	const getLengthOfAnswersById = (answerId: string) =>
-		currentVoted.filter((voted) => voted.answerId === answerId);
+		poll.voted.filter((voted) => voted.answerId === answerId);
 
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
@@ -178,10 +227,9 @@ export default function PollDetail() {
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
-			<h1>Poll #{poll.pollNumber}</h1>
 			<PollStatus status={poll.status} />
 			<h3> {transformToCodeTags(poll.question)}</h3>
-
+			<h1>Poll #{openedPollNumber}</h1>
 			{screenState === "poll" && (
 				<Form method="post">
 					{action?.error && (
@@ -189,11 +237,12 @@ export default function PollDetail() {
 							Please at least fill out one answer to submit
 						</span>
 					)}
+					{poll.codeBlock && <pre>{poll.codeBlock}</pre>}
 					<ul className="choices-list">
 						{currentAnswers.map((answer, idx: number) => (
 							<li key={idx} className="option-answer">
 								<input
-									disabled={poll.status === "closed"}
+									disabled={poll.status !== "open"}
 									type={poll.type}
 									id={answer.id}
 									onChange={isChecked}
@@ -221,11 +270,16 @@ export default function PollDetail() {
 					{user && (
 						<button
 							disabled={
-								poll.status === "closed" ||
-								currentVoted.length === 0
+								poll.status !== "open" ||
+								selectedVotes.length === 0 ||
+								transition.state === "submitting" ||
+								transition.state === "loading"
 							}
 						>
-							Submit
+							{transition.state === "submitting" ||
+							transition.state === "loading"
+								? "Submitting... No button mashing! NEENER NEENER!"
+								: "Submit"}
 						</button>
 					)}
 					{!user && (
@@ -238,8 +292,8 @@ export default function PollDetail() {
 					/>
 					<input
 						type="hidden"
-						name="voted"
-						defaultValue={JSON.stringify(currentVoted)}
+						name="selectedVotes"
+						defaultValue={JSON.stringify(selectedVotes)}
 					/>
 					<input type="hidden" name="uid" defaultValue={user?.uid} />
 				</Form>
@@ -311,6 +365,7 @@ export default function PollDetail() {
 					</ul>
 				</>
 			)}
+			<small>No. {poll.pollNumber}</small>
 		</section>
 	);
 }

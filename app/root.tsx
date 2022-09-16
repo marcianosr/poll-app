@@ -6,7 +6,6 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	useLoaderData,
 } from "@remix-run/react";
 import Header from "./components/Header";
 import { AuthProvider } from "./providers/AuthProvider";
