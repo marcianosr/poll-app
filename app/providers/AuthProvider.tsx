@@ -7,12 +7,7 @@ import {
 	signOut,
 	User,
 } from "firebase/auth";
-import {
-	getFirestore,
-	doc,
-	setDoc,
-	connectFirestoreEmulator,
-} from "firebase/firestore";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
 import { getAdminUser, getUserByID } from "~/utils/user";
@@ -61,12 +56,6 @@ export async function addUser(data: FirebaseUserFields) {
 	const userExists = await getUserByID(data.id);
 
 	const db = getFirestore(app);
-
-	if (document.location.hostname === "localhost") {
-		// Point to the RTDB emulator running on localhost.
-		connectFirestoreEmulator(db, "localhost", 8080);
-		console.info("Using an emulated database");
-	}
 
 	if (userExists) return;
 

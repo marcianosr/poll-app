@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { getApp, getApps, initializeApp } from "firebase/app";
 // import admin from "firebase-admin";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
 import { getAuth } from "firebase/auth";
 
@@ -22,5 +22,19 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+const EMULATORS_STARTED = "EMULATORS_STARTED";
+function startEmulators() {
+	if (!global[EMULATORS_STARTED]) {
+		global[EMULATORS_STARTED] = true;
+		connectFirestoreEmulator(db, "localhost", 8080);
+		console.log("connected to emulator");
+	}
+}
+
+if (process.env.NODE_ENV === "development") {
+	console.log("started");
+	startEmulators();
+}
 
 export { db, auth };
