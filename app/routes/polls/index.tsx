@@ -1,11 +1,5 @@
-import {
-	ActionFunction,
-	json,
-	LoaderFunction,
-	redirect,
-} from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { useEffect } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";

@@ -1,0 +1,397 @@
+[
+	{
+		"id": "1at5cLzMWad6Kb4bXJGzbuCIe383",
+		"awards": [],
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucpn3tjAdFRVHkoLtgpU_ibDRAZ23YB7UPug4x-T=s96-c",
+		"lastPollSubmit": 1663065635336,
+		"polls": {
+			"maxStreak": 0,
+			"answeredById": ["TxDTKcPRS9IV5h4VnnD2", "4b9sQ08lLlukTvOZnK1S"],
+			"total": 2,
+			"currentStreak": 0,
+			"correct": 0
+		},
+		"displayName": "Ronald Aarnoutse",
+		"role": "user",
+		"email": "ronald.aarnoutse@kabisa.nl"
+	},
+	{
+		"awards": [],
+		"role": "user",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucqFLeFGwPJ7GF0NY2Xge1zWbPXmWDrKP-b5bVgcgg=s96-c",
+		"polls": {
+			"answeredById": ["SXRLvi7owLyLG6jJYDkS", "VeG04MZzSNGcUnrBfKKW"],
+			"total": 3,
+			"currentStreak": 2,
+			"maxStreak": 0,
+			"correct": 2
+		},
+		"id": "2kDmBd1QNJS0iz9jlmALbdtRw642",
+		"lastPollSubmit": 1662725001078,
+		"displayName": "Marciano Schildmeijer",
+		"email": "msrschildmeijer@gmail.com"
+	},
+	{
+		"awards": [],
+		"id": "8O6cHx6IxmTUXaMnXhxcQ2HFgEV2",
+		"lastPollSubmit": 1662627019938,
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucqcQ-IB7HDhdUYCsKaTj-pPP0fMVK9mHxvk5m0eLg=s96-c",
+		"email": "egon.meijers@kabisa.nl",
+		"polls": {
+			"correct": 1,
+			"maxStreak": 0,
+			"total": 1,
+			"currentStreak": 0,
+			"answeredById": ["QArHHvK4ipZlXJtrEZsw"]
+		},
+		"role": "user",
+		"displayName": "Egon Meijers"
+	},
+	{
+		"lastPollSubmit": 1663323336333,
+		"email": "matthijs@kabisa.nl",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucrW_O0GbCC8yl0CqbH7Ml9UmE2w5k8_Qm-seWuWYA=s96-c",
+		"polls": {
+			"total": 7,
+			"maxStreak": 0,
+			"currentStreak": 2,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"correct": 6
+		},
+		"awards": [],
+		"id": "92mwfTrtfSRsiOzcahAIKsNW5vO2",
+		"role": "user",
+		"displayName": "Matthijs Groen"
+	},
+	{
+		"lastPollSubmit": 1663317994678,
+		"role": "user",
+		"awards": [],
+		"email": "nisreen.ajdad@kabisa.nl",
+		"polls": {
+			"maxStreak": 0,
+			"correct": 2,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"total": 3,
+			"currentStreak": 1
+		},
+		"id": "B762i26QM7Y275I0w2uAtklg3Gx1",
+		"photoURL": "https://lh3.googleusercontent.com/a/AItbvmnIdcu05jATq2BXSyfdl3AbBOba04OmuZtG-5iV=s96-c",
+		"displayName": "Nisreen Ajdad"
+	},
+	{
+		"polls": {
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"maxStreak": 0,
+			"total": 7,
+			"currentStreak": 2,
+			"correct": 3
+		},
+		"id": "GxloHn9wFkRFYYHXSuTj56kXd0q2",
+		"role": "user",
+		"awards": [],
+		"displayName": "Dominic Bisschop",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucoFC4VtREWmLxZMPXnw8X6UriZAEnz77n0GTCAM=s96-c",
+		"lastPollSubmit": 1663322159942,
+		"email": "dominic.bisschop@kabisa.nl"
+	},
+	{
+		"role": "user",
+		"displayName": "Pascal Widdershoven",
+		"email": "pascal@kabisa.nl",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZuco4gGidhvWwkEhEyvlEUMXmbGA3VUt-Ym6ov5rZpg=s96-c",
+		"polls": {
+			"answeredById": ["QArHHvK4ipZlXJtrEZsw", "PRQbsv39bVkonNA42Kym"],
+			"currentStreak": 1,
+			"total": 2,
+			"correct": 1,
+			"maxStreak": 0
+		},
+		"lastPollSubmit": 1663246058321,
+		"awards": [],
+		"id": "H2uBO669vaZ80jwDe7zzxmKbUV02"
+	},
+	{
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucrZCdTGeTq72n7laJLzwwznQlcBlthkiIm4MIgKTA=s96-c",
+		"role": "user",
+		"email": "roel@kabisa.nl",
+		"awards": [],
+		"displayName": "Roel Nieskens",
+		"lastPollSubmit": 1663316617062,
+		"id": "RUn3dqxhhXO4wD2Cmc31rQQ9uub2",
+		"polls": {
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"total": 7,
+			"currentStreak": 2,
+			"maxStreak": 0,
+			"correct": 3
+		}
+	},
+	{
+		"role": "user",
+		"awards": [],
+		"displayName": "Rik Tonnard",
+		"polls": {
+			"total": 5,
+			"currentStreak": 2,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"correct": 4,
+			"maxStreak": 0
+		},
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucqrVT0crs5vlS_64oNQfBBGFqKkDPO6_7b2e_3V=s96-c",
+		"lastPollSubmit": 1663317314675,
+		"id": "SMJFRAatZgXUeXXcx2ijheHyBqv1",
+		"email": "rik@kabisa.nl"
+	},
+	{
+		"polls": {
+			"currentStreak": 1,
+			"total": 1,
+			"maxStreak": 0,
+			"correct": 0,
+			"answeredById": ["4b9sQ08lLlukTvOZnK1S"]
+		},
+		"awards": [],
+		"id": "XYkYvhODvjg1pLVfqtFXAGZxuCj1",
+		"lastPollSubmit": 1663060805450,
+		"role": "user",
+		"email": "mees.van.straten@kabisa.nl",
+		"displayName": "Mees van Straten",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucpOU_wh0cmhTc1nsgvyXi4A7LpX7Dul0MxxZ2de=s96-c"
+	},
+	{
+		"role": "user",
+		"id": "ZJTGuZOOvgaIycOFMIq2vSXXD292",
+		"awards": [],
+		"displayName": "Roy Appeldoorn",
+		"lastPollSubmit": 1663318111416,
+		"email": "roy.appeldoorn@kabisa.nl",
+		"photoURL": "https://lh3.googleusercontent.com/a/AItbvmkuEYePL3SvyH5D2E1rAj6-g5UXxQOhAJWg57MA=s96-c",
+		"polls": {
+			"maxStreak": 0,
+			"correct": 4,
+			"total": 6,
+			"currentStreak": 2,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			]
+		}
+	},
+	{
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucrnPlhUyyzfog376tJ3-XLM6j2Oi1cxMqtaVH0I=s96-c",
+		"role": "user",
+		"polls": {
+			"maxStreak": 0,
+			"correct": 2,
+			"total": 4,
+			"currentStreak": 3,
+			"answeredById": [
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym"
+			]
+		},
+		"lastPollSubmit": 1663232110998,
+		"id": "aWI6X9i1RugALHJ7ILr8Xp4baIW2",
+		"email": "stef.geraets@kabisa.nl",
+		"displayName": "Stef Geraets",
+		"awards": []
+	},
+	{
+		"lastPollSubmit": 1663231416159,
+		"awards": [],
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucrO5mDpJUMrY60Y-MxluQV6h5IxvjEOxXduakja=s96-c",
+		"email": "nick@kabisa.nl",
+		"role": "user",
+		"polls": {
+			"total": 4,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"PRQbsv39bVkonNA42Kym"
+			],
+			"correct": 4,
+			"maxStreak": 0,
+			"currentStreak": 1
+		},
+		"id": "amN2Z3FGaTQnjwSktECXoGYXEYi1",
+		"displayName": "Nick van Eijk"
+	},
+	{
+		"role": "user",
+		"id": "bksg6W8mYZamOArxMiK2pn3UlGe2",
+		"polls": {
+			"total": 1,
+			"maxStreak": 0,
+			"answeredById": ["QArHHvK4ipZlXJtrEZsw"],
+			"correct": 1,
+			"currentStreak": 0
+		},
+		"lastPollSubmit": 1662625704307,
+		"displayName": "Kevin Pas",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucpKmwPiK3FJyV2HpKgNFIVlLhhg7yj7UjrhG8Rk=s96-c",
+		"awards": [],
+		"email": "kevin.pas@kabisa.nl"
+	},
+	{
+		"awards": [],
+		"displayName": "Michael van Haren",
+		"lastPollSubmit": 1663331194461,
+		"email": "mvharen@vacansoleil.com",
+		"photoURL": "https://lh3.googleusercontent.com/a/AItbvmlCL13vc7byUZQr4hi73bjiCcrDwmleB21wVVMW=s96-c",
+		"polls": {
+			"maxStreak": 0,
+			"currentStreak": 2,
+			"answeredById": [
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"correct": 6,
+			"total": 6
+		},
+		"role": "user",
+		"id": "btmzQ2h02aa7NwgpOFMGvGSgcv62"
+	},
+	{
+		"role": "user",
+		"displayName": "David Vollmar",
+		"lastPollSubmit": 1663063070502,
+		"email": "david.vollmar@kabisa.nl",
+		"awards": [],
+		"polls": {
+			"currentStreak": 1,
+			"total": 1,
+			"maxStreak": 0,
+			"correct": 0,
+			"answeredById": ["4b9sQ08lLlukTvOZnK1S"]
+		},
+		"id": "e9SDIhaJ4bQzCoIVN56dHmmJM3I3",
+		"photoURL": "https://lh3.googleusercontent.com/a/AItbvmnWgKBLBYwSoqB_Y1LGq3pbr2-Nj6UPGkS5a15H=s96-c"
+	},
+	{
+		"email": "marciano@kabisa.nl",
+		"displayName": "Marciano Schildmeijer",
+		"role": "admin",
+		"id": "kfrkjsbashYfl1sD2PgVGXcpND63",
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucojDcETGbJ03oiktru_zxeeO7mHafkPCcWOjMYl=s96-c",
+		"awards": [],
+		"polls": {
+			"correct": 9,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"SXRLvi7owLyLG6jJYDkS",
+				"FbSBVolAz0GcAW9iotym",
+				"GYmaBvyJ75LZKwLC34mD",
+				"VeG04MZzSNGcUnrBfKKW",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"SXRLvi7owLyLG6jJYDkS",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"total": 20,
+			"currentStreak": 6,
+			"maxStreak": 0
+		},
+		"lastPollSubmit": 1663318193598
+	},
+	{
+		"id": "lMl7YkcHrzSQnR4di8OJsDVmeEC3",
+		"lastPollSubmit": 1663317694014,
+		"role": "user",
+		"displayName": "Jorg Nieberg",
+		"email": "jorg.nieberg@kabisa.nl",
+		"polls": {
+			"correct": 5,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym",
+				"NOElu79HPzGb6n9qkEOF"
+			],
+			"maxStreak": 0,
+			"currentStreak": 2,
+			"total": 7
+		},
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucp8Vm3AyGtGxugZIpSdoZMg2P852cK6XEi1q-xP=s96-c",
+		"awards": []
+	},
+	{
+		"photoURL": "https://lh3.googleusercontent.com/a-/AFdZucqHWulhVUTcoX3KHd-PQpINtFYA4tILOX0Gihh-=s96-c",
+		"id": "qBHCpnXFOLZsdzcHbKzvkqP6Uck1",
+		"awards": [],
+		"displayName": "Max Bodelier",
+		"lastPollSubmit": 1663235490058,
+		"role": "user",
+		"email": "max.bodelier@kabisa.nl",
+		"polls": {
+			"correct": 4,
+			"currentStreak": 6,
+			"total": 6,
+			"maxStreak": 0,
+			"answeredById": [
+				"QArHHvK4ipZlXJtrEZsw",
+				"UIs0LpJ4Dc0a2lFQ0W4w",
+				"TxDTKcPRS9IV5h4VnnD2",
+				"4b9sQ08lLlukTvOZnK1S",
+				"9YimjBgEJtLXAeShvjj2",
+				"PRQbsv39bVkonNA42Kym"
+			]
+		}
+	}
+]
