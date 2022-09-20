@@ -47,7 +47,7 @@ export type PollData = {
 	voted: Voted[];
 	category: PollCategory;
 	codeBlock: string;
-	openingTime: number | null;
+	openingTime?: number | null;
 };
 
 export async function getPollsByOpeningTime() {
