@@ -43,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
 		status,
 		category,
 		codeBlock: codeBlock || "",
-		openingTime: status === "open" ? Date.now() : null,
+		...(status === "open" && { openingTime: Date.now() }),
 	};
 
 	for (const [key, value] of formData.entries()) {
