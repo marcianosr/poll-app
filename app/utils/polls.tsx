@@ -117,7 +117,5 @@ export const updatePollById = async (
 		merge,
 	});
 
-	console.log(payload);
-
 	return snapshot;
 };

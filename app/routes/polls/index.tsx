@@ -1,12 +1,7 @@
-import {
-	ActionFunction,
-	json,
-	LoaderFunction,
-	redirect,
-} from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { useEffect } from "react";
 import { useAuth } from "~/providers/AuthProvider";
+import { createDevData } from "~/utils/dev";
 import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
@@ -21,6 +16,9 @@ export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getAllPolls();
 
 	const ids = await getDocumentPollIds();
+
+	// ! Enable when you want local DB population
+	// await createDevData();
 
 	return { polls: data, docId: ids };
 };
