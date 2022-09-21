@@ -61,8 +61,6 @@ export const action: ActionFunction = async ({ request }) => {
 			},
 		};
 
-	console.log(pollData);
-
 	await createPoll(pollData);
 	return {
 		ok: true,

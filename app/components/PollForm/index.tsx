@@ -179,8 +179,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 											e.preventDefault();
 
 											return setFields((prev) => {
-												console.log("pre", prev);
-
 												return [
 													...fields.map((f, idx) =>
 														f.id === field.id
