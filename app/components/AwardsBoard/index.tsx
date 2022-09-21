@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { FC, Fragment, useState } from "react";
-import { PollData } from "~/utils/polls";
+import { PollCategory, PollData } from "~/utils/polls";
 import { Block, links as blockLinks } from "../Block";
 import styles from "./styles.css";
 
@@ -81,30 +81,89 @@ const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "HTML Hobbyist",
 		description: "Participated in HTML polls the most",
-		requirements: (users: any) => {
-			const HTMLPolls = polls.filter((poll) => poll.category === "html");
-			const userIds = HTMLPolls.filter((polls) => polls.voted.length > 0)
-				.map((polls) => polls.voted.map((vote) => vote.userId))
-				.flat();
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "html"),
+	},
+	// {
+	// 	name: "Markup Master",
+	// 	description: "Has the most correct HTML answers",
+	// 	requirements: (users: any) => {
+	// 		console.log("Maniax");
+	// 		const allPolls = polls.filter((poll) => poll.category === "html");
+	// 		const correctAnswers = allPolls.map(
+	// 			(polls) => polls.correctAnswers
+	// 		);
+	// 		// .flat();
 
-			const id = userIds.reduce((previous, current, i, arr) =>
-				arr.filter((item) => item === previous).length >
-				arr.filter((item) => item === current).length
-					? previous
-					: current
-			);
+	// 		const voted = allPolls.map((polls) => polls.voted);
 
-			return users.filter((user: any) => user.id === id);
-		},
-		// requirements: users.filter((user: any) => {
-		// const HTMLPolls = polls.filter((poll) => poll.category === "html");
-		// const result = HTMLPolls.filter((poll) =>
-		// 	poll.voted.find((vote) => vote.userId === user.id)
-		// )
-		// const u = [...users.map((user) => ({ user, total: result }))];
-		// }),
+	// 		// console.log(users);
+	// 		console.log(voted);
+	// 		console.log(correctAnswers);
+	// 		// users.map(user => user.polls.answeredById.)
+
+	// 		// console.log(u);
+
+	// 		return [];
+	// 	},
+	// },
+	{
+		name: "CSS Carrier",
+		description: "Participated in CSS polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "css"),
+	},
+	{
+		name: "React 4 U",
+		description: "Participated in React polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "react"),
+	},
+	{
+		name: "TypeScript Tinkerer",
+		description: "Participated in TypeScript polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "typescript"),
+	},
+	{
+		name: "Const(ant) voter",
+		description: "Participated in JavaScript polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "javascript"),
+	},
+	{
+		name: "Frontend Fury",
+		description: "Participated in General Frontend polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(
+				users,
+				polls,
+				"general frontend"
+			),
 	},
 ];
+
+const getUserWithMostPollsAnsweredByCategory = (
+	users: any,
+	polls: PollData[],
+	category: PollCategory
+) => {
+	const allPolls = polls.filter((poll) => poll.category === category);
+
+	const userIds = allPolls
+		.filter((polls) => polls.voted.length > 0)
+		.map((polls) => polls.voted.map((vote) => vote.userId))
+		.flat();
+
+	const id = userIds.reduce((previous, current, i, arr) => {
+		return arr.filter((item) => item === previous).length >
+			arr.filter((item) => item === current).length
+			? previous
+			: current;
+	}, "");
+
+	return users.filter((user: any) => user.id === id);
+};
 
 type Props = {
 	users: any;
@@ -127,10 +186,9 @@ const calculateColorTintsByTotalUsers = (
 export const AwardsBoard: FC<Props> = ({ users, polls }) => {
 	const [awardInfo, setAwardInfo] = useState<Award | null>(null);
 
-	console.log("Award Board render");
 	return (
 		<aside className="awards-container">
-			<span>Secret pixel board</span>
+			<span>Awards board</span>
 			<section className="blocks-container unlock-container">
 				{awards(users, polls).map((award) => {
 					const percentage = calculateColorTintsByTotalUsers(
