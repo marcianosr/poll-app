@@ -84,29 +84,46 @@ const awards = (users: any, polls: PollData[]) => [
 		requirements: (users: any) =>
 			getUserWithMostPollsAnsweredByCategory(users, polls, "html"),
 	},
-	// {
-	// 	name: "Markup Master",
-	// 	description: "Has the most correct HTML answers",
-	// 	requirements: (users: any) => {
-	// 		console.log("Maniax");
-	// 		const allPolls = polls.filter((poll) => poll.category === "html");
-	// 		const correctAnswers = allPolls.map(
-	// 			(polls) => polls.correctAnswers
-	// 		);
-	// 		// .flat();
-
-	// 		const voted = allPolls.map((polls) => polls.voted);
-
-	// 		// console.log(users);
-	// 		console.log(voted);
-	// 		console.log(correctAnswers);
-	// 		// users.map(user => user.polls.answeredById.)
-
-	// 		// console.log(u);
-
-	// 		return [];
-	// 	},
-	// },
+	{
+		name: "Markup Master",
+		description: "Have the most correct HTML answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "html"),
+	},
+	{
+		name: "CSS Connoisseur",
+		description: "Have the most correct CSS answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "css"),
+	},
+	{
+		name: "Forza Frontend",
+		description: "Have the most correct General Frontend answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(
+				users,
+				polls,
+				"general frontend"
+			),
+	},
+	{
+		name: "'every()thing' correct",
+		description: "Have the most correct JS answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "javascript"),
+	},
+	{
+		name: "Type Specialist",
+		description: "Have the most correct TS answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "typescript"),
+	},
+	{
+		name: "React Rocket",
+		description: "Have the most correct React answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "react"),
+	},
 	{
 		name: "CSS Carrier",
 		description: "Participated in CSS polls the most",
@@ -141,7 +158,74 @@ const awards = (users: any, polls: PollData[]) => [
 				"general frontend"
 			),
 	},
+	{
+		name: "Speed Demon",
+		description:
+			"Always being the first answering polls (Can only be earned when you atleast answered the poll 7 times as first)",
+		requirements: (users: any) => {
+			const NUMBER_OF_POLLS_NEEDED = 7;
+			const userIds = polls
+				.map((poll) => poll.voted.map((vote) => vote.userId)[0])
+				.filter((a) => a);
+
+			const [id] = Object.entries(getHighestOccurenceByIds(userIds))
+				.filter(([key, value]) => value >= NUMBER_OF_POLLS_NEEDED)
+				.flat();
+
+			return users.filter((user: any) => user.id === id);
+		},
+	},
+	{
+		name: "King of the rock",
+		description: "Have the highest total polls",
+		requirements: (users: any) => {
+			const userWithHighestTotal = users.reduce(
+				(prev, curr) => {
+					return prev.polls.total > curr.polls.total ? prev : curr;
+				},
+				{ polls: { total: 0 } }
+			);
+
+			return [userWithHighestTotal];
+		},
+	},
 ];
+
+const getHighestOccurenceByIds = (array: string[]) => {
+	const counts: Record<string, number> = {};
+
+	for (const num of array) {
+		counts[num] = counts[num] ? counts[num] + 1 : 1;
+	}
+
+	return counts;
+};
+
+const getUserWithMostCorrectPollsByCategory = (
+	users: any,
+	polls: PollData[],
+	category: PollCategory
+) => {
+	const allPolls = polls.filter((poll) => poll.category === category);
+	const correctAnswers = allPolls.map((polls) => polls.correctAnswers).flat();
+
+	const voted = allPolls.map((polls) => polls.voted).flat();
+	const userIds = voted
+		.filter((vote) =>
+			correctAnswers.find((correct) => vote.answerId === correct.id)
+		)
+		.map((data) => users.find((user: any) => user.id === data.userId))
+		.map((u) => u.id);
+
+	const id = userIds.reduce((previous, current, i, arr) => {
+		return arr.filter((item) => item === previous).length >
+			arr.filter((item) => item === current).length
+			? previous
+			: current;
+	}, "");
+
+	return users.filter((user: any) => user.id === id);
+};
 
 const getUserWithMostPollsAnsweredByCategory = (
 	users: any,
