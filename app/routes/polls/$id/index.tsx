@@ -157,6 +157,7 @@ export default function PollDetail() {
 	const transition = useTransition();
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
+	const [showVotedBy, setShowVotedBy] = useState(false);
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
@@ -231,10 +232,17 @@ export default function PollDetail() {
 			currentAnswers.find((answer) => answer.id === voted.answerId)
 		);
 
-	console.log("poll detail");
 	return (
 		<section>
 			<Link to="/polls">Back to list of polls</Link>
+			{isAdmin && (
+				<input
+					type="checkbox"
+					id="votedBy"
+					onChange={() => setShowVotedBy(!showVotedBy)}
+					name="votedBy"
+				/>
+			)}
 			<AwardsBoard users={users} polls={polls} />
 			<PollStatus status={poll.status} />
 			<h3> {transformToCodeTags(poll.question)}</h3>
@@ -250,30 +258,44 @@ export default function PollDetail() {
 					{user?.uid && (
 						<ul className="choices-list">
 							{currentAnswers.map((answer, idx: number) => (
-								<li key={idx} className="option-answer">
-									<input
-										disabled={poll.status !== "open"}
-										type={poll.type}
-										id={answer.id}
-										onChange={isChecked}
-										// checked={isDefaultChecked(answer)}
-										name="answer"
-										value={answer.value}
-									/>
+								<>
+									<li key={idx} className="option-answer">
+										<input
+											disabled={poll.status !== "open"}
+											type={poll.type}
+											id={answer.id}
+											onChange={isChecked}
+											// checked={isDefaultChecked(answer)}
+											name="answer"
+											value={answer.value}
+										/>
 
-									<label htmlFor={answer.id}>
-										{answer.blockType === "code" ? (
-											<pre>{answer.value}</pre>
-										) : (
-											<span className="text-question-answer">
-												{transformToCodeTags(
-													answer.value,
-													idx
-												)}
-											</span>
-										)}
-									</label>
-								</li>
+										<label htmlFor={answer.id}>
+											{answer.blockType === "code" ? (
+												<pre>{answer.value}</pre>
+											) : (
+												<span className="text-question-answer">
+													{transformToCodeTags(
+														answer.value,
+														idx
+													)}
+												</span>
+											)}
+										</label>
+									</li>
+									{showVotedBy && isAdmin && (
+										<>
+											voted by:{" "}
+											{getVotesFromAllUsers(
+												answer.id
+											).map((user) => (
+												<strong key={user.id}>
+													{user.email}{" "}
+												</strong>
+											))}
+										</>
+									)}
+								</>
 							))}
 						</ul>
 					)}
@@ -330,7 +352,7 @@ export default function PollDetail() {
 									votes
 								</span>
 
-								{isAdmin && (
+								{showVotedBy && isAdmin && (
 									<>
 										voted by:{" "}
 										{getVotesFromAllUsers(answer.id).map(
