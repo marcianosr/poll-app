@@ -247,35 +247,36 @@ export default function PollDetail() {
 						</span>
 					)}
 					{poll.codeBlock && <pre>{poll.codeBlock}</pre>}
-					<ul className="choices-list">
-						{currentAnswers.map((answer, idx: number) => (
-							<li key={idx} className="option-answer">
-								<input
-									disabled={poll.status !== "open"}
-									type={poll.type}
-									id={answer.id}
-									onChange={isChecked}
-									// checked={isDefaultChecked(answer)}
-									name="answer"
-									value={answer.value}
-								/>
+					{user?.uid && (
+						<ul className="choices-list">
+							{currentAnswers.map((answer, idx: number) => (
+								<li key={idx} className="option-answer">
+									<input
+										disabled={poll.status !== "open"}
+										type={poll.type}
+										id={answer.id}
+										onChange={isChecked}
+										// checked={isDefaultChecked(answer)}
+										name="answer"
+										value={answer.value}
+									/>
 
-								<label htmlFor={answer.id}>
-									{answer.blockType === "code" ? (
-										<pre>{answer.value}</pre>
-									) : (
-										<span className="text-question-answer">
-											{transformToCodeTags(
-												answer.value,
-												idx
-											)}
-										</span>
-									)}
-								</label>
-							</li>
-						))}
-					</ul>
-
+									<label htmlFor={answer.id}>
+										{answer.blockType === "code" ? (
+											<pre>{answer.value}</pre>
+										) : (
+											<span className="text-question-answer">
+												{transformToCodeTags(
+													answer.value,
+													idx
+												)}
+											</span>
+										)}
+									</label>
+								</li>
+							))}
+						</ul>
+					)}
 					{user && (
 						<button
 							disabled={
