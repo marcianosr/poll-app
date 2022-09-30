@@ -12,6 +12,7 @@ export type NewPollType = {
 	blockType?: BlockType;
 	placeholder?: string;
 	value?: string;
+	autoFocus?: boolean;
 };
 export type CorrectAnswerType = {
 	id: string;
@@ -68,7 +69,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 	};
 
 	const onCMDAndEnterPressed = (e: React.KeyboardEvent) => {
-		if (e.metaKey && e.key === "Enter") addField();
+		if (e.key === "Enter") addField();
 	};
 
 	const updatePollStatus = () =>
@@ -121,6 +122,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
+											autoFocus={true}
 											onKeyDown={(e) =>
 												onCMDAndEnterPressed(e)
 											}
@@ -176,6 +178,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 										></textarea>
 									)}
 									<button
+										type="button"
 										onClick={(e: React.MouseEvent) => {
 											e.preventDefault();
 
