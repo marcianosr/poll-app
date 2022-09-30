@@ -84,6 +84,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 						name="question"
 						defaultValue={poll?.question}
 						className="question"
+						autoFocus
 					/>
 
 					<input
