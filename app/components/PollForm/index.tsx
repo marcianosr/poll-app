@@ -44,6 +44,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 			blockType: "text",
 			placeholder: "Add option",
 			value: "",
+			autoFocus: false,
 		},
 	]);
 
@@ -57,13 +58,17 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	const addField = () => {
 		setFields([
-			...fields,
+			...fields.map((field) => ({
+				...field,
+				autoFocus: false,
+			})),
 			{
 				id: uuidv4(),
 				type: "radio",
 				blockType: "text",
 				placeholder: `Add option`,
 				value: "",
+				autoFocus: true,
 			},
 		]);
 	};
@@ -72,6 +77,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 		if (e.key === "Enter") addField();
 	};
 
+	console.log(fields);
 	const updatePollStatus = () =>
 		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
 
@@ -122,7 +128,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 											name={`answer-${field.id}`}
 											id={field.id}
 											value={field.value}
-											autoFocus={true}
+											autoFocus={field.autoFocus}
 											onKeyDown={(e) =>
 												onCMDAndEnterPressed(e)
 											}
@@ -300,3 +306,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 };
 
 export default PollForm;
+function useRef() {
+	throw new Error("Function not implemented.");
+}
