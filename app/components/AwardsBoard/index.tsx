@@ -210,12 +210,17 @@ const getUserWithMostCorrectPollsByCategory = (
 	const correctAnswers = allPolls.map((polls) => polls.correctAnswers).flat();
 
 	const voted = allPolls.map((polls) => polls.voted).flat();
+
 	const userIds = voted
 		.filter((vote) =>
 			correctAnswers.find((correct) => vote.answerId === correct.id)
 		)
 		.map((data) => users.find((user: any) => user.id === data.userId))
-		.map((u) => u.id);
+		// ! Inspect this .filter later as why it is needed.
+		// ! Remove: and update local database users
+		.filter((u) => u)
+		.map((u) => u.id)
+		.filter((u) => u);
 
 	const id = userIds.reduce((previous, current, i, arr) => {
 		return arr.filter((item) => item === previous).length >

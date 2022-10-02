@@ -1,0 +1,92 @@
+{
+	"answers": [
+		{
+			"type": "radio",
+			"blockType": "text",
+			"placeholder": "Add option",
+			"value": "Python",
+			"id": "eioozak-ojnab"
+		},
+		{
+			"blockType": "text",
+			"id": "6dfea380-fa66-4816-b3ac-ba39c4c8b03d",
+			"placeholder": "Add option",
+			"value": "Java",
+			"type": "radio"
+		},
+		{
+			"type": "radio",
+			"blockType": "text",
+			"placeholder": "Add option",
+			"value": "NodeJS",
+			"id": "882f53a4-4eca-4d02-bdff-214d263c4e09"
+		},
+		{
+			"placeholder": "Add option",
+			"value": "Anders",
+			"type": "radio",
+			"id": "8519697f-be55-4f9e-ac92-71b038941a6e",
+			"blockType": "text"
+		}
+	],
+	"type": "checkbox",
+	"correctAnswers": [
+		{
+			"id": "8519697f-be55-4f9e-ac92-71b038941a6e",
+			"value": "Anders"
+		},
+		{
+			"id": "882f53a4-4eca-4d02-bdff-214d263c4e09",
+			"value": "NodeJS"
+		},
+		{
+			"value": "Java",
+			"id": "6dfea380-fa66-4816-b3ac-ba39c4c8b03d"
+		},
+		{
+			"value": "Python",
+			"id": "eioozak-ojnab"
+		}
+	],
+	"status": "open",
+	"pollNumber": -1,
+	"openingTime": 1664439521170,
+	"id": "614007ca-0571-4e0c-a085-6c46623430ce",
+	"question": "At Kabisa, our goals are Big Hairy and Audacious, what programming language would you like to learn that'll strengthen your programming basis? ",
+	"category": "miscellaneous",
+	"codeBlock": "",
+	"voted": [
+		{
+			"userId": "slsLjDE5GoX9LKWWdiFQcapsFTe2",
+			"answerId": "6dfea380-fa66-4816-b3ac-ba39c4c8b03d"
+		},
+		{
+			"answerId": "eioozak-ojnab",
+			"userId": "2ROhklZ9C8MEOQTSLgsPCPFZpYn2"
+		},
+		{
+			"userId": "kfrkjsbashYfl1sD2PgVGXcpND63",
+			"answerId": "8519697f-be55-4f9e-ac92-71b038941a6e"
+		},
+		{
+			"answerId": "eioozak-ojnab",
+			"userId": "rj0GlCo7MtdVGg28EphTGJ3oTC22"
+		},
+		{
+			"answerId": "6dfea380-fa66-4816-b3ac-ba39c4c8b03d",
+			"userId": "rj0GlCo7MtdVGg28EphTGJ3oTC22"
+		},
+		{
+			"answerId": "882f53a4-4eca-4d02-bdff-214d263c4e09",
+			"userId": "rj0GlCo7MtdVGg28EphTGJ3oTC22"
+		},
+		{
+			"userId": "43jAtZTiVLcsgbrAovEKS7aT9R42",
+			"answerId": "eioozak-ojnab"
+		},
+		{
+			"userId": "BHzKKTQWX1fthHkpcCR30lNiYwN2",
+			"answerId": "8519697f-be55-4f9e-ac92-71b038941a6e"
+		}
+	]
+}

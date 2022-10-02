@@ -1,7 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useAuth } from "~/providers/AuthProvider";
-import { createDevData } from "~/utils/dev";
+import { createDevData, createKabisaPolls } from "~/utils/dev";
 import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
@@ -19,6 +19,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	// ! Enable when you want local DB population
 	// await createDevData();
+	// await createKabisaPolls();
 
 	return { polls: data, docId: ids };
 };
