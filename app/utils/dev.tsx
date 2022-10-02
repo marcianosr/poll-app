@@ -6,8 +6,15 @@ import { getUsers } from "./user";
 
 import mockPolls from "~/fixtures/polls.json";
 import mockUsers from "~/fixtures/users.json";
+import kabisa from "../fixtures/kabisa.json";
 
 // ! DEVELOPMENT INTENDED DATA POPULATION
+
+export async function createKabisaPolls() {
+	// await addDoc(collection(db, "kabisa"), kabisa);
+	await setDoc(doc(db, "kabisa", "60y9Z3Nl1HENGoWaN576"), kabisa);
+	console.info("created kabisa!");
+}
 
 export async function createPollsDev(data: any) {
 	await addDoc(collection(db, "polls"), data);
@@ -27,7 +34,7 @@ export const createDevData = async () => {
 	console.log("create dev data");
 
 	// ! only used when connected to PROD
-	writeCurrentProdDataToFile(users, polls);
+	// writeCurrentProdDataToFile(users, polls);
 
 	if (process.env.NODE_ENV === "development") {
 		console.log("create");
@@ -37,6 +44,7 @@ export const createDevData = async () => {
 };
 
 const writeCurrentProdDataToFile = (users, polls) => {
+	console.log("wriote");
 	fs.writeFileSync("~/app/fixtures/polls.json", JSON.stringify(polls));
 	// fs.writeFileSync("~/app/fixtures/users.json", JSON.stringify(users));
 };

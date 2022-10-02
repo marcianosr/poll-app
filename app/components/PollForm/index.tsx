@@ -77,7 +77,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 		if (e.key === "Enter") addField();
 	};
 
-	console.log(fields);
 	const updatePollStatus = () =>
 		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
 
