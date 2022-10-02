@@ -217,6 +217,7 @@ const getUserWithMostCorrectPollsByCategory = (
 		)
 		.map((data) => users.find((user: any) => user.id === data.userId))
 		// ! Inspect this .filter later as why it is needed.
+		// ! Remove: and update local database users
 		.filter((u) => u)
 		.map((u) => u.id)
 		.filter((u) => u);
