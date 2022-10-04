@@ -118,7 +118,8 @@ export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const polls = await getAllPolls();
 	const users = await getUsers();
-	const openedPollNumber = await getAmountOfClosedPolls();
+	const amountOfClosedPolls = await getAmountOfClosedPolls();
+	const openedPollNumber = amountOfClosedPolls + 2; // ! Closed polls + current open poll + ??
 
 	const getUserIdsByVote = data?.voted
 		.map((votes: Voted) => votes.userId)
