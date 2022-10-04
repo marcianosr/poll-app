@@ -1,6 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
+import PollStatistics from "~/components/PollStatistics";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
 import {
@@ -47,6 +48,7 @@ export default function AllPolls() {
 			{isAdmin ? (
 				<>
 					<h1>All polls</h1>
+					<PollStatistics polls={polls} />
 
 					<button type="button" onClick={() => filterPollsByStatus()}>
 						All

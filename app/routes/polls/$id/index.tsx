@@ -27,6 +27,7 @@ import {
 	AwardsBoard,
 	links as awardsBoardLinks,
 } from "~/components/AwardsBoard";
+import PollStatistics from "~/components/PollStatistics";
 
 type ScreenState = "poll" | "results";
 
@@ -397,6 +398,7 @@ export default function PollDetail() {
 					</ul>
 				</>
 			)}
+			<PollStatistics polls={polls} />
 			<small>No. {poll.pollNumber}</small>
 		</section>
 	);
