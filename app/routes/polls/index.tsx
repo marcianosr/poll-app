@@ -1,8 +1,14 @@
 import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
-import { getAllPolls, getDocumentPollIds, PollData } from "~/utils/polls";
+import {
+	getAllPolls,
+	getDocumentPollIds,
+	PollData,
+	PollStatus,
+} from "~/utils/polls";
 import { getAdminUser } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
 
@@ -27,6 +33,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function AllPolls() {
 	const { polls, docId } = useLoaderData();
 	const { isAdmin } = useAuth();
+	const [renderedPolls, setRenderedPolls] = useState(polls);
+
+	const filterPollsByStatus = (category?: PollStatus) => {
+		const filteredPolls = category
+			? polls.filter((poll: PollData) => poll.status === category)
+			: polls;
+		setRenderedPolls(filteredPolls);
+	};
 
 	return (
 		<section>
@@ -34,9 +48,25 @@ export default function AllPolls() {
 				<>
 					<h1>All polls</h1>
 
+					<button type="button" onClick={() => filterPollsByStatus()}>
+						All
+					</button>
+					<button
+						type="button"
+						onClick={() => filterPollsByStatus("new")}
+					>
+						New {}
+					</button>
+					<button
+						type="button"
+						onClick={() => filterPollsByStatus("needs-revision")}
+					>
+						Need revision
+					</button>
+
 					<Link to="/polls/new">Create new poll</Link>
 					<ul>
-						{polls.map((poll: PollData, idx: number) => (
+						{renderedPolls.map((poll: PollData, idx: number) => (
 							<li key={poll.id}>
 								<p>
 									#{poll.pollNumber} -{" "}
