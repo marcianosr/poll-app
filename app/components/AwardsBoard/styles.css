@@ -26,3 +26,20 @@
 .small-text {
 	font-size: 0.75rem;
 }
+
+.photo-container {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.photo {
+	width: 45px;
+	height: 45px;
+}
+
+.title {
+	margin: 0;
+}
