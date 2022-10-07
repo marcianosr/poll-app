@@ -1,4 +1,4 @@
-import { AwardsBoard } from "~/components/AwardsBoard";
+import { Awards } from "~/components/Awards";
 
 export default function Index() {
 	return (

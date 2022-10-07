@@ -1,13 +1,9 @@
 import classNames from "classnames";
 import React, { FC, Fragment, useState } from "react";
 import { PollCategory, PollData } from "~/utils/polls";
-import { Block, links as blockLinks } from "../Block";
 import styles from "./styles.css";
 
-export const links = () => [
-	...blockLinks(),
-	{ rel: "stylesheet", href: styles },
-];
+export const links = () => [{ rel: "stylesheet", href: styles }];
 
 const awards = (users: any, polls: PollData[]) => [
 	{
@@ -291,8 +287,40 @@ export type Award = {
 	description: string;
 };
 
-export const AwardsBoard: FC<Props> = ({ users, polls }) => {
-	return <section></section>;
+export const Awards: FC<Props> = ({ users, polls }) => {
+	return (
+		<section className="awards">
+			{awards(users, polls)
+				.filter((award) => award.type === "award")
+				.map((award) => {
+					console.log(award);
+					return (
+						<Fragment key={award.name}>
+							<div
+								className={classNames({
+									locked:
+										award.requirements(users).length === 0,
+								})}
+							>
+								<h3 className="subtitle">{award.name}</h3>
+								<small>{award.description}</small>
+								{award.requirements(users).map((user: any) => {
+									return (
+										<small className="owned-by">
+											Owned by{" "}
+											<span className="username">
+												{user.displayName}
+											</span>
+										</small>
+									);
+									return <span>img</span>;
+								})}
+							</div>
+						</Fragment>
+					);
+				})}
+		</section>
+	);
 };
 
 export const Ranks: FC<Props> = ({ users, polls }) => (
@@ -302,8 +330,12 @@ export const Ranks: FC<Props> = ({ users, polls }) => (
 			.map((award) => {
 				return (
 					<Fragment key={award.name}>
-						<div>
-							<h3 className="title">{award.name}</h3>
+						<div
+							className={classNames({
+								locked: award.requirements(users).length === 0,
+							})}
+						>
+							<h3 className="subtitle">{award.name}</h3>
 							<small>{award.description}</small>
 						</div>
 						<section className="photo-container">
