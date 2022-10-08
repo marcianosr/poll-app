@@ -1,19 +1,56 @@
 :root {
 	--primary-black: #212424;
-	--secondary-black: #3d3e3e;
+	--secondary-black: #2a2a2a;
 	--text-color: #e1e1e1;
 	--primary-border-color: #cecdcc;
+
+	--saffron: #f4c430;
+	--fuchsia: #ff00ff;
+	--celadon: #ace1af;
+	--vermillion: #e34234;
+	--cerulean: #2a52be;
+	--lavender: #e6e6fa;
+
+	--theme-color: var(--saffron);
+
+	--default-font: "Fira Code";
+}
+
+.javascript {
+	--theme-color: var(--saffron);
+	--theme-color-20: #f4c43020;
+}
+
+.typescript {
+	--theme-color: var(--lavender);
+	--theme-color-20: #e6e6fa20;
+}
+
+.css {
+	--theme-color: var(--cerulean);
+	--theme-color-20: #2a52be20;
+}
+
+.react {
+	--theme-color: var(--celadon);
+	--theme-color-20: #ace1af20;
+}
+
+.html {
+	--theme-color: var(--vermillion);
+	--theme-color-20: #e3423420;
+}
+
+.general-frontend {
+	--theme-color: var(--fuchsia);
+	--theme-color-20: #ff00ff20;
 }
 
 body {
 	background-color: var(--primary-black);
-	color: var(--text-color);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-	width: 1.25rem;
-	height: 1.25rem;
+	font-family: var(--default-font);
+	max-width: 1620px;
+	margin: 0 auto;
 }
 
 pre {
@@ -33,4 +70,16 @@ code {
 
 button {
 	height: 2rem;
+}
+
+h1,
+h2 {
+	text-shadow: 1px 3px 0px rgb(6 6 6);
+}
+
+h3,
+p,
+small,
+span {
+	text-shadow: 1px 2px 0px rgb(6 6 6);
 }

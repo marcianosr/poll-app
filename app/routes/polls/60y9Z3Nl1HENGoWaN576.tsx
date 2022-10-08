@@ -20,7 +20,7 @@ import {
 	updateKabisa,
 } from "~/utils/polls";
 import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
-import PollStatus from "~/components/PollStatus";
+import { PollStatusInfo } from "~/components/PollStatusInfo";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
@@ -174,7 +174,7 @@ export default function PollDetail() {
 					name="votedBy"
 				/>
 			)}
-			<PollStatus status={poll.status} />
+			<PollStatusInfo status={poll.status} />
 			<h3>{poll.question}</h3>
 			<h1>Kabisa poll</h1>
 			{screenState === "poll" && (

@@ -1,0 +1,41 @@
+.photo-container {
+	display: flex;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.photo {
+	width: 45px;
+	height: 45px;
+}
+
+.title {
+	margin: 0;
+}
+
+.awards-container {
+	margin-top: 3rem;
+}
+
+.locked {
+	opacity: 0.2;
+}
+
+.awards {
+	margin-top: 2rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 250px);
+	gap: 3rem;
+}
+
+.username {
+	font-weight: 700;
+	font-size: 1rem;
+}
+
+.owned-by {
+	display: block;
+	margin-top: 1rem;
+}

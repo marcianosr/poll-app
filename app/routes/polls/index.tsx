@@ -44,7 +44,7 @@ export default function AllPolls() {
 	};
 
 	return (
-		<section>
+		<section style={{ color: "white" }}>
 			{isAdmin ? (
 				<>
 					<h1>All polls</h1>

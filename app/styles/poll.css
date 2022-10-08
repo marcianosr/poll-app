@@ -2,7 +2,15 @@
 	display: flex;
 	align-items: center;
 	gap: 1rem;
-	/* background: var(--secondary-black); */
+}
+
+.pollIsClosed {
+	opacity: 0.2;
+	pointer-events: none;
+}
+
+.results .option-answer:not(.selected, .correct, .incorrect) {
+	opacity: 0.2;
 }
 
 button {
@@ -14,24 +22,109 @@ button {
 .choices-list {
 	gap: 1rem;
 	display: flex;
-	flex-direction: column;
+	flex-wrap: wrap;
+	padding: 0;
 }
 
 .correct > *:first-child {
-	background: rgba(0, 128, 0, 0.352);
+	--correct: #00ff38;
+	--correct-20: #00ff3820;
+	background: var(--correct-20);
+	color: var(--correct);
+	border: 1px solid var(--correct);
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
 }
 
 .incorrect > *:first-child {
-	background: rgba(128, 0, 0, 0.352);
+	--incorrect: #dc143c;
+	--incorrect-20: #dc143c20;
+	background: var(--incorrect-20);
+	color: var(--incorrect);
+	border: 1px solid var(--incorrect);
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
 }
 
 .text-question-answer {
-	font-size: 1.25rem;
+	font-size: 1rem;
 	display: flex;
 	align-items: center;
+	background: #313131;
+	border: 1px dashed var(--theme-color);
+	color: white;
+	padding: 1rem;
+	cursor: pointer;
+	transition: color 300ms, border 300ms, background 300ms;
 }
 
-.text-question-answer {
-	background: #313131;
+.text-question-answer:hover:not(.result-vote) {
+	background-color: var(--theme-color-20);
+}
+
+.input {
+	display: none;
+}
+
+.input:checked + label .text-question-answer {
+	border: 1px solid var(--theme-color);
+	color: var(--theme-color);
+	background-color: var(--theme-color-20);
+	font-weight: 700;
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
+	text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+.page-container {
+	color: var(--theme-color);
+
+	display: grid;
+	grid-template-columns: 400px 1fr;
+	margin-top: 2rem;
+}
+
+.sidebar-info,
+.main-content {
+	padding: 1.25rem;
+}
+
+.main-content {
+	padding-right: 3rem;
+}
+
+.sidebar-info {
+	gap: 2.5rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.selected {
+	font-weight: 700;
+}
+
+.amount-of-votes {
+	font-size: 0.75rem;
+	margin-top: 0.5rem;
+}
+
+.result-vote {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.your-votes {
+	background-color: var(--secondary-black);
 	padding: 1rem;
+	display: flex;
+	border: 1px solid var(--theme-color);
+}
+
+.title {
+	flex: 1 1 100%;
+	margin: 0;
+	font-size: 2rem;
+}
+
+.subtitle {
+	font-size: 1rem;
+	margin: 0;
 }

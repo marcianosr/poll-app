@@ -83,7 +83,7 @@ export default function NewPoll() {
 	}
 
 	return (
-		<section>
+		<section style={{ color: "white" }}>
 			<Link to="/polls">Back to list of polls</Link>
 
 			<h1>Poll #{totalPolls + 1}</h1>
