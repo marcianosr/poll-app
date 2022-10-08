@@ -80,7 +80,7 @@ export default function EditPoll() {
 	}
 	// console.log("edit", poll);
 	return (
-		<section>
+		<section style={{ color: "white" }}>
 			<Link to="/polls">Back to list of polls</Link>
 
 			<h1>Edit poll #{poll.pollNumber}</h1>
