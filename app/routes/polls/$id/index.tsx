@@ -339,30 +339,28 @@ export default function PollDetail() {
 																{answer.value}
 															</span>
 														)}
-														<p>
-															{showVotedBy &&
-																isAdmin && (
-																	<>
-																		{getVotesFromAllUsers(
-																			answer.id
-																		).map(
-																			(
-																				user
-																			) => (
-																				<strong
-																					key={
-																						user.id
-																					}
-																				>
-																					{
-																						user.email
-																					}{" "}
-																				</strong>
-																			)
-																		)}
-																	</>
-																)}
-														</p>
+														{showVotedBy &&
+															isAdmin && (
+																<p>
+																	{getVotesFromAllUsers(
+																		answer.id
+																	).map(
+																		(
+																			user
+																		) => (
+																			<strong
+																				key={
+																					user.id
+																				}
+																			>
+																				{
+																					user.email
+																				}{" "}
+																			</strong>
+																		)
+																	)}
+																</p>
+															)}
 													</label>
 												</li>
 											</>
