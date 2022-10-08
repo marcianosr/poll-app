@@ -53,14 +53,6 @@ body {
 	margin: 0 auto;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
-	/* visibility: hidden; */
-	display: none;
-	/* height: 0; */
-	/* width: 0; */
-}
-
 pre {
 	padding: 1.5rem;
 }

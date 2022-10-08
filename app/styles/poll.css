@@ -60,6 +60,10 @@ button {
 	background-color: var(--theme-color-20);
 }
 
+.input {
+	display: none;
+}
+
 .input:checked + label .text-question-answer {
 	border: 1px solid var(--theme-color);
 	color: var(--theme-color);

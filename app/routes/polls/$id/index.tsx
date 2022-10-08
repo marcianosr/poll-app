@@ -254,6 +254,17 @@ export default function PollDetail() {
 					openedPollNumber={openedPollNumber}
 					pollNumber={poll.pollNumber || 0}
 				/>
+				{isAdmin && (
+					<section className="eekum-bokum-oomenacka">
+						<span>Eekum Bokum Oomenacka!</span>
+						<input
+							type="checkbox"
+							id="votedBy"
+							onChange={() => setShowVotedBy(!showVotedBy)}
+							name="votedBy"
+						/>
+					</section>
+				)}
 				<section>
 					<h2 className="title">Unlocked ranks</h2>
 					<Ranks users={users} polls={polls} />
@@ -328,22 +339,32 @@ export default function PollDetail() {
 																{answer.value}
 															</span>
 														)}
+														<p>
+															{showVotedBy &&
+																isAdmin && (
+																	<>
+																		{getVotesFromAllUsers(
+																			answer.id
+																		).map(
+																			(
+																				user
+																			) => (
+																				<strong
+																					key={
+																						user.id
+																					}
+																				>
+																					{
+																						user.email
+																					}{" "}
+																				</strong>
+																			)
+																		)}
+																	</>
+																)}
+														</p>
 													</label>
 												</li>
-												{showVotedBy && isAdmin && (
-													<>
-														voted by:{" "}
-														{getVotesFromAllUsers(
-															answer.id
-														).map((user) => (
-															<strong
-																key={user.id}
-															>
-																{user.email}{" "}
-															</strong>
-														))}
-													</>
-												)}
 											</>
 										)
 									)}
@@ -427,20 +448,22 @@ export default function PollDetail() {
 												}{" "}
 												votes
 											</small>
+											<p>
+												{showVotedBy && isAdmin && (
+													<>
+														{getVotesFromAllUsers(
+															answer.id
+														).map((user) => (
+															<strong
+																key={user.id}
+															>
+																{user.email}{" "}
+															</strong>
+														))}
+													</>
+												)}
+											</p>
 										</span>
-									)}
-
-									{showVotedBy && isAdmin && (
-										<>
-											voted by:{" "}
-											{getVotesFromAllUsers(
-												answer.id
-											).map((user) => (
-												<strong key={user.id}>
-													{user.email}{" "}
-												</strong>
-											))}
-										</>
 									)}
 								</li>
 							))}
