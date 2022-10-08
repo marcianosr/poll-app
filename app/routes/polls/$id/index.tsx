@@ -29,6 +29,7 @@ import classNames from "classnames";
 import { Awards, links as awardsBoardLinks, Ranks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
+import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
 
 type ScreenState = "poll" | "results";
 
@@ -36,6 +37,7 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
 	return [
+		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
@@ -241,7 +243,11 @@ export default function PollDetail() {
 		);
 
 	return (
-		<section className="page-container">
+		<section
+			className={classNames("page-container", {
+				[poll.category]: true,
+			})}
+		>
 			<aside className="sidebar-info">
 				<PollStatusInfo
 					status={poll.status}
@@ -258,7 +264,17 @@ export default function PollDetail() {
 
 				<Question title={poll.question} />
 				{screenState === "poll" && (
-					<>
+					<section
+						className={classNames({
+							pollIsClosed: poll.status !== "open",
+						})}
+					>
+						{poll.codeBlock && (
+							<>
+								<p>Code example:</p>
+								<CodeBlock code={poll.codeBlock} />
+							</>
+						)}
 						{poll.type === "radio" ? (
 							<p>Only 1 answer can be selected</p>
 						) : (
@@ -271,7 +287,6 @@ export default function PollDetail() {
 									submit
 								</span>
 							)}
-							{poll.codeBlock && <pre>{poll.codeBlock}</pre>}
 							{user?.uid && (
 								<ul className="choices-list">
 									{currentAnswers.map(
@@ -298,15 +313,19 @@ export default function PollDetail() {
 													<label htmlFor={answer.id}>
 														{answer.blockType ===
 														"code" ? (
-															<pre>
-																{answer.value}
-															</pre>
+															<>
+																<CodeBlock
+																	withLineNumbers={
+																		false
+																	}
+																	code={
+																		answer.value
+																	}
+																/>
+															</>
 														) : (
 															<span className="text-question-answer">
-																{transformToCodeTags(
-																	answer.value,
-																	idx
-																)}
+																{answer.value}
 															</span>
 														)}
 													</label>
@@ -366,7 +385,7 @@ export default function PollDetail() {
 								defaultValue={user?.uid}
 							/>
 						</Form>
-					</>
+					</section>
 				)}
 				{screenState === "results" && (
 					<>
@@ -383,15 +402,23 @@ export default function PollDetail() {
 									})}
 								>
 									{answer.blockType === "code" ? (
-										<pre>{answer.value}</pre>
+										<div className="text-question-answer result-vote">
+											<CodeBlock
+												withLineNumbers={false}
+												code={answer.value}
+											/>
+											<small className="amount-of-votes">
+												{
+													getLengthOfAnswersById(
+														answer.id
+													).length
+												}{" "}
+												votes
+											</small>
+										</div>
 									) : (
 										<span className="text-question-answer result-vote">
-											<span>
-												{transformToCodeTags(
-													answer.value,
-													idx
-												)}
-											</span>
+											<span>{answer.value}</span>
 											<small className="amount-of-votes">
 												{
 													getLengthOfAnswersById(
@@ -436,9 +463,14 @@ export default function PollDetail() {
 									})}
 								>
 									{vote?.blockType === "code" ? (
-										<pre>{vote?.value}</pre>
+										<div className="text-question-answer result-vote">
+											<CodeBlock
+												code={vote.value}
+												withLineNumbers={false}
+											/>
+										</div>
 									) : (
-										<span className="text-question-answer">
+										<span className="text-question-answer result-vote">
 											{transformToCodeTags(
 												vote?.value || "",
 												idx

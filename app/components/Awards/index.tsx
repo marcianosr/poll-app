@@ -292,33 +292,28 @@ export const Awards: FC<Props> = ({ users, polls }) => {
 		<section className="awards">
 			{awards(users, polls)
 				.filter((award) => award.type === "award")
-				.map((award) => {
-					console.log(award);
-					return (
-						<Fragment key={award.name}>
-							<div
-								className={classNames({
-									locked:
-										award.requirements(users).length === 0,
-								})}
-							>
-								<h3 className="subtitle">{award.name}</h3>
-								<small>{award.description}</small>
-								{award.requirements(users).map((user: any) => {
-									return (
-										<small className="owned-by">
-											Owned by{" "}
-											<span className="username">
-												{user.displayName}
-											</span>
-										</small>
-									);
-									return <span>img</span>;
-								})}
-							</div>
-						</Fragment>
-					);
-				})}
+				.map((award) => (
+					<Fragment key={award.name}>
+						<div
+							className={classNames({
+								locked: award.requirements(users).length === 0,
+							})}
+						>
+							<h3 className="subtitle">{award.name}</h3>
+							<small>{award.description}</small>
+							{award.requirements(users).map((user: any) => {
+								return (
+									<small key={user.id} className="owned-by">
+										Owned by{" "}
+										<span className="username">
+											{user.displayName}
+										</span>
+									</small>
+								);
+							})}
+						</div>
+					</Fragment>
+				))}
 		</section>
 	);
 };
@@ -341,15 +336,13 @@ export const Ranks: FC<Props> = ({ users, polls }) => (
 						<section className="photo-container">
 							{award.requirements(users).map((user: any) => {
 								return (
-									user?.id && (
-										<img
-											className="photo"
-											key={user.id}
-											src={user.photoURL}
-											alt={`Photo of ${user.displayName}`}
-										/>
-										// <small>{user.displayName}</small>
-									)
+									<img
+										className="photo"
+										key={user.id}
+										src={user.photoURL}
+										alt={`Photo of ${user.displayName}`}
+									/>
+									// <small>{user.displayName}</small>
 								);
 							})}
 						</section>

@@ -4,9 +4,9 @@
 	gap: 1rem;
 }
 
-.option-answer input:disabled + label .text-question-answer {
+.pollIsClosed {
 	opacity: 0.2;
-	cursor: not-allowed;
+	pointer-events: none;
 }
 
 .results .option-answer:not(.selected, .correct, .incorrect) {
@@ -32,7 +32,7 @@ button {
 	background: var(--correct-20);
 	color: var(--correct);
 	border: 1px solid var(--correct);
-	box-shadow: 4px 4px 2px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
 }
 
 .incorrect > *:first-child {
@@ -41,11 +41,11 @@ button {
 	background: var(--incorrect-20);
 	color: var(--incorrect);
 	border: 1px solid var(--incorrect);
-	box-shadow: 4px 4px 2px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
 }
 
 .text-question-answer {
-	font-size: 1.25rem;
+	font-size: 1rem;
 	display: flex;
 	align-items: center;
 	background: #313131;
@@ -57,19 +57,21 @@ button {
 }
 
 .text-question-answer:hover:not(.result-vote) {
-	background-color: #f4c43020;
+	background-color: var(--theme-color-20);
 }
 
 .input:checked + label .text-question-answer {
 	border: 1px solid var(--theme-color);
 	color: var(--theme-color);
-	background-color: #f4c43020;
+	background-color: var(--theme-color-20);
 	font-weight: 700;
-	box-shadow: 4px 4px 2px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
 	text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .page-container {
+	color: var(--theme-color);
+
 	display: grid;
 	grid-template-columns: 400px 1fr;
 	margin-top: 2rem;
@@ -109,6 +111,7 @@ button {
 	background-color: var(--secondary-black);
 	padding: 1rem;
 	display: flex;
+	border: 1px solid var(--theme-color);
 }
 
 .title {
@@ -119,4 +122,5 @@ button {
 
 .subtitle {
 	font-size: 1rem;
+	margin: 0;
 }

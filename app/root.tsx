@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import {
 	Links,
 	LiveReload,
@@ -6,10 +6,12 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 } from "@remix-run/react";
 import Header from "./components/Header";
 import { AuthProvider } from "./providers/AuthProvider";
 import styles from "~/styles/shared.css";
+import { getPollById } from "./utils/polls";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -17,7 +19,7 @@ export function links() {
 
 export const meta: MetaFunction = () => ({
 	charset: "utf-8",
-	title: "New Remix App",
+	title: "Frontend poll app",
 	viewport: "width=device-width,initial-scale=1",
 });
 
