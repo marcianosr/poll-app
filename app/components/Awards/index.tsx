@@ -304,7 +304,7 @@ export const Awards: FC<Props> = ({ users, polls }) => {
 							{award
 								.requirements(users)
 								// Remove users who participated in "kabisa" poll
-								.filter((user) => user.polls.total === 1)
+								.filter((user) => user.polls.total === 0)
 								.map((user: any) => {
 									return (
 										<small
