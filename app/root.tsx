@@ -8,13 +8,13 @@ import {
 	ScrollRestoration,
 	useLoaderData,
 } from "@remix-run/react";
-import Header from "./components/Header";
+import { Header, links as headerLinks } from "./components/Header";
 import { AuthProvider } from "./providers/AuthProvider";
 import styles from "~/styles/shared.css";
 import { getPollById } from "./utils/polls";
 
 export function links() {
-	return [{ rel: "stylesheet", href: styles }];
+	return [...headerLinks(), { rel: "stylesheet", href: styles }];
 }
 
 export const meta: MetaFunction = () => ({

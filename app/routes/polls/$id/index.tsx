@@ -287,9 +287,11 @@ export default function PollDetail() {
 							</>
 						)}
 						{poll.type === "radio" ? (
-							<p>Only 1 answer can be selected</p>
+							<h3 className="notice">
+								Only 1 answer can be selected
+							</h3>
 						) : (
-							<p>Multiple can be selected</p>
+							<h3 className="notice">Multiple can be selected</h3>
 						)}
 						<Form method="post">
 							{action?.error && (
@@ -408,7 +410,8 @@ export default function PollDetail() {
 				)}
 				{screenState === "results" && (
 					<>
-						<p>Results for poll #{openedPollNumber}</p>
+						<h3>Results for poll #{openedPollNumber}</h3>
+						<p>{responses} votes on this poll 🎉</p>
 						<ul className="choices-list results">
 							{currentAnswers.map((answer, idx) => (
 								<li
@@ -466,10 +469,9 @@ export default function PollDetail() {
 								</li>
 							))}
 						</ul>
-						<span>{responses} votes on this poll 🎉</span>
 
 						<ul className="choices-list results your-votes">
-							<h1 className="title">You voted for:</h1>
+							<p className="your-votes-title">You voted for:</p>
 
 							{getGivenVotesByUser.map((vote, idx) => (
 								<li
