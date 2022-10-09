@@ -1,6 +1,6 @@
 import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
@@ -74,7 +74,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 	};
 
 	const onCMDAndEnterPressed = (e: React.KeyboardEvent) => {
-		if (e.key === "Enter") addField();
+		if (e.metaKey && e.key === "Enter") addField();
 	};
 
 	const updatePollStatus = () =>
@@ -84,14 +84,13 @@ const PollForm: FC<Props> = ({ poll }) => {
 		<section className="container">
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
-					<input
-						type="text"
+					<textarea
 						placeholder="Question"
 						name="question"
 						defaultValue={poll?.question}
 						className="question"
 						autoFocus
-					/>
+					></textarea>
 
 					<input
 						type="hidden"
@@ -108,129 +107,138 @@ const PollForm: FC<Props> = ({ poll }) => {
 								id="codeBlock"
 								defaultValue={poll?.codeBlock}
 							></textarea>
-							{fields.map((field) => (
-								<section
-									className="answer-container"
-									key={field.id}
-								>
-									{field.blockType === "text" ? (
-										<input
-											type="text"
-											className={
-												markCorrectAnswer.find(
-													(item) =>
-														item.id === field.id
-												) && "correct"
-											}
-											placeholder={field.placeholder}
-											disabled={mode === "mark"}
-											name={`answer-${field.id}`}
-											id={field.id}
-											value={field.value}
-											autoFocus={field.autoFocus}
-											onKeyDown={(e) =>
-												onCMDAndEnterPressed(e)
-											}
-											onChange={(
-												e: React.ChangeEvent
-											) => {
-												setFields([
-													...fields.map((f) =>
-														f.id === field.id
-															? {
-																	...f,
-																	value: (
-																		e.target as HTMLInputElement
-																	).value,
-															  }
-															: f
-													),
-												]);
-											}}
-										/>
-									) : (
-										<textarea
-											className={
-												markCorrectAnswer.find(
-													(item) =>
-														item.id === field.id
-												) && "correct"
-											}
-											placeholder={field.placeholder}
-											disabled={mode === "mark"}
-											name={`answer-${field.id}`}
-											id={field.id}
-											value={field.value}
-											onKeyDown={(e) =>
-												onCMDAndEnterPressed(e)
-											}
-											onChange={(
-												e: React.ChangeEvent
-											) => {
-												setFields([
-													...fields.map((f) =>
-														f.id === field.id
-															? {
-																	...f,
-																	value: (
-																		e.target as HTMLInputElement
-																	).value,
-															  }
-															: f
-													),
-												]);
-											}}
-										></textarea>
-									)}
-									<button
-										type="button"
-										onClick={(e: React.MouseEvent) => {
-											e.preventDefault();
-
-											return setFields((prev) => {
-												return [
-													...fields.map((f, idx) =>
-														f.id === field.id
-															? {
-																	...f,
-																	blockType:
-																		prev[
-																			idx
-																		]
-																			.blockType ===
-																		"text"
-																			? "code"
-																			: ("text" as any),
-															  }
-															: f
-													),
-												];
-											});
-										}}
+							<button onClick={addField} type="button">
+								Add new field
+							</button>
+							{fields.map((field, index) => (
+								<>
+									<span>Answer {index + 1}</span>
+									<section
+										className="answer-container"
+										key={field.id}
 									>
-										Toggle {field.blockType}
-									</button>
+										{field.blockType === "text" ? (
+											<textarea
+												className={
+													markCorrectAnswer.find(
+														(item) =>
+															item.id === field.id
+													) && "correct"
+												}
+												placeholder={field.placeholder}
+												disabled={mode === "mark"}
+												name={`answer-${field.id}`}
+												id={field.id}
+												value={field.value}
+												autoFocus={field.autoFocus}
+												onKeyDown={(e) =>
+													onCMDAndEnterPressed(e)
+												}
+												onChange={(
+													e: React.ChangeEvent
+												) => {
+													setFields([
+														...fields.map((f) =>
+															f.id === field.id
+																? {
+																		...f,
+																		value: (
+																			e.target as HTMLInputElement
+																		).value,
+																  }
+																: f
+														),
+													]);
+												}}
+											></textarea>
+										) : (
+											<textarea
+												className={
+													markCorrectAnswer.find(
+														(item) =>
+															item.id === field.id
+													) && "correct"
+												}
+												placeholder={field.placeholder}
+												disabled={mode === "mark"}
+												name={`answer-${field.id}`}
+												id={field.id}
+												value={field.value}
+												onKeyDown={(e) =>
+													onCMDAndEnterPressed(e)
+												}
+												onChange={(
+													e: React.ChangeEvent
+												) => {
+													setFields([
+														...fields.map((f) =>
+															f.id === field.id
+																? {
+																		...f,
+																		value: (
+																			e.target as HTMLInputElement
+																		).value,
+																  }
+																: f
+														),
+													]);
+												}}
+											></textarea>
+										)}
+										<button
+											type="button"
+											className="toggle-code-button"
+											onClick={(e: React.MouseEvent) => {
+												e.preventDefault();
 
-									{fields.length > 1 && mode === "edit" && (
-										<DeleteButton
-											fieldId={field.id}
-											fields={fields}
-											setFields={setFields}
-										/>
-									)}
+												return setFields((prev) => {
+													return [
+														...fields.map(
+															(f, idx) =>
+																f.id ===
+																field.id
+																	? {
+																			...f,
+																			blockType:
+																				prev[
+																					idx
+																				]
+																					.blockType ===
+																				"text"
+																					? "code"
+																					: ("text" as any),
+																	  }
+																	: f
+														),
+													];
+												});
+											}}
+										>
+											Toggle {field.blockType}
+										</button>
 
-									{mode === "mark" && (
-										<MarkButton
-											markCorrectAnswer={
-												markCorrectAnswer
-											}
-											setMarkCorrectAnswer={
-												setMarkCorrectAnswer
-											}
-											field={field}
-										/>
-									)}
-								</section>
+										{fields.length > 1 &&
+											mode === "edit" && (
+												<DeleteButton
+													fieldId={field.id}
+													fields={fields}
+													setFields={setFields}
+												/>
+											)}
+
+										{mode === "mark" && (
+											<MarkButton
+												markCorrectAnswer={
+													markCorrectAnswer
+												}
+												setMarkCorrectAnswer={
+													setMarkCorrectAnswer
+												}
+												field={field}
+											/>
+										)}
+									</section>
+								</>
 							))}
 						</>
 					</>

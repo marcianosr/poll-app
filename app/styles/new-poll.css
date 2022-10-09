@@ -6,8 +6,13 @@
 	margin: 0 auto;
 	/* max-width: 1000px; */
 	display: grid;
-	border: 1px solid var(--primary-border-color);
-	padding: 2rem;
+	padding: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+	.container {
+		padding: 2rem;
+	}
 }
 
 .form {
@@ -26,6 +31,18 @@
 .answer-container {
 	display: flex;
 	gap: 1rem;
+}
+
+@media (pointer: coarse) {
+	.answer-container {
+		border: 1px solid white;
+		padding: 0.5rem;
+		flex-direction: column;
+	}
+
+	.toggle-code-button {
+		display: none;
+	}
 }
 
 .answer-container input,
