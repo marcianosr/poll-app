@@ -32,10 +32,39 @@
 
 .username {
 	font-weight: 700;
-	font-size: 1rem;
+	font-size: 1.25rem;
 }
 
 .owned-by {
-	display: block;
+	display: flex;
+	flex-direction: column;
 	margin-top: 1rem;
+	gap: 0.5rem;
+}
+
+.colored-name {
+	text-shadow: none;
+	background: linear-gradient(
+		45deg,
+		var(--cerulean) 0%,
+		var(--vermillion) 20%,
+		var(--celadon) 40%,
+		var(--fuchsia) 60%,
+		var(--saffron) 80%,
+		var(--cerulean) 100%
+	);
+	background-size: 200% auto;
+
+	background-clip: text;
+	text-fill-color: transparent;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+
+	animation: color-text-animation 6s linear infinite;
+}
+
+@keyframes color-text-animation {
+	to {
+		background-position: 200% center;
+	}
 }
