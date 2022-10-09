@@ -266,7 +266,7 @@ export default function PollDetail() {
 					</section>
 				)}
 				<section>
-					<h2 className="title">Unlocked ranks</h2>
+					<h2 className="title">Ranks</h2>
 					<Ranks users={users} polls={polls} />
 				</section>
 			</aside>
