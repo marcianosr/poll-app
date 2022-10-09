@@ -185,12 +185,32 @@ const awards = (users: any, polls: PollData[]) => [
 		requirements: (users: any) => {
 			const NUMBER_OF_POLLS_NEEDED = 7;
 			const userIds = polls
-				.map((poll) => poll.voted.map((vote) => vote.userId)[0])
+				.map((poll) => poll.voted.map((vote) => vote.userId))
 				.filter((a) => a);
 
-			const [id] = Object.entries(getHighestOccurenceByIds(userIds))
+			const getFirst = userIds.map((id) => id[0]).filter((a) => a);
+
+			const [id] = Object.entries(getHighestOccurenceByIds(getFirst))
 				.filter(([key, value]) => value >= NUMBER_OF_POLLS_NEEDED)
 				.flat();
+
+			return users.filter((user: any) => user.id === id);
+		},
+	},
+	{
+		name: "Lucky number 7",
+		type: "award",
+		description: "Answered polls as 7th the most",
+		requirements: (users: any) => {
+			const userIds = polls
+				.map((poll) => poll.voted.map((vote) => vote.userId))
+				.filter((a) => a);
+
+			const getSeventh = userIds.map((id) => id[6]).filter((a) => a);
+
+			const [id] = Object.entries(
+				getHighestOccurenceByIds(getSeventh)
+			).flat();
 
 			return users.filter((user: any) => user.id === id);
 		},
