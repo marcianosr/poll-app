@@ -84,14 +84,13 @@ const PollForm: FC<Props> = ({ poll }) => {
 		<section className="container">
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
-					<input
-						type="text"
+					<textarea
 						placeholder="Question"
 						name="question"
 						defaultValue={poll?.question}
 						className="question"
 						autoFocus
-					/>
+					></textarea>
 
 					<input
 						type="hidden"
@@ -114,8 +113,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 									key={field.id}
 								>
 									{field.blockType === "text" ? (
-										<input
-											type="text"
+										<textarea
 											className={
 												markCorrectAnswer.find(
 													(item) =>
@@ -147,7 +145,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 													),
 												]);
 											}}
-										/>
+										></textarea>
 									) : (
 										<textarea
 											className={
