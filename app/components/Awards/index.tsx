@@ -11,7 +11,7 @@ const awards = (users: any, polls: PollData[]) => [
 		type: "rank",
 		description: "Voted less than 7 times in total",
 		requirements: (users: any) => {
-			return users.filter((user: any) => user.polls.total < 7);
+			return users.filter((user: any) => user.polls.total <= 7);
 		},
 	},
 	{
