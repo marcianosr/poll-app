@@ -312,7 +312,7 @@ export const Awards: FC<Props> = ({ users, polls }) => {
 											className="owned-by"
 										>
 											Owned by{" "}
-											<span className="username">
+											<span className="username colored-name">
 												{user.displayName}
 											</span>
 										</small>
