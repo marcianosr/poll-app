@@ -266,7 +266,7 @@ export default function PollDetail() {
 					</section>
 				)}
 				<section>
-					<h2 className="title">Unlocked ranks</h2>
+					<h2 className="title">Ranks</h2>
 					<Ranks users={users} polls={polls} />
 				</section>
 			</aside>
@@ -339,30 +339,28 @@ export default function PollDetail() {
 																{answer.value}
 															</span>
 														)}
-														<p>
-															{showVotedBy &&
-																isAdmin && (
-																	<>
-																		{getVotesFromAllUsers(
-																			answer.id
-																		).map(
-																			(
-																				user
-																			) => (
-																				<strong
-																					key={
-																						user.id
-																					}
-																				>
-																					{
-																						user.email
-																					}{" "}
-																				</strong>
-																			)
-																		)}
-																	</>
-																)}
-														</p>
+														{showVotedBy &&
+															isAdmin && (
+																<p>
+																	{getVotesFromAllUsers(
+																		answer.id
+																	).map(
+																		(
+																			user
+																		) => (
+																			<strong
+																				key={
+																					user.id
+																				}
+																			>
+																				{
+																					user.email
+																				}{" "}
+																			</strong>
+																		)
+																	)}
+																</p>
+															)}
 													</label>
 												</li>
 											</>

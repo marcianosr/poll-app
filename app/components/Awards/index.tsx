@@ -301,16 +301,23 @@ export const Awards: FC<Props> = ({ users, polls }) => {
 						>
 							<h3 className="subtitle">{award.name}</h3>
 							<small>{award.description}</small>
-							{award.requirements(users).map((user: any) => {
-								return (
-									<small key={user.id} className="owned-by">
-										Owned by{" "}
-										<span className="username">
-											{user.displayName}
-										</span>
-									</small>
-								);
-							})}
+							{award
+								.requirements(users)
+								// Remove users who participated in "kabisa" poll
+								.filter((user) => user.polls.total === 1)
+								.map((user: any) => {
+									return (
+										<small
+											key={user.id}
+											className="owned-by"
+										>
+											Owned by{" "}
+											<span className="username">
+												{user.displayName}
+											</span>
+										</small>
+									);
+								})}
 						</div>
 					</Fragment>
 				))}
@@ -318,36 +325,43 @@ export const Awards: FC<Props> = ({ users, polls }) => {
 	);
 };
 
-export const Ranks: FC<Props> = ({ users, polls }) => (
-	<section>
-		{awards(users, polls)
-			.filter((award) => award.type === "rank")
-			.map((award) => {
-				return (
-					<Fragment key={award.name}>
-						<div
-							className={classNames({
-								locked: award.requirements(users).length === 0,
-							})}
-						>
-							<h3 className="subtitle">{award.name}</h3>
-							<small>{award.description}</small>
-						</div>
-						<section className="photo-container">
-							{award.requirements(users).map((user: any) => {
-								return (
-									<img
-										className="photo"
-										key={user.id}
-										src={user.photoURL}
-										alt={`Photo of ${user.displayName}`}
-									/>
-									// <small>{user.displayName}</small>
-								);
-							})}
-						</section>
-					</Fragment>
-				);
-			})}
-	</section>
-);
+export const Ranks: FC<Props> = ({ users, polls }) => {
+	return (
+		<section>
+			{awards(users, polls)
+				.filter((award) => award.type === "rank")
+				.map((award) => {
+					return (
+						<Fragment key={award.name}>
+							<div
+								className={classNames({
+									locked:
+										award.requirements(users).length === 0,
+								})}
+							>
+								<h3 className="subtitle">{award.name}</h3>
+								<small>{award.description}</small>
+							</div>
+							<section className="photo-container">
+								{award
+									.requirements(users)
+									// Remove users who participated in "kabisa" poll
+									.filter((user) => user.polls.total === 1)
+									.map((user: any) => {
+										return (
+											<img
+												className="photo"
+												key={user.id}
+												src={user.photoURL}
+												alt={`Photo of ${user.displayName}`}
+											/>
+											// <small>{user.displayName}</small>
+										);
+									})}
+							</section>
+						</Fragment>
+					);
+				})}
+		</section>
+	);
+};
