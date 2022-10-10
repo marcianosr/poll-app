@@ -271,7 +271,7 @@ export default function PollDetail() {
 				</section>
 			</aside>
 			<section className="main-content">
-				<Link to="/polls">Back to list of polls</Link>
+				{isAdmin && <Link to="/polls">Back to list of polls</Link>}
 
 				<Question title={poll.question} />
 				{screenState === "poll" && (
