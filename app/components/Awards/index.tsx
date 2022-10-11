@@ -208,11 +208,59 @@ const awards = (users: any, polls: PollData[]) => [
 
 			const getSeventh = userIds.map((id) => id[6]).filter((a) => a);
 
-			const [id] = Object.entries(
-				getHighestOccurenceByIds(getSeventh)
-			).flat();
+			const highestOccurence = getSeventh.reduce<any>(
+				(previous: any, current) => {
+					if (previous.filter((prev) => prev.id === current)) {
+						return;
+					}
 
-			return users.filter((user: any) => user.id === id);
+					console.log(previous);
+
+					return [...previous, { id: current, total: currCount + 1 }];
+				},
+				[]
+			);
+
+			// console.log(highestOccurence);
+
+			// const a = Math.max(...Object.entries(highestOccurence).map(o => ));
+			const sorted = Object.entries(highestOccurence)
+				.sort((a, b) => b[1] - a[1])
+				.flat();
+
+			return users.filter((user: any) => user.id === sorted[0]);
+		},
+	},
+	{
+		name: "No Hurry",
+		type: "award",
+		description: "Always the last one answering polls",
+		requirements: (users: any) => {
+			const userIds = polls
+				.map((poll) => poll.voted.map((vote) => vote.userId))
+				.filter((a) => a);
+
+			const getLast = userIds
+				.map((id) => id[id.length - 1])
+				.filter((a) => a);
+
+			const highestOccurence = getLast.reduce(
+				(previous: { [key: string]: number }, current) => {
+					const currCount = previous[current] ?? 0;
+
+					return {
+						...previous,
+						[current]: currCount + 1,
+					};
+				},
+				{}
+			);
+
+			const sorted = Object.entries(highestOccurence)
+				.sort((a, b) => (b[1] as number) - (a[1] as number))
+				.flat();
+
+			return users.filter((user: any) => user.id === sorted[0]);
 		},
 	},
 	{
