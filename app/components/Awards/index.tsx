@@ -1,11 +1,17 @@
 import classNames from "classnames";
 import React, { FC, Fragment, useState } from "react";
+import {
+	createSeason,
+	PollAwardData,
+	SeasonAwardData,
+	SeasonData,
+} from "~/utils/seasons";
 import { PollCategory, PollData } from "~/utils/polls";
 import styles from "./styles.css";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
-const awards = (users: any, polls: PollData[]) => [
+export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "Poll Newbie",
 		type: "rank",
@@ -278,6 +284,7 @@ const getUserWithMostPollsAnsweredByCategory = (
 type Props = {
 	users: any;
 	polls: PollData[];
+	seasons?: SeasonAwardData;
 };
 
 export type Award = {
@@ -285,9 +292,11 @@ export type Award = {
 	type: "award";
 	requirements: (users: any, polls: PollData[]) => string[];
 	description: string;
+	seasons: SeasonData[];
 };
 
-export const Awards: FC<Props> = ({ users, polls }) => {
+export const Awards: FC<Props> = ({ users, polls, seasons }) => {
+	console.log(seasons);
 	return (
 		<section className="awards">
 			{awards(users, polls)
