@@ -30,13 +30,17 @@ export const action: ActionFunction = async ({ request }) => {
 	const today = Date.now();
 
 	const pollsBySeason: PollAwardData[] = polls
-		.filter(
-			(poll) =>
+		.filter((poll) => {
+			if (!getLastSeason) {
+				return poll.openingTime && poll.openingTime < today;
+			}
+			return (
 				poll.openingTime &&
 				poll.openingTime < today &&
 				poll.openingTime &&
 				poll.openingTime > getLastSeason.date
-		)
+			);
+		})
 		.map((poll) => ({
 			id: poll.id,
 			voted: poll.voted,

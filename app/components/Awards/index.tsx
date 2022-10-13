@@ -284,7 +284,10 @@ const getUserWithMostPollsAnsweredByCategory = (
 type Props = {
 	users: any;
 	polls: PollData[];
-	seasons?: SeasonAwardData;
+};
+
+type AwardProps = Props & {
+	seasons: SeasonAwardData[];
 };
 
 export type Award = {
@@ -295,42 +298,47 @@ export type Award = {
 	seasons: SeasonData[];
 };
 
-export const Awards: FC<Props> = ({ users, polls, seasons }) => {
-	console.log(seasons);
+export const Awards: FC<AwardProps> = ({ users, polls, seasons }) => {
 	return (
-		<section className="awards">
-			{awards(users, polls)
-				.filter((award) => award.type === "award")
-				.map((award) => (
-					<Fragment key={award.name}>
-						<div
-							className={classNames({
-								locked: award.requirements(users).length === 0,
-							})}
-						>
-							<h3 className="subtitle">{award.name}</h3>
-							<small>{award.description}</small>
-							{award
-								.requirements(users)
-								// Remove users who participated in "kabisa" poll
-								.filter((user) => user.polls.total !== 0)
-								.map((user: any) => {
-									return (
-										<small
-											key={user.id}
-											className="owned-by"
-										>
-											Owned by{" "}
-											<span className="username colored-name">
-												{user.displayName}
-											</span>
-										</small>
-									);
+		<>
+			<section>
+				<h3 className="subtitle">Season {seasons.length + 1}</h3>
+			</section>
+			<section className="awards">
+				{awards(users, polls)
+					.filter((award) => award.type === "award")
+					.map((award) => (
+						<Fragment key={award.name}>
+							<div
+								className={classNames({
+									locked:
+										award.requirements(users).length === 0,
 								})}
-						</div>
-					</Fragment>
-				))}
-		</section>
+							>
+								<h3 className="subtitle">{award.name}</h3>
+								<small>{award.description}</small>
+								{award
+									.requirements(users)
+									// Remove users who participated in "kabisa" poll
+									.filter((user) => user.polls.total !== 0)
+									.map((user: any) => {
+										return (
+											<small
+												key={user.id}
+												className="owned-by"
+											>
+												Owned by{" "}
+												<span className="username colored-name">
+													{user.displayName}
+												</span>
+											</small>
+										);
+									})}
+							</div>
+						</Fragment>
+					))}
+			</section>
+		</>
 	);
 };
 
