@@ -33,6 +33,10 @@ export type FirebaseUserFields = {
 	displayName: string;
 	email: string;
 	photoURL: string;
+	metadata: {
+		creationTime?: string | undefined;
+		lastSignInTime?: string | undefined;
+	};
 	polls: {
 		total: number;
 		maxStreak: number;
@@ -42,7 +46,6 @@ export type FirebaseUserFields = {
 	};
 	role: "user" | "admin";
 	lastPollSubmit: number;
-	awards: [];
 };
 
 type FirebaseUser = {
@@ -77,6 +80,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 			// fetch firebase user data
 			getUserByID(googleUser?.uid).then((result) => {
+				console.log(result);
 				return setUser({
 					// ! Improve this later: Can we do this a different way?
 					...googleUser,
@@ -85,6 +89,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						displayName: result?.displayName,
 						email: result?.email,
 						photoURL: result?.photoURL,
+						metadata: {
+							...result?.metadata,
+						},
 						polls: {
 							answeredById: result?.polls.answer,
 							correct: result?.polls.correct,
@@ -94,7 +101,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						},
 						role: result?.role,
 						lastPollSubmit: result?.lastPollSubmit,
-						awards: [],
 					},
 				});
 			});
@@ -115,12 +121,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				const token = credential?.accessToken;
 				// The signed-in user info.
 				console.log("result", result);
-
 				return addUser({
 					id: result.user.uid,
 					displayName: result.user.displayName || "",
 					email: result.user.email || "",
 					photoURL: result.user.photoURL || "",
+					metadata: {
+						...result.user.metadata,
+					},
 					polls: {
 						total: 0,
 						maxStreak: 0,
@@ -130,7 +138,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					},
 					role: "user",
 					lastPollSubmit: 0,
-					awards: [],
 				});
 				// ...
 			})
