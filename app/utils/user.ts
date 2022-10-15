@@ -31,6 +31,20 @@ export const getUserByID = async (id: string) => {
 	}
 };
 
+export const getUserByEmail = async (email: string) => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+
+	const ref = collection(db, "users");
+	const getQuery = query(ref, where("email", "==", email));
+
+	const users = await getDocs(getQuery);
+
+	return users.docs[0].data();
+};
+
 export const getUsers = async () => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -67,28 +81,9 @@ export const getAdminUser = async (id: string) => {
 
 	const db = getFirestore(app);
 
-	const docRef = await doc(db, "users", id);
-	const snapshot = await getDoc(docRef);
+	const userRef = collection(db, "users");
+	const getQuery = query(userRef, where("role", "==", "admin"));
+	const users = await getDocs(getQuery);
 
-	if (!snapshot.exists) {
-		throw new Error("User doesn't exist");
-	} else {
-		return snapshot.data()?.role === "admin";
-	}
-	// const userRef = collection(serverDb, "users");
-	// const getQuery = query(userRef, where("role", "==", "admin"));
-
-	// const result = await getDocs(getQuery);
-	// return result.docs.map((item) => {
-	// 	return item.data().id === id;
-	// });
+	return users.docs[0].data();
 };
-// export const getAdminUser = async () => {
-// 	const userRef = collection(serverDb, "users");
-// 	const getQuery = query(userRef, where("role", "==", "admin"));
-
-// 	const result = await getDocs(getQuery);
-// 	return result.docs.map((item) => {
-// 		return item.data();
-// 	});
-// };
