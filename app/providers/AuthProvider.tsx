@@ -33,10 +33,6 @@ export type FirebaseUserFields = {
 	displayName: string;
 	email: string;
 	photoURL: string;
-	metadata: {
-		creationTime?: string | undefined;
-		lastSignInTime?: string | undefined;
-	};
 	polls: {
 		total: number;
 		maxStreak: number;
@@ -89,9 +85,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						displayName: result?.displayName,
 						email: result?.email,
 						photoURL: result?.photoURL,
-						metadata: {
-							...result?.metadata,
-						},
 						polls: {
 							answeredById: result?.polls.answer,
 							correct: result?.polls.correct,
@@ -126,9 +119,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					displayName: result.user.displayName || "",
 					email: result.user.email || "",
 					photoURL: result.user.photoURL || "",
-					metadata: {
-						...result.user.metadata,
-					},
 					polls: {
 						total: 0,
 						maxStreak: 0,
