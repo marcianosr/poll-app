@@ -10,7 +10,7 @@ import {
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
-import { getAdminUser, getUserByID } from "~/utils/user";
+import { getAdminUser, getUserByEmail, getUserByID } from "~/utils/user";
 
 type AuthContextState = {
 	user: (User & FirebaseUser) | null;
@@ -52,7 +52,7 @@ export async function addUser(data: FirebaseUserFields) {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-	const userExists = await getUserByID(data.id);
+	const userExists = await getUserByEmail(data.email);
 
 	const db = getFirestore(app);
 
@@ -69,13 +69,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [isAdmin, setAdmin] = React.useState(false);
 
 	useEffect(() => {
-		if (googleUser?.uid) {
-			getAdminUser(googleUser?.uid || "").then((result) => {
+		if (googleUser?.email) {
+			getAdminUser(googleUser?.email || "").then((result) => {
 				return setAdmin(!!result);
 			});
 
 			// fetch firebase user data
-			getUserByID(googleUser?.uid).then((result) => {
+			getUserByEmail(googleUser?.email).then((result) => {
 				console.log(result);
 				return setUser({
 					// ! Improve this later: Can we do this a different way?
@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				});
 			});
 		}
-	}, [googleUser?.uid]);
+	}, [googleUser?.email]);
 
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
