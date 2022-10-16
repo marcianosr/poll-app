@@ -50,6 +50,6 @@ const writeCurrentProdDataToFile = (users, polls) => {
 };
 
 const populateFirestoreWithFileData = () => {
-	// mockPolls.forEach((poll) => createPollsDev(poll));
+	mockPolls.forEach((poll) => createPollsDev(poll));
 	mockUsers.forEach((user) => addUser(user));
 };

@@ -1,17 +1,75 @@
-import { LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
+import { awards } from "~/components/Awards";
 import PollStatistics from "~/components/PollStatistics";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
 import {
 	getAllPolls,
+	getAllPollsWithIds,
 	getDocumentPollIds,
+	getPollsByOpeningTime,
 	PollData,
 	PollStatus,
+	resetVotesForPoll,
 } from "~/utils/polls";
-import { getAdminUser } from "~/utils/user";
+import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
+import { getAdminUser, getUsers } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
+
+type PollDataWithDocumentId = PollData & {
+	documentId: string;
+};
+
+export const action: ActionFunction = async ({ request }) => {
+	const polls = (await getAllPollsWithIds()) as PollDataWithDocumentId[];
+	const seasons = await getAllSeasons();
+	// Seasons are DESC
+	const getLastSeason = seasons[0];
+	const today = Date.now();
+
+	const pollsBySeason: PollAwardData[] = polls
+		.filter((poll) => {
+			if (!getLastSeason) {
+				return poll.openingTime && poll.openingTime < today;
+			}
+			return (
+				poll.openingTime &&
+				poll.openingTime < today &&
+				poll.openingTime &&
+				poll.openingTime > getLastSeason.date
+			);
+		})
+		.map((poll) => ({
+			id: poll.id,
+			voted: poll.voted,
+			documentId: poll.documentId,
+		}));
+
+	pollsBySeason.map(async (poll) => await resetVotesForPoll(poll.documentId));
+
+	const users = await getUsers();
+
+	createSeason({
+		awards: awards(users, polls)
+			.filter((award) => award.type === "award")
+			.map(({ name, description, requirements }) => ({
+				name,
+				description,
+				winner: {
+					id: requirements(users)[0]?.id || "no-winner",
+					displayName:
+						requirements(users)[0]?.displayName || "no-winner",
+				},
+			})),
+		polls: pollsBySeason,
+		season: seasons.length + 1,
+		date: today,
+	});
+
+	return { message: "Reset season!" };
+};
 
 export const loader: LoaderFunction = async ({ params }) => {
 	// const isAdmin =
@@ -48,6 +106,16 @@ export default function AllPolls() {
 			{isAdmin ? (
 				<>
 					<h1>All polls</h1>
+
+					<Form method="post">
+						<button>Save current season and reset</button>
+						<input
+							type="hidden"
+							name="season-reset"
+							readOnly
+							value="season-reset"
+						/>
+					</Form>
 					<PollStatistics polls={polls} />
 
 					<button type="button" onClick={() => filterPollsByStatus()}>

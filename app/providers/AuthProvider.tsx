@@ -37,6 +37,7 @@ export type FirebaseUserFields = {
 		total: number;
 		maxStreak: number;
 		currentStreak: number;
+		seasonStreak: number;
 		correct: number;
 		answeredById: string[];
 	};
@@ -76,7 +77,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 			// fetch firebase user data
 			getUserByEmail(googleUser?.email).then((result) => {
-				console.log(result);
 				return setUser({
 					// ! Improve this later: Can we do this a different way?
 					...googleUser,
@@ -89,6 +89,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 							answeredById: result?.polls.answer,
 							correct: result?.polls.correct,
 							currentStreak: result?.polls.currentStreak,
+							seasonStreak: result?.polls.seasonStreak,
 							maxStreak: result?.polls.maxStreak,
 							total: result?.polls.total,
 						},
@@ -123,6 +124,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 						total: 0,
 						maxStreak: 0,
 						currentStreak: 0,
+						seasonStreak: 0,
 						correct: 0,
 						answeredById: [],
 					},

@@ -139,3 +139,26 @@ export const updatePollById = async (
 
 	return snapshot;
 };
+
+export const resetVotesForPoll = async (id: string) => {
+	const snapshot = await setDoc(
+		doc(db, "polls", id),
+		{ voted: [] },
+		{
+			merge: true,
+		}
+	);
+
+	return snapshot;
+};
+
+export async function getAllPollsWithIds() {
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, orderBy("pollNumber", "desc"));
+	const querySnapshot = await getDocs(getQuery);
+
+	return querySnapshot.docs.map((item) => ({
+		...item.data(),
+		documentId: item.id,
+	}));
+}

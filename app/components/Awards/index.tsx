@@ -1,11 +1,17 @@
 import classNames from "classnames";
 import React, { FC, Fragment, useState } from "react";
+import {
+	createSeason,
+	PollAwardData,
+	SeasonAwardData,
+	SeasonData,
+} from "~/utils/seasons";
 import { PollCategory, PollData } from "~/utils/polls";
 import styles from "./styles.css";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
-const awards = (users: any, polls: PollData[]) => [
+export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "Poll Newbie",
 		type: "rank",
@@ -230,7 +236,7 @@ const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "No Hurry",
 		type: "award",
-		description: "Always the last one answering polls",
+		description: "Answering polls as last one often",
 		requirements: (users: any) => {
 			const userIds = polls
 				.map((poll) => poll.voted.map((vote) => vote.userId))
@@ -266,10 +272,23 @@ const awards = (users: any, polls: PollData[]) => [
 		requirements: (users: any) => {
 			const userWithHighestTotal = users.reduce(
 				(prev, curr) => {
-					return prev.polls.total > curr.polls.total ? prev : curr;
+					if (
+						(prev.polls?.seasonStreak || 0) ===
+						(curr.polls?.seasonStreak || 0)
+					) {
+						return {};
+					}
+
+					return (prev.polls?.seasonStreak || 0) >
+						(curr.polls?.seasonStreak || 0)
+						? prev
+						: curr;
 				},
-				{ polls: { total: 0 } }
+				{ polls: { seasonStreak: 0 } }
 			);
+
+			// When it's draw between players
+			if (Object.values(userWithHighestTotal).length === 0) return [];
 
 			return [userWithHighestTotal];
 		},
@@ -344,48 +363,59 @@ type Props = {
 	polls: PollData[];
 };
 
+type AwardProps = Props & {
+	seasons: SeasonAwardData[];
+};
+
 export type Award = {
 	name: string;
 	type: "award";
 	requirements: (users: any, polls: PollData[]) => string[];
 	description: string;
+	seasons: SeasonData[];
 };
 
-export const Awards: FC<Props> = ({ users, polls }) => {
+export const Awards: FC<AwardProps> = ({ users, polls, seasons }) => {
 	return (
-		<section className="awards">
-			{awards(users, polls)
-				.filter((award) => award.type === "award")
-				.map((award) => (
-					<Fragment key={award.name}>
-						<div
-							className={classNames({
-								locked: award.requirements(users).length === 0,
-							})}
-						>
-							<h3 className="subtitle">{award.name}</h3>
-							<small>{award.description}</small>
-							{award
-								.requirements(users)
-								// Remove users who participated in "kabisa" poll
-								.filter((user) => user.polls.total !== 0)
-								.map((user: any) => {
-									return (
-										<small
-											key={user.id}
-											className="owned-by"
-										>
-											Owned by{" "}
-											<span className="username colored-name">
-												{user.displayName}
-											</span>
-										</small>
-									);
+		<>
+			<section>
+				<h3 className="subtitle">Season {seasons.length + 1}</h3>
+			</section>
+			<section className="awards">
+				{awards(users, polls)
+					.filter((award) => award.type === "award")
+					.map((award) => (
+						<Fragment key={award.name}>
+							<div
+								className={classNames({
+									locked:
+										award.requirements(users).length === 0,
 								})}
-						</div>
-					</Fragment>
-				))}
-		</section>
+							>
+								<h3 className="subtitle">{award.name}</h3>
+								<small>{award.description}</small>
+								{award
+									.requirements(users)
+									// Remove users who participated in "kabisa" poll
+									.filter((user) => user.polls.total !== 0)
+									.map((user: any) => {
+										return (
+											<small
+												key={user.id}
+												className="owned-by"
+											>
+												Owned by{" "}
+												<span className="username colored-name">
+													{user.displayName}
+												</span>
+											</small>
+										);
+									})}
+							</div>
+						</Fragment>
+					))}
+			</section>
+		</>
 	);
 };
 

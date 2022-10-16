@@ -30,6 +30,7 @@ import { Awards, links as awardsBoardLinks, Ranks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
+import { getAllSeasons } from "~/utils/seasons";
 
 type ScreenState = "poll" | "results";
 
@@ -127,6 +128,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 	const polls = await getAllPolls();
 	const users = await getUsers();
 	const amountOfClosedPolls = await getAmountOfClosedPolls();
+	const seasons = await getAllSeasons();
 	const openedPollNumber = amountOfClosedPolls + 2; // ! Closed polls + current open poll + ??
 
 	const getUserIdsByVote = data?.voted
@@ -135,7 +137,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	const responses = new Set([...getUserIdsByVote]).size;
 
-	return { poll: data, responses, users, openedPollNumber, polls };
+	return { poll: data, responses, users, openedPollNumber, polls, seasons };
 };
 
 export const transformToCodeTags = (value: string, idx?: number) => {
@@ -160,7 +162,7 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users, openedPollNumber, polls } =
+	const { poll, responses, users, openedPollNumber, polls, seasons } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
@@ -509,7 +511,7 @@ export default function PollDetail() {
 				)}
 				<section className="awards-container">
 					<h2 className="title">Awards</h2>
-					<Awards users={users} polls={polls} />
+					<Awards users={users} polls={polls} seasons={seasons} />
 				</section>
 				{/* <PollStatistics polls={polls} /> */}
 			</section>
