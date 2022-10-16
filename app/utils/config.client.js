@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-	apiKey: "AIzaSyB1IZ5VoXshTpaEhlQWMJtPf3ysTWRAIwo",
-	authDomain: "frontend-poll-15de8.firebaseapp.com",
-	projectId: "frontend-poll-15de8",
-	storageBucket: "frontend-poll-15de8.appspot.com",
-	messagingSenderId: "12140400612",
-	appId: "1:12140400612:web:9f6354c7af4be7ab8c01f1",
-	measurementId: "G-DMJ5WR26YX",
+	apiKey: "AIzaSyA73pnN6GcTHTFhjaEuxK0svl9TChiSDUU",
+	authDomain: "polls-d8b3d.firebaseapp.com",
+	projectId: "polls-d8b3d",
+	storageBucket: "polls-d8b3d.appspot.com",
+	messagingSenderId: "994177718093",
+	appId: "1:994177718093:web:58608f76ee43b40c790904",
+	measurementId: "G-3W6P31RECN",
 };
