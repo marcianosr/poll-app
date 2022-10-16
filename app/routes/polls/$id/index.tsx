@@ -175,11 +175,13 @@ export default function PollDetail() {
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
-	const userHasVoted = poll.voted.find((voted) => voted.userId === user?.uid);
+	const userHasVoted = poll.voted.find(
+		(voted) => voted.userId === user?.firebase.id
+	);
 
 	useEffect(() => {
 		if (userHasVoted) setScreenState("results");
-	}, [user?.uid, userHasVoted]);
+	}, [user?.firebase.id, userHasVoted]);
 
 	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked && poll.type === "radio") {
@@ -189,7 +191,7 @@ export default function PollDetail() {
 				),
 				{
 					answerId: e.target.id,
-					userId: user?.uid || "empty",
+					userId: user?.firebase.id || "empty",
 				},
 			]);
 		}
@@ -199,7 +201,7 @@ export default function PollDetail() {
 				...selectedVotes,
 				{
 					answerId: e.target.id,
-					userId: user?.uid || "empty",
+					userId: user?.firebase.id || "empty",
 				},
 			]);
 		} else {
@@ -215,7 +217,7 @@ export default function PollDetail() {
 	// const isDefaultChecked = (answer: Answer) => {
 	// 	const findVotedAnswer = poll.voted
 	// 		.filter((voted) => voted.answerId === answer.id)
-	// 		.filter((voted) => voted.userId === user?.uid);
+	// 		.filter((voted) => voted.userId === user?.firebase.id);
 
 	// 	console.log("find answer", findVotedAnswer);
 	// 	return findVotedAnswer.length > 0;
@@ -239,7 +241,7 @@ export default function PollDetail() {
 	};
 	// ? For future: it would be cool if these functions happen on the server because they can be quite expensive on the frontend. UID on the server is needed
 	const getGivenVotesByUser = poll.voted
-		.filter((voted) => user?.uid === voted.userId)
+		.filter((voted) => user?.firebase.id === voted.userId)
 		.map((voted) =>
 			currentAnswers.find((answer) => answer.id === voted.answerId)
 		);
@@ -302,7 +304,7 @@ export default function PollDetail() {
 									submit
 								</span>
 							)}
-							{user?.uid && (
+							{user && (
 								<ul className="choices-list">
 									{currentAnswers.map(
 										(answer, idx: number) => (
@@ -405,7 +407,7 @@ export default function PollDetail() {
 							<input
 								type="hidden"
 								name="uid"
-								defaultValue={user?.uid}
+								defaultValue={user?.firebase.id}
 							/>
 						</Form>
 					</section>

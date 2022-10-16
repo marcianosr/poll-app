@@ -5,3 +5,5 @@ node_modules
 /public/build
 .env
 frontend-poll-15de8-afad50206847.json
+firebase-debug.log
+firestore-debug.log
