@@ -236,7 +236,7 @@ export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "No Hurry",
 		type: "award",
-		description: "Always the last one answering polls",
+		description: "Answering polls as last one often",
 		requirements: (users: any) => {
 			const userIds = polls
 				.map((poll) => poll.voted.map((vote) => vote.userId))
@@ -272,10 +272,23 @@ export const awards = (users: any, polls: PollData[]) => [
 		requirements: (users: any) => {
 			const userWithHighestTotal = users.reduce(
 				(prev, curr) => {
-					return prev.polls.total > curr.polls.total ? prev : curr;
+					if (
+						(prev.polls?.seasonStreak || 0) ===
+						(curr.polls?.seasonStreak || 0)
+					) {
+						return {};
+					}
+
+					return (prev.polls?.seasonStreak || 0) >
+						(curr.polls?.seasonStreak || 0)
+						? prev
+						: curr;
 				},
-				{ polls: { total: 0 } }
+				{ polls: { seasonStreak: 0 } }
 			);
+
+			// When it's draw between players
+			if (Object.values(userWithHighestTotal).length === 0) return [];
 
 			return [userWithHighestTotal];
 		},
