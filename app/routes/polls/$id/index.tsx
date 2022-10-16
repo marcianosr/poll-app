@@ -99,6 +99,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
+			seasonStreak: currentUser?.polls.seasonStreak + 1,
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: isEveryAnswerCorrect
 				? currentUser?.polls.correct + 1
