@@ -77,7 +77,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 			// fetch firebase user data
 			getUserByEmail(googleUser?.email).then((result) => {
-				console.log(result);
 				return setUser({
 					// ! Improve this later: Can we do this a different way?
 					...googleUser,
