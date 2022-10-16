@@ -208,22 +208,18 @@ const awards = (users: any, polls: PollData[]) => [
 
 			const getSeventh = userIds.map((id) => id[6]).filter((a) => a);
 
-			const highestOccurence = getSeventh.reduce<any>(
-				(previous: any, current) => {
-					if (previous.filter((prev) => prev.id === current)) {
-						return;
-					}
+			const highestOccurence = getSeventh.reduce(
+				(previous: { [key: string]: number }, current) => {
+					const currCount = previous[current] ?? 0;
 
-					console.log(previous);
-
-					return [...previous, { id: current, total: currCount + 1 }];
+					return {
+						...previous,
+						[current]: currCount + 1,
+					};
 				},
-				[]
+				{}
 			);
 
-			// console.log(highestOccurence);
-
-			// const a = Math.max(...Object.entries(highestOccurence).map(o => ));
 			const sorted = Object.entries(highestOccurence)
 				.sort((a, b) => b[1] - a[1])
 				.flat();
