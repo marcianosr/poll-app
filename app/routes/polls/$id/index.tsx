@@ -30,7 +30,7 @@ import { Awards, links as awardsBoardLinks, Ranks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
-import { getAllSeasons } from "~/utils/seasons";
+import { getAllSeasons, SeasonAwardData } from "~/utils/seasons";
 
 type ScreenState = "poll" | "results";
 
@@ -122,6 +122,7 @@ type LoaderData = {
 	responses: number;
 	users: any; // !TODO: type this
 	openedPollNumber: number;
+	seasons: SeasonAwardData[];
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
