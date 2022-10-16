@@ -187,9 +187,9 @@ export const awards = (users: any, polls: PollData[]) => [
 		name: "Speed Demon",
 		type: "award",
 		description:
-			"Always being the first answering polls (Can only be earned when you atleast answered the poll 7 times as first)",
+			"Always being the first answering polls (Can only be earned when you atleast answered the poll 4 times as first)",
 		requirements: (users: any) => {
-			const NUMBER_OF_POLLS_NEEDED = 7;
+			const NUMBER_OF_POLLS_NEEDED = 4;
 			const userIds = polls
 				.map((poll) => poll.voted.map((vote) => vote.userId))
 				.filter((a) => a);
