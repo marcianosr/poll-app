@@ -72,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	useEffect(() => {
 		if (googleUser?.email) {
 			getAdminUser(googleUser?.email || "").then((result) => {
-				return setAdmin(!!result);
+				return setAdmin(result[0].role === "admin");
 			});
 
 			// fetch firebase user data

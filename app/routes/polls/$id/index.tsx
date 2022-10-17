@@ -260,7 +260,7 @@ export default function PollDetail() {
 					openedPollNumber={openedPollNumber}
 					pollNumber={poll.pollNumber || 0}
 				/>
-				{/* {isAdmin && (
+				{isAdmin && (
 					<section className="eekum-bokum-oomenacka">
 						<span>Eekum Bokum Oomenacka!</span>
 						<input
@@ -270,7 +270,7 @@ export default function PollDetail() {
 							name="votedBy"
 						/>
 					</section>
-				)} */}
+				)}
 				<section>
 					<h2 className="title">Ranks</h2>
 					<Ranks users={users} polls={polls} />

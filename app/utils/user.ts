@@ -81,9 +81,10 @@ export const getAdminUser = async (id: string) => {
 
 	const db = getFirestore(app);
 
-	const userRef = collection(db, "users");
-	const getQuery = query(userRef, where("role", "==", "admin"));
-	const users = await getDocs(getQuery);
+	const ref = collection(db, "users");
+	const getQuery = query(ref, where("role", "==", "admin"));
 
-	return users.docs[0].data();
+	const querySnapshot = await getDocs(getQuery);
+
+	return querySnapshot.docs.map((item) => item.data());
 };
