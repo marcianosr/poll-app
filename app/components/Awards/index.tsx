@@ -236,7 +236,7 @@ export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "No Hurry",
 		type: "award",
-		description: "Answering polls as last one often",
+		description: "Always the last one to answer the polls",
 		requirements: (users: any) => {
 			const userIds = polls
 				.map((poll) => poll.voted.map((vote) => vote.userId))
