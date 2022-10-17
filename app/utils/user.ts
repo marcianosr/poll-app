@@ -75,16 +75,18 @@ export const updateUserById = async <T extends UpdateScore>(payload: T) => {
 	return snapshot;
 };
 
-export const getAdminUser = async (id: string) => {
+export const getAdminUser = async (email: string) => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 	const db = getFirestore(app);
 
 	const ref = collection(db, "users");
-	const getQuery = query(ref, where("role", "==", "admin"));
+	const getQueryAdminUser = query(ref, where("role", "==", "admin"));
 
-	const querySnapshot = await getDocs(getQuery);
+	const querySnapshot = await getDocs(getQueryAdminUser);
 
-	return querySnapshot.docs.map((item) => item.data());
+	return querySnapshot.docs.map((item) => {
+		return item.data().email === email;
+	})[0];
 };
