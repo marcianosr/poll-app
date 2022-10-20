@@ -31,6 +31,7 @@ import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
 import { getAllSeasons, SeasonAwardData } from "~/utils/seasons";
+import { SentByUserText } from "~/components/SentByUserText";
 
 type ScreenState = "poll" | "results";
 
@@ -280,6 +281,9 @@ export default function PollDetail() {
 				{isAdmin && <Link to="/polls">Back to list of polls</Link>}
 
 				<Question title={poll.question} />
+				{poll.sentInByUser && (
+					<SentByUserText name={poll.sentInByUser?.displayName} />
+				)}
 				{screenState === "poll" && (
 					<section
 						className={classNames({

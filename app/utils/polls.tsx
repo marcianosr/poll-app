@@ -48,6 +48,10 @@ export type PollData = {
 	voted: Voted[];
 	category: PollCategory;
 	codeBlock: string;
+	sentInByUser?: {
+		id: string;
+		displayName: string;
+	} | null;
 	openingTime?: number | null;
 };
 

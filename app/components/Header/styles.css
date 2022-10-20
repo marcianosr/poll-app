@@ -1,9 +1,7 @@
 .header {
 	color: white;
-	display: flex;
-	padding: 1.5rem;
+	padding: 0 1.5rem 1.5rem 1.5rem;
 	margin-left: 1rem;
-
 	background: var(--secondary-black);
 }
 
@@ -34,4 +32,9 @@
 .score {
 	font-size: 1.5rem;
 	font-weight: 700;
+}
+
+.suggest-poll {
+	margin-left: auto;
+	color: white;
 }
