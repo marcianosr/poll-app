@@ -159,7 +159,7 @@ export default function AllPolls() {
 								<Link to={`/polls/${docId[idx]}`}>
 									Go to poll
 								</Link>
-								{poll.sentInByUser && (
+								{!isAdmin && poll.sentInByUser && (
 									<SentByUserText
 										name={poll.sentInByUser?.displayName}
 									/>

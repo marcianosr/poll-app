@@ -298,7 +298,7 @@ export default function PollDetail() {
 				{isAdmin && <Link to="/polls">Back to list of polls</Link>}
 
 				<Question title={poll.question} />
-				{poll.sentInByUser && (
+				{!isAdmin && poll.sentInByUser && (
 					<SentByUserText name={poll.sentInByUser?.displayName} />
 				)}
 				{screenState === "poll" && (
