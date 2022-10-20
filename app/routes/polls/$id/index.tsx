@@ -37,6 +37,8 @@ import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
 import { getAllSeasons, SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 type ScreenState = "poll" | "results";
 
@@ -181,6 +183,7 @@ export default function PollDetail() {
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
+	const { width, height } = useWindowSize();
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
 	const userHasVoted = poll.voted.find(
@@ -260,6 +263,20 @@ export default function PollDetail() {
 				[poll.category]: true,
 			})}
 		>
+			{openedPollNumber === 100 && typeof window !== "undefined" && (
+				<Confetti
+					width={width}
+					height={height}
+					colors={[
+						"#f4c430",
+						"#ff00ff",
+						"#ace1af",
+						"#e34234",
+						"#2a52be",
+						"#967bb6",
+					]}
+				/>
+			)}
 			<aside className="sidebar-info">
 				<PollStatusInfo
 					status={poll.status}

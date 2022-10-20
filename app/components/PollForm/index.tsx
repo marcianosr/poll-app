@@ -248,14 +248,16 @@ const PollForm: FC<Props> = ({ poll }) => {
 						name="answers"
 						value={JSON.stringify(fields)}
 					/>
-					<input
-						type="hidden"
-						name="sentInByUser"
-						value={JSON.stringify({
-							id: user?.firebase.id,
-							displayName: user?.displayName,
-						})}
-					/>
+					{!isAdmin && (
+						<input
+							type="hidden"
+							name="sentInByUser"
+							value={JSON.stringify({
+								id: user?.firebase.id,
+								displayName: user?.displayName,
+							})}
+						/>
+					)}
 
 					<button
 						type="submit"
