@@ -26,7 +26,12 @@ import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
 import classNames from "classnames";
-import { Awards, links as awardsBoardLinks, Ranks } from "~/components/Awards";
+import {
+	Awards,
+	links as awardsBoardLinks,
+	Ranks,
+	UpcomingAwards,
+} from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
@@ -535,6 +540,11 @@ export default function PollDetail() {
 				<section className="awards-container">
 					<h2 className="title">Awards</h2>
 					<Awards users={users} polls={polls} seasons={seasons} />
+				</section>
+
+				<section className="awards-container">
+					<h2 className="title">Upcoming Awards</h2>
+					<UpcomingAwards users={users} polls={polls} />
 				</section>
 				{/* <PollStatistics polls={polls} /> */}
 			</section>

@@ -206,7 +206,7 @@ export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "Lucky number 7",
 		type: "award",
-		description: "Answered polls as 7th the most",
+		description: "Answered polls as 7th most of the time",
 		requirements: (users: any) => {
 			const userIds = polls
 				.map((poll) => poll.voted.map((vote) => vote.userId))
@@ -268,7 +268,7 @@ export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "King of the rock",
 		type: "award",
-		description: "Have the highest total polls",
+		description: "Have the highest total polls of the season",
 		requirements: (users: any) => {
 			const userWithHighestTotal = users.reduce(
 				(prev, curr) => {
@@ -291,6 +291,44 @@ export const awards = (users: any, polls: PollData[]) => [
 			if (Object.values(userWithHighestTotal).length === 0) return [];
 
 			return [userWithHighestTotal];
+		},
+	},
+	{
+		name: "Black Sheep",
+		type: "award",
+		upcoming: true,
+		description: "Being the only one voting for the correct answer",
+		requirements: (users: any) => {
+			return [];
+		},
+	},
+	{
+		name: "Jack of all-trades",
+		type: "award",
+		upcoming: true,
+		description:
+			"Participated in all poll categories but doesn't have a specialism award",
+		requirements: (users: any) => {
+			return [];
+		},
+	},
+	{
+		name: "Rock Steady",
+		type: "award",
+		upcoming: true,
+		description: "Have the highest season streak of participation in polls",
+		requirements: (users: any) => {
+			return [];
+		},
+	},
+	{
+		name: "Oracle of Seasons",
+		type: "award",
+		upcoming: true,
+		description:
+			"Have the highest season streak of participation and correct polls",
+		requirements: (users: any) => {
+			return [];
 		},
 	},
 ];
@@ -375,6 +413,26 @@ export type Award = {
 	seasons: SeasonData[];
 };
 
+export const UpcomingAwards: FC<Props> = ({ users, polls }) => {
+	return (
+		<>
+			<section className="awards">
+				{awards(users, polls)
+					.filter((award) => award.type === "award")
+					.filter((award) => award.upcoming)
+					.map((award) => (
+						<Fragment key={award.name}>
+							<div>
+								<h3 className="subtitle">{award.name}</h3>
+								<small>{award.description}</small>
+							</div>
+						</Fragment>
+					))}
+			</section>
+		</>
+	);
+};
+
 export const Awards: FC<AwardProps> = ({ users, polls, seasons }) => {
 	return (
 		<>
@@ -384,6 +442,7 @@ export const Awards: FC<AwardProps> = ({ users, polls, seasons }) => {
 			<section className="awards">
 				{awards(users, polls)
 					.filter((award) => award.type === "award")
+					.filter((award) => !award.upcoming)
 					.map((award) => (
 						<Fragment key={award.name}>
 							<div
