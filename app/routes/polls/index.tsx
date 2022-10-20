@@ -3,6 +3,7 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
 import PollStatistics from "~/components/PollStatistics";
+import { SentByUserText } from "~/components/SentByUserText";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
 import {
@@ -91,8 +92,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function AllPolls() {
 	const { polls, docId } = useLoaderData();
-	const { isAdmin } = useAuth();
+	const { user, isAdmin } = useAuth();
 	const [renderedPolls, setRenderedPolls] = useState(polls);
+	const pollsByUser = polls.filter(
+		(poll: PollData) =>
+			poll.sentInByUser && poll?.sentInByUser.id === user?.firebase.id
+	);
 
 	const filterPollsByStatus = (category?: PollStatus) => {
 		const filteredPolls = category
@@ -150,16 +155,42 @@ export default function AllPolls() {
 										</Link>
 									</span>
 								)}
+
 								<Link to={`/polls/${docId[idx]}`}>
 									Go to poll
 								</Link>
+								{poll.sentInByUser && (
+									<SentByUserText
+										name={poll.sentInByUser?.displayName}
+									/>
+								)}
 							</li>
 						))}
 					</ul>
 				</>
 			) : (
 				<>
-					<h1>Your polls answered (coming soon 🚧)</h1>
+					{/* ! Optimize this in it;s own component later to reduce firebase reads */}
+					<h1>Polls sent in by you</h1>
+
+					{pollsByUser.length > 0 ? (
+						<ul>
+							{pollsByUser.map((poll: PollData, idx: number) => (
+								<li>
+									<p>{poll.question}</p>
+									<Link to={`/polls/${docId[idx]}`}>
+										Go to poll
+									</Link>
+								</li>
+							))}
+						</ul>
+					) : (
+						<p>
+							Awww... no polls send in by you <em>yet!</em>
+						</p>
+					)}
+
+					{/* <h1>Your polls answered (coming soon 🚧)</h1> */}
 				</>
 			)}
 		</section>

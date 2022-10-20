@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import FormPoll, { BlockType, Errors } from "../../components/PollForm";
+import FormPoll, { Errors } from "../../components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
@@ -9,9 +9,7 @@ import {
 	PollData,
 	PollStatus,
 } from "~/utils/polls";
-import { getAdminUser } from "~/utils/user";
 import styles from "~/styles/new-poll.css";
-import { useAuth } from "~/providers/AuthProvider";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -31,6 +29,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const parsedAnswers = JSON.parse(answers);
 	const category = formData.get("category") as PollCategory;
 	const codeBlock = formData.get("codeBlock") as string | null;
+	const sentInByUser = formData.get("sentInByUser") as string;
 
 	const pollData: PollData = {
 		id,
@@ -43,6 +42,7 @@ export const action: ActionFunction = async ({ request }) => {
 		status,
 		category,
 		codeBlock: codeBlock || "",
+		sentInByUser: JSON.parse(sentInByUser),
 		...(status === "open" && { openingTime: Date.now() }),
 	};
 
@@ -62,6 +62,8 @@ export const action: ActionFunction = async ({ request }) => {
 		};
 
 	await createPoll(pollData);
+
+	return redirect("/polls");
 	return {
 		ok: true,
 		...pollData,
@@ -75,12 +77,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function NewPoll() {
-	const { isAdmin } = useAuth();
 	const { totalPolls } = useLoaderData();
-
-	if (!isAdmin) {
-		return <h1>404 Not Found</h1>;
-	}
 
 	return (
 		<section style={{ color: "white" }}>

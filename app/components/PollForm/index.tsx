@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
+import { useAuth } from "~/providers/AuthProvider";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -31,10 +32,11 @@ type Props = {
 };
 const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
+	const { user, isAdmin } = useAuth();
 
 	const [mode, setMode] = useState<Mode>("edit");
 	const [pollStatus, setPollStatus] = useState<PollStatus>(
-		(poll && poll?.status) || "new"
+		(poll && poll?.status) || isAdmin ? "new" : "needs-revision"
 	);
 
 	const [fields, setFields] = useState<NewPollType[]>([
@@ -77,9 +79,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 		if (e.metaKey && e.key === "Enter") addField();
 	};
 
-	const updatePollStatus = () =>
-		pollStatus === "open" ? setPollStatus("closed") : setPollStatus("open");
-
 	return (
 		<section className="container">
 			<Form method="post" className="form">
@@ -102,7 +101,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 						{action?.ok === false && <span>errors</span>}
 						<>
 							<textarea
-								placeholder="Insert code example"
+								placeholder="Insert code example (not mandatory)"
 								name="codeBlock"
 								id="codeBlock"
 								defaultValue={poll?.codeBlock}
@@ -249,6 +248,14 @@ const PollForm: FC<Props> = ({ poll }) => {
 						name="answers"
 						value={JSON.stringify(fields)}
 					/>
+					<input
+						type="hidden"
+						name="sentInByUser"
+						value={JSON.stringify({
+							id: user?.firebase.id,
+							displayName: user?.displayName,
+						})}
+					/>
 
 					<button
 						type="submit"
@@ -266,14 +273,23 @@ const PollForm: FC<Props> = ({ poll }) => {
 								? "Not accepting responses"
 								: "Accepting responses"}
 						</label>
-						<select name="status" defaultValue={pollStatus}>
-							<option value="open">open</option>
-							<option value="closed">closed</option>
-							<option value="needs-revision">
-								needs revision
-							</option>
-							<option value="new">new</option>
-						</select>
+
+						{isAdmin ? (
+							<select name="status" defaultValue={pollStatus}>
+								<option value="open">open</option>
+								<option value="closed">closed</option>
+								<option value="needs-revision">
+									needs revision
+								</option>
+								<option value="new">new</option>
+							</select>
+						) : (
+							<select name="status" defaultValue={pollStatus}>
+								<option value="needs-revision">
+									needs revision
+								</option>
+							</select>
+						)}
 					</div>
 
 					<select
@@ -313,6 +329,3 @@ const PollForm: FC<Props> = ({ poll }) => {
 };
 
 export default PollForm;
-function useRef() {
-	throw new Error("Function not implemented.");
-}
