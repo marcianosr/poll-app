@@ -294,7 +294,7 @@ export const awards = (users: any, polls: PollData[]) => [
 		},
 	},
 	{
-		name: "Black sheep",
+		name: "Black Sheep",
 		type: "award",
 		upcoming: true,
 		description: "Being the only one voting for the correct answer",
@@ -308,6 +308,25 @@ export const awards = (users: any, polls: PollData[]) => [
 		upcoming: true,
 		description:
 			"Participated in all poll categories but doesn't have a specialism award",
+		requirements: (users: any) => {
+			return [];
+		},
+	},
+	{
+		name: "Rock Steady",
+		type: "award",
+		upcoming: true,
+		description: "Have the highest season streak of participation in polls",
+		requirements: (users: any) => {
+			return [];
+		},
+	},
+	{
+		name: "Oracle of Seasons",
+		type: "award",
+		upcoming: true,
+		description:
+			"Have the highest season streak of participation and correct polls",
 		requirements: (users: any) => {
 			return [];
 		},
