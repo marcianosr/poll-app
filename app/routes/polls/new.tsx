@@ -61,9 +61,9 @@ export const action: ActionFunction = async ({ request }) => {
 			},
 		};
 
-	await createPoll(pollData);
+	// await createPoll(pollData);
 
-	return redirect("/polls");
+	// return redirect("/polls");
 	return {
 		ok: true,
 		...pollData,
