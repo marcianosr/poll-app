@@ -270,15 +270,18 @@ export const awards = (users: any, polls: PollData[]) => [
 		type: "award",
 		description: "Have the highest total polls of the season",
 		requirements: (users: any) => {
+			const u = users
+				.filter((u: any) => u.polls.seasonStreak)
+				.map((u: any) => u.polls.seasonStreak);
+
+			const areScoresEqual = !u.some(
+				(v: number, i: number) => u.indexOf(v) < i
+			);
+
+			if (!areScoresEqual) return [];
+
 			const userWithHighestTotal = users.reduce(
 				(prev, curr) => {
-					if (
-						(prev.polls?.seasonStreak || 0) ===
-						(curr.polls?.seasonStreak || 0)
-					) {
-						return {};
-					}
-
 					return (prev.polls?.seasonStreak || 0) >
 						(curr.polls?.seasonStreak || 0)
 						? prev
