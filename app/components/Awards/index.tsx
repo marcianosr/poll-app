@@ -120,7 +120,7 @@ export const awards = (users: any, polls: PollData[]) => [
 			getUserWithMostCorrectPollsByCategory(
 				users,
 				polls,
-				"general frontend"
+				"general-frontend"
 			),
 	},
 	{
@@ -180,7 +180,7 @@ export const awards = (users: any, polls: PollData[]) => [
 			getUserWithMostPollsAnsweredByCategory(
 				users,
 				polls,
-				"general frontend"
+				"general-frontend"
 			),
 	},
 	{
