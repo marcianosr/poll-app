@@ -19,7 +19,7 @@ export type PollCategory =
 	| "css"
 	| "javascript"
 	| "typescript"
-	| "general frontend"
+	| "general-frontend"
 	| "react"
 	| "miscellaneous";
 export type PollStatus = "open" | "closed" | "new" | "needs-revision";
