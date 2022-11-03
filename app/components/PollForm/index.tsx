@@ -96,6 +96,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 						name="correctAnswers"
 						defaultValue={JSON.stringify(markCorrectAnswer)}
 					/>
+					<input
+						type="url"
+						placeholder="Link to codesandbox example"
+						name="codesandboxExample"
+						defaultValue={poll?.codeSandboxExample}
+					/>
 
 					<>
 						{action?.ok === false && <span>errors</span>}

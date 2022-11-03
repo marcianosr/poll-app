@@ -30,6 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const category = formData.get("category") as PollCategory;
 	const codeBlock = formData.get("codeBlock") as string | null;
 	const sentInByUser = formData.get("sentInByUser") as string;
+	const codeSandboxExample = formData.get("codesandboxExample") as string;
 
 	const pollData: PollData = {
 		id,
@@ -42,6 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
 		status,
 		category,
 		codeBlock: codeBlock || "",
+		codeSandboxExample: codeSandboxExample || "",
 		sentInByUser: JSON.parse(sentInByUser),
 		...(status === "open" && { openingTime: Date.now() }),
 	};

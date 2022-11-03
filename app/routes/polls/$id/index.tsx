@@ -306,6 +306,13 @@ export default function PollDetail() {
 				{poll.sentInByUser && (
 					<SentByUserText name={poll.sentInByUser?.displayName} />
 				)}
+				{poll.codeSandboxExample && (
+					<iframe
+						width="100%"
+						height="500"
+						src={poll.codeSandboxExample}
+					/>
+				)}
 				{screenState === "poll" && (
 					<section
 						className={classNames({
@@ -318,6 +325,7 @@ export default function PollDetail() {
 								<CodeBlock code={poll.codeBlock} />
 							</>
 						)}
+
 						{poll.type === "radio" ? (
 							<h3 className="notice">
 								Only 1 answer can be selected
