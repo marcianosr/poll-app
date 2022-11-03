@@ -16,8 +16,6 @@ export function links() {
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
-	console.log("id:", params.id);
-
 	let formData = await request.formData();
 	let errors: Partial<Errors> = {};
 
@@ -28,10 +26,16 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const answers = formData.get("answers") as string;
 	const category = formData.get("category") as PollCategory;
 	const codeBlock = formData.get("codeBlock") as string | null;
-	const codeSandboxExample = formData.get("codesandboxExample") as string;
+	const codeSandboxExample = formData.get("codesandboxExample") as
+		| string
+		| null;
 
 	for (const [key, value] of formData.entries()) {
-		if (!value && key !== "codeBlock") errors[key] = true;
+		if (
+			(!value && key !== "codeBlock") ||
+			(!value && key !== "codesandboxExample")
+		)
+			errors[key] = true;
 	}
 
 	if (Object.keys(errors).length)
@@ -51,8 +55,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		status,
 		category,
 		codeBlock,
-		codeSandboxExample: codeSandboxExample || "",
-
+		codeSandboxExample,
 		...(status === "open" && { openingTime: Date.now() }),
 	});
 
