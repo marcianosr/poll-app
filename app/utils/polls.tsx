@@ -48,6 +48,7 @@ export type PollData = {
 	voted: Voted[];
 	category: PollCategory;
 	codeBlock: string;
+	codeSandboxExample: string;
 	sentInByUser?: {
 		id: string;
 		displayName: string;

@@ -28,6 +28,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const answers = formData.get("answers") as string;
 	const category = formData.get("category") as PollCategory;
 	const codeBlock = formData.get("codeBlock") as string | null;
+	const codeSandboxExample = formData.get("codesandboxExample") as string;
 
 	for (const [key, value] of formData.entries()) {
 		if (!value && key !== "codeBlock") errors[key] = true;
@@ -50,6 +51,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 		status,
 		category,
 		codeBlock,
+		codeSandboxExample: codeSandboxExample || "",
+
 		...(status === "open" && { openingTime: Date.now() }),
 	});
 
