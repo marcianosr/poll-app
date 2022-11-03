@@ -32,8 +32,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	for (const [key, value] of formData.entries()) {
 		if (
-			(!value && key !== "codeBlock") ||
-			(!value && key !== "codesandboxExample")
+			!value &&
+			key !== "codeBlock" &&
+			!value &&
+			key !== "codesandboxExample"
 		)
 			errors[key] = true;
 	}
