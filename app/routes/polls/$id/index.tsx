@@ -545,6 +545,42 @@ export default function PollDetail() {
 						</ul>
 					</>
 				)}
+
+				<section className="poll-statistics-container">
+					<h2 className="title">Statistics</h2>
+					<h3>All-time total polls</h3>
+					<section className="poll-statistics">
+						{users
+							.filter((user) => user.polls.total > 7)
+							.sort((a, b) => b.polls.total - a.polls.total)
+							.map((user) => (
+								<article className="profile-container">
+									<div className="skewed-container name-container">
+										<span className="first-name">
+											{user.displayName.split(" ")[0]}
+										</span>
+										<span className="last-name">
+											{user.displayName.split(" ")[1]}{" "}
+											{user.displayName.split(" ")[2]}
+										</span>
+									</div>
+									<div className="user-profile-img-container">
+										<img
+											className="user-profile-img"
+											src={
+												user.photoURL.split(
+													"s96-c"
+												)[0] + "s300-c"
+											}
+										/>
+									</div>
+									<div className="skewed-container">
+										<span>{user.polls.total}</span>
+									</div>
+								</article>
+							))}
+					</section>
+				</section>
 				<section className="awards-container">
 					<h2 className="title">Awards</h2>
 					<Awards users={users} polls={polls} seasons={seasons} />
