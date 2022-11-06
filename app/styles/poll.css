@@ -145,6 +145,66 @@ button {
 	gap: 0.25rem;
 }
 
+.profile-container:first-child {
+	user-select: none;
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	transition: transform 100ms ease;
+	transition-property: transform;
+	transform-style: preserve-3d;
+	transform-origin: 50% 50%;
+	transform: translate3d(0%, 0%, -400px);
+}
+
+.profile-container:first-child:before,
+.profile-container:first-child:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background-image: linear-gradient(
+		115deg,
+		transparent 0%,
+		rgb(0, 231, 255) 30%,
+		rgb(255, 0, 231) 70%,
+		transparent 100%
+	);
+	background-position: 0% 0%;
+	background-repeat: no-repeat;
+	background-size: 300% 300%;
+	mix-blend-mode: color-dodge;
+	opacity: 0;
+	z-index: 1;
+	transform: translate3d(0, 0, 0);
+	animation: holoGradient 15s ease infinite;
+}
+.profile-container:first-child:after {
+	background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
+	background-position: center;
+	background-size: 180%;
+	mix-blend-mode: color-dodge;
+	opacity: 0;
+	z-index: 2;
+	animation: holoSparkle 20s ease infinite;
+}
+.profile-container:first-child.active:before {
+	opacity: 0.5;
+	animation: none;
+	transition: none;
+	background-image: linear-gradient(
+		115deg,
+		transparent 0%,
+		transparent 25%,
+		rgb(0, 231, 255) 45%,
+		rgb(255, 0, 231) 55%,
+		transparent 70%,
+		transparent 100%
+	);
+}
+
 .poll-statistics * {
 	text-shadow: none;
 }
@@ -233,4 +293,48 @@ button {
 	border: 1px solid var(--theme-color);
 	background-color: var(--theme-color-20);
 	cursor: pointer;
+}
+
+@keyframes holoSparkle {
+	0% {
+		opacity: 0;
+	}
+	12% {
+		opacity: 1;
+	}
+	70% {
+		opacity: 0.5;
+	}
+	95% {
+		opacity: 0.2;
+	}
+}
+
+@keyframes holoGradient {
+	3% {
+		opacity: 0;
+	}
+	5% {
+		background-position: 0% 0%;
+	}
+	7% {
+		opacity: 0.5;
+	}
+	9% {
+		background-position: 100% 100%;
+	}
+	11% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 0;
+		background-position: 100% 100%;
+	}
+	55% {
+		opacity: 0.3;
+	}
+	70% {
+		opacity: 0;
+		background-position: 0% 0%;
+	}
 }
