@@ -28,7 +28,7 @@ const UserStatistics: FC<Props> = ({ users }) => {
 					})}
 					onClick={() => setActive("season")}
 				>
-					Highest season total
+					Highest total this season
 				</button>
 				<button
 					className={classnames("filter-button", {
