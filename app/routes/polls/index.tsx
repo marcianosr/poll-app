@@ -85,7 +85,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 	// ! Enable when you want local DB population
 	// await createDevData();
-	// await createKabisaPolls();
 
 	return { polls: data, docId: ids };
 };
@@ -111,7 +110,6 @@ export default function AllPolls() {
 			{isAdmin ? (
 				<>
 					<h1>All polls</h1>
-
 					<Form method="post">
 						<button>Save current season and reset</button>
 						<input
