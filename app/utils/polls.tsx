@@ -114,25 +114,6 @@ export const getPollById = async (id: string) => {
 	}
 };
 
-export const getKabisaPollById = async (id: string) => {
-	const docRef = await doc(db, "kabisa", id);
-	const snapshot = await getDoc(docRef);
-
-	if (!snapshot.exists) {
-		throw new Error("Snapshot doesn't exist");
-	} else {
-		return snapshot.data();
-	}
-};
-
-export const updateKabisa = async (id: string, payload: any, merge = true) => {
-	const snapshot = await setDoc(doc(db, "kabisa", id), payload, {
-		merge,
-	});
-
-	return snapshot;
-};
-
 export const updatePollById = async (
 	id: string,
 	payload: any,
