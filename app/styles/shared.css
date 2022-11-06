@@ -70,6 +70,7 @@ code {
 
 button {
 	height: 2rem;
+	font-family: var(--default-font);
 }
 
 h1,
