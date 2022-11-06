@@ -63,6 +63,7 @@ const UserStatistics: FC<Props> = ({ users }) => {
 							.sort((a, b) => b.polls.total - a.polls.total)
 							.map((user) => (
 								<article
+									key={user.id}
 									className={classnames("profile-container", {
 										winner: getWinner(users, "total").find(
 											(u) => u.email === user.email
@@ -84,6 +85,7 @@ const UserStatistics: FC<Props> = ({ users }) => {
 							.sort((a, b) => b.polls.correct - a.polls.correct)
 							.map((user) => (
 								<article
+									key={user.id}
 									className={classnames("profile-container", {
 										winner: getWinner(
 											users,
@@ -109,6 +111,7 @@ const UserStatistics: FC<Props> = ({ users }) => {
 							)
 							.map((user) => (
 								<article
+									key={user.id}
 									className={classnames("profile-container", {
 										winner: getWinner(
 											users,
