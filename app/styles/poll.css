@@ -181,15 +181,7 @@ button {
 	transform: translate3d(0, 0, 0);
 	animation: holoGradient 15s ease infinite;
 }
-.profile-container:first-child:after {
-	background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/13471/sparkles.gif");
-	background-position: center;
-	background-size: 180%;
-	mix-blend-mode: color-dodge;
-	opacity: 0;
-	z-index: 2;
-	animation: holoSparkle 20s ease infinite;
-}
+
 .profile-container:first-child.active:before {
 	opacity: 0.5;
 	animation: none;
@@ -295,21 +287,6 @@ button {
 	cursor: pointer;
 }
 
-@keyframes holoSparkle {
-	0% {
-		opacity: 0;
-	}
-	12% {
-		opacity: 1;
-	}
-	70% {
-		opacity: 0.5;
-	}
-	95% {
-		opacity: 0.2;
-	}
-}
-
 @keyframes holoGradient {
 	3% {
 		opacity: 0;
@@ -326,14 +303,40 @@ button {
 	11% {
 		opacity: 0;
 	}
-	50% {
+	20% {
 		opacity: 0;
 		background-position: 100% 100%;
 	}
-	55% {
+	25% {
 		opacity: 0.3;
 	}
-	70% {
+	40% {
+		opacity: 0;
+		background-position: 0% 0%;
+	}
+	43% {
+		opacity: 0;
+	}
+	45% {
+		background-position: 0% 0%;
+	}
+	47% {
+		opacity: 0.5;
+	}
+	49% {
+		background-position: 100% 100%;
+	}
+	51% {
+		opacity: 0;
+	}
+	60% {
+		opacity: 0;
+		background-position: 100% 100%;
+	}
+	65% {
+		opacity: 0.3;
+	}
+	80% {
 		opacity: 0;
 		background-position: 0% 0%;
 	}
