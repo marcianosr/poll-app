@@ -7,6 +7,22 @@ type Props = {
 
 type Statistics = "all-time" | "correct" | "season";
 
+const getWinner = (users: any, field: "seasonStreak" | "total" | "correct") => {
+	const data = users
+		.filter((u) => u.polls.seasonStreak)
+		.reduce((prev, curr) => {
+			if (prev.polls[field] > curr.polls[field]) return prev;
+
+			return curr;
+		});
+
+	const winners = users.filter(
+		(user: any) => user.polls[field] === data.polls[field]
+	);
+
+	return winners;
+};
+
 const UserStatistics: FC<Props> = ({ users }) => {
 	const [active, setActive] = useState<Statistics>("all-time");
 
@@ -46,7 +62,13 @@ const UserStatistics: FC<Props> = ({ users }) => {
 							.filter((user) => user.polls.total > 7)
 							.sort((a, b) => b.polls.total - a.polls.total)
 							.map((user) => (
-								<article className="profile-container">
+								<article
+									className={classnames("profile-container", {
+										winner: getWinner(users, "total").find(
+											(u) => u.email === user.email
+										),
+									})}
+								>
 									<UserLayout user={user} />
 									<div className="skewed-container">
 										<span>{user.polls.total}</span>
@@ -61,7 +83,14 @@ const UserStatistics: FC<Props> = ({ users }) => {
 							.filter((user) => user.polls.total > 7)
 							.sort((a, b) => b.polls.correct - a.polls.correct)
 							.map((user) => (
-								<article className="profile-container">
+								<article
+									className={classnames("profile-container", {
+										winner: getWinner(
+											users,
+											"correct"
+										).find((u) => u.email === user.email),
+									})}
+								>
 									<UserLayout user={user} />
 									<div className="skewed-container">
 										<span>{user.polls.correct}</span>
@@ -79,7 +108,14 @@ const UserStatistics: FC<Props> = ({ users }) => {
 									b.polls.seasonStreak - a.polls.seasonStreak
 							)
 							.map((user) => (
-								<article className="profile-container">
+								<article
+									className={classnames("profile-container", {
+										winner: getWinner(
+											users,
+											"seasonStreak"
+										).find((u) => u.email === user.email),
+									})}
+								>
 									<UserLayout user={user} />
 									<div className="skewed-container">
 										<span>{user.polls.seasonStreak}</span>

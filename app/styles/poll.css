@@ -146,7 +146,7 @@ button {
 	gap: 0.25rem;
 }
 
-.profile-container:first-child {
+.profile-container.winner {
 	user-select: none;
 	position: relative;
 	overflow: hidden;
@@ -158,8 +158,8 @@ button {
 	transform: translate3d(0%, 0%, -400px);
 }
 
-.profile-container:first-child:before,
-.profile-container:first-child:after {
+.profile-container.winner:before,
+.profile-container.winner:after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -181,21 +181,6 @@ button {
 	z-index: 1;
 	transform: translate3d(0, 0, 0);
 	animation: holoGradient 15s ease infinite;
-}
-
-.profile-container:first-child.active:before {
-	opacity: 0.5;
-	animation: none;
-	transition: none;
-	background-image: linear-gradient(
-		115deg,
-		transparent 0%,
-		transparent 25%,
-		rgb(0, 231, 255) 45%,
-		rgb(255, 0, 231) 55%,
-		transparent 70%,
-		transparent 100%
-	);
 }
 
 .poll-statistics * {
