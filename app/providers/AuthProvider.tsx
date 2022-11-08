@@ -10,7 +10,7 @@ import {
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
-import { getAdminUser, getUserByEmail, getUserByID } from "~/utils/user";
+import { getAdminUser, getUserByEmail } from "~/utils/user";
 
 type AuthContextState = {
 	user: (User & FirebaseUser) | null;
@@ -50,6 +50,7 @@ type FirebaseUser = {
 };
 
 export async function addUser(data: FirebaseUserFields) {
+	console.log("data", data);
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 

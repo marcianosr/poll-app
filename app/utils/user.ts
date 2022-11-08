@@ -42,6 +42,11 @@ export const getUserByEmail = async (email: string) => {
 
 	const users = await getDocs(getQuery);
 
+	if (users.docs.length === 0) {
+		console.info(`${email} is not found as user.`);
+		return;
+	}
+
 	return users.docs[0].data();
 };
 
