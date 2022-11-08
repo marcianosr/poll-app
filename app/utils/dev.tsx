@@ -45,8 +45,8 @@ export const createDevData = async () => {
 
 const writeCurrentProdDataToFile = (users, polls) => {
 	console.log("wriote");
-	// fs.writeFileSync("~/app/fixtures/polls.json", JSON.stringify(polls));
-	// fs.writeFileSync("~/app/fixtures/users.json", JSON.stringify(users));
+	fs.writeFileSync("app/fixtures/polls.json", JSON.stringify(polls));
+	fs.writeFileSync("app/fixtures/users.json", JSON.stringify(users));
 };
 
 const populateFirestoreWithFileData = () => {
