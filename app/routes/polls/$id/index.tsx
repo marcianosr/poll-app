@@ -453,6 +453,7 @@ export default function PollDetail() {
 					<>
 						<h3>Results for poll #{openedPollNumber}</h3>
 						<p>{responses} votes on this poll 🎉</p>
+
 						<ul className="choices-list results">
 							{currentAnswers.map((answer, idx) => (
 								<li
@@ -511,39 +512,51 @@ export default function PollDetail() {
 							))}
 						</ul>
 
-						<ul className="choices-list results your-votes">
-							<p className="your-votes-title">You voted for:</p>
+						<section className="your-votes-container">
+							<h3>Your votes</h3>
+							<h3 className="notice">
+								Feel free to discuss your vote in a slack
+								thread!
+							</h3>
 
-							{getGivenVotesByUser.map((vote, idx) => (
-								<li
-									key={vote?.id}
-									className={classNames("option-answer", {
-										correct: getCorrectAnswers(
-											vote?.id || ""
-										),
-										incorrect: !getCorrectAnswers(
-											vote?.id || ""
-										),
-									})}
-								>
-									{vote?.blockType === "code" ? (
-										<div className="text-question-answer result-vote">
-											<CodeBlock
-												code={vote.value}
-												withLineNumbers={false}
-											/>
-										</div>
-									) : (
-										<span className="text-question-answer result-vote">
-											{transformToCodeTags(
-												vote?.value || "",
-												idx
+							<section className="your-votes">
+								<ul className="choices-list results ">
+									{getGivenVotesByUser.map((vote, idx) => (
+										<li
+											key={vote?.id}
+											className={classNames(
+												"option-answer",
+												{
+													correct: getCorrectAnswers(
+														vote?.id || ""
+													),
+													incorrect:
+														!getCorrectAnswers(
+															vote?.id || ""
+														),
+												}
 											)}
-										</span>
-									)}
-								</li>
-							))}
-						</ul>
+										>
+											{vote?.blockType === "code" ? (
+												<div className="text-question-answer result-vote">
+													<CodeBlock
+														code={vote.value}
+														withLineNumbers={false}
+													/>
+												</div>
+											) : (
+												<span className="text-question-answer result-vote">
+													{transformToCodeTags(
+														vote?.value || "",
+														idx
+													)}
+												</span>
+											)}
+										</li>
+									))}
+								</ul>
+							</section>
+						</section>
 					</>
 				)}
 

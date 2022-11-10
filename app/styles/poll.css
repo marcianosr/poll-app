@@ -112,6 +112,10 @@ button {
 	align-items: flex-start;
 }
 
+.your-votes-container {
+	margin-top: 2rem;
+}
+
 .your-votes {
 	background-color: var(--secondary-black);
 	padding: 1rem;
