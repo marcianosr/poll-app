@@ -79,18 +79,17 @@ export const loader: LoaderFunction = async ({ params }) => {
 	// if (!isAdmin) {
 	// 	return redirect("/");
 	// }
-	const data = await getAllPolls();
 
-	const ids = await getDocumentPollIds();
+	const polls = await getAllPollsWithIds();
 
 	// ! Enable when you want local DB population
 	// await createDevData();
 
-	return { polls: data, docId: ids };
+	return { polls };
 };
 
 export default function AllPolls() {
-	const { polls, docId } = useLoaderData();
+	const { polls } = useLoaderData();
 	const { user, isAdmin } = useAuth();
 	const [renderedPolls, setRenderedPolls] = useState(polls);
 	const pollsByUser = polls.filter(
@@ -148,13 +147,15 @@ export default function AllPolls() {
 								{isAdmin && (
 									<span>
 										<span>{poll.status}</span>
-										<Link to={`/polls/${docId[idx]}/edit`}>
+										<Link
+											to={`/polls/${poll.documentId}/edit`}
+										>
 											Edit
 										</Link>
 									</span>
 								)}
 
-								<Link to={`/polls/${docId[idx]}`}>
+								<Link to={`/polls/${poll.documentId}`}>
 									Go to poll
 								</Link>
 								{poll.sentInByUser && (
@@ -176,7 +177,7 @@ export default function AllPolls() {
 							{pollsByUser.map((poll: PollData, idx: number) => (
 								<li>
 									<p>{poll.question}</p>
-									<Link to={`/polls/${docId[idx]}`}>
+									<Link to={`/polls/${poll.documentId}`}>
 										Go to poll
 									</Link>
 								</li>

@@ -54,6 +54,7 @@ export type PollData = {
 		displayName: string;
 	} | null;
 	openingTime?: number | null;
+	documentId?: string;
 };
 
 export async function getPollsByOpeningTime() {
