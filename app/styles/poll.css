@@ -60,11 +60,21 @@ button {
 	background-color: var(--theme-color-20);
 }
 
+.choices-list .code-block {
+	transition: background-color 200ms;
+}
+
+.choices-list .code-block:hover:not(.result-vote) {
+	background-color: var(--theme-color-20);
+	cursor: pointer;
+}
+
 .input {
 	display: none;
 }
 
-.input:checked + label .text-question-answer {
+.input:checked + label .text-question-answer,
+.input:checked + label .code-block {
 	border: 1px solid var(--theme-color);
 	color: var(--theme-color);
 	background-color: var(--theme-color-20);
