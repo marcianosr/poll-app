@@ -452,7 +452,11 @@ export default function PollDetail() {
 				{screenState === "results" && (
 					<>
 						<h3>Results for poll #{openedPollNumber}</h3>
-						<p>{responses} votes on this poll 🎉</p>
+						<p className="responses">
+							<span className="emoji">🎉</span>
+							<span className="amount">{responses}</span> votes on
+							this poll{" "}
+						</p>
 
 						<ul className="choices-list results">
 							{currentAnswers.map((answer, idx) => (
@@ -515,8 +519,9 @@ export default function PollDetail() {
 						<section className="your-votes-container">
 							<h3>Your votes</h3>
 							<h3 className="notice">
-								Feel free to discuss your vote in a slack
-								thread!
+								<span className="emoji">🏋️</span> Lift each
+								other up: Feel free to discuss your vote in a
+								slack thread!
 							</h3>
 
 							<section className="your-votes">

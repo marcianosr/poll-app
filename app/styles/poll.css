@@ -277,6 +277,21 @@ button {
 	cursor: pointer;
 }
 
+.emoji {
+	font-size: 2rem;
+}
+
+.responses {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.responses .amount {
+	font-size: 2rem;
+	font-weight: 700;
+}
+
 @keyframes holoGradient {
 	3% {
 		opacity: 0;
