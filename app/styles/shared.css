@@ -46,6 +46,37 @@
 	--theme-color-20: #ff00ff20;
 }
 
+.poll-status-number {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.list-item-poll {
+	display: flex;
+}
+
+.poll-meta-info {
+	display: flex;
+	gap: 1rem;
+}
+
+.label {
+	font-weight: 900;
+}
+
+.label.new {
+	color: var(--celadon);
+}
+
+.label.closed {
+	color: var(--vermillion);
+}
+
+.label.needs-revision {
+	color: var(--saffron);
+}
+
 body {
 	background-color: var(--primary-black);
 	font-family: var(--default-font);

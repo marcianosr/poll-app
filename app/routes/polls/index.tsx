@@ -1,5 +1,6 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
+import classNames from "classnames";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
 import PollStatistics from "~/components/PollStatistics";
@@ -11,6 +12,7 @@ import {
 	getAllPollsWithIds,
 	getDocumentPollIds,
 	getPollsByOpeningTime,
+	PollCategory,
 	PollData,
 	PollStatus,
 	resetVotesForPoll,
@@ -18,6 +20,14 @@ import {
 import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
 import { getAdminUser, getUsers } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
+
+const categories: PollCategory[] = [
+	"html",
+	"css",
+	"general-frontend",
+	"react",
+	"typescript",
+];
 
 type PollDataWithDocumentId = PollData & {
 	documentId: string;
@@ -104,6 +114,13 @@ export default function AllPolls() {
 		setRenderedPolls(filteredPolls);
 	};
 
+	const filterPollsByCategory = (category?: PollCategory) => {
+		const filteredPolls = category
+			? polls.filter((poll: PollData) => poll.category === category)
+			: polls;
+		setRenderedPolls(filteredPolls);
+	};
+
 	return (
 		<section style={{ color: "white" }}>
 			{isAdmin ? (
@@ -120,49 +137,100 @@ export default function AllPolls() {
 					</Form>
 					<PollStatistics polls={polls} />
 
-					<button type="button" onClick={() => filterPollsByStatus()}>
-						All
-					</button>
-					<button
-						type="button"
-						onClick={() => filterPollsByStatus("new")}
-					>
-						New {}
-					</button>
-					<button
-						type="button"
-						onClick={() => filterPollsByStatus("needs-revision")}
-					>
-						Need revision
-					</button>
+					<section>
+						<button
+							type="button"
+							onClick={() => filterPollsByStatus()}
+						>
+							All
+						</button>
+						<button
+							type="button"
+							onClick={() => filterPollsByStatus("new")}
+						>
+							New (
+							{
+								polls.filter(
+									(poll: PollData) => poll.status === "new"
+								).length
+							}
+							)
+						</button>
+						<button
+							type="button"
+							onClick={() =>
+								filterPollsByStatus("needs-revision")
+							}
+						>
+							Need revision (
+							{
+								polls.filter(
+									(poll: PollData) =>
+										poll.status === "needs-revision"
+								).length
+							}
+							)
+						</button>
+					</section>
+
+					<section>
+						{categories.map((category) => (
+							<>
+								<button
+									type="button"
+									onClick={() =>
+										filterPollsByCategory(category)
+									}
+								>
+									{category}
+								</button>
+							</>
+						))}
+					</section>
 
 					<Link to="/polls/new">Create new poll</Link>
 					<ul>
 						{renderedPolls.map((poll: PollData, idx: number) => (
 							<li key={poll.id}>
-								<p>
-									#{poll.pollNumber} -{" "}
-									{transformToCodeTags(poll.question, idx)}
-								</p>
-								{isAdmin && (
-									<span>
-										<span>{poll.status}</span>
-										<Link
-											to={`/polls/${poll.documentId}/edit`}
-										>
-											Edit
-										</Link>
+								<section className="poll-status-number">
+									<p>
+										<strong>#{poll.pollNumber} - </strong>
+										{transformToCodeTags(
+											poll.question,
+											idx
+										)}
+									</p>
+								</section>
+								<section className="poll-meta-info">
+									<span
+										className={classNames(
+											"label",
+											poll.status
+										)}
+									>
+										{poll.status}
 									</span>
-								)}
+									{isAdmin && (
+										<span>
+											<Link
+												to={`/polls/${poll.documentId}/edit`}
+											>
+												Edit
+											</Link>
+										</span>
+									)}
 
-								<Link to={`/polls/${poll.documentId}`}>
-									Go to poll
-								</Link>
-								{poll.sentInByUser && (
-									<SentByUserText
-										name={poll.sentInByUser?.displayName}
-									/>
-								)}
+									<Link to={`/polls/${poll.documentId}`}>
+										Go to poll
+									</Link>
+									{poll.sentInByUser && (
+										<SentByUserText
+											name={
+												poll.sentInByUser?.displayName
+											}
+										/>
+									)}
+								</section>
 							</li>
 						))}
 					</ul>
