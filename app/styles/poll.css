@@ -87,7 +87,7 @@ button {
 	color: var(--theme-color);
 
 	display: grid;
-	grid-template-columns: 400px 1fr;
+	grid-template-columns: 320px 1fr 125px;
 	margin-top: 2rem;
 }
 
@@ -97,7 +97,6 @@ button {
 }
 
 .main-content {
-	padding-right: 3rem;
 	max-width: 1000px;
 }
 
@@ -300,6 +299,30 @@ button {
 .responses .amount {
 	font-size: 2rem;
 	font-weight: 700;
+}
+
+.vote-order-sidebar {
+	margin: 1rem;
+}
+
+.vote-order-container {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	list-style: none;
+}
+
+.place {
+	position: absolute;
+	bottom: 6px;
+	left: 4px;
+}
+
+.vote-order-list-item {
+	position: relative;
+}
+.vote-order-title {
+	margin-bottom: 1rem;
 }
 
 @keyframes holoGradient {
