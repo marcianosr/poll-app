@@ -258,6 +258,20 @@ export default function PollDetail() {
 			currentAnswers.find((answer) => answer.id === voted.answerId)
 		);
 
+	const getVotersFromToday = poll.voted
+		.map((vote) => users.find((user) => user.id === vote.userId))
+		.map((user, idx) => (
+			<li className="vote-order-list-item">
+				<img
+					className="gradient-border"
+					src={user.photURL}
+					width={65}
+					height={65}
+				/>
+				<span className="place">{idx + 1}</span>
+			</li>
+		));
+
 	return (
 		<section
 			className={classNames("page-container", {
@@ -578,6 +592,14 @@ export default function PollDetail() {
 				</section>
 				{/* <PollStatistics polls={polls} /> */}
 			</section>
+			{getVotersFromToday.length > 0 && (
+				<aside className="vote-order-sidebar">
+					<ol className="vote-order-container">
+						<span className="vote-order-title">Today's voters</span>
+						{getVotersFromToday}
+					</ol>
+				</aside>
+			)}
 		</section>
 	);
 }
