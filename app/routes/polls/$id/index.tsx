@@ -262,12 +262,7 @@ export default function PollDetail() {
 		.map((vote) => users.find((user) => user.id === vote.userId))
 		.map((user, idx) => (
 			<li className="vote-order-list-item">
-				<img
-					className="gradient-border"
-					src={user.photURL}
-					width={65}
-					height={65}
-				/>
+				<img src={user.photoURL} width={65} height={65} />
 				<span className="place">{idx + 1}</span>
 			</li>
 		));
