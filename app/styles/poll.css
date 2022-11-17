@@ -54,6 +54,7 @@ button {
 	padding: 1rem;
 	cursor: pointer;
 	transition: color 300ms, border 300ms, background 300ms;
+	letter-spacing: -0.5px;
 }
 
 .text-question-answer:hover:not(.result-vote) {
