@@ -25,6 +25,7 @@ const categories: PollCategory[] = [
 	"html",
 	"css",
 	"general-frontend",
+	"javascript",
 	"react",
 	"typescript",
 ];
