@@ -18,7 +18,7 @@ import {
 	resetVotesForPoll,
 } from "~/utils/polls";
 import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
-import { getAdminUser, getUsers } from "~/utils/user";
+import { getAdminUser, getUsers, resetSeasonStreak } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
 
 const categories: PollCategory[] = [
@@ -62,6 +62,7 @@ export const action: ActionFunction = async ({ request }) => {
 	pollsBySeason.map(async (poll) => await resetVotesForPoll(poll.documentId));
 
 	const users = await getUsers();
+	users.map(async (user) => await resetSeasonStreak(user.id));
 
 	createSeason({
 		awards: awards(users, polls)

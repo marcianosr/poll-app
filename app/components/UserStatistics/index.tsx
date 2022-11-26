@@ -8,17 +8,23 @@ type Props = {
 type Statistics = "all-time" | "correct" | "season";
 
 const getWinner = (users: any, field: "seasonStreak" | "total" | "correct") => {
-	const data = users
-		.filter((u) => u.polls.seasonStreak)
-		.reduce((prev, curr) => {
-			if (prev.polls[field] > curr.polls[field]) return prev;
+	const winner = users
+		.filter((a) => a.polls[field])
+		.reduce(
+			(max, obj) => {
+				return max.polls[field] > obj.polls[field] ? max : obj;
+			},
+			{ polls: { [field]: 0 } }
+		);
 
-			return curr;
-		});
-
-	const winners = users.filter(
-		(user: any) => user.polls[field] === data.polls[field]
-	);
+	const hasWinners = Object.values(winner);
+	const winners = hasWinners.length
+		? users.filter(
+				(user: any) =>
+					user.polls[field] === winner.polls[field] &&
+					user.polls[field] !== 0
+		  )
+		: [];
 
 	return winners;
 };

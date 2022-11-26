@@ -95,3 +95,25 @@ export const getAdminUser = async (email: string) => {
 		return item.data().email === email;
 	})[0];
 };
+
+export const resetSeasonStreak = async (id: string) => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+	console.log("season update");
+
+	const snapshot = await setDoc(
+		doc(db, "users", id),
+		{
+			polls: {
+				seasonStreak: 0,
+			},
+		},
+		{
+			merge: true,
+		}
+	);
+
+	return snapshot;
+};
