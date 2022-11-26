@@ -259,13 +259,25 @@ export default function PollDetail() {
 		);
 
 	const getVotersFromToday = poll.voted
-		.map((vote) => users.find((user) => user.id === vote.userId))
-		.map((user, idx) => (
-			<li className="vote-order-list-item">
-				<img src={user.photoURL} width={65} height={65} />
-				<span className="place">{idx + 1}</span>
-			</li>
-		));
+		.map((vote) => ({
+			...users.find((user) => user.id === vote.userId),
+			vote,
+		}))
+		.map((user, idx) => {
+			const correctAnswer = getCorrectAnswers(user.vote.answerId);
+
+			return (
+				<li
+					className={classNames("vote-order-list-item", {
+						["correct"]: correctAnswer,
+						["incorrect"]: !correctAnswer,
+					})}
+				>
+					<img src={user.photoURL} width={65} height={65} />
+					<span className="place">{idx + 1}</span>
+				</li>
+			);
+		});
 
 	return (
 		<section
