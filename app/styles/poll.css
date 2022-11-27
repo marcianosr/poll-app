@@ -26,9 +26,15 @@ button {
 	padding: 0;
 }
 
+.userCorrect {
+	border: 3px solid var(--correct);
+}
+
+.userIncorrect {
+	border: 3px solid var(--incorrect);
+}
+
 .correct > *:first-child {
-	--correct: #00ff38;
-	--correct-20: #00ff3820;
 	background: var(--correct-20);
 	color: var(--correct);
 	border: 1px solid var(--correct);
@@ -36,8 +42,6 @@ button {
 }
 
 .incorrect > *:first-child {
-	--incorrect: #dc143c;
-	--incorrect-20: #dc143c20;
 	background: var(--incorrect-20);
 	color: var(--incorrect);
 	border: 1px solid var(--incorrect);
@@ -310,7 +314,6 @@ button {
 	display: flex;
 	flex-direction: column;
 	padding: 0;
-	list-style: none;
 }
 
 .place {
@@ -321,6 +324,8 @@ button {
 
 .vote-order-list-item {
 	position: relative;
+	width: 65px;
+	height: 65px;
 }
 .vote-order-title {
 	margin-bottom: 1rem;

@@ -263,18 +263,17 @@ export default function PollDetail() {
 			...users.find((user) => user.id === vote.userId),
 			vote,
 		}))
-		.map((user, idx) => {
+		.map((user) => {
 			const correctAnswer = getCorrectAnswers(user.vote.answerId);
 
 			return (
 				<li
 					className={classNames("vote-order-list-item", {
-						["correct"]: correctAnswer,
-						["incorrect"]: !correctAnswer,
+						["userCorrect"]: correctAnswer,
+						["userIncorrect"]: !correctAnswer,
 					})}
 				>
 					<img src={user.photoURL} width={65} height={65} />
-					<span className="place">{idx + 1}</span>
 				</li>
 			);
 		});
@@ -335,19 +334,18 @@ export default function PollDetail() {
 						src={poll.codeSandboxExample}
 					/>
 				)}
+				{poll.codeBlock && (
+					<>
+						<p>Code example:</p>
+						<CodeBlock code={poll.codeBlock} />
+					</>
+				)}
 				{screenState === "poll" && (
 					<section
 						className={classNames({
 							pollIsClosed: poll.status !== "open",
 						})}
 					>
-						{poll.codeBlock && (
-							<>
-								<p>Code example:</p>
-								<CodeBlock code={poll.codeBlock} />
-							</>
-						)}
-
 						{poll.type === "radio" ? (
 							<h3 className="notice">
 								Only 1 answer can be selected

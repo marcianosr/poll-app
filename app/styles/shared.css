@@ -14,6 +14,11 @@
 	--theme-color: var(--saffron);
 
 	--default-font: "Fira Code";
+
+	--correct: #00ff38;
+	--correct-20: #00ff3820;
+	--incorrect: #dc143c;
+	--incorrect-20: #dc143c20;
 }
 
 .javascript {
