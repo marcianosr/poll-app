@@ -313,6 +313,12 @@ export default function PollDetail() {
 							onChange={() => setShowVotedBy(!showVotedBy)}
 							name="votedBy"
 						/>
+						<input
+							type="checkbox"
+							id="screen"
+							onChange={() => setScreenState("results")}
+							name="screen"
+						/>
 					</section>
 				)}
 				<section>
