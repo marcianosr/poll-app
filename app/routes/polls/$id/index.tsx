@@ -103,12 +103,27 @@ export const action: ActionFunction = async ({ request, params }) => {
 		.slice()
 		.reverse();
 
+	// on each vote, update players who have already voted with one point because a new user voted
+	polls.voted.map(async (vote) => {
+		const user = await getUserByID(vote.userId);
+
+		await updateUserById<UpdateScore>({
+			id: vote.userId,
+			polls: {
+				seasonStreak: user?.polls.seasonStreak + 1,
+			},
+		});
+	});
+
+	// current voter
 	await updateUserById<UpdateScore>({
 		id: uid,
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			seasonStreak: currentUser?.polls.seasonStreak + 1,
+			seasonStreak:
+				1 + (currentUser?.polls.seasonStreak + polls.voted.length),
+
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: isEveryAnswerCorrect
 				? currentUser?.polls.correct + 1
