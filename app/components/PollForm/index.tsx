@@ -1,7 +1,8 @@
 import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import React, { FC, useEffect, useState } from "react";
-import { InputTypes, PollData, PollStatus } from "~/utils/polls";
+import type { FC } from "react";
+import React, { useEffect, useState } from "react";
+import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../Button/DeleteButton";
 import MarkButton from "../Button/MarkButton";
 import { useAuth } from "~/providers/AuthProvider";
@@ -75,7 +76,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
-	const onCMDAndEnterPressed = (e: React.KeyboardEvent) => {
+	const onCMDAndEnterPressed: React.KeyboardEventHandler = (e) => {
 		if (e.metaKey && e.key === "Enter") addField();
 	};
 
@@ -113,7 +114,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 								defaultValue={poll?.codeBlock}
 							></textarea>
 							<button onClick={addField} type="button">
-								Add new field
+								Add new answer option
 							</button>
 							{fields.map((field, index) => (
 								<>
@@ -139,17 +140,15 @@ const PollForm: FC<Props> = ({ poll }) => {
 												onKeyDown={(e) =>
 													onCMDAndEnterPressed(e)
 												}
-												onChange={(
-													e: React.ChangeEvent
-												) => {
+												onChange={(e) => {
 													setFields([
 														...fields.map((f) =>
 															f.id === field.id
 																? {
 																		...f,
-																		value: (
-																			e.target as HTMLInputElement
-																		).value,
+																		value: e
+																			.target
+																			.value,
 																  }
 																: f
 														),
@@ -172,17 +171,15 @@ const PollForm: FC<Props> = ({ poll }) => {
 												onKeyDown={(e) =>
 													onCMDAndEnterPressed(e)
 												}
-												onChange={(
-													e: React.ChangeEvent
-												) => {
+												onChange={(e) => {
 													setFields([
 														...fields.map((f) =>
 															f.id === field.id
 																? {
 																		...f,
-																		value: (
-																			e.target as HTMLInputElement
-																		).value,
+																		value: e
+																			.target
+																			.value,
 																  }
 																: f
 														),
@@ -193,33 +190,34 @@ const PollForm: FC<Props> = ({ poll }) => {
 										<button
 											type="button"
 											className="toggle-code-button"
-											onClick={(e: React.MouseEvent) => {
+											onClick={(e) => {
 												e.preventDefault();
 
-												return setFields((prev) => {
-													return [
-														...fields.map(
-															(f, idx) =>
-																f.id ===
-																field.id
-																	? {
-																			...f,
-																			blockType:
-																				prev[
-																					idx
-																				]
-																					.blockType ===
-																				"text"
-																					? "code"
-																					: ("text" as any),
-																	  }
-																	: f
-														),
-													];
-												});
+												return setFields((prev) =>
+													fields.map<NewPollType>(
+														(f, idx) =>
+															f.id === field.id
+																? {
+																		...f,
+																		blockType:
+																			prev[
+																				idx
+																			]
+																				.blockType ===
+																			"text"
+																				? "code"
+																				: "text",
+																  }
+																: f
+													)
+												);
 											}}
 										>
-											Toggle {field.blockType}
+											use{" "}
+											{field.blockType === "text"
+												? "code"
+												: "text"}{" "}
+											answer
 										</button>
 
 										{fields.length > 1 &&
@@ -264,6 +262,17 @@ const PollForm: FC<Props> = ({ poll }) => {
 							})}
 						/>
 					)}
+
+					<section className="button-group">
+						<button
+							onClick={() => {
+								if (mode === "edit") setMode("mark");
+								if (mode === "mark") setMode("edit");
+							}}
+						>
+							{mode === "edit" ? "Mark answers" : "Done"}
+						</button>
+					</section>
 
 					<button
 						type="submit"
@@ -322,16 +331,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 					</select>
 				</aside>
 			</Form>
-			<section className="button-group">
-				<button
-					onClick={() => {
-						if (mode === "edit") setMode("mark");
-						if (mode === "mark") setMode("edit");
-					}}
-				>
-					{mode === "edit" ? "Mark answers" : "Done"}
-				</button>
-			</section>
 		</section>
 	);
 };
