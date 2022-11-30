@@ -19,7 +19,7 @@ export const CodeBlock: FC<Props> = ({
 	<Highlight {...defaultProps} code={code} language="jsx">
 		{({ tokens, getLineProps, getTokenProps }) => {
 			const totalLineNumbers = code.split("\n").length;
-			const lineNumberWidth = `${totalLineNumbers}`.length;
+			const lineNumberWidth = `${totalLineNumbers}`.length + 1;
 			return (
 				<pre
 					className={classNames({
