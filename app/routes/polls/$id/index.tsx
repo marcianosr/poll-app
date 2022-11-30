@@ -35,6 +35,7 @@ import {
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
+import { links as adventCalendarLinks } from "~/components/AdventCalendar";
 import { getAllSeasons, SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
 import Confetti from "react-confetti";
@@ -47,6 +48,7 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
 	return [
+		...adventCalendarLinks(),
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
@@ -605,7 +607,7 @@ export default function PollDetail() {
 					</>
 				)}
 
-				<UserStatistics users={users} />
+				<UserStatistics users={users} voted={poll.voted} />
 
 				<section className="awards-container">
 					<h2 className="title">Awards</h2>
