@@ -65,9 +65,7 @@
 
 .candy-cane-name-container {
 	position: absolute;
-	/* padding: 1rem; */
-	z-index: 1;
-	/* left: -50%; */
+	z-index: 3;
 	left: -10rem;
 	right: -10rem;
 	display: flex;
