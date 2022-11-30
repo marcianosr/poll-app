@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import {
 	Form,
 	Link,
@@ -7,23 +7,23 @@ import {
 	useLoaderData,
 	useTransition,
 } from "@remix-run/react";
+import type { Voted, PollData } from "~/utils/polls";
 import {
 	Answer,
-	Voted,
 	getPollById,
-	PollData,
 	updatePollById,
 	getPollsByOpeningTime,
 	getAmountOfClosedPolls,
 	getAllPolls,
 } from "~/utils/polls";
-import { FirebaseUserFields, useAuth } from "~/providers/AuthProvider";
+import type { FirebaseUserFields } from "~/providers/AuthProvider";
+import { useAuth } from "~/providers/AuthProvider";
 import {
 	PollStatusInfo,
 	links as pollStatusLinks,
 } from "~/components/PollStatusInfo";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
-import { DeepPartial } from "~/utils/types";
+import type { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
 import classNames from "classnames";
 import {
@@ -36,7 +36,8 @@ import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
 import { links as adventCalendarLinks } from "~/components/AdventCalendar";
-import { getAllSeasons, SeasonAwardData } from "~/utils/seasons";
+import { getAllSeasons } from "~/utils/seasons";
+import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
@@ -287,8 +288,8 @@ export default function PollDetail() {
 			return (
 				<li
 					className={classNames("vote-order-list-item", {
-						["userCorrect"]: correctAnswer,
-						["userIncorrect"]: !correctAnswer,
+						userCorrect: correctAnswer,
+						userIncorrect: !correctAnswer,
 					})}
 				>
 					<img src={user.photoURL} width={65} height={65} />
@@ -328,7 +329,7 @@ export default function PollDetail() {
 						/>
 					</section>
 				)}
-				<section>
+				<section className="ranks">
 					<h2 className="title">Ranks</h2>
 					<Ranks users={users} polls={polls} />
 				</section>

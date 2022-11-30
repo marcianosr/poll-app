@@ -14,7 +14,7 @@
 }
 
 button {
-	width: 400px;
+	width: min(400px, 100%);
 	height: 3rem;
 	font-size: 1.25rem;
 }
@@ -92,8 +92,21 @@ button {
 	color: var(--theme-color);
 
 	display: grid;
-	grid-template-columns: 320px 1fr 125px;
 	margin-top: 2rem;
+}
+
+.ranks {
+	display: none;
+}
+
+@media screen and (min-width: 1024px) {
+	.page-container {
+		grid-template-columns: 320px 1fr 125px;
+	}
+
+	.ranks {
+		display: block;
+	}
 }
 
 .sidebar-info,
@@ -272,6 +285,7 @@ button {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 1rem;
+	flex-wrap: wrap;
 }
 
 .filter-button {
@@ -282,6 +296,7 @@ button {
 	font-size: 0.75rem;
 	width: max-content;
 	padding: 0 0.5rem;
+	flex: 1 1 auto;
 }
 
 .filter-button:hover,
