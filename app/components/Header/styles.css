@@ -12,7 +12,7 @@
 
 .data {
 	display: grid;
-	grid-template-rows: 30px 30px;
+	grid-template-rows: 30px 1fr;
 	gap: 1rem;
 }
 
@@ -26,7 +26,18 @@
 
 .score-container {
 	display: flex;
-	gap: 1rem;
+	flex-direction: column;
+}
+
+@media screen and (min-width: 700px) {
+	.score-container {
+		flex-direction: row;
+		gap: 1rem;
+	}
+
+	.data {
+		grid-template-rows: 30px 30px;
+	}
 }
 
 .score {
