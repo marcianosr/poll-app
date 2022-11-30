@@ -2,7 +2,6 @@ import type { FC } from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import styles from "./styles.css";
 import classNames from "classnames";
-import { formatLineNumber } from "./formatLineNumber";
 
 type Props = {
 	code: string;
@@ -20,6 +19,7 @@ export const CodeBlock: FC<Props> = ({
 	<Highlight {...defaultProps} code={code} language="jsx">
 		{({ tokens, getLineProps, getTokenProps }) => {
 			const totalLineNumbers = code.split("\n").length;
+			const lineNumberWidth = `${totalLineNumbers}`.length + 1;
 			return (
 				<pre
 					className={classNames({
@@ -36,12 +36,13 @@ export const CodeBlock: FC<Props> = ({
 						>
 							<>
 								{withLineNumbers && (
-									<span className="line">
-										{formatLineNumber(
-											i,
-											totalLineNumbers,
-											" "
-										)}
+									<span
+										className="line"
+										style={{
+											width: `${lineNumberWidth}ch`,
+										}}
+									>
+										{i + 1}
 									</span>
 								)}
 								{line.map((token, key) => (
