@@ -391,11 +391,14 @@ button {
 	margin-bottom: 0;
 	text-align: center;
 	font-weight: 500;
-	font-family: var(--default-font);
 }
 
 .advent-of-polls-bonus {
 	font-size: 2rem;
+}
+
+.season {
+	font-family: var(--default-font);
 }
 
 @keyframes holoGradient {

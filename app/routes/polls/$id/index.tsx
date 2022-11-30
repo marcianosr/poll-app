@@ -41,6 +41,7 @@ import { SentByUserText } from "~/components/SentByUserText";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
+import { colors } from "~/utils/colors";
 
 type ScreenState = "poll" | "results";
 
@@ -302,18 +303,7 @@ export default function PollDetail() {
 			})}
 		>
 			{openedPollNumber === 100 && typeof window !== "undefined" && (
-				<Confetti
-					width={width}
-					height={height}
-					colors={[
-						"#f4c430",
-						"#ff00ff",
-						"#ace1af",
-						"#e34234",
-						"#2a52be",
-						"#967bb6",
-					]}
-				/>
+				<Confetti width={width} height={height} colors={colors} />
 			)}
 			<aside className="sidebar-info">
 				<PollStatusInfo

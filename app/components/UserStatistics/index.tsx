@@ -110,7 +110,7 @@ const UserStatistics: FC<Props> = ({ users, voted }) => {
 					</>
 				)}
 				{active === "season" && (
-					<div>
+					<div className="season">
 						<div className="advent-of-polls-text">
 							<div className="advent-of-polls-text-container">
 								<h1 className="advent-of-polls-title">
@@ -154,7 +154,11 @@ const UserStatistics: FC<Props> = ({ users, voted }) => {
 									// 	</div>
 									// </article>
 
-									<AdventCalendar user={user} idx={idx + 1} />
+									<AdventCalendar
+										user={user}
+										idx={idx + 1}
+										voted={voted}
+									/>
 								))}
 						</section>
 					</div>

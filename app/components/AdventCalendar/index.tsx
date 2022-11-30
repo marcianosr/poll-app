@@ -1,15 +1,21 @@
 import classNames from "classnames";
 import { FC, useState } from "react";
 import styles from "./styles.css";
+import twinkly from "public/00003158.png";
+import { colors } from "~/utils/colors";
 
 type Props = {
 	user: any;
 	idx: number;
+	voted: any;
 };
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
-export const AdventCalendar: FC<Props> = ({ user, idx }) => {
+const getTodaysUserVotes = (voted: any, user: any) =>
+	!!voted.find((vote: any) => user.id === vote.userId);
+
+export const AdventCalendar: FC<Props> = ({ user, idx, voted }) => {
 	const [toggleCalendarItem, setToggleCalenderItem] = useState(false);
 
 	return (
@@ -21,6 +27,22 @@ export const AdventCalendar: FC<Props> = ({ user, idx }) => {
 				onClick={() => setToggleCalenderItem(!toggleCalendarItem)}
 			>
 				{!toggleCalendarItem && <span className="number">{idx}</span>}
+			</div>
+			<div
+				className="twinkly-container"
+				style={
+					{
+						"--twinklyColor":
+							colors[Math.floor(Math.random() * colors.length)],
+					} as any
+				}
+			>
+				<img
+					src={twinkly}
+					className={classNames("twinkly", {
+						["glow"]: getTodaysUserVotes(voted, user),
+					})}
+				/>
 			</div>
 			<img
 				onClick={() => setToggleCalenderItem(!toggleCalendarItem)}

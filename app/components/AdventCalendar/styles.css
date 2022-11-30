@@ -51,6 +51,8 @@
 	transform: rotateY(-180deg);
 	background-color: var(--theme-color);
 	box-shadow: 0px 4px 12px black;
+	z-index: 10;
+	position: relative;
 }
 
 .advent-calendar-img.open {
@@ -124,4 +126,47 @@
 
 .inner-container span:first-child {
 	font-weight: 500;
+}
+
+.twinkly-container {
+	display: flex;
+	position: absolute;
+	bottom: 0rem;
+	right: -1rem;
+	z-index: 2;
+	background: radial-gradient(
+		10px 25px,
+		var(--twinklyColor),
+		var(--twinklyColor),
+		var(--twinklyColor),
+		transparent
+	);
+	background-position-x: 2px;
+	opacity: 0.3;
+}
+
+.twinkly-container:has(.glow) {
+	opacity: 1;
+}
+
+.twinkly {
+	width: 50px;
+	height: 50px;
+	mix-blend-mode: luminosity;
+}
+
+.glow {
+	animation: twinklyGlow 2s infinite;
+}
+
+@keyframes twinklyGlow {
+	0,
+	100% {
+		filter: drop-shadow(0px 0px 0px var(--twinklyColor));
+	}
+	50% {
+		filter: drop-shadow(2px 4px 6px var(--twinklyColor))
+			drop-shadow(2px 4px 16px var(--twinklyColor))
+			drop-shadow(2px 4px 16px var(--twinklyColor));
+	}
 }
