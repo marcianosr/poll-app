@@ -35,12 +35,14 @@ import {
 import { Question, links as questionLinks } from "~/components/Question";
 import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
-import type { SeasonAwardData } from "~/utils/seasons";
+import { links as adventCalendarLinks } from "~/components/AdventCalendar";
 import { getAllSeasons } from "~/utils/seasons";
+import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
+import { colors } from "~/utils/colors";
 
 type ScreenState = "poll" | "results";
 
@@ -48,6 +50,7 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
 	return [
+		...adventCalendarLinks(),
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
@@ -104,12 +107,27 @@ export const action: ActionFunction = async ({ request, params }) => {
 		.slice()
 		.reverse();
 
+	// on each vote, update players who have already voted with one point because a new user voted
+	polls.voted.map(async (vote) => {
+		const user = await getUserByID(vote.userId);
+
+		await updateUserById<UpdateScore>({
+			id: vote.userId,
+			polls: {
+				seasonStreak: user?.polls.seasonStreak + 1,
+			},
+		});
+	});
+
+	// current voter
 	await updateUserById<UpdateScore>({
 		id: uid,
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			seasonStreak: currentUser?.polls.seasonStreak + 1,
+			seasonStreak:
+				1 + (currentUser?.polls.seasonStreak + polls.voted.length),
+
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: isEveryAnswerCorrect
 				? currentUser?.polls.correct + 1
@@ -286,18 +304,7 @@ export default function PollDetail() {
 			})}
 		>
 			{openedPollNumber === 100 && typeof window !== "undefined" && (
-				<Confetti
-					width={width}
-					height={height}
-					colors={[
-						"#f4c430",
-						"#ff00ff",
-						"#ace1af",
-						"#e34234",
-						"#2a52be",
-						"#967bb6",
-					]}
-				/>
+				<Confetti width={width} height={height} colors={colors} />
 			)}
 			<aside className="sidebar-info">
 				<PollStatusInfo
@@ -591,7 +598,7 @@ export default function PollDetail() {
 					</>
 				)}
 
-				<UserStatistics users={users} />
+				<UserStatistics users={users} voted={poll.voted} />
 
 				<section className="awards-container">
 					<h2 className="title">Awards</h2>

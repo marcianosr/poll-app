@@ -1,8 +1,10 @@
 import classnames from "classnames";
 import { FC, useState } from "react";
+import { AdventCalendar } from "../AdventCalendar";
 
 type Props = {
 	users: any;
+	voted: any;
 };
 
 type Statistics = "all-time" | "correct" | "season";
@@ -29,8 +31,8 @@ const getWinner = (users: any, field: "seasonStreak" | "total" | "correct") => {
 	return winners;
 };
 
-const UserStatistics: FC<Props> = ({ users }) => {
-	const [active, setActive] = useState<Statistics>("all-time");
+const UserStatistics: FC<Props> = ({ users, voted }) => {
+	const [active, setActive] = useState<Statistics>("season");
 
 	return (
 		<section className="poll-statistics-container">
@@ -108,30 +110,58 @@ const UserStatistics: FC<Props> = ({ users }) => {
 					</>
 				)}
 				{active === "season" && (
-					<>
-						{users
-							.filter((user) => user.polls.total > 7)
-							.sort(
-								(a, b) =>
-									b.polls.seasonStreak - a.polls.seasonStreak
-							)
-							.map((user) => (
-								<article
-									key={user.id}
-									className={classnames("profile-container", {
-										winner: getWinner(
-											users,
-											"seasonStreak"
-										).find((u) => u.email === user.email),
-									})}
-								>
-									<UserLayout user={user} />
-									<div className="skewed-container">
-										<span>{user.polls.seasonStreak}</span>
-									</div>
-								</article>
-							))}
-					</>
+					<div className="season">
+						<div className="advent-of-polls-text">
+							<div className="advent-of-polls-text-container">
+								<h1 className="advent-of-polls-title">
+									Advent of polls
+								</h1>
+							</div>
+
+							<div className="advent-of-polls-text-container">
+								<p className="advent-of-polls-description">
+									Bonus counter (increases when more people
+									vote)
+								</p>
+								<p className="advent-of-polls-description">
+									<strong className="advent-of-polls-bonus">
+										+{voted.length}
+									</strong>
+								</p>
+							</div>
+						</div>
+						<section className="advent-calendar">
+							{users
+								.filter((user) => user.polls.total > 7)
+								.sort(
+									(a, b) =>
+										b.polls.seasonStreak -
+										a.polls.seasonStreak
+								)
+								.map((user: any, idx: number) => (
+									// <article
+									// 	key={user.id}
+									// 	className={classnames("profile-container", {
+									// 		winner: getWinner(
+									// 			users,
+									// 			"seasonStreak"
+									// 		).find((u) => u.email === user.email),
+									// 	})}
+									// >
+									// 	<UserLayout user={user} />
+									// 	<div className="skewed-container">
+									// 		<span>{user.polls.seasonStreak}</span>
+									// 	</div>
+									// </article>
+
+									<AdventCalendar
+										user={user}
+										idx={idx + 1}
+										voted={voted}
+									/>
+								))}
+						</section>
+					</div>
 				)}
 			</section>
 		</section>
