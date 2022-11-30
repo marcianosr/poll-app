@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { NewPollType } from "../PollForm";
+import type { FC } from "react";
+import type { NewPollType } from "../PollForm";
 
 type Props = {
 	fields: NewPollType[];
@@ -12,7 +12,7 @@ const DeleteButton: FC<Props> = ({ fieldId, fields, setFields }) => {
 
 	return (
 		<button type="button" onClick={() => onDelete(fieldId)}>
-			❌
+			Delete answer
 		</button>
 	);
 };
