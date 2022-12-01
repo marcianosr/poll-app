@@ -4,10 +4,19 @@
 
 ## Development
 
-From your terminal:
+### Setup Firestore emulator
+Prerequisites:
+1. Have firebase cli installed `curl -sL https://firebase.tools | bash`
+1. Have java installed
 
+Start emulator:
 ```sh
-npm run dev
+firebase emulators:start
+```
+
+### Start application
+```sh
+yarn run dev
 ```
 
 This starts your app in development mode, rebuilding assets on file changes.
