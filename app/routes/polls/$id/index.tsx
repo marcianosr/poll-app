@@ -528,21 +528,19 @@ export default function PollDetail() {
 												}{" "}
 												votes
 											</small>
-											<p>
-												{showVotedBy && isAdmin && (
-													<>
-														{getVotesFromAllUsers(
-															answer.id
-														).map((user) => (
-															<strong
-																key={user.id}
-															>
-																{user.email}{" "}
-															</strong>
-														))}
-													</>
-												)}
-											</p>
+											{showVotedBy && isAdmin && (
+												<>
+													{getVotesFromAllUsers(
+														answer.id
+													).map((user) => (
+														<strong
+															key={user.id}
+														>
+															{user.email}{" "}
+														</strong>
+													))}
+												</>
+											)}
 										</span>
 									)}
 								</li>
