@@ -1,5 +1,6 @@
 import classNames from "classnames";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import styles from "./styles.css";
 import twinkly from "public/00003158.png";
 import { colors } from "~/utils/colors";
@@ -26,7 +27,9 @@ export const AdventCalendar: FC<Props> = ({ user, idx, voted }) => {
 				})}
 				onClick={() => setToggleCalenderItem(!toggleCalendarItem)}
 			>
-				{!toggleCalendarItem && <span className="number">{idx}</span>}
+				{!toggleCalendarItem && (
+					<span className="door-number">{idx}</span>
+				)}
 			</div>
 			<div
 				className="twinkly-container"
@@ -40,7 +43,7 @@ export const AdventCalendar: FC<Props> = ({ user, idx, voted }) => {
 				<img
 					src={twinkly}
 					className={classNames("twinkly", {
-						["glow"]: getTodaysUserVotes(voted, user),
+						glow: getTodaysUserVotes(voted, user),
 					})}
 				/>
 			</div>
