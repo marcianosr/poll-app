@@ -7,12 +7,25 @@
 ### Setup Firestore emulator
 Prerequisites:
 1. Have firebase cli installed `curl -sL https://firebase.tools | bash`
-1. Have java installed
+2. Have java installed
 
 Start emulator:
 ```sh
 firebase emulators:start
 ```
+
+Start emulator with exported data (to preserve DB)
+
+```sh
+firebase emulators:start  --import ./exported/
+```
+
+Export data when emulator is killed (to preserve DB)
+
+```sh
+firebase emulators:start --export-on-exit ./exported/
+```
+
 
 ### Start application
 ```sh
