@@ -9,7 +9,6 @@ import {
 } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
-	Answer,
 	getPollById,
 	updatePollById,
 	getPollsByOpeningTime,
@@ -43,10 +42,8 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
-import {
-	NoticeBanner,
-	links as noticeBannerLinks,
-} from "~/components/NoticeBanner";
+import { links as noticeBannerLinks } from "~/components/NoticeBanner";
+import { ResultsScreen } from "~/components/ResultsScreen";
 
 type ScreenState = "poll" | "results";
 
@@ -149,7 +146,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	};
 };
 
-type LoaderData = {
+export type LoaderData = {
 	poll: PollData;
 	polls: PollData[];
 	responses: number;
@@ -197,7 +194,7 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users, openedPollNumber, polls, seasons } =
+	const { poll, users, openedPollNumber, polls, seasons } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 	const action = useActionData();
@@ -259,9 +256,6 @@ export default function PollDetail() {
 	// 	return findVotedAnswer.length > 0;
 	// };
 
-	const getLengthOfAnswersById = (answerId: string) =>
-		poll.voted.filter((voted) => voted.answerId === answerId);
-
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
 
@@ -275,12 +269,6 @@ export default function PollDetail() {
 				.map((id) => users.find((user) => user.id === id))
 		);
 	};
-	// ? For future: it would be cool if these functions happen on the server because they can be quite expensive on the frontend. UID on the server is needed
-	const getGivenVotesByUser = poll.voted
-		.filter((voted) => user?.firebase.id === voted.userId)
-		.map((voted) =>
-			currentAnswers.find((answer) => answer.id === voted.answerId)
-		);
 
 	const getVotersFromToday = poll.voted
 		.map((vote) => ({
@@ -488,111 +476,12 @@ export default function PollDetail() {
 					</section>
 				)}
 				{screenState === "results" && (
-					<>
-						<h3>Results for poll #{openedPollNumber}</h3>
-						<p className="responses">
-							<span className="emoji">🎉</span>
-							<span className="amount">{responses}</span> votes on
-							this poll{" "}
-						</p>
-
-						<ul className="choices-list results">
-							{currentAnswers.map((answer, idx) => (
-								<li
-									key={answer.id}
-									className={classNames("option-answer", {
-										correct: getCorrectAnswers(answer.id),
-										selected: getGivenVotesByUser.find(
-											(vote) => vote?.id === answer.id
-										),
-									})}
-								>
-									{answer.blockType === "code" ? (
-										<div className="text-question-answer result-vote">
-											<CodeBlock
-												withLineNumbers={false}
-												code={answer.value}
-											/>
-											<small className="amount-of-votes">
-												{
-													getLengthOfAnswersById(
-														answer.id
-													).length
-												}{" "}
-												votes
-											</small>
-										</div>
-									) : (
-										<span className="text-question-answer result-vote">
-											<span>{answer.value}</span>
-											<small className="amount-of-votes">
-												{
-													getLengthOfAnswersById(
-														answer.id
-													).length
-												}{" "}
-												votes
-											</small>
-											{showVotedBy && isAdmin && (
-												<>
-													{getVotesFromAllUsers(
-														answer.id
-													).map((user) => (
-														<strong key={user.id}>
-															{user.email}{" "}
-														</strong>
-													))}
-												</>
-											)}
-										</span>
-									)}
-								</li>
-							))}
-						</ul>
-
-						<section className="your-votes-container">
-							<h3>Your votes</h3>
-							<NoticeBanner />
-
-							<section className="your-votes">
-								<ul className="choices-list results ">
-									{getGivenVotesByUser.map((vote, idx) => (
-										<li
-											key={vote?.id}
-											className={classNames(
-												"option-answer",
-												{
-													correct: getCorrectAnswers(
-														vote?.id || ""
-													),
-													incorrect:
-														!getCorrectAnswers(
-															vote?.id || ""
-														),
-												}
-											)}
-										>
-											{vote?.blockType === "code" ? (
-												<div className="text-question-answer result-vote">
-													<CodeBlock
-														code={vote.value}
-														withLineNumbers={false}
-													/>
-												</div>
-											) : (
-												<span className="text-question-answer result-vote">
-													{transformToCodeTags(
-														vote?.value || "",
-														idx
-													)}
-												</span>
-											)}
-										</li>
-									))}
-								</ul>
-							</section>
-						</section>
-					</>
+					<ResultsScreen
+						getCorrectAnswers={getCorrectAnswers}
+						currentAnswers={currentAnswers}
+						showVotedBy={showVotedBy}
+						getVotesFromAllUsers={getVotesFromAllUsers}
+					/>
 				)}
 
 				<UserStatistics users={users} voted={poll.voted} />
