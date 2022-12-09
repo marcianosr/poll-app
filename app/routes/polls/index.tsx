@@ -3,6 +3,7 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import classNames from "classnames";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
+import { Filters } from "~/components/Filters";
 import PollStatistics from "~/components/PollStatistics";
 import { SentByUserText } from "~/components/SentByUserText";
 import { useAuth } from "~/providers/AuthProvider";
@@ -20,15 +21,6 @@ import {
 import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
 import { getAdminUser, getUsers, resetSeasonStreak } from "~/utils/user";
 import { transformToCodeTags } from "./$id";
-
-const categories: PollCategory[] = [
-	"html",
-	"css",
-	"general-frontend",
-	"javascript",
-	"react",
-	"typescript",
-];
 
 type PollDataWithDocumentId = PollData & {
 	documentId: string;
@@ -109,20 +101,6 @@ export default function AllPolls() {
 			poll.sentInByUser && poll?.sentInByUser.id === user?.firebase.id
 	);
 
-	const filterPollsByStatus = (category?: PollStatus) => {
-		const filteredPolls = category
-			? polls.filter((poll: PollData) => poll.status === category)
-			: polls;
-		setRenderedPolls(filteredPolls);
-	};
-
-	const filterPollsByCategory = (category?: PollCategory) => {
-		const filteredPolls = category
-			? polls.filter((poll: PollData) => poll.category === category)
-			: polls;
-		setRenderedPolls(filteredPolls);
-	};
-
 	return (
 		<section style={{ color: "white" }}>
 			{isAdmin ? (
@@ -138,57 +116,7 @@ export default function AllPolls() {
 						/>
 					</Form>
 					<PollStatistics polls={polls} />
-
-					<section>
-						<button
-							type="button"
-							onClick={() => filterPollsByStatus()}
-						>
-							All
-						</button>
-						<button
-							type="button"
-							onClick={() => filterPollsByStatus("new")}
-						>
-							New (
-							{
-								polls.filter(
-									(poll: PollData) => poll.status === "new"
-								).length
-							}
-							)
-						</button>
-						<button
-							type="button"
-							onClick={() =>
-								filterPollsByStatus("needs-revision")
-							}
-						>
-							Need revision (
-							{
-								polls.filter(
-									(poll: PollData) =>
-										poll.status === "needs-revision"
-								).length
-							}
-							)
-						</button>
-					</section>
-
-					<section>
-						{categories.map((category) => (
-							<>
-								<button
-									type="button"
-									onClick={() =>
-										filterPollsByCategory(category)
-									}
-								>
-									{category}
-								</button>
-							</>
-						))}
-					</section>
+					<Filters setRenderedPolls={setRenderedPolls} />
 
 					<Link to="/polls/new">Create new poll</Link>
 					<ul>
