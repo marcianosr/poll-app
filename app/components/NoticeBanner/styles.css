@@ -1,0 +1,8 @@
+.notice {
+	background-color: var(--theme-color-20);
+	padding: 1rem;
+}
+
+.emoji {
+	font-size: 2rem;
+}

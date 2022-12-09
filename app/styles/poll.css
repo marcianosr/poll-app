@@ -160,11 +160,6 @@ button {
 	margin: 0;
 }
 
-.notice {
-	background-color: var(--theme-color-20);
-	padding: 1rem;
-}
-
 .poll-statistics-container {
 	margin-top: 2rem;
 }
@@ -304,10 +299,6 @@ button {
 	border: 1px solid var(--theme-color);
 	background-color: var(--theme-color-20);
 	cursor: pointer;
-}
-
-.emoji {
-	font-size: 2rem;
 }
 
 .responses {

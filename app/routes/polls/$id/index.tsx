@@ -43,6 +43,10 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
+import {
+	NoticeBanner,
+	links as noticeBannerLinks,
+} from "~/components/NoticeBanner";
 
 type ScreenState = "poll" | "results";
 
@@ -55,6 +59,7 @@ export function links() {
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
+		...noticeBannerLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -533,9 +538,7 @@ export default function PollDetail() {
 													{getVotesFromAllUsers(
 														answer.id
 													).map((user) => (
-														<strong
-															key={user.id}
-														>
+														<strong key={user.id}>
 															{user.email}{" "}
 														</strong>
 													))}
@@ -549,11 +552,7 @@ export default function PollDetail() {
 
 						<section className="your-votes-container">
 							<h3>Your votes</h3>
-							<h3 className="notice">
-								<span className="emoji">🏋️</span> Lift each
-								other up: Feel free to discuss your vote in a
-								slack thread!
-							</h3>
+							<NoticeBanner />
 
 							<section className="your-votes">
 								<ul className="choices-list results ">
