@@ -1,12 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import {
-	Form,
-	Link,
-	useActionData,
-	useLoaderData,
-	useTransition,
-} from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
 	getPollById,
@@ -42,10 +36,7 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
-import {
-	links as noticeBannerLinks,
-	NoticeBanner,
-} from "~/components/NoticeBanner";
+import { links as noticeBannerLinks } from "~/components/NoticeBanner";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
 
@@ -321,6 +312,7 @@ export default function PollDetail() {
 				)}
 				{screenState === "poll" && (
 					<PollScreen
+						getCorrectAnswers={getCorrectAnswers}
 						showVotedBy={showVotedBy}
 						getVotesFromAllUsers={getVotesFromAllUsers}
 						currentAnswers={currentAnswers}
