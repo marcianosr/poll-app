@@ -39,6 +39,7 @@ import { colors } from "~/utils/colors";
 import { links as noticeBannerLinks } from "~/components/NoticeBanner";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
+import TodaysVoters from "~/components/TodaysVoters";
 
 type ScreenState = "poll" | "results";
 
@@ -233,26 +234,6 @@ export default function PollDetail() {
 		);
 	};
 
-	const getVotersFromToday = poll.voted
-		.map((vote) => ({
-			...users.find((user) => user.id === vote.userId),
-			vote,
-		}))
-		.map((user) => {
-			const correctAnswer = getCorrectAnswers(user.vote.answerId);
-
-			return (
-				<li
-					className={classNames("vote-order-list-item", {
-						userCorrect: correctAnswer,
-						userIncorrect: !correctAnswer,
-					})}
-				>
-					<img src={user.photoURL} width={65} height={65} />
-				</li>
-			);
-		});
-
 	return (
 		<section
 			className={classNames("page-container", {
@@ -340,14 +321,11 @@ export default function PollDetail() {
 				</section>
 				{/* <PollStatistics polls={polls} /> */}
 			</section>
-			{getVotersFromToday.length > 0 && (
-				<aside className="vote-order-sidebar">
-					<ol className="vote-order-container">
-						<span className="vote-order-title">Today's voters</span>
-						{getVotersFromToday}
-					</ol>
-				</aside>
-			)}
+			<TodaysVoters
+				poll={poll}
+				users={users}
+				getCorrectAnswers={getCorrectAnswers}
+			/>
 		</section>
 	);
 }
