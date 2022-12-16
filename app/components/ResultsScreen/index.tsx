@@ -88,7 +88,10 @@ export const ResultsScreen: FC<Props> = ({
 
 			<section className="your-votes-container">
 				<h3>Your votes</h3>
-				<NoticeBanner />
+				<NoticeBanner>
+					<span className="emoji">🏋️</span> Lift each other up: Feel
+					free to discuss your vote in a slack thread!
+				</NoticeBanner>
 
 				<section className="your-votes">
 					<ul className="choices-list results ">

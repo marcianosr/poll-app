@@ -1,14 +1,3 @@
-.option-answer {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}
-
-.pollIsClosed {
-	opacity: 0.2;
-	pointer-events: none;
-}
-
 .results .option-answer:not(.selected, .correct, .incorrect) {
 	opacity: 0.2;
 }
@@ -17,13 +6,6 @@ button {
 	width: min(400px, 100%);
 	height: 3rem;
 	font-size: 1.25rem;
-}
-
-.choices-list {
-	gap: 1rem;
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0;
 }
 
 .userCorrect {
@@ -46,46 +28,6 @@ button {
 	color: var(--incorrect);
 	border: 1px solid var(--incorrect);
 	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
-}
-
-.text-question-answer {
-	font-size: 1rem;
-	display: flex;
-	align-items: center;
-	background: #313131;
-	border: 1px dashed var(--theme-color);
-	color: white;
-	padding: 1rem;
-	cursor: pointer;
-	transition: color 300ms, border 300ms, background 300ms;
-	letter-spacing: -0.5px;
-}
-
-.text-question-answer:hover:not(.result-vote) {
-	background-color: var(--theme-color-20);
-}
-
-.choices-list .code-block {
-	transition: background-color 200ms;
-}
-
-.choices-list .code-block:hover:not(.result-vote) {
-	background-color: var(--theme-color-20);
-	cursor: pointer;
-}
-
-.input {
-	display: none;
-}
-
-.input:checked + label .text-question-answer,
-.input:checked + label .code-block {
-	border: 1px solid var(--theme-color);
-	color: var(--theme-color);
-	background-color: var(--theme-color-20);
-	font-weight: 700;
-	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
-	text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
 .page-container {
@@ -405,6 +347,12 @@ button {
 
 .season {
 	font-family: var(--default-font);
+}
+
+.sticky-banner {
+	position: fixed;
+	top: 0;
+	background-color: red;
 }
 
 @keyframes holoGradient {
