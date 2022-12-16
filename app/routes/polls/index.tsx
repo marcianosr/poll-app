@@ -1,22 +1,12 @@
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
-import classNames from "classnames";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
 import { Filters } from "~/components/Filters";
 import PollStatistics from "~/components/PollStatistics";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
-import {
-	getAllPolls,
-	getAllPollsWithIds,
-	getDocumentPollIds,
-	getPollsByOpeningTime,
-	PollCategory,
-	PollData,
-	PollStatus,
-	resetVotesForPoll,
-} from "~/utils/polls";
+import { getAllPollsWithIds, PollData, resetVotesForPoll } from "~/utils/polls";
 import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
 import { getAdminUser, getUsers, resetSeasonStreak } from "~/utils/user";
 import {
