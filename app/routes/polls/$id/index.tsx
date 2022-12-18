@@ -39,7 +39,10 @@ import { colors } from "~/utils/colors";
 import { links as noticeBannerLinks } from "~/components/NoticeBanner";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
-import TodaysVoters from "~/components/TodaysVoters";
+import {
+	TodaysVoters,
+	links as todaysVotersLinks,
+} from "~/components/TodaysVoters";
 
 type ScreenState = "poll" | "results";
 
@@ -54,6 +57,7 @@ export function links() {
 		...questionLinks(),
 		...noticeBannerLinks(),
 		...pollScreenLinks(),
+		...todaysVotersLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }

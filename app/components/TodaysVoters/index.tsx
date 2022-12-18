@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { PollData } from "~/utils/polls";
+import styles from "./styles.css";
 
 type Props = {
 	poll: PollData;
@@ -7,7 +8,11 @@ type Props = {
 	getCorrectAnswers: (answerId: string) => boolean;
 };
 
-const TodaysVoters = ({ poll, users, getCorrectAnswers }: Props) => {
+export function links() {
+	return [{ rel: "stylesheet", href: styles }];
+}
+
+export const TodaysVoters = ({ poll, users, getCorrectAnswers }: Props) => {
 	const getVotersFromToday = poll.voted
 		.map((vote) => ({
 			...users.find((user) => user.id === vote.userId),

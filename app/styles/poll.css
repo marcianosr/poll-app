@@ -254,30 +254,10 @@ button {
 	font-weight: 700;
 }
 
-.vote-order-sidebar {
-	margin: 1rem;
-}
-
-.vote-order-container {
-	display: flex;
-	flex-direction: column;
-	padding: 0;
-}
-
 .place {
 	position: absolute;
 	bottom: 6px;
 	left: 4px;
-}
-
-.vote-order-list-item {
-	position: relative;
-	width: 65px;
-	height: 65px;
-}
-
-.vote-order-title {
-	margin-bottom: 1rem;
 }
 
 .advent-of-polls-text {
@@ -347,12 +327,6 @@ button {
 
 .season {
 	font-family: var(--default-font);
-}
-
-.sticky-banner {
-	position: fixed;
-	top: 0;
-	background-color: red;
 }
 
 @keyframes holoGradient {
