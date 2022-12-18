@@ -12,7 +12,6 @@ type Props = {
 
 export const NoticeBanner: FC<Props> = ({ variant = "default", children }) => (
 	<section className={classNames("notice-container", variant)}>
-		{console.log(variant)}
 		<h3 className="notice">{children}</h3>
 	</section>
 );
