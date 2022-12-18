@@ -1,14 +1,10 @@
-import {
-	Form,
-	useActionData,
-	useLoaderData,
-	useTransition,
-} from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import classNames from "classnames";
 import { FC, useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { LoaderData } from "~/routes/polls/$id";
 import { Answer, Voted } from "~/utils/polls";
+import VoteButton from "../Button/VoteButton";
 import { CodeBlock } from "../CodeBlock";
 import styles from "./styles.css";
 
@@ -32,7 +28,6 @@ export const PollScreen: FC<Props> = ({
 	const { user, isAdmin } = useAuth();
 
 	const action = useActionData();
-	const transition = useTransition();
 
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
@@ -128,19 +123,7 @@ export const PollScreen: FC<Props> = ({
 					</ul>
 				)}
 				{user && (
-					<button
-						disabled={
-							poll.status !== "open" ||
-							selectedVotes.length === 0 ||
-							transition.state === "submitting" ||
-							transition.state === "loading"
-						}
-					>
-						{transition.state === "submitting" ||
-						transition.state === "loading"
-							? "Submitting... No button mashing! NEENER NEENER!"
-							: "Submit"}
-					</button>
+					<VoteButton poll={poll} selectedVotes={selectedVotes} />
 				)}
 				{!user && <small>Please login to submit your answer.</small>}
 				<input
