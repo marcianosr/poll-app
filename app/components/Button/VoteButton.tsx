@@ -9,8 +9,6 @@ type Props = {
 const VoteButton = ({ poll, selectedVotes }: Props) => {
 	const transition = useTransition();
 
-	console.log(transition);
-
 	return (
 		<button
 			disabled={
