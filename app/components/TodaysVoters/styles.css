@@ -1,0 +1,19 @@
+.vote-order-list-item {
+	position: relative;
+	width: 65px;
+	height: 65px;
+}
+
+.vote-order-title {
+	margin-bottom: 1rem;
+}
+
+.vote-order-sidebar {
+	margin: 1rem;
+}
+
+.vote-order-container {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+}

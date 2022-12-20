@@ -1,0 +1,18 @@
+.notice-container {
+	padding: 0.5rem;
+}
+
+.notice-container h3 {
+	margin: 0;
+}
+
+.default {
+	background-color: var(--theme-color-20);
+}
+
+.sticky {
+}
+
+.emoji {
+	font-size: 2rem;
+}

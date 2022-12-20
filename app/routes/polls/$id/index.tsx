@@ -1,15 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import {
-	Form,
-	Link,
-	useActionData,
-	useLoaderData,
-	useTransition,
-} from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
-	Answer,
 	getPollById,
 	updatePollById,
 	getPollsByOpeningTime,
@@ -43,6 +36,13 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
+import { links as noticeBannerLinks } from "~/components/NoticeBanner";
+import { ResultsScreen } from "~/components/ResultsScreen";
+import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
+import {
+	TodaysVoters,
+	links as todaysVotersLinks,
+} from "~/components/TodaysVoters";
 
 type ScreenState = "poll" | "results";
 
@@ -55,6 +55,9 @@ export function links() {
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
+		...noticeBannerLinks(),
+		...pollScreenLinks(),
+		...todaysVotersLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -144,7 +147,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	};
 };
 
-type LoaderData = {
+export type LoaderData = {
 	poll: PollData;
 	polls: PollData[];
 	responses: number;
@@ -192,17 +195,14 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, responses, users, openedPollNumber, polls, seasons } =
+	const { poll, users, openedPollNumber, polls, seasons } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
-	const action = useActionData();
-	const transition = useTransition();
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 	const [showVotedBy, setShowVotedBy] = useState(false);
 
 	const [currentAnswers, setCurrentAnswers] = useState(poll.answers);
-	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 	const { width, height } = useWindowSize();
 
 	// Can't check this server-side unless uid is stored somewhere in a cookie or something
@@ -214,36 +214,6 @@ export default function PollDetail() {
 		if (userHasVoted) setScreenState("results");
 	}, [user?.firebase.id, userHasVoted]);
 
-	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (e.target.checked && poll.type === "radio") {
-			return setSelectedVotes([
-				...selectedVotes.filter(
-					(selected) => selected.answerId === e.target.id
-				),
-				{
-					answerId: e.target.id,
-					userId: user?.firebase.id || "empty",
-				},
-			]);
-		}
-
-		if (e.target.checked && poll.type === "checkbox") {
-			setSelectedVotes([
-				...selectedVotes,
-				{
-					answerId: e.target.id,
-					userId: user?.firebase.id || "empty",
-				},
-			]);
-		} else {
-			const selectedPoll = selectedVotes.filter(
-				(selected) => selected.answerId !== e.target.id
-			);
-
-			setSelectedVotes(selectedPoll);
-		}
-	};
-
 	//! Re-check this fn
 	// const isDefaultChecked = (answer: Answer) => {
 	// 	const findVotedAnswer = poll.voted
@@ -253,9 +223,6 @@ export default function PollDetail() {
 	// 	console.log("find answer", findVotedAnswer);
 	// 	return findVotedAnswer.length > 0;
 	// };
-
-	const getLengthOfAnswersById = (answerId: string) =>
-		poll.voted.filter((voted) => voted.answerId === answerId);
 
 	const getCorrectAnswers = (answerId: string) =>
 		!!poll.correctAnswers.find((correct) => correct.id === answerId);
@@ -270,32 +237,6 @@ export default function PollDetail() {
 				.map((id) => users.find((user) => user.id === id))
 		);
 	};
-	// ? For future: it would be cool if these functions happen on the server because they can be quite expensive on the frontend. UID on the server is needed
-	const getGivenVotesByUser = poll.voted
-		.filter((voted) => user?.firebase.id === voted.userId)
-		.map((voted) =>
-			currentAnswers.find((answer) => answer.id === voted.answerId)
-		);
-
-	const getVotersFromToday = poll.voted
-		.map((vote) => ({
-			...users.find((user) => user.id === vote.userId),
-			vote,
-		}))
-		.map((user) => {
-			const correctAnswer = getCorrectAnswers(user.vote.answerId);
-
-			return (
-				<li
-					className={classNames("vote-order-list-item", {
-						userCorrect: correctAnswer,
-						userIncorrect: !correctAnswer,
-					})}
-				>
-					<img src={user.photoURL} width={65} height={65} />
-				</li>
-			);
-		});
 
 	return (
 		<section
@@ -355,245 +296,20 @@ export default function PollDetail() {
 					</>
 				)}
 				{screenState === "poll" && (
-					<section
-						className={classNames({
-							pollIsClosed: poll.status !== "open",
-						})}
-					>
-						{poll.type === "radio" ? (
-							<h3 className="notice">
-								Only 1 answer can be selected
-							</h3>
-						) : (
-							<h3 className="notice">Multiple can be selected</h3>
-						)}
-						<Form method="post">
-							{action?.error && (
-								<span>
-									Please at least fill out one answer to
-									submit
-								</span>
-							)}
-							{user && (
-								<ul className="choices-list">
-									{currentAnswers.map(
-										(answer, idx: number) => (
-											<>
-												<li
-													key={idx}
-													className="option-answer"
-												>
-													<input
-														className="input"
-														disabled={
-															poll.status !==
-															"open"
-														}
-														type={poll.type}
-														id={answer.id}
-														onChange={isChecked}
-														// checked={isDefaultChecked(answer)}
-														name="answer"
-														value={answer.value}
-													/>
-
-													<label htmlFor={answer.id}>
-														{answer.blockType ===
-														"code" ? (
-															<>
-																<CodeBlock
-																	withLineNumbers={
-																		false
-																	}
-																	code={
-																		answer.value
-																	}
-																/>
-															</>
-														) : (
-															<span className="text-question-answer">
-																{answer.value}
-															</span>
-														)}
-														{showVotedBy &&
-															isAdmin && (
-																<p>
-																	{getVotesFromAllUsers(
-																		answer.id
-																	).map(
-																		(
-																			user
-																		) => (
-																			<strong
-																				key={
-																					user.id
-																				}
-																			>
-																				{
-																					user.email
-																				}{" "}
-																			</strong>
-																		)
-																	)}
-																</p>
-															)}
-													</label>
-												</li>
-											</>
-										)
-									)}
-								</ul>
-							)}
-							{user && (
-								<button
-									disabled={
-										poll.status !== "open" ||
-										selectedVotes.length === 0 ||
-										transition.state === "submitting" ||
-										transition.state === "loading"
-									}
-								>
-									{transition.state === "submitting" ||
-									transition.state === "loading"
-										? "Submitting... No button mashing! NEENER NEENER!"
-										: "Submit"}
-								</button>
-							)}
-							{!user && (
-								<small>
-									Please login to submit your answer.
-								</small>
-							)}
-							<input
-								type="hidden"
-								name="answers"
-								defaultValue={JSON.stringify(currentAnswers)}
-							/>
-							<input
-								type="hidden"
-								name="selectedVotes"
-								defaultValue={JSON.stringify(selectedVotes)}
-							/>
-							<input
-								type="hidden"
-								name="uid"
-								defaultValue={user?.firebase.id}
-							/>
-						</Form>
-					</section>
+					<PollScreen
+						getCorrectAnswers={getCorrectAnswers}
+						showVotedBy={showVotedBy}
+						getVotesFromAllUsers={getVotesFromAllUsers}
+						currentAnswers={currentAnswers}
+					/>
 				)}
 				{screenState === "results" && (
-					<>
-						<h3>Results for poll #{openedPollNumber}</h3>
-						<p className="responses">
-							<span className="emoji">🎉</span>
-							<span className="amount">{responses}</span> votes on
-							this poll{" "}
-						</p>
-
-						<ul className="choices-list results">
-							{currentAnswers.map((answer, idx) => (
-								<li
-									key={answer.id}
-									className={classNames("option-answer", {
-										correct: getCorrectAnswers(answer.id),
-										selected: getGivenVotesByUser.find(
-											(vote) => vote?.id === answer.id
-										),
-									})}
-								>
-									{answer.blockType === "code" ? (
-										<div className="text-question-answer result-vote">
-											<CodeBlock
-												withLineNumbers={false}
-												code={answer.value}
-											/>
-											<small className="amount-of-votes">
-												{
-													getLengthOfAnswersById(
-														answer.id
-													).length
-												}{" "}
-												votes
-											</small>
-										</div>
-									) : (
-										<span className="text-question-answer result-vote">
-											<span>{answer.value}</span>
-											<small className="amount-of-votes">
-												{
-													getLengthOfAnswersById(
-														answer.id
-													).length
-												}{" "}
-												votes
-											</small>
-											{showVotedBy && isAdmin && (
-												<>
-													{getVotesFromAllUsers(
-														answer.id
-													).map((user) => (
-														<strong
-															key={user.id}
-														>
-															{user.email}{" "}
-														</strong>
-													))}
-												</>
-											)}
-										</span>
-									)}
-								</li>
-							))}
-						</ul>
-
-						<section className="your-votes-container">
-							<h3>Your votes</h3>
-							<h3 className="notice">
-								<span className="emoji">🏋️</span> Lift each
-								other up: Feel free to discuss your vote in a
-								slack thread!
-							</h3>
-
-							<section className="your-votes">
-								<ul className="choices-list results ">
-									{getGivenVotesByUser.map((vote, idx) => (
-										<li
-											key={vote?.id}
-											className={classNames(
-												"option-answer",
-												{
-													correct: getCorrectAnswers(
-														vote?.id || ""
-													),
-													incorrect:
-														!getCorrectAnswers(
-															vote?.id || ""
-														),
-												}
-											)}
-										>
-											{vote?.blockType === "code" ? (
-												<div className="text-question-answer result-vote">
-													<CodeBlock
-														code={vote.value}
-														withLineNumbers={false}
-													/>
-												</div>
-											) : (
-												<span className="text-question-answer result-vote">
-													{transformToCodeTags(
-														vote?.value || "",
-														idx
-													)}
-												</span>
-											)}
-										</li>
-									))}
-								</ul>
-							</section>
-						</section>
-					</>
+					<ResultsScreen
+						getCorrectAnswers={getCorrectAnswers}
+						currentAnswers={currentAnswers}
+						showVotedBy={showVotedBy}
+						getVotesFromAllUsers={getVotesFromAllUsers}
+					/>
 				)}
 
 				<UserStatistics users={users} voted={poll.voted} />
@@ -609,14 +325,11 @@ export default function PollDetail() {
 				</section>
 				{/* <PollStatistics polls={polls} /> */}
 			</section>
-			{getVotersFromToday.length > 0 && (
-				<aside className="vote-order-sidebar">
-					<ol className="vote-order-container">
-						<span className="vote-order-title">Today's voters</span>
-						{getVotersFromToday}
-					</ol>
-				</aside>
-			)}
+			<TodaysVoters
+				poll={poll}
+				users={users}
+				getCorrectAnswers={getCorrectAnswers}
+			/>
 		</section>
 	);
 }
