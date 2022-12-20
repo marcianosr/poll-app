@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useActionData, useLoaderData } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
 	getPollById,
@@ -78,6 +78,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const parsedVoted = JSON.parse(selectedVotes) as Voted[];
 
 	const polls = (await getPollById(paramId)) as PollData;
+
+	const hasAlreadyVoted = polls.voted.find((voted) => voted.userId === uid);
+
+	if (hasAlreadyVoted) {
+		return {
+			error: "has-voted",
+			message: "User has already voted",
+		};
+	}
 
 	// const getAmountOfCorrectAnswers = polls.correctAnswers.filter((answer) =>
 	// 	parsedVoted.find((voted) => answer.id === voted.answerId)
