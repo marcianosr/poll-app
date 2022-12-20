@@ -25,7 +25,9 @@ export const awards = (users: any, polls: PollData[]) => [
 		type: "rank",
 		description: "Voted more than 7 times in total",
 		requirements: (users: any) => {
-			return users.filter((user: any) => user.polls.total > 7);
+			return users.filter(
+				(user: any) => user.polls.total > 7 && user.polls.total <= 14
+			);
 		},
 	},
 	{
@@ -33,56 +35,72 @@ export const awards = (users: any, polls: PollData[]) => [
 		type: "rank",
 		description: "Voted more than 14 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 14),
+			users.filter(
+				(user: any) => user.polls.total > 14 && user.polls.total <= 21
+			),
 	},
 	{
 		name: "'Long Polling'",
 		type: "rank",
 		description: "Voted more than 21 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 21),
+			users.filter(
+				(user: any) => user.polls.total > 21 && user.polls.total <= 28
+			),
 	},
 	{
 		name: "Poll-a-holic",
 		type: "rank",
 		description: "Voted more than 28 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 28),
+			users.filter(
+				(user: any) => user.polls.total > 28 && user.polls.total <= 35
+			),
 	},
 	{
 		name: "Poll collector",
 		type: "rank",
 		description: "Voted more than 35 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 35),
+			users.filter(
+				(user: any) => user.polls.total > 35 && user.polls.total <= 46
+			),
 	},
 	{
 		name: "Poll Nerdo",
 		type: "rank",
 		description: "Voted more than 46 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 46),
+			users.filter(
+				(user: any) => user.polls.total > 46 && user.polls.total <= 60
+			),
 	},
 	{
 		name: "Permanently plugged in",
 		type: "rank",
 		description: "Voted more than 60 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 60),
+			users.filter(
+				(user: any) => user.polls.total > 60 && user.polls.total <= 71
+			),
 	},
 	{
 		name: "Truly poll addicted",
 		type: "rank",
 		description: "Voted more than 71 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 71),
+			users.filter(
+				(user: any) => user.polls.total > 71 && user.polls.total <= 82
+			),
 	},
 	{
 		name: "Polls are a nerds best friend",
 		type: "rank",
 		description: "Voted more than 82 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 82),
+			users.filter(
+				(user: any) => user.polls.total > 82 && user.polls.total <= 95
+			),
 	},
 	{
 		name: "Polls Galore!",
