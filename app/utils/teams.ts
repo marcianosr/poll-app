@@ -28,7 +28,7 @@ export const getTeams = async () => {
 
 	const db = getFirestore(app);
 
-	const ref = collection(db, "team");
+	const ref = collection(db, "teams");
 	const getQuery = query(ref);
 	const querySnapshot = await getDocs(getQuery);
 
@@ -42,7 +42,7 @@ export const updateTeamById = async <T extends UpdateTeam>(payload: T) => {
 	const db = getFirestore(app);
 
 	const snapshot = await setDoc(
-		doc(db, "team", payload.id as string),
+		doc(db, "teams", payload.id as string),
 		payload,
 		{
 			merge: true,

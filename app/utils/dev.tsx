@@ -29,7 +29,7 @@ export async function addUser(data: any) {
 }
 
 export async function addTeam(data: any) {
-	await setDoc(doc(db, "team", data.id), data);
+	await setDoc(doc(db, "teams", data.id), data);
 	console.info("created team!");
 }
 
