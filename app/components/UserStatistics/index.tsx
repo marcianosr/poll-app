@@ -1,10 +1,12 @@
 import classnames from "classnames";
 import { FC, useState } from "react";
-import { AdventCalendar } from "../AdventCalendar";
+import { Voted } from "~/utils/polls";
+import { Team } from "~/utils/teams";
 
 type Props = {
 	users: any;
 	voted: any;
+	teams: Team[];
 };
 
 type Statistics = "all-time" | "correct" | "season";
@@ -31,7 +33,7 @@ const getWinner = (users: any, field: "seasonStreak" | "total" | "correct") => {
 	return winners;
 };
 
-const UserStatistics: FC<Props> = ({ users, voted }) => {
+const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 	const [active, setActive] = useState<Statistics>("season");
 
 	return (
@@ -110,58 +112,118 @@ const UserStatistics: FC<Props> = ({ users, voted }) => {
 					</>
 				)}
 				{active === "season" && (
-					<div className="season">
-						<div className="advent-of-polls-text">
-							<div className="advent-of-polls-text-container">
-								<h1 className="advent-of-polls-title">
-									Advent of polls
-								</h1>
-							</div>
+					<section className="team-season-container">
+						<h1 className="team-season-title">Teams leaderboard</h1>
+						<ol className="team-list">
+							{teams
+								.sort((a, b) => b.points.total - a.points.total)
+								.map((team, idx) => {
+									const votedUserIds = voted.map(
+										(vote: Voted) => vote.userId
+									);
 
-							<div className="advent-of-polls-text-container">
-								<p className="advent-of-polls-description">
-									Bonus counter (increases when more people
-									vote)
-								</p>
-								<p className="advent-of-polls-description">
-									<strong className="advent-of-polls-bonus">
-										+{voted.length}
-									</strong>
-								</p>
-							</div>
-						</div>
-						<section className="advent-calendar">
-							{users
-								.filter((user) => user.polls.total > 7)
-								.sort(
-									(a, b) =>
-										b.polls.seasonStreak -
-										a.polls.seasonStreak
-								)
-								.map((user: any, idx: number) => (
-									// <article
-									// 	key={user.id}
-									// 	className={classnames("profile-container", {
-									// 		winner: getWinner(
-									// 			users,
-									// 			"seasonStreak"
-									// 		).find((u) => u.email === user.email),
-									// 	})}
-									// >
-									// 	<UserLayout user={user} />
-									// 	<div className="skewed-container">
-									// 		<span>{user.polls.seasonStreak}</span>
-									// 	</div>
-									// </article>
+									const votedUserIdsByTeam =
+										votedUserIds.filter((id: string) =>
+											team.users.find(
+												(tuid) => tuid === id
+											)
+										);
 
-									<AdventCalendar
-										user={user}
-										idx={idx + 1}
-										voted={voted}
-									/>
-								))}
-						</section>
-					</div>
+									return (
+										<>
+											<li
+												className={classnames(
+													"team-container",
+													team.name.toLowerCase()
+												)}
+											>
+												<section className="team-list-item skew-item">
+													<div className="team-name">
+														<span className="team-place">
+															{idx + 1}
+														</span>
+														<span className="team-text">
+															Team
+														</span>
+														<h3>{team.name}</h3>
+													</div>
+													<ul className="team-list-photos">
+														{users
+															.filter((user) =>
+																team.users.find(
+																	(uid) =>
+																		uid ===
+																		user.id
+																)
+															)
+															.map((user) => {
+																const userHasVoted =
+																	voted.find(
+																		(
+																			vote: Voted
+																		) =>
+																			vote.userId ===
+																			user.id
+																	);
+
+																const index =
+																	votedUserIdsByTeam.findIndex(
+																		(
+																			id: string
+																		) =>
+																			id ===
+																			user.id
+																	) + 1;
+
+																return (
+																	<li className="team-list-items-photos">
+																		{index ===
+																		0 ? (
+																			<div className="team-addition">
+																				0
+																			</div>
+																		) : (
+																			<div className="team-addition">
+																				+
+																				{2 **
+																					index}
+																			</div>
+																		)}
+
+																		<img
+																			src={
+																				user.photoURL
+																			}
+																			width="85"
+																			height="85"
+																		/>
+																	</li>
+																);
+															})}
+													</ul>
+												</section>
+												<div className="skew-item team-points-container">
+													<span className="team-title-text">
+														streak
+													</span>
+													<div>
+														{team.points.streak}
+													</div>
+												</div>
+												<div className="skew-item team-points-container">
+													<span className="team-title-text">
+														total
+													</span>
+													<div>
+														{team.points.total}
+													</div>
+												</div>
+											</li>
+										</>
+									);
+								})}
+						</ol>
+					</section>
 				)}
 			</section>
 		</section>

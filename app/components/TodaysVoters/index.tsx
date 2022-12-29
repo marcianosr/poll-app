@@ -23,6 +23,7 @@ export const TodaysVoters = ({ poll, users, getCorrectAnswers }: Props) => {
 
 			return (
 				<li
+					key={user.id}
 					className={classNames("vote-order-list-item", {
 						userCorrect: correctAnswer,
 						userIncorrect: !correctAnswer,

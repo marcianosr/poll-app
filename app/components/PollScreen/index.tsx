@@ -50,6 +50,7 @@ export const PollScreen: FC<Props> = ({
 					<ul className="choices-list">
 						{currentAnswers.map((answer, idx: number) => (
 							<PollAnswerOption
+								key={idx}
 								idx={idx}
 								answer={answer}
 								poll={poll}

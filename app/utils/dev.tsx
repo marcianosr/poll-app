@@ -6,7 +6,9 @@ import { getUsers } from "./user";
 
 import mockPolls from "~/fixtures/polls.json";
 import mockUsers from "~/fixtures/users.json";
+import mockTeams from "~/fixtures/teams.json";
 import kabisa from "../fixtures/kabisa.json";
+import { getTeams } from "./teams";
 
 // ! DEVELOPMENT INTENDED DATA POPULATION
 
@@ -26,15 +28,21 @@ export async function addUser(data: any) {
 	console.info("created user!");
 }
 
+export async function addTeam(data: any) {
+	await setDoc(doc(db, "team", data.id), data);
+	console.info("created team!");
+}
+
 // ! Bootstrap function used for populating emulator data. Use on /polls page e.g
 export const createDevData = async () => {
 	const polls = await getAllPolls();
 	const users = await getUsers();
+	const teams = await getTeams();
 
 	console.log("create dev data");
 
 	// ! only used when connected to PROD
-	// writeCurrentProdDataToFile(users, polls);
+	// writeCurrentProdDataToFile(users, polls, teams);
 
 	if (process.env.NODE_ENV === "development") {
 		console.log("create");
@@ -43,13 +51,15 @@ export const createDevData = async () => {
 	}
 };
 
-const writeCurrentProdDataToFile = (users, polls) => {
-	console.log("wriote");
+const writeCurrentProdDataToFile = (users, polls, teams) => {
+	console.log("write data...");
 	fs.writeFileSync("app/fixtures/polls.json", JSON.stringify(polls));
 	fs.writeFileSync("app/fixtures/users.json", JSON.stringify(users));
+	fs.writeFileSync("app/fixtures/teams.json", JSON.stringify(teams));
 };
 
 const populateFirestoreWithFileData = () => {
 	mockPolls.forEach((poll) => createPollsDev(poll));
 	mockUsers.forEach((user) => addUser(user));
+	mockTeams.forEach((team) => addTeam(team));
 };

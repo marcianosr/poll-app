@@ -21,12 +21,14 @@
 	--incorrect-20: #dc143c20;
 }
 
-.javascript {
+.javascript,
+.saffron {
 	--theme-color: var(--saffron);
 	--theme-color-20: #f4c43020;
 }
 
-.typescript {
+.typescript,
+.lavender {
 	--theme-color: var(--lavender);
 	--theme-color-20: #e6e6fa20;
 }
@@ -36,12 +38,14 @@
 	--theme-color-20: #2a52be20;
 }
 
-.react {
+.react,
+.celadon {
 	--theme-color: var(--celadon);
 	--theme-color-20: #ace1af20;
 }
 
-.html {
+.html,
+.vermillion {
 	--theme-color: var(--vermillion);
 	--theme-color-20: #e3423420;
 }
