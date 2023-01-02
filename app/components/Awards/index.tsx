@@ -103,11 +103,38 @@ export const awards = (users: any, polls: PollData[]) => [
 			),
 	},
 	{
-		name: "Polls Galore!",
+		name: "Poll Elitist",
 		type: "rank",
 		description: "Voted more than 95 times in total",
 		requirements: (users: any) =>
-			users.filter((user: any) => user.polls.total > 95),
+			users.filter(
+				(user: any) => user.polls.total > 95 && user.polls.total <= 115
+			),
+	},
+	{
+		name: "PollXtreme",
+		type: "rank",
+		description: "Voted more than 115 times in total",
+		requirements: (users: any) =>
+			users.filter(
+				(user: any) => user.polls.total > 115 && user.polls.total <= 133
+			),
+	},
+	{
+		name: "Polls treasure trove",
+		type: "rank",
+		description: "Voted more than 133 times in total",
+		requirements: (users: any) =>
+			users.filter(
+				(user: any) => user.polls.total > 133 && user.polls.total <= 157
+			),
+	},
+	{
+		name: "Polls Galore!",
+		type: "rank",
+		description: "Voted more than 157 times in total",
+		requirements: (users: any) =>
+			users.filter((user: any) => user.polls.total > 157),
 	},
 	{
 		name: "HTML Hobbyist",
