@@ -149,3 +149,15 @@ export async function getAllPollsWithIds() {
 		documentId: item.id,
 	}));
 }
+
+export async function getPollsByStatus(status: PollStatus) {
+	const ref = collection(db, "polls");
+	const getQuery = query(ref, where("status", "==", status));
+
+	const polls = await getDocs(getQuery).then((snapshot) => ({
+		...snapshot.docs[0].data(),
+		documentId: snapshot.docs[0].id,
+	}));
+
+	return polls;
+}
