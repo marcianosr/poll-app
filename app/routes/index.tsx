@@ -1,38 +1,27 @@
-import { Awards } from "~/components/Awards";
+import { LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { getAmountOfClosedPolls, getPollsByStatus } from "~/utils/polls";
+
+export const loader: LoaderFunction = async ({ params }) => {
+	const polls = await getPollsByStatus("open");
+	const closedPolls = await getAmountOfClosedPolls();
+
+	return { polls, closedPolls };
+};
 
 export default function Index() {
+	const { polls: openPoll, closedPolls } = useLoaderData();
+
 	return (
-		<div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-			<h1>Welcome to Remix</h1>
-			<ul>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/blog"
-						rel="noreferrer"
-					>
-						15m Quickstart Blog Tutorial
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/jokes"
-						rel="noreferrer"
-					>
-						Deep Dive Jokes App Tutorial
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/docs"
-						rel="noreferrer"
-					>
-						Remix Docs
-					</a>
-				</li>
-			</ul>
-		</div>
+		<section style={{ display: "flex", justifyContent: "center" }}>
+			<h1>
+				<Link
+					style={{ color: "white" }}
+					to={`polls/${openPoll.documentId}`}
+				>
+					Go to poll
+				</Link>
+			</h1>
+		</section>
 	);
 }
