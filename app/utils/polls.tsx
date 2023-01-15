@@ -150,14 +150,15 @@ export async function getAllPollsWithIds() {
 	}));
 }
 
-export async function getPollsByStatus(status: PollStatus) {
+export async function getOpenPoll() {
 	const ref = collection(db, "polls");
-	const getQuery = query(ref, where("status", "==", status));
+	const getQuery = query(ref, where("status", "==", "open"));
 
-	const polls = await getDocs(getQuery).then((snapshot) => ({
-		...snapshot.docs[0].data(),
-		documentId: snapshot.docs[0].id,
-	}));
+	const snapshots = await getDocs(getQuery);
 
-	return polls;
+	return snapshots.docs.map((snapshot) => {
+		if (!snapshot.exists) return [];
+
+		return snapshot.data();
+	});
 }
