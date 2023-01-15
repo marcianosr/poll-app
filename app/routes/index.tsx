@@ -12,6 +12,8 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function Index() {
 	const { polls: openPoll, closedPolls } = useLoaderData();
 
+	console.log("home");
+
 	return (
 		<section style={{ display: "flex", justifyContent: "center" }}>
 			<h1>
