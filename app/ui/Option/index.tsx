@@ -7,6 +7,7 @@ export const variants = ["default", "active", "disabled"] as const;
 export type Variants = typeof variants[number];
 
 export type OptionProps = {
+	id: string;
 	variant: Variants;
 };
 
@@ -15,12 +16,13 @@ export function links() {
 }
 
 export const Option = ({
+	id,
 	variant = "default",
 	children,
 }: PropsWithChildren<OptionProps>) => {
 	const styles = classNames("option", `option-${variant}`);
 	return (
-		<label className={styles}>
+		<label className={styles} htmlFor={id}>
 			<Text size="md" variant="primary" tag="span">
 				{children}
 			</Text>
