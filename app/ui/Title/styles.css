@@ -1,0 +1,33 @@
+.title {
+	--font-stack: var(--default-font);
+	font-family: var(--font-stack);
+}
+
+.title-primary {
+	color: var(--theme-color);
+	text-shadow: 0.05em 0.05em 0px black;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+}
+
+.title-secondary {
+	--font-stack: var(--secondary-font);
+	color: white;
+	text-shadow: 0px 0.1em 0 black;
+}
+
+.title-xl {
+	font-size: 3rem;
+}
+
+.title-lg {
+	font-size: 2rem;
+}
+
+.title-md {
+	font-size: 1.5rem;
+}
+
+.title-sm {
+	font-size: 1rem;
+}

@@ -1,6 +1,7 @@
 :root {
 	--primary-black: #212424;
 	--secondary-black: #2a2a2a;
+	--tertiary-black: #313131;
 	--text-color: #e1e1e1;
 	--primary-border-color: #cecdcc;
 
@@ -11,9 +12,18 @@
 	--cerulean: #2a52be;
 	--lavender: #967bb6;
 
+	--saffron-20: #f4c43020;
+	--fuchsia-20: #ff00ff20;
+	--celadon-20: #ace1af20;
+	--vermillion-20: #e3423420;
+	--cerulean-20: #2a52be20;
+	--lavender-20: #e6e6fa20;
+
 	--theme-color: var(--saffron);
+	--theme-color-20: var(--saffron-20);
 
 	--default-font: "Fira Code";
+	--secondary-font: "Montserrat";
 
 	--correct: #00ff38;
 	--correct-20: #00ff3820;
@@ -24,35 +34,35 @@
 .javascript,
 .saffron {
 	--theme-color: var(--saffron);
-	--theme-color-20: #f4c43020;
+	--theme-color-20: var(--saffron-20);
 }
 
 .typescript,
 .lavender {
 	--theme-color: var(--lavender);
-	--theme-color-20: #e6e6fa20;
+	--theme-color-20: var(--lavender-20);
 }
 
 .css {
 	--theme-color: var(--cerulean);
-	--theme-color-20: #2a52be20;
+	--theme-color-20: var(--cerulean-20);
 }
 
 .react,
 .celadon {
 	--theme-color: var(--celadon);
-	--theme-color-20: #ace1af20;
+	--theme-color-20: var(--saffron-20);
 }
 
 .html,
 .vermillion {
 	--theme-color: var(--vermillion);
-	--theme-color-20: #e3423420;
+	--theme-color-20: var(--vermillion-20);
 }
 
 .general-frontend {
 	--theme-color: var(--fuchsia);
-	--theme-color-20: #ff00ff20;
+	--theme-color-20: var(--fuchsia-20);
 }
 
 .list-item-poll {
@@ -88,12 +98,12 @@ button {
 
 h1,
 h2 {
-	text-shadow: 1px 3px 0px rgb(6 6 6);
+	/* text-shadow: 1px 3px 0px rgb(6 6 6); */
 }
 
 h3,
 p,
 small,
 span {
-	text-shadow: 1px 2px 0px rgb(6 6 6);
+	/* text-shadow: 1px 2px 0px rgb(6 6 6); */
 }
