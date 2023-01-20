@@ -5,7 +5,6 @@ const Story: ComponentMeta<typeof BannerComponent> = {
 	component: BannerComponent,
 	title: "Components/Banner",
 	args: {
-		variant: "default",
 		children: "Only 1 answer can be selected",
 	},
 	argTypes: {},
