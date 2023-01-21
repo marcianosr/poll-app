@@ -3,7 +3,13 @@ import styles from "./styles.css";
 import { Text } from "../Text";
 import classNames from "classnames";
 
-export const variants = ["default", "active", "disabled"] as const;
+export const variants = [
+	"default",
+	"active",
+	"disabled",
+	"correct",
+	"wrong",
+] as const;
 export type Variants = typeof variants[number];
 
 export type OptionProps = {

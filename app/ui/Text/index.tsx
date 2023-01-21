@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 
-export const sizes = ["xl", "md"] as const;
+export const sizes = ["xl", "md", "sm"] as const;
 export const variants = ["primary", "secondary"] as const;
 export const tags = ["p", "small", "span"] as const;
 

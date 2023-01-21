@@ -1,0 +1,19 @@
+.button {
+}
+
+.button-secondary {
+	border: 1px dashed var(--theme-color);
+	background-color: transparent;
+	color: var(--theme-color);
+	display: flex;
+	align-items: center;
+	padding: 1.25rem;
+	transition: background-color 0.25s;
+}
+
+.button-secondary:hover,
+.button-secondary-active {
+	border: 1px solid var(--theme-color);
+	background-color: var(--theme-color-20);
+	cursor: pointer;
+}
