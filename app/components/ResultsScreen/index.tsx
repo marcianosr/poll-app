@@ -1,11 +1,11 @@
 import { useLoaderData } from "@remix-run/react";
 import classNames from "classnames";
 import { FC } from "react";
+import { YourVotes } from "../../compositions/YourVotes";
 import { useAuth } from "~/providers/AuthProvider";
-import { LoaderData, transformToCodeTags } from "~/routes/polls/$id";
+import { LoaderData } from "~/routes/polls/$id";
 import { Answer } from "~/utils/polls";
 import { CodeBlock } from "../CodeBlock";
-import { NoticeBanner } from "../NoticeBanner";
 
 type Props = {
 	getCorrectAnswers: (answerId: string) => boolean;
@@ -86,45 +86,10 @@ export const ResultsScreen: FC<Props> = ({
 				))}
 			</ul>
 
-			<section className="your-votes-container">
-				<h3>Your votes</h3>
-				<NoticeBanner>
-					<span className="emoji">🏋️</span> Lift each other up: Feel
-					free to discuss your vote in a slack thread!
-				</NoticeBanner>
-
-				<section className="your-votes">
-					<ul className="choices-list results ">
-						{getGivenVotesByUser.map((vote, idx) => (
-							<li
-								key={vote?.id}
-								className={classNames("option-answer", {
-									correct: getCorrectAnswers(vote?.id || ""),
-									incorrect: !getCorrectAnswers(
-										vote?.id || ""
-									),
-								})}
-							>
-								{vote?.blockType === "code" ? (
-									<div className="text-question-answer result-vote">
-										<CodeBlock
-											code={vote.value}
-											withLineNumbers={false}
-										/>
-									</div>
-								) : (
-									<span className="text-question-answer result-vote">
-										{transformToCodeTags(
-											vote?.value || "",
-											idx
-										)}
-									</span>
-								)}
-							</li>
-						))}
-					</ul>
-				</section>
-			</section>
+			<YourVotes
+				votes={getGivenVotesByUser}
+				getCorrectAnswers={getCorrectAnswers}
+			/>
 		</>
 	);
 };

@@ -91,12 +91,6 @@ button {
 	display: flex;
 }
 
-.title {
-	margin: 0;
-	margin-bottom: 1rem;
-	font-size: 2rem;
-}
-
 .subtitle {
 	font-size: 1rem;
 	margin: 0;

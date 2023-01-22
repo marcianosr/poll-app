@@ -15,7 +15,7 @@ export const variants = [
 export type Variants = typeof variants[number];
 
 export type OptionProps = {
-	id: string;
+	id?: string;
 	variant?: Variants;
 };
 

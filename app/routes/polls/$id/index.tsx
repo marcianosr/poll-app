@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link, useActionData, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
 	getPollById,
@@ -26,9 +26,7 @@ import {
 	UpcomingAwards,
 } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
-import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
-import { links as adventCalendarLinks } from "~/components/AdventCalendar";
 import { getAllSeasons } from "~/utils/seasons";
 import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
@@ -36,7 +34,6 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
-import { links as noticeBannerLinks } from "~/components/NoticeBanner";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
 import {
@@ -44,6 +41,7 @@ import {
 	links as todaysVotersLinks,
 } from "~/components/TodaysVoters";
 import { getTeams, Team, UpdateTeam, updateTeamById } from "~/utils/teams";
+import { yourVoteStyles } from "../../../compositions/YourVotes";
 
 type ScreenState = "poll" | "results";
 
@@ -51,12 +49,12 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
 	return [
-		...adventCalendarLinks(),
+		...yourVoteStyles(),
+
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
-		...noticeBannerLinks(),
 		...pollScreenLinks(),
 		...todaysVotersLinks(),
 		{ rel: "stylesheet", href: styles },

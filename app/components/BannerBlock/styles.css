@@ -1,0 +1,4 @@
+.banner-block > section + section {
+	background-color: var(--secondary-black);
+	padding: 1rem;
+}

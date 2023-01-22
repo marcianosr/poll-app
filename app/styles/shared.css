@@ -14,11 +14,11 @@
 	--pewter: #e9eaec;
 
 	--saffron-gradient: linear-gradient(90deg, var(--saffron), #6a5000);
-	--saffron-lavender: linear-gradient(90deg, var(--lavender), #6a5000);
-	--saffron-celadon: linear-gradient(90deg, var(--celadon), #6a5000);
-	--saffron-vermillion: linear-gradient(90deg, var(--vermillion), #6a5000);
-	--saffron-cerulean: linear-gradient(90deg, var(--cerulean), #6a5000);
-	--saffron-fuchsia: linear-gradient(90deg, var(--fuchsia), #6a5000);
+	--lavender-gradient: linear-gradient(90deg, var(--lavender), #6a5000);
+	--celadon-gradient: linear-gradient(90deg, var(--celadon), #6a5000);
+	--vermillion-gradient: linear-gradient(90deg, var(--vermillion), #6a5000);
+	--cerulean-gradient: linear-gradient(90deg, var(--cerulean), #919efc);
+	--fuchsia-gradient: linear-gradient(90deg, var(--fuchsia), #6a5000);
 
 	--saffron-20: #f4c43020;
 	--fuchsia-20: #ff00ff20;

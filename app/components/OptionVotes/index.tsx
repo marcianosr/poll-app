@@ -23,7 +23,7 @@ export const OptionVotes = ({
 			</Text>
 			<div className="option-voters">
 				{voters.map((voter) => (
-					<img src={voter.photo} alt="" width={40} height={40} />
+					<img src={voter.photo} alt="" width={30} height={30} />
 				))}
 			</div>
 		</section>

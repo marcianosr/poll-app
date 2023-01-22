@@ -8,15 +8,34 @@ const Story: ComponentMeta<typeof BannerComponent> = {
 	args: {
 		children: "Only 1 answer can be selected",
 	},
-	argTypes: {},
+	argTypes: {
+		icon: {
+			control: {
+				type: "inline-check",
+			},
+		},
+	},
 };
 
 export default Story;
 
-export const Banner: ComponentStory<typeof BannerComponent> = (props) => (
+const Template: ComponentStory<typeof BannerComponent> = (props) => (
 	<BannerComponent {...props}>
 		<Title size="md" variant="primary">
 			{props.children}
 		</Title>
 	</BannerComponent>
 );
+
+export const Banner = Template.bind({});
+
+Banner.args = {
+	children: "27 votes on this poll",
+};
+
+export const BannerWithIcon = Template.bind({});
+
+BannerWithIcon.args = {
+	icon: "🏋️",
+	children: "Lift each other up! Discuss your vote in a slack thread!",
+};
