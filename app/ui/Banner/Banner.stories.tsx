@@ -1,5 +1,6 @@
 import { Banner as BannerComponent } from ".";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Title } from "../Title";
 
 const Story: ComponentMeta<typeof BannerComponent> = {
 	component: BannerComponent,
@@ -13,5 +14,9 @@ const Story: ComponentMeta<typeof BannerComponent> = {
 export default Story;
 
 export const Banner: ComponentStory<typeof BannerComponent> = (props) => (
-	<BannerComponent {...props}>{props.children}</BannerComponent>
+	<BannerComponent {...props}>
+		<Title size="md" variant="primary">
+			{props.children}
+		</Title>
+	</BannerComponent>
 );

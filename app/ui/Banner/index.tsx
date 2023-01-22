@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import classNames from "classnames";
-import { Title } from "../Title";
 
 export type BannerProps = {};
 
@@ -11,11 +10,5 @@ export function links() {
 
 export const Banner = ({ children }: PropsWithChildren<BannerProps>) => {
 	const styles = classNames("banner");
-	return (
-		<section className={styles}>
-			<Title size="md" variant="primary">
-				{children}
-			</Title>
-		</section>
-	);
+	return <section className={styles}>{children}</section>;
 };

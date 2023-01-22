@@ -11,6 +11,14 @@
 	--vermillion: #e34234;
 	--cerulean: #2a52be;
 	--lavender: #967bb6;
+	--pewter: #e9eaec;
+
+	--saffron-gradient: linear-gradient(90deg, var(--saffron), #6a5000);
+	--saffron-lavender: linear-gradient(90deg, var(--lavender), #6a5000);
+	--saffron-celadon: linear-gradient(90deg, var(--celadon), #6a5000);
+	--saffron-vermillion: linear-gradient(90deg, var(--vermillion), #6a5000);
+	--saffron-cerulean: linear-gradient(90deg, var(--cerulean), #6a5000);
+	--saffron-fuchsia: linear-gradient(90deg, var(--fuchsia), #6a5000);
 
 	--saffron-20: #f4c43020;
 	--fuchsia-20: #ff00ff20;
@@ -20,6 +28,7 @@
 	--lavender-20: #e6e6fa20;
 
 	--theme-color: var(--saffron);
+	--theme-color-gradient: var(--theme-color-gradient);
 	--theme-color-20: var(--saffron-20);
 
 	--default-font: "Fira Code";
@@ -34,34 +43,40 @@
 .javascript,
 .saffron {
 	--theme-color: var(--saffron);
+	--theme-color-gradient: var(--saffron-gradient);
 	--theme-color-20: var(--saffron-20);
 }
 
 .typescript,
 .lavender {
 	--theme-color: var(--lavender);
+	--theme-color-gradient: var(--lavender-gradient);
 	--theme-color-20: var(--lavender-20);
 }
 
 .css {
 	--theme-color: var(--cerulean);
+	--theme-color-gradient: var(--cerulean-gradient);
 	--theme-color-20: var(--cerulean-20);
 }
 
 .react,
 .celadon {
 	--theme-color: var(--celadon);
+	--theme-color-gradient: var(--celadon-gradient);
 	--theme-color-20: var(--saffron-20);
 }
 
 .html,
 .vermillion {
 	--theme-color: var(--vermillion);
+	--theme-color-gradient: var(--vermillion-gradient);
 	--theme-color-20: var(--vermillion-20);
 }
 
 .general-frontend {
 	--theme-color: var(--fuchsia);
+	--theme-color-gradient: var(--fuchsia-gradient);
 	--theme-color-20: var(--fuchsia-20);
 }
 

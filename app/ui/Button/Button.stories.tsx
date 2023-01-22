@@ -6,6 +6,7 @@ const Story: ComponentMeta<typeof ButtonComponent> = {
 	title: "Components/Button",
 	args: {
 		children: "Highest total this season",
+		variant: "submit",
 	},
 	argTypes: {
 		type: {

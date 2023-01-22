@@ -2,6 +2,8 @@ import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import { Text } from "../Text";
 import classNames from "classnames";
+import { OptionVotes } from "../../components/OptionVotes";
+import TodaysVoters from "~/components/TodaysVoters";
 
 export const variants = [
 	"default",
@@ -14,7 +16,7 @@ export type Variants = typeof variants[number];
 
 export type OptionProps = {
 	id: string;
-	variant: Variants;
+	variant?: Variants;
 };
 
 export function links() {
