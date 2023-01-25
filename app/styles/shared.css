@@ -10,6 +10,8 @@
 	--vermillion: #e34234;
 	--cerulean: #2a52be;
 	--lavender: #967bb6;
+	--viridian: #40826d;
+	--indigo: #4b0082;
 
 	--theme-color: var(--saffron);
 
@@ -33,7 +35,8 @@
 	--theme-color-20: #e6e6fa20;
 }
 
-.css {
+.css,
+.cerulean {
 	--theme-color: var(--cerulean);
 	--theme-color-20: #2a52be20;
 }
@@ -50,9 +53,18 @@
 	--theme-color-20: #e3423420;
 }
 
-.general-frontend {
+.general-frontend,
+.fuchsia {
 	--theme-color: var(--fuchsia);
 	--theme-color-20: #ff00ff20;
+}
+
+.indigo {
+	--theme-color: var(--indigo);
+}
+
+.viridian {
+	--theme-color: var(--viridian);
 }
 
 .list-item-poll {
