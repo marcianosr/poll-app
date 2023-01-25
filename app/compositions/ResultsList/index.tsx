@@ -29,6 +29,7 @@ export function resultsListStyles() {
 }
 
 export const ResultsList = (props: ResultsListProps) => {
+	console.log(props.voters);
 	return (
 		<section className="results-list-container">
 			<Title size="lg" tag="h2" variant="primary">
