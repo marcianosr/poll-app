@@ -10,7 +10,7 @@ import styles from "./styles.css";
 import { Answer } from "~/utils/polls";
 
 export type YourVotesProps = {
-	votes: (Answer | undefined)[];
+	votes: any;
 	getCorrectAnswers: (answer: string) => boolean;
 };
 
@@ -40,7 +40,7 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 				</Banner>
 				<section>
 					<Options>
-						{votes.map((vote: Answer | undefined) => (
+						{votes.map((vote: any) => (
 							<Option
 								variant={
 									getCorrectAnswers(vote?.id || "")

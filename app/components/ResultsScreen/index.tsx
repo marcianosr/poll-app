@@ -6,6 +6,7 @@ import { useAuth } from "~/providers/AuthProvider";
 import { LoaderData } from "~/routes/polls/$id";
 import { Answer } from "~/utils/polls";
 import { CodeBlock } from "../CodeBlock";
+import { ResultsList } from "../../compositions/ResultsList";
 
 type Props = {
 	getCorrectAnswers: (answerId: string) => boolean;
@@ -39,6 +40,12 @@ export const ResultsScreen: FC<Props> = ({
 				<span className="emoji">🎉</span>
 				<span className="amount">{responses}</span> votes on this poll{" "}
 			</p>
+
+			<ResultsList
+				voters={getLengthOfAnswersById(answer.id).length}
+				pollNumber={openedPollNumber}
+				responses={responses}
+			/>
 
 			<ul className="choices-list results">
 				{currentAnswers.map((answer) => (

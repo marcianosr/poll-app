@@ -8,4 +8,5 @@
 .option-votes > * {
 	display: flex;
 	gap: 0.5rem;
+	gap-row: 1rem;
 }

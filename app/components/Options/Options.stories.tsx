@@ -3,15 +3,10 @@ import { Option as OptionComponent } from "../../ui/Option";
 import { OptionVotes as OptionVotesComponent } from "../OptionVotes";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { OptionVotes } from "../OptionVotes";
-
-const voters: any = [
-	{
-		photo: "https://lh3.googleusercontent.com/a-/AFdZucrnPlhUyyzfog376tJ3-XLM6j2Oi1cxMqtaVH0I=s96-c",
-	},
-	{
-		photo: "https://lh3.googleusercontent.com/a-/AFdZucrnPlhUyyzfog376tJ3-XLM6j2Oi1cxMqtaVH0I=s96-c",
-	},
-];
+import {
+	largeAmountOfVoters,
+	smallAmountOfVoters,
+} from "../OptionVotes/OptionVotes.stories";
 
 const Story: ComponentMeta<typeof OptionsComponent> = {
 	component: OptionsComponent,
@@ -27,9 +22,12 @@ export const Options: ComponentStory<typeof OptionsComponent> = (props) => {
 		<OptionsComponent {...props}>
 			<OptionComponent id="test">
 				It is part of the EcmaScript Standard
-				<OptionVotes voters={voters} />
+				<OptionVotes voters={largeAmountOfVoters} />
 			</OptionComponent>
-			<OptionComponent id="test">Option 2</OptionComponent>
+			<OptionComponent id="test">
+				Option 2
+				<OptionVotes voters={largeAmountOfVoters} />
+			</OptionComponent>
 			<OptionComponent id="test">
 				It is an API provided by the browser but has it’s own
 				implementations in other environments
@@ -37,7 +35,7 @@ export const Options: ComponentStory<typeof OptionsComponent> = (props) => {
 			<OptionComponent id="test">Option 4</OptionComponent>
 			<OptionComponent id="test">
 				it is a way to import any programming language In JavaScript
-				<OptionVotes voters={voters} />
+				<OptionVotes voters={smallAmountOfVoters} />
 			</OptionComponent>
 			<OptionComponent id="test">
 				It is part of the general internet
