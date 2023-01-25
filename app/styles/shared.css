@@ -12,6 +12,8 @@
 	--cerulean: #2a52be;
 	--lavender: #967bb6;
 	--pewter: #e9eaec;
+	--viridian: #40826d;
+	--indigo: #4b0082;
 
 	--saffron-gradient: linear-gradient(90deg, var(--saffron), #6a5000);
 	--lavender-gradient: linear-gradient(90deg, var(--lavender), #6a5000);
@@ -54,7 +56,8 @@
 	--theme-color-20: var(--lavender-20);
 }
 
-.css {
+.css,
+.cerulean {
 	--theme-color: var(--cerulean);
 	--theme-color-gradient: var(--cerulean-gradient);
 	--theme-color-20: var(--cerulean-20);
@@ -74,10 +77,19 @@
 	--theme-color-20: var(--vermillion-20);
 }
 
-.general-frontend {
+.general-frontend,
+.fuchsia {
 	--theme-color: var(--fuchsia);
 	--theme-color-gradient: var(--fuchsia-gradient);
 	--theme-color-20: var(--fuchsia-20);
+}
+
+.indigo {
+	--theme-color: var(--indigo);
+}
+
+.viridian {
+	--theme-color: var(--viridian);
 }
 
 .list-item-poll {
