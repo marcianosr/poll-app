@@ -11,6 +11,7 @@ export const variants = [
 	"disabled",
 	"correct",
 	"wrong",
+	"selected",
 ] as const;
 export type Variants = typeof variants[number];
 

@@ -18,6 +18,11 @@
 	font-size: 1rem;
 }
 
+.option-selected {
+	background-color: var(--theme-color-20);
+	border: 2px dashed var(--theme-color);
+}
+
 .option-active {
 	background-color: var(--theme-color-20);
 	border: 2px solid var(--theme-color);

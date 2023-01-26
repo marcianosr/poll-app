@@ -10,11 +10,15 @@ import styles from "./styles.css";
 import { Options as OptionsComponent } from "../../components/Options";
 import { Option as OptionComponent } from "../../ui/Option";
 import { OptionVotes } from "../../components/OptionVotes";
+import { useLoaderData } from "@remix-run/react";
+import { LoaderData } from "../../routes/polls/$id";
+import { Answer } from "../../utils/polls";
+import { useAuth } from "../../providers/AuthProvider";
 
 export type ResultsListProps = {
-	voters: any;
-	pollNumber: number;
-	responses: number;
+	currentAnswers: Answer[];
+	getCorrectAnswers: (answerId: string) => boolean;
+	getGivenVotesByUser: any;
 };
 
 export function resultsListStyles() {
@@ -29,35 +33,38 @@ export function resultsListStyles() {
 }
 
 export const ResultsList = (props: ResultsListProps) => {
-	console.log(props.voters);
+	const { poll, responses, openedPollNumber } = useLoaderData() as LoaderData;
+
+	const getLengthOfAnswersById = (answerId: string) =>
+		poll.voted.filter((voted) => voted.answerId === answerId);
+
 	return (
 		<section className="results-list-container">
 			<Title size="lg" tag="h2" variant="primary">
-				Results for poll #{props.pollNumber}
+				Results for poll #{openedPollNumber}
 			</Title>
 			<Title size="md" tag="h2" variant="primary">
-				🎉 {props.responses} votes!
+				🎉 {responses} votes!
 			</Title>
 			<section>
 				<OptionsComponent {...props}>
-					<OptionComponent id="test" variant="wrong">
-						It is part of the EcmaScript Standard
-						<OptionVotes voters={props.voters} />
-					</OptionComponent>
-					<OptionComponent id="test" variant="correct">
-						ID's can only have a single level of specificity, while
-						when using classes you can chain specificity
-						<OptionVotes voters={props.voters} />
-					</OptionComponent>
-					<OptionComponent id="test">Option 2</OptionComponent>
-					<OptionComponent id="test" variant="disabled">
-						JavaScript is the same as TypeScript
-						<OptionVotes voters={props.voters} />
-					</OptionComponent>
-					<OptionComponent id="test">
-						ID's create scope, while classes do not
-						<OptionVotes voters={props.voters} />
-					</OptionComponent>
+					{props.currentAnswers.map((answer: Answer) => {
+						const variant = props.getCorrectAnswers(answer.id)
+							? "correct"
+							: props.getGivenVotesByUser.find(
+									(vote) => vote?.id === answer.id
+							  )
+							? "selected"
+							: "disabled";
+
+						return (
+							<OptionComponent id="test" variant={variant}>
+								{answer.value}
+
+								{/* <OptionVotes voters={[]} /> */}
+							</OptionComponent>
+						);
+					})}
 				</OptionsComponent>
 			</section>
 		</section>

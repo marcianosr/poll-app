@@ -7,7 +7,6 @@ import { Option, links as optionLinks } from "../../ui/Option";
 import { Banner, links as bannerLinks } from "../../ui/Banner";
 import { Title, links as titleLinks } from "../../ui/Title";
 import styles from "./styles.css";
-import { Answer } from "~/utils/polls";
 
 export type YourVotesProps = {
 	votes: any;
