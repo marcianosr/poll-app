@@ -39,41 +39,43 @@ export const ResultsList = (props: ResultsListProps) => {
 		poll.voted.filter((voted) => voted.answerId === answerId);
 
 	return (
-		<section className="results-list-container">
-			<Title size="lg" tag="h2" variant="primary">
+		<>
+			<Title size="md" tag="h2" variant="primary">
 				Results for poll #{openedPollNumber}
 			</Title>
-			<Title size="md" tag="h2" variant="primary">
-				🎉 {responses} votes!
-			</Title>
-			<section>
-				<Options {...props}>
-					{props.currentAnswers.map((answer: Answer) => {
-						const variant = props.getCorrectAnswers(answer.id)
-							? "correct"
-							: props.getGivenVotesByUser.find(
-									(vote) => vote?.id === answer.id
-							  )
-							? "selected"
-							: "disabled";
+			<section className="results">
+				<Title size="md" tag="h2" variant="primary">
+					🎉 {responses} votes!
+				</Title>
+				<section>
+					<Options {...props}>
+						{props.currentAnswers.map((answer: Answer) => {
+							const variant = props.getCorrectAnswers(answer.id)
+								? "correct"
+								: props.getGivenVotesByUser.find(
+										(vote) => vote?.id === answer.id
+								  )
+								? "selected"
+								: "disabled";
 
-						return (
-							<Option answer={answer} variant={variant}>
-								<OptionVotes
-									voters={props
-										.getVotesFromAllUsers(answer.id)
-										.map((user) => ({
-											photo: {
-												url: user.photoURL,
-											},
-										}))}
-								/>
-							</Option>
-						);
-					})}
-				</Options>
+							return (
+								<Option answer={answer} variant={variant}>
+									<OptionVotes
+										voters={props
+											.getVotesFromAllUsers(answer.id)
+											.map((user) => ({
+												photo: {
+													url: user.photoURL,
+												},
+											}))}
+									/>
+								</Option>
+							);
+						})}
+					</Options>
+				</section>
 			</section>
-		</section>
+		</>
 	);
 };
 {

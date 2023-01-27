@@ -33,7 +33,7 @@ export const PollScreen: FC<Props> = ({
 
 	return (
 		<section className="poll-screen">
-			<Banner size="wide" icon="🚨">
+			<Banner size="wide" icon="🚨" variant="warning">
 				{poll.type === "radio" ? (
 					<Title size="md" variant="primary" tag="span">
 						Be careful! Only 1 answer is correct
@@ -44,7 +44,7 @@ export const PollScreen: FC<Props> = ({
 					</Title>
 				)}
 			</Banner>
-			<Form method="post">
+			<Form method="post" className="form">
 				{user && (
 					<Options>
 						{currentAnswers.map((answer, idx: number) => (

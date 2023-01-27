@@ -5,6 +5,7 @@ import classNames from "classnames";
 export type BannerProps = {
 	icon?: React.ReactNode;
 	size?: "wide" | "default";
+	variant?: "default" | "warning";
 };
 
 export function links() {
@@ -14,9 +15,10 @@ export function links() {
 export const Banner = ({
 	icon,
 	size = "default",
+	variant = "default",
 	children,
 }: PropsWithChildren<BannerProps>) => {
-	const styles = classNames("banner", `banner-${size}`);
+	const styles = classNames("banner", `banner-${size}`, `banner-${variant}`);
 	return (
 		<section className={styles}>
 			{icon && <span className="icon">{icon}</span>}

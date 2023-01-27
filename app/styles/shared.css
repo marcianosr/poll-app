@@ -18,28 +18,28 @@
 	--saffron-tint: #6a5000;
 
 	--saffron-gradient: linear-gradient(
-		90deg,
+		45deg,
 		var(--saffron),
 		var(--saffron-tint)
 	);
 	--lavender-gradient: linear-gradient(
-		90deg,
+		45deg,
 		var(--lavender),
 		var(--saffron-tint)
 	);
 	--celadon-gradient: linear-gradient(
-		90deg,
+		45deg,
 		var(--celadon),
 		var(--saffron-tint)
 	);
 	--vermillion-gradient: linear-gradient(
-		90deg,
+		45deg,
 		var(--vermillion),
 		var(--saffron-tint)
 	);
-	--cerulean-gradient: linear-gradient(90deg, var(--cerulean), #919efc);
+	--cerulean-gradient: linear-gradient(45deg, var(--cerulean), #919efc);
 	--fuchsia-gradient: linear-gradient(
-		90deg,
+		45deg,
 		var(--fuchsia),
 		var(--saffron-tint)
 	);

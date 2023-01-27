@@ -1,4 +1,4 @@
-.banner::before {
+.banner-warning::before {
 	content: "";
 	width: 100%;
 	height: 10px;
@@ -13,7 +13,7 @@
 		var(--theme-color) 20px
 	);
 }
-.banner::after {
+.banner-warning::after {
 	content: "";
 	width: 100%;
 	height: 10px;
@@ -34,6 +34,9 @@
 	padding-inline: 2rem;
 	background-color: var(--theme-color-20);
 	position: relative;
+}
+
+.banner-warning {
 }
 
 .banner-default {

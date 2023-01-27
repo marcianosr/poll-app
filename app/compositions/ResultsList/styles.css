@@ -1,2 +1,8 @@
-.your-votes-block {
+.results {
+	background: var(--secondary-black);
+	padding: 2rem;
+}
+
+.results > h2 {
+	margin-top: 0;
 }
