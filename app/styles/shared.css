@@ -121,10 +121,6 @@
 	--theme-color: var(--viridian);
 }
 
-.list-item-poll {
-	display: flex;
-}
-
 body {
 	background-color: var(--primary-black);
 	font-family: var(--default-font);
