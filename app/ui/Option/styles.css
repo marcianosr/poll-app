@@ -1,0 +1,75 @@
+.option,
+.option-default {
+	background-color: var(--tertiary-black);
+	border: 2px dashed var(--theme-color);
+	padding: 1rem;
+	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
+	text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
+	transition: color 300ms, border 300ms, background 300ms;
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	flex-wrap: wrap;
+	row-gap: 0.5rem;
+}
+
+.option > span {
+	color: white;
+	font-weight: 700;
+	font-size: 1rem;
+}
+
+.option-selected {
+	background-color: var(--theme-color-20);
+	border: 2px dashed var(--theme-color);
+}
+
+.input {
+	display: none;
+}
+
+:is(.option-active, .input:checked + .option) {
+	background-color: var(--theme-color-20);
+	border: 2px solid var(--theme-color);
+}
+
+:is(.option-active, .input:checked + .option > span) {
+	color: var(--theme-color);
+}
+
+.option-active > span {
+	color: var(--theme-color);
+}
+
+.option-disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+	border: 2px dashed var(--pewter);
+}
+
+.option-correct {
+	border-color: var(--correct);
+	background-color: var(--correct-20);
+}
+
+.option-correct > span {
+	color: var(--correct);
+}
+
+.option-wrong {
+	border-color: var(--incorrect);
+	background-color: var(--incorrect-20);
+}
+
+.option-wrong > span {
+	color: var(--incorrect);
+}
+
+.option:hover:not(.option-disabled, .option-correct, .option-wrong) {
+	background-color: var(--theme-color-20);
+	cursor: pointer;
+}
+
+.option > small {
+	flex-basis: 100%;
+}

@@ -1,0 +1,25 @@
+.photo {
+}
+
+.photo-round {
+	border-radius: 50%;
+	border: 2px solid var(--theme-color);
+}
+
+.photo-default {
+}
+
+.photo-small {
+	width: 30px;
+	height: 30px;
+}
+
+.photo-medium {
+	width: 50px;
+	height: 50px;
+}
+
+.photo-large {
+	width: 100px;
+	height: 100px;
+}

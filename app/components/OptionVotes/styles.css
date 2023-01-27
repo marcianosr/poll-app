@@ -1,0 +1,12 @@
+.option-votes {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.option-votes > * {
+	display: flex;
+	gap: 0.5rem;
+	row-gap: 1rem;
+}

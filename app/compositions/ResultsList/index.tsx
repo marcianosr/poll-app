@@ -1,0 +1,91 @@
+import { links as optionsLinks } from "../../components/Options";
+import { links as photoLinks } from "../../ui/Photo";
+import { links as photoListLinks } from "../../components/PhotoList";
+import { Title } from "../../ui/Title";
+import { Options } from "../../components/Options";
+import { Option } from "../../ui/Option";
+import {
+	OptionVotes,
+	links as optionVotesLinks,
+} from "../../components/OptionVotes";
+import { useLoaderData } from "@remix-run/react";
+import { LoaderData } from "../../routes/polls/$id";
+import { Answer } from "../../utils/polls";
+import { useAuth } from "../../providers/AuthProvider";
+import styles from "./styles.css";
+
+export type ResultsListProps = {
+	currentAnswers: Answer[];
+	getCorrectAnswers: (answerId: string) => boolean;
+	getGivenVotesByUser: any;
+	getVotesFromAllUsers: any;
+};
+
+export function resultsListStyles() {
+	return [
+		...photoListLinks(),
+		...photoLinks(),
+		...optionsLinks(),
+		...optionVotesLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
+}
+
+export const ResultsList = (props: ResultsListProps) => {
+	const { poll, responses, openedPollNumber } = useLoaderData() as LoaderData;
+	const { user } = useAuth();
+
+	const getLengthOfAnswersById = (answerId: string) =>
+		poll.voted.filter((voted) => voted.answerId === answerId);
+
+	return (
+		<>
+			<Title size="md" tag="h2" variant="primary">
+				Results for poll #{openedPollNumber}
+			</Title>
+			<section className="results">
+				<Title size="md" tag="h2" variant="primary">
+					🎉 {responses} votes!
+				</Title>
+				<section>
+					<Options {...props}>
+						{props.currentAnswers.map((answer: Answer) => {
+							const variant = props.getCorrectAnswers(answer.id)
+								? "correct"
+								: props.getGivenVotesByUser.find(
+										(vote) => vote?.id === answer.id
+								  )
+								? "selected"
+								: "disabled";
+
+							return (
+								<Option answer={answer} variant={variant}>
+									<OptionVotes
+										voters={props
+											.getVotesFromAllUsers(answer.id)
+											.map((user) => ({
+												photo: {
+													url: user.photoURL,
+												},
+											}))}
+									/>
+								</Option>
+							);
+						})}
+					</Options>
+				</section>
+			</section>
+		</>
+	);
+};
+{
+	/* <>
+							
+<Option id="test" variant="wrong">
+	It is part of the EcmaScript Standard
+</Option>
+<Option id="test" variant="correct">
+	Option 2
+</Option>
+</> */
+}

@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link, useActionData, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import type { Voted, PollData } from "~/utils/polls";
 import {
 	getPollById,
@@ -26,9 +26,7 @@ import {
 	UpcomingAwards,
 } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
-import PollStatistics from "~/components/PollStatistics";
 import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
-import { links as adventCalendarLinks } from "~/components/AdventCalendar";
 import { getAllSeasons } from "~/utils/seasons";
 import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
@@ -36,14 +34,12 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
-import { links as noticeBannerLinks } from "~/components/NoticeBanner";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
-import {
-	TodaysVoters,
-	links as todaysVotersLinks,
-} from "~/components/TodaysVoters";
 import { getTeams, Team, UpdateTeam, updateTeamById } from "~/utils/teams";
+import { yourVoteStyles } from "../../../compositions/YourVotes";
+import { resultsListStyles } from "../../../compositions/ResultsList";
+import { Title } from "../../../ui/Title";
 
 type ScreenState = "poll" | "results";
 
@@ -51,14 +47,14 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
 export function links() {
 	return [
-		...adventCalendarLinks(),
+		...yourVoteStyles(),
+		...resultsListStyles(),
+
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
-		...noticeBannerLinks(),
 		...pollScreenLinks(),
-		...todaysVotersLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -329,7 +325,9 @@ export default function PollDetail() {
 				)}
 				{poll.codeBlock && (
 					<>
-						<p>Code example:</p>
+						<Title size="md" variant="primary" tag="span">
+							Code example
+						</Title>
 						<CodeBlock code={poll.codeBlock} />
 					</>
 				)}
@@ -345,7 +343,6 @@ export default function PollDetail() {
 					<ResultsScreen
 						getCorrectAnswers={getCorrectAnswers}
 						currentAnswers={currentAnswers}
-						showVotedBy={showVotedBy}
 						getVotesFromAllUsers={getVotesFromAllUsers}
 					/>
 				)}
@@ -365,13 +362,7 @@ export default function PollDetail() {
 					<h2 className="title">Upcoming Awards</h2>
 					<UpcomingAwards users={users} polls={polls} />
 				</section>
-				{/* <PollStatistics polls={polls} /> */}
 			</section>
-			<TodaysVoters
-				poll={poll}
-				users={users}
-				getCorrectAnswers={getCorrectAnswers}
-			/>
 		</section>
 	);
 }

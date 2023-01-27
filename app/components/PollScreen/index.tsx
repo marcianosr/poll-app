@@ -1,10 +1,12 @@
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
-import classNames from "classnames";
+import { Form, useLoaderData } from "@remix-run/react";
 import { FC, useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { LoaderData } from "~/routes/polls/$id";
+import { Banner } from "~/ui/Banner";
+import { Title } from "~/ui/Title";
 import { Answer, Voted } from "~/utils/polls";
 import VoteButton from "../Button/VoteButton";
+import { Options } from "../Options";
 import PollAnswerOption from "../PollAnswerOption";
 import styles from "./styles.css";
 
@@ -25,29 +27,26 @@ export const PollScreen: FC<Props> = ({
 	getVotesFromAllUsers,
 }) => {
 	const { poll } = useLoaderData() as LoaderData;
-	const { user, isAdmin } = useAuth();
-
-	const action = useActionData();
+	const { user } = useAuth();
 
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	return (
-		<section
-			className={classNames({
-				"poll-is-closed": poll.status !== "open",
-			})}
-		>
-			{poll.type === "radio" ? (
-				<h3 className="notice">Only 1 answer can be selected</h3>
-			) : (
-				<h3 className="notice">Multiple can be selected</h3>
-			)}
-			<Form method="post">
-				{action?.error && (
-					<span>Please at least fill out one answer to submit</span>
+		<section className="poll-screen">
+			<Banner size="wide" icon="🚨" variant="warning">
+				{poll.type === "radio" ? (
+					<Title size="md" variant="primary" tag="span">
+						Be careful! Only 1 answer is correct
+					</Title>
+				) : (
+					<Title size="md" variant="primary" tag="span">
+						Be careful! Multiple answers might be correct
+					</Title>
 				)}
+			</Banner>
+			<Form method="post" className="form">
 				{user && (
-					<ul className="choices-list">
+					<Options>
 						{currentAnswers.map((answer, idx: number) => (
 							<PollAnswerOption
 								key={idx}
@@ -60,7 +59,7 @@ export const PollScreen: FC<Props> = ({
 								getVotesFromAllUsers={getVotesFromAllUsers}
 							/>
 						))}
-					</ul>
+					</Options>
 				)}
 				{user && (
 					<VoteButton poll={poll} selectedVotes={selectedVotes} />

@@ -8,31 +8,8 @@ button {
 	font-size: 1.25rem;
 }
 
-.userCorrect {
-	border: 3px solid var(--correct);
-}
-
-.userIncorrect {
-	border: 3px solid var(--incorrect);
-}
-
-.correct > *:first-child {
-	background: var(--correct-20);
-	color: var(--correct);
-	border: 1px solid var(--correct);
-	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
-}
-
-.incorrect > *:first-child {
-	background: var(--incorrect-20);
-	color: var(--incorrect);
-	border: 1px solid var(--incorrect);
-	box-shadow: 3px 3px 0px 2px rgba(0, 0, 0, 0.2);
-}
-
 .page-container {
 	color: var(--theme-color);
-
 	display: grid;
 	margin-top: 2rem;
 }
@@ -43,7 +20,7 @@ button {
 
 @media screen and (min-width: 1024px) {
 	.page-container {
-		grid-template-columns: 320px 1fr 125px;
+		grid-template-columns: 320px 1fr;
 	}
 
 	.ranks {
@@ -56,45 +33,15 @@ button {
 	padding: 1.25rem;
 }
 
-.main-content {
-	max-width: 1000px;
-}
-
 .sidebar-info {
 	gap: 2.5rem;
 	display: flex;
 	flex-direction: column;
 }
 
-.selected {
-	font-weight: 700;
-}
-
 .amount-of-votes {
 	font-size: 0.75rem;
 	margin-top: 0.5rem;
-}
-
-.result-vote {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-}
-
-.your-votes-container {
-	margin-top: 2rem;
-}
-
-.your-votes {
-	background-color: var(--secondary-black);
-	padding: 1rem;
-	display: flex;
-}
-
-.title {
-	margin: 0;
-	margin-bottom: 1rem;
-	font-size: 2rem;
 }
 
 .subtitle {

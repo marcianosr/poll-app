@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Title } from "../../ui/Title";
 import styles from "./styles.css";
 
 type Props = {
@@ -10,5 +11,7 @@ export function links() {
 }
 
 export const Question: FC<Props> = ({ title }) => (
-	<h1 className="question">{title}</h1>
+	<Title size="xl" variant="primary">
+		{title}
+	</Title>
 );
