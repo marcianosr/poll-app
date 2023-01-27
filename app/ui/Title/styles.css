@@ -1,18 +1,19 @@
 .title {
 	--font-stack: var(--default-font);
 	font-family: var(--font-stack);
+	font-weight: 800;
 }
 
 .title-primary {
 	color: var(--theme-color);
-	text-shadow: 0.05em 0.05em 0px black;
+	text-shadow: 0.06em 0.06em 0px black;
 
-	filter: drop-shadow(2px 2px black);
+	/* filter: drop-shadow(2px 2px black); */
 	/* background: var(--theme-color-gradient);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent; */
 	line-height: 1.25;
-	letter-spacing: -0.07em;
+	letter-spacing: -0.03em;
 }
 
 .title-secondary {

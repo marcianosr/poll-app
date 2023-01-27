@@ -41,14 +41,13 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 					<Options>
 						{votes.map((vote: any) => (
 							<Option
+								answer={vote}
 								variant={
 									getCorrectAnswers(vote?.id || "")
 										? "correct"
 										: "wrong"
 								}
-							>
-								{vote?.value}
-							</Option>
+							/>
 						))}
 					</Options>
 				</section>
@@ -56,14 +55,3 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 		</section>
 	);
 };
-{
-	/* <>
-							
-<Option id="test" variant="wrong">
-	It is part of the EcmaScript Standard
-</Option>
-<Option id="test" variant="correct">
-	Option 2
-</Option>
-</> */
-}

@@ -6,7 +6,10 @@ const Story: ComponentMeta<typeof OptionComponent> = {
 	title: "Components/Option",
 	args: {
 		variant: "default",
-		children: "Option answer",
+		answer: {
+			value: "option 1",
+			id: "banjo-kazooie",
+		},
 	},
 	argTypes: {},
 };

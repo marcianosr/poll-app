@@ -36,12 +36,10 @@ import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
-import {
-	TodaysVoters,
-	links as todaysVotersLinks,
-} from "~/components/TodaysVoters";
 import { getTeams, Team, UpdateTeam, updateTeamById } from "~/utils/teams";
 import { yourVoteStyles } from "../../../compositions/YourVotes";
+import { resultsListStyles } from "../../../compositions/ResultsList";
+import { Title } from "../../../ui/Title";
 
 type ScreenState = "poll" | "results";
 
@@ -50,13 +48,13 @@ export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 export function links() {
 	return [
 		...yourVoteStyles(),
+		...resultsListStyles(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
 		...pollStatusLinks(),
 		...questionLinks(),
 		...pollScreenLinks(),
-		...todaysVotersLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -327,7 +325,9 @@ export default function PollDetail() {
 				)}
 				{poll.codeBlock && (
 					<>
-						<p>Code example:</p>
+						<Title size="md" variant="primary" tag="span">
+							Code example
+						</Title>
 						<CodeBlock code={poll.codeBlock} />
 					</>
 				)}
@@ -343,7 +343,6 @@ export default function PollDetail() {
 					<ResultsScreen
 						getCorrectAnswers={getCorrectAnswers}
 						currentAnswers={currentAnswers}
-						showVotedBy={showVotedBy}
 						getVotesFromAllUsers={getVotesFromAllUsers}
 					/>
 				)}
@@ -363,13 +362,7 @@ export default function PollDetail() {
 					<h2 className="title">Upcoming Awards</h2>
 					<UpcomingAwards users={users} polls={polls} />
 				</section>
-				{/* <PollStatistics polls={polls} /> */}
 			</section>
-			<TodaysVoters
-				poll={poll}
-				users={users}
-				getCorrectAnswers={getCorrectAnswers}
-			/>
 		</section>
 	);
 }

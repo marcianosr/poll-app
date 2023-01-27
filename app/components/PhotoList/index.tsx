@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import classNames from "classnames";
-import { Photo, PhotoType } from "../../ui/Photo";
+import { Photo } from "../../ui/Photo";
 import { VoterType } from "../OptionVotes";
 
 export type PhotoListProps = {

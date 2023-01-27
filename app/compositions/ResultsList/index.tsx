@@ -1,39 +1,39 @@
+import { links as optionsLinks } from "../../components/Options";
+import { links as photoLinks } from "../../ui/Photo";
+import { links as photoListLinks } from "../../components/PhotoList";
+import { Title } from "../../ui/Title";
+import { Options } from "../../components/Options";
+import { Option } from "../../ui/Option";
 import {
-	BannerBlock,
-	links as bannerBlockLinks,
-} from "../../components/BannerBlock";
-import { Options, links as optionsLinks } from "../../components/Options";
-import { Option, links as optionLinks } from "../../ui/Option";
-import { Banner, links as bannerLinks } from "../../ui/Banner";
-import { Title, links as titleLinks } from "../../ui/Title";
-import styles from "./styles.css";
-import { Options as OptionsComponent } from "../../components/Options";
-import { Option as OptionComponent } from "../../ui/Option";
-import { OptionVotes } from "../../components/OptionVotes";
+	OptionVotes,
+	links as optionVotesLinks,
+} from "../../components/OptionVotes";
 import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
 import { useAuth } from "../../providers/AuthProvider";
+import styles from "./styles.css";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
 	getCorrectAnswers: (answerId: string) => boolean;
 	getGivenVotesByUser: any;
+	getVotesFromAllUsers: any;
 };
 
 export function resultsListStyles() {
 	return [
-		// ...titleLinks(),
-		// ...optionsLinks(),
-		// ...optionLinks(),
-		// ...bannerLinks(),
-		// ...bannerBlockLinks(),
+		...photoListLinks(),
+		...photoLinks(),
+		...optionsLinks(),
+		...optionVotesLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
 
 export const ResultsList = (props: ResultsListProps) => {
 	const { poll, responses, openedPollNumber } = useLoaderData() as LoaderData;
+	const { user } = useAuth();
 
 	const getLengthOfAnswersById = (answerId: string) =>
 		poll.voted.filter((voted) => voted.answerId === answerId);
@@ -47,7 +47,7 @@ export const ResultsList = (props: ResultsListProps) => {
 				🎉 {responses} votes!
 			</Title>
 			<section>
-				<OptionsComponent {...props}>
+				<Options {...props}>
 					{props.currentAnswers.map((answer: Answer) => {
 						const variant = props.getCorrectAnswers(answer.id)
 							? "correct"
@@ -58,14 +58,20 @@ export const ResultsList = (props: ResultsListProps) => {
 							: "disabled";
 
 						return (
-							<OptionComponent id="test" variant={variant}>
-								{answer.value}
-
-								{/* <OptionVotes voters={[]} /> */}
-							</OptionComponent>
+							<Option answer={answer} variant={variant}>
+								<OptionVotes
+									voters={props
+										.getVotesFromAllUsers(answer.id)
+										.map((user) => ({
+											photo: {
+												url: user.photoURL,
+											},
+										}))}
+								/>
+							</Option>
 						);
 					})}
-				</OptionsComponent>
+				</Options>
 			</section>
 		</section>
 	);

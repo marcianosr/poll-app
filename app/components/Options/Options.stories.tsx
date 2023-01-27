@@ -20,27 +20,51 @@ export default Story;
 export const Options: ComponentStory<typeof OptionsComponent> = (props) => {
 	return (
 		<OptionsComponent {...props}>
-			<OptionComponent id="test">
-				It is part of the EcmaScript Standard
+			<OptionComponent
+				id="test"
+				text="
+				It is part of the EcmaScript Standard"
+			>
 				<OptionVotes voters={largeAmountOfVoters} />
 			</OptionComponent>
-			<OptionComponent id="test">
+			<OptionComponent
+				id="test"
+				text="
 				Option 2
+"
+			>
 				<OptionVotes voters={largeAmountOfVoters} />
 			</OptionComponent>
-			<OptionComponent id="test">
+			<OptionComponent
+				id="test"
+				text="
 				It is an API provided by the browser but has it’s own
-				implementations in other environments
-			</OptionComponent>
-			<OptionComponent id="test">Option 4</OptionComponent>
-			<OptionComponent id="test">
-				it is a way to import any programming language In JavaScript
+				implementations in other environments"
+			/>
+			<OptionComponent
+				id="test"
+				text="
+				Option 4
+				"
+			/>
+			<OptionComponent
+				id="test"
+				text="
+				It is a way to import any programming language In JavaScript"
+			>
 				<OptionVotes voters={smallAmountOfVoters} />
 			</OptionComponent>
-			<OptionComponent id="test">
+			<OptionComponent
+				id="test"
+				text="
 				It is part of the general internet
-			</OptionComponent>
-			<OptionComponent id="test">Option 6</OptionComponent>
+				"
+			/>
+			<OptionComponent
+				id="test"
+				text="
+				Option 5"
+			/>
 		</OptionsComponent>
 	);
 };

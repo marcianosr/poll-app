@@ -1,6 +1,7 @@
 import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import { PhotoList } from "../PhotoList";
+
 import { PhotoType } from "~/ui/Photo";
 import { Text } from "../../ui/Text";
 

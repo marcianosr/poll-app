@@ -15,12 +15,34 @@
 	--viridian: #40826d;
 	--indigo: #4b0082;
 
-	--saffron-gradient: linear-gradient(90deg, var(--saffron), #6a5000);
-	--lavender-gradient: linear-gradient(90deg, var(--lavender), #6a5000);
-	--celadon-gradient: linear-gradient(90deg, var(--celadon), #6a5000);
-	--vermillion-gradient: linear-gradient(90deg, var(--vermillion), #6a5000);
+	--saffron-tint: #6a5000;
+
+	--saffron-gradient: linear-gradient(
+		90deg,
+		var(--saffron),
+		var(--saffron-tint)
+	);
+	--lavender-gradient: linear-gradient(
+		90deg,
+		var(--lavender),
+		var(--saffron-tint)
+	);
+	--celadon-gradient: linear-gradient(
+		90deg,
+		var(--celadon),
+		var(--saffron-tint)
+	);
+	--vermillion-gradient: linear-gradient(
+		90deg,
+		var(--vermillion),
+		var(--saffron-tint)
+	);
 	--cerulean-gradient: linear-gradient(90deg, var(--cerulean), #919efc);
-	--fuchsia-gradient: linear-gradient(90deg, var(--fuchsia), #6a5000);
+	--fuchsia-gradient: linear-gradient(
+		90deg,
+		var(--fuchsia),
+		var(--saffron-tint)
+	);
 
 	--saffron-20: #f4c43020;
 	--fuchsia-20: #ff00ff20;
@@ -32,6 +54,7 @@
 	--theme-color: var(--saffron);
 	--theme-color-gradient: var(--theme-color-gradient);
 	--theme-color-20: var(--saffron-20);
+	--theme-color-tint: var(--saffron-tint);
 
 	--default-font: "Fira Code";
 	--secondary-font: "Montserrat";
@@ -47,6 +70,7 @@
 	--theme-color: var(--saffron);
 	--theme-color-gradient: var(--saffron-gradient);
 	--theme-color-20: var(--saffron-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .typescript,
@@ -54,6 +78,7 @@
 	--theme-color: var(--lavender);
 	--theme-color-gradient: var(--lavender-gradient);
 	--theme-color-20: var(--lavender-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .css,
@@ -61,6 +86,7 @@
 	--theme-color: var(--cerulean);
 	--theme-color-gradient: var(--cerulean-gradient);
 	--theme-color-20: var(--cerulean-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .react,
@@ -68,6 +94,7 @@
 	--theme-color: var(--celadon);
 	--theme-color-gradient: var(--celadon-gradient);
 	--theme-color-20: var(--saffron-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .html,
@@ -75,6 +102,7 @@
 	--theme-color: var(--vermillion);
 	--theme-color-gradient: var(--vermillion-gradient);
 	--theme-color-20: var(--vermillion-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .general-frontend,
@@ -82,6 +110,7 @@
 	--theme-color: var(--fuchsia);
 	--theme-color-gradient: var(--fuchsia-gradient);
 	--theme-color-20: var(--fuchsia-20);
+	--theme-color-tint: var(--saffron-tint);
 }
 
 .indigo {
@@ -99,7 +128,7 @@
 body {
 	background-color: var(--primary-black);
 	font-family: var(--default-font);
-	max-width: 1620px;
+	max-width: 1320px;
 	margin: 0 auto;
 }
 
@@ -121,16 +150,4 @@ code {
 button {
 	height: 2rem;
 	font-family: var(--default-font);
-}
-
-h1,
-h2 {
-	/* text-shadow: 1px 3px 0px rgb(6 6 6); */
-}
-
-h3,
-p,
-small,
-span {
-	/* text-shadow: 1px 2px 0px rgb(6 6 6); */
 }

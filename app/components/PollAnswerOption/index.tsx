@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { Answer, PollData, Voted } from "~/utils/polls";
 import { CodeBlock } from "../CodeBlock";
+import { Option } from "../../ui/Option";
 
 interface Props {
 	idx: number;
@@ -55,36 +56,21 @@ const PollAnswerOption: React.FC<Props> = ({
 	};
 
 	return (
-		<li key={idx} className="option-answer">
-			<input
-				className="input"
-				disabled={poll.status !== "open"}
-				type={poll.type}
-				id={answer.id}
-				onChange={isChecked}
-				name="answer"
-				value={answer.value}
+		<>
+			<Option
+				answer={answer}
+				selectable={true}
+				isChecked={isChecked}
+				variant={poll.status !== "open" ? "disabled" : "default"}
 			/>
-			<label htmlFor={answer.id}>
-				{answer.blockType === "code" ? (
-					<>
-						<CodeBlock
-							withLineNumbers={false}
-							code={answer.value}
-						/>
-					</>
-				) : (
-					<span className="text-question-answer">{answer.value}</span>
-				)}
-				{showVotedBy && isAdmin && (
-					<p>
-						{getVotesFromAllUsers(answer.id).map((user) => (
-							<strong key={user.id}>{user.email} </strong>
-						))}
-					</p>
-				)}
-			</label>
-		</li>
+			{showVotedBy && isAdmin && (
+				<p>
+					{getVotesFromAllUsers(answer.id).map((user) => (
+						<strong key={user.id}>{user.email} </strong>
+					))}
+				</p>
+			)}
+		</>
 	);
 };
 
