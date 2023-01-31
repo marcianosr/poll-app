@@ -27,7 +27,7 @@ export const PollScreen: FC<Props> = ({
 	getVotesFromAllUsers,
 }) => {
 	const { poll } = useLoaderData() as LoaderData;
-	const { user } = useAuth();
+	const { user, isAdmin } = useAuth();
 
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
@@ -48,16 +48,18 @@ export const PollScreen: FC<Props> = ({
 				{user && (
 					<Options>
 						{currentAnswers.map((answer, idx: number) => (
-							<PollAnswerOption
-								key={idx}
-								idx={idx}
-								answer={answer}
-								poll={poll}
-								selectedVotes={selectedVotes}
-								setSelectedVotes={setSelectedVotes}
-								showVotedBy={showVotedBy}
-								getVotesFromAllUsers={getVotesFromAllUsers}
-							/>
+							<>
+								<PollAnswerOption
+									key={idx}
+									idx={idx}
+									answer={answer}
+									poll={poll}
+									selectedVotes={selectedVotes}
+									setSelectedVotes={setSelectedVotes}
+									showVotedBy={showVotedBy}
+									getVotesFromAllUsers={getVotesFromAllUsers}
+								/>
+							</>
 						))}
 					</Options>
 				)}

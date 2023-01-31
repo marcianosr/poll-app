@@ -11,6 +11,7 @@ button {
 .page-container {
 	color: var(--theme-color);
 	display: grid;
+	gap: 1rem;
 	margin-top: 2rem;
 }
 
@@ -20,7 +21,7 @@ button {
 
 @media screen and (min-width: 1024px) {
 	.page-container {
-		grid-template-columns: 320px 1fr;
+		grid-template-columns: 300px 1fr;
 	}
 
 	.ranks {
@@ -28,13 +29,8 @@ button {
 	}
 }
 
-.sidebar-info,
-.main-content {
-	padding: 1.25rem;
-}
-
 .sidebar-info {
-	gap: 2.5rem;
+	gap: 2rem;
 	display: flex;
 	flex-direction: column;
 }
@@ -339,11 +335,11 @@ button {
 @media screen and (min-width: 1260px) {
 	.team-container {
 		grid-template-columns: auto auto auto;
-		gap: 2.5em;
+		gap: 1.5rem;
 	}
 	.team-list-item {
 		grid-template-columns: 240px 1fr;
-		gap: 4rem;
+		gap: 1rem;
 	}
 	.team-season-title {
 		font-size: 3rem;
