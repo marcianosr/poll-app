@@ -16,6 +16,11 @@
 	--indigo: #4b0082;
 
 	--saffron-tint: #6a5000;
+	--cerulean-tint: #919efc;
+	--vermillion-tint: #ff7b71;
+	--fuchsia-tint: #540063;
+	--lavender-tint: #673ab7;
+	--celadon-tint: #50ff57;
 
 	--saffron-gradient: linear-gradient(
 		45deg,
@@ -25,23 +30,27 @@
 	--lavender-gradient: linear-gradient(
 		45deg,
 		var(--lavender),
-		var(--saffron-tint)
+		var(--lavender-tint)
 	);
 	--celadon-gradient: linear-gradient(
 		45deg,
 		var(--celadon),
-		var(--saffron-tint)
+		var(--celadon-tint)
 	);
 	--vermillion-gradient: linear-gradient(
 		45deg,
 		var(--vermillion),
-		var(--saffron-tint)
+		var(--vermillion-tint)
 	);
-	--cerulean-gradient: linear-gradient(45deg, var(--cerulean), #919efc);
+	--cerulean-gradient: linear-gradient(
+		45deg,
+		var(--cerulean),
+		var(--cerulean-tint)
+	);
 	--fuchsia-gradient: linear-gradient(
 		45deg,
 		var(--fuchsia),
-		var(--saffron-tint)
+		var(--fuchsia-tint)
 	);
 
 	--saffron-20: #f4c43020;
@@ -74,11 +83,12 @@
 }
 
 .typescript,
-.lavender {
+.lavender,
+.flutter {
 	--theme-color: var(--lavender);
 	--theme-color-gradient: var(--lavender-gradient);
 	--theme-color-20: var(--lavender-20);
-	--theme-color-tint: var(--saffron-tint);
+	--theme-color-tint: var(--lavender-tint);
 }
 
 .css,
@@ -86,7 +96,7 @@
 	--theme-color: var(--cerulean);
 	--theme-color-gradient: var(--cerulean-gradient);
 	--theme-color-20: var(--cerulean-20);
-	--theme-color-tint: var(--saffron-tint);
+	--theme-color-tint: var(--cerulean-tint);
 }
 
 .react,
@@ -102,7 +112,7 @@
 	--theme-color: var(--vermillion);
 	--theme-color-gradient: var(--vermillion-gradient);
 	--theme-color-20: var(--vermillion-20);
-	--theme-color-tint: var(--saffron-tint);
+	--theme-color-tint: var(--vermillion-tint);
 }
 
 .general-frontend,
@@ -110,7 +120,7 @@
 	--theme-color: var(--fuchsia);
 	--theme-color-gradient: var(--fuchsia-gradient);
 	--theme-color-20: var(--fuchsia-20);
-	--theme-color-tint: var(--saffron-tint);
+	--theme-color-tint: var(--fuchsia-tint);
 }
 
 .indigo {
