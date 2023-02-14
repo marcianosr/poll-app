@@ -3,10 +3,7 @@ import { Option as OptionComponent } from "../../ui/Option";
 import { OptionVotes as OptionVotesComponent } from "../OptionVotes";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { OptionVotes } from "../OptionVotes";
-import {
-	largeAmountOfVoters,
-	smallAmountOfVoters,
-} from "../OptionVotes/OptionVotes.stories";
+import { largeAmountOfVoters } from "../../../.storybook/utils";
 
 const Story: ComponentMeta<typeof OptionsComponent> = {
 	component: OptionsComponent,
