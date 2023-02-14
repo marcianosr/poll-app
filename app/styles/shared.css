@@ -61,7 +61,7 @@
 	--lavender-20: #e6e6fa20;
 
 	--theme-color: var(--saffron);
-	--theme-color-gradient: var(--theme-color-gradient);
+	--theme-color-gradient: var(--saffron-gradient);
 	--theme-color-20: var(--saffron-20);
 	--theme-color-tint: var(--saffron-tint);
 

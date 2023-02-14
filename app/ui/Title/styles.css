@@ -5,7 +5,7 @@
 }
 
 .title-primary {
-	color: var(--theme-color);
+	/* color: var(--theme-color); */
 	/* text-shadow: 0.06em 0.06em 0px black; */
 
 	filter: drop-shadow(0.06em 0.06em black);

@@ -45,6 +45,8 @@
 
 .banner-wide {
 	width: auto;
+	justify-content: center;
+	display: flex;
 }
 
 /* .banner::after {
