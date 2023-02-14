@@ -2,12 +2,11 @@ import { Form, useLoaderData } from "@remix-run/react";
 import { FC, useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { LoaderData } from "~/routes/polls/$id";
-import { Banner } from "~/ui/Banner";
-import { Title } from "~/ui/Title";
-import { Answer, Voted } from "~/utils/polls";
+import { Answer, InputTypes, Voted } from "~/utils/polls";
 import VoteButton from "../Button/VoteButton";
 import { Options } from "../Options";
 import PollAnswerOption from "../PollAnswerOption";
+import { WarningBanner } from "../WarningBanner";
 import styles from "./styles.css";
 
 export function links() {
@@ -27,23 +26,13 @@ export const PollScreen: FC<Props> = ({
 	getVotesFromAllUsers,
 }) => {
 	const { poll } = useLoaderData() as LoaderData;
-	const { user, isAdmin } = useAuth();
+	const { user } = useAuth();
 
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	return (
 		<section className="poll-screen">
-			<Banner size="wide" icon="🚨" variant="warning">
-				{poll.type === "radio" ? (
-					<Title size="md" variant="primary" tag="span">
-						Be careful! Only 1 answer is correct
-					</Title>
-				) : (
-					<Title size="md" variant="primary" tag="span">
-						Be careful! Multiple answers might be correct
-					</Title>
-				)}
-			</Banner>
+			<WarningBanner pollType={poll.type as InputTypes} />
 			<Form method="post" className="form">
 				{user && (
 					<Options>
