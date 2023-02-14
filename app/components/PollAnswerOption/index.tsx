@@ -2,7 +2,7 @@ import React from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { Answer, PollData, Voted } from "~/utils/polls";
 import { CodeBlock } from "../CodeBlock";
-import { Option } from "../../ui/Option";
+import { OptionInput } from "../OptionInput";
 
 interface Props {
 	idx: number;
@@ -57,11 +57,10 @@ const PollAnswerOption: React.FC<Props> = ({
 
 	return (
 		<>
-			<Option
+			<OptionInput
 				answer={answer}
 				selectable={true}
 				isChecked={isChecked}
-				variant={poll.status !== "open" ? "disabled" : "default"}
 			/>
 			{showVotedBy && isAdmin && (
 				<p>
