@@ -2,7 +2,7 @@ import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
-import { Filters } from "~/components/Filters";
+import { Filters } from "~/admin/components/Filters";
 import PollStatistics from "~/components/PollStatistics";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
