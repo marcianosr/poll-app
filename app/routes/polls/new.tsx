@@ -1,7 +1,7 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
-import FormPoll, { Errors } from "../../admin/components/Filters/PollForm";
+import FormPoll, { Errors } from "~/admin/components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
