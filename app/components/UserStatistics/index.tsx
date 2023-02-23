@@ -44,15 +44,21 @@ const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 				<Button
 					variant="secondary"
 					onClick={() => setActive("all-time")}
+					state={(active === "all-time" && "active") || undefined}
 				>
 					All-time highest total
 				</Button>
-				<Button variant="secondary" onClick={() => setActive("season")}>
+				<Button
+					variant="secondary"
+					onClick={() => setActive("season")}
+					state={(active === "season" && "active") || undefined}
+				>
 					Highest total this season
 				</Button>
 				<Button
 					variant="secondary"
 					onClick={() => setActive("correct")}
+					state={(active === "correct" && "active") || undefined}
 				>
 					All-time highest correct total
 				</Button>
