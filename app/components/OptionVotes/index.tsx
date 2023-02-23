@@ -29,7 +29,7 @@ export const OptionVotes = ({
 	return (
 		<section className="option-votes">
 			<div className="option-voters">
-				<PhotoList voters={votersToShow} />
+				<PhotoList variant="chips" voters={votersToShow} />
 			</div>
 			{allVoters.length > LIMIT && (
 				<Text variant="primary" size="sm">

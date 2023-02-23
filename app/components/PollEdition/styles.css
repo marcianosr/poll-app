@@ -1,0 +1,9 @@
+.poll-edition-container {
+	display: flex;
+	gap: 1rem;
+	align-items: end;
+}
+
+.poll-edition-container > * {
+	margin: 0;
+}

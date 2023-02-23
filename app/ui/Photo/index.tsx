@@ -4,11 +4,15 @@ import classNames from "classnames";
 
 export type PhotoType = {
 	url: string;
+	alt?: string;
 };
 
+export type PhotoVariant = "round" | "default";
+export type PhotoSize = "small" | "medium" | "large";
+
 export type PhotoProps = {
-	variant?: "round" | "default";
-	size?: "small" | "medium" | "large";
+	variant?: PhotoVariant;
+	size?: PhotoSize;
 	photo: PhotoType;
 };
 
@@ -27,7 +31,7 @@ export const Photo = ({
 		<img
 			className={styles}
 			src={photo.url}
-			alt={"hallo"}
+			alt={photo.alt || ""}
 			width={30}
 			height={30}
 		/>
