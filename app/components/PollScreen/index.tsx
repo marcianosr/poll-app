@@ -4,9 +4,9 @@ import { useAuth } from "~/providers/AuthProvider";
 import { LoaderData } from "~/routes/polls/$id";
 import { Answer, InputTypes, Voted } from "~/utils/polls";
 import VoteButton from "../Button/VoteButton";
-import { Options } from "../Options";
+import { Options } from "../../ui/Options";
 import PollAnswerOption from "../PollAnswerOption";
-import { WarningBanner } from "../WarningBanner";
+import { WarningBanner } from "../../ui/WarningBanner";
 import styles from "./styles.css";
 
 export function links() {

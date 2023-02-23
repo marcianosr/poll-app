@@ -1,5 +1,8 @@
 import { FC } from "react";
-import { CorrectAnswerType, NewPollType } from "../PollForm";
+import {
+	CorrectAnswerType,
+	NewPollType,
+} from "../../admin/components/Filters/PollForm";
 
 type Props = {
 	markCorrectAnswer: CorrectAnswerType[];

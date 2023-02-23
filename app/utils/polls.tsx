@@ -10,7 +10,7 @@ import {
 	orderBy,
 	where,
 } from "firebase/firestore";
-import { BlockType } from "~/components/PollForm";
+import { BlockType } from "~/admin/components/Filters/PollForm";
 import { db } from "~/utils/firebase";
 
 export type InputTypes = "radio" | "checkbox";

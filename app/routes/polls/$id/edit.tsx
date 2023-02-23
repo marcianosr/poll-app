@@ -1,6 +1,6 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import PollForm, { Errors } from "~/components/PollForm";
+import PollForm, { Errors } from "~/admin/components/Filters/PollForm";
 import {
 	getPollById,
 	PollCategory,

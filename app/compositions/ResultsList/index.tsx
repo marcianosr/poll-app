@@ -1,8 +1,8 @@
-import { links as optionsLinks } from "../../components/Options";
+import { links as optionsLinks } from "../../ui/Options";
 import { links as photoLinks } from "../../ui/Photo";
 import { links as photoListLinks } from "../../components/PhotoList";
 import { Title } from "../../ui/Title";
-import { Options } from "../../components/Options";
+import { Options } from "../../ui/Options";
 import { Option } from "../../ui/Option";
 import {
 	OptionVotes,

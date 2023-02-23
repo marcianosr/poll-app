@@ -1,5 +1,5 @@
 import { Options as OptionsComponent } from ".";
-import { Option as OptionComponent } from "../../ui/Option";
+import { Option as OptionComponent } from "../Option";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { OptionVotes } from "../OptionVotes";
 import { answers, largeAmountOfVoters } from "../../../.storybook/utils";

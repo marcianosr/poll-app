@@ -1,9 +1,9 @@
 import { BannerBlock as BannerBlockComponent } from ".";
-import { Banner as BannerComponent } from "../../ui/Banner";
+import { Banner as BannerComponent } from "../Banner";
 import { Options as OptionsComponent } from "../Options";
-import { Option as OptionComponent } from "../../ui/Option";
+import { Option as OptionComponent } from "../Option";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Title } from "../../ui/Title";
+import { Title } from "../Title";
 import { answers } from "../../../.storybook/utils";
 
 const Story: ComponentMeta<typeof BannerBlockComponent> = {

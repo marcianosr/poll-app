@@ -21,7 +21,7 @@ import styles from "~/styles/poll.css";
 import classNames from "classnames";
 import { links as awardsBoardLinks, Ranks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
-import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
+import { CodeBlock, links as codeBlockLinks } from "~/ui/CodeBlock";
 import { links as buttonLinks } from "~/ui/Button";
 import { getAllSeasons } from "~/utils/seasons";
 import type { SeasonAwardData } from "~/utils/seasons";
