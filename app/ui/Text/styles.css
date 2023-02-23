@@ -17,13 +17,49 @@
 }
 
 .text-xl {
+	font-size: 1.75rem;
+}
+
+.text-lg {
 	font-size: 1.5rem;
 }
 
 .text-md {
-	font-size: 1rem;
+	font-size: 1.25rem;
 }
 
 .text-sm {
+	font-size: 0.9rem;
+}
+
+.text-xs {
 	font-size: 0.75rem;
+}
+
+.text-rainbow {
+	font-weight: 800;
+	text-shadow: none;
+	background: linear-gradient(
+		45deg,
+		var(--cerulean) 0%,
+		var(--vermillion) 20%,
+		var(--celadon) 40%,
+		var(--fuchsia) 60%,
+		var(--saffron) 80%,
+		var(--cerulean) 100%
+	);
+	background-size: 200% auto;
+
+	background-clip: text;
+	text-fill-color: transparent;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+
+	animation: color-text-animation 6s linear infinite;
+}
+
+@keyframes color-text-animation {
+	to {
+		background-position: 200% center;
+	}
 }

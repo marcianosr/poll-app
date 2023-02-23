@@ -4,7 +4,7 @@ import { YourVotes } from "../../compositions/YourVotes";
 import { useAuth } from "../../providers/AuthProvider";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
-import { CodeBlock } from "../CodeBlock";
+import { CodeBlock } from "../../ui/CodeBlock";
 import { ResultsList } from "../../compositions/ResultsList";
 
 type Props = {

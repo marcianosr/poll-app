@@ -1,8 +1,8 @@
-import { links as optionsLinks } from "../../components/Options";
+import { links as optionsLinks } from "../../ui/Options";
 import { links as photoLinks } from "../../ui/Photo";
 import { links as photoListLinks } from "../../components/PhotoList";
 import { Title } from "../../ui/Title";
-import { Options } from "../../components/Options";
+import { Options } from "../../ui/Options";
 import { Option } from "../../ui/Option";
 import {
 	OptionVotes,
@@ -11,7 +11,6 @@ import {
 import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
-import { useAuth } from "../../providers/AuthProvider";
 import styles from "./styles.css";
 
 export type ResultsListProps = {
@@ -32,11 +31,7 @@ export function resultsListStyles() {
 }
 
 export const ResultsList = (props: ResultsListProps) => {
-	const { poll, responses, openedPollNumber } = useLoaderData() as LoaderData;
-	const { user } = useAuth();
-
-	const getLengthOfAnswersById = (answerId: string) =>
-		poll.voted.filter((voted) => voted.answerId === answerId);
+	const { responses, openedPollNumber } = useLoaderData() as LoaderData;
 
 	return (
 		<>
@@ -78,14 +73,3 @@ export const ResultsList = (props: ResultsListProps) => {
 		</>
 	);
 };
-{
-	/* <>
-							
-<Option id="test" variant="wrong">
-	It is part of the EcmaScript Standard
-</Option>
-<Option id="test" variant="correct">
-	Option 2
-</Option>
-</> */
-}

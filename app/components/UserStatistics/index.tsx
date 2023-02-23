@@ -2,6 +2,7 @@ import classnames from "classnames";
 import { FC, useState } from "react";
 import { Voted } from "~/utils/polls";
 import { Team } from "~/utils/teams";
+import { Button } from "../../ui/Button";
 
 type Props = {
 	users: any;
@@ -40,30 +41,27 @@ const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 		<section className="poll-statistics-container">
 			<h2 className="title">Statistics</h2>
 			<section className="filters">
-				<button
-					className={classnames("filter-button", {
-						active: active === "all-time",
-					})}
+				<Button
+					variant="secondary"
 					onClick={() => setActive("all-time")}
+					state={(active === "all-time" && "active") || undefined}
 				>
 					All-time highest total
-				</button>
-				<button
-					className={classnames("filter-button", {
-						active: active === "season",
-					})}
+				</Button>
+				<Button
+					variant="secondary"
 					onClick={() => setActive("season")}
+					state={(active === "season" && "active") || undefined}
 				>
 					Highest total this season
-				</button>
-				<button
-					className={classnames("filter-button", {
-						active: active === "correct",
-					})}
+				</Button>
+				<Button
+					variant="secondary"
 					onClick={() => setActive("correct")}
+					state={(active === "correct" && "active") || undefined}
 				>
 					All-time highest correct total
-				</button>
+				</Button>
 			</section>
 			<section className="poll-statistics">
 				{active === "all-time" && (

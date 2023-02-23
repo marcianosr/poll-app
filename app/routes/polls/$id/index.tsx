@@ -19,14 +19,10 @@ import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import type { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
 import classNames from "classnames";
-import {
-	Awards,
-	links as awardsBoardLinks,
-	Ranks,
-	UpcomingAwards,
-} from "~/components/Awards";
+import { links as awardsBoardLinks, Ranks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
-import { CodeBlock, links as codeBlockLinks } from "~/components/CodeBlock";
+import { CodeBlock, links as codeBlockLinks } from "~/ui/CodeBlock";
+import { links as buttonLinks } from "~/ui/Button";
 import { getAllSeasons } from "~/utils/seasons";
 import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
@@ -40,8 +36,10 @@ import { getTeams, Team, UpdateTeam, updateTeamById } from "~/utils/teams";
 import { yourVoteStyles } from "../../../compositions/YourVotes";
 import { resultsListStyles } from "../../../compositions/ResultsList";
 import { Title } from "../../../ui/Title";
+import { EekumBokum } from "~/components/EekumBokum";
+import { AwardsContainer } from "~/components/Awards/Container";
 
-type ScreenState = "poll" | "results";
+export type ScreenState = "poll" | "results";
 
 export type UpdateScore = Omit<DeepPartial<FirebaseUserFields>, "role">;
 
@@ -49,6 +47,7 @@ export function links() {
 	return [
 		...yourVoteStyles(),
 		...resultsListStyles(),
+		...buttonLinks(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -287,23 +286,12 @@ export default function PollDetail() {
 					openedPollNumber={openedPollNumber}
 					pollNumber={poll.pollNumber || 0}
 				/>
-				{isAdmin && (
-					<section className="eekum-bokum-oomenacka">
-						<span>Eekum Bokum Oomenacka!</span>
-						<input
-							type="checkbox"
-							id="votedBy"
-							onChange={() => setShowVotedBy(!showVotedBy)}
-							name="votedBy"
-						/>
-						<input
-							type="checkbox"
-							id="screen"
-							onChange={() => setScreenState("results")}
-							name="screen"
-						/>
-					</section>
-				)}
+				<EekumBokum
+					showVotedBy={showVotedBy}
+					setShowVotedBy={setShowVotedBy}
+					setScreenState={setScreenState}
+					isAdmin={isAdmin}
+				/>
 				<section className="ranks">
 					<h2 className="title">Ranks</h2>
 					<Ranks users={users} polls={polls} />
@@ -353,15 +341,11 @@ export default function PollDetail() {
 					teams={teams}
 				/>
 
-				<section className="awards-container">
-					<h2 className="title">Awards</h2>
-					<Awards users={users} polls={polls} seasons={seasons} />
-				</section>
-
-				<section className="awards-container">
-					<h2 className="title">Upcoming Awards</h2>
-					<UpcomingAwards users={users} polls={polls} />
-				</section>
+				<AwardsContainer
+					users={users}
+					polls={polls}
+					seasons={seasons}
+				/>
 			</section>
 		</section>
 	);

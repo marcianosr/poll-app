@@ -1,6 +1,3 @@
-.button {
-}
-
 .button-secondary {
 	border: 1px dashed var(--theme-color);
 	background-color: transparent;
@@ -9,6 +6,8 @@
 	align-items: center;
 	padding: 1.25rem;
 	transition: background-color 0.25s;
+	font-size: 0.875rem;
+	justify-content: center;
 }
 
 .button-secondary:hover,

@@ -1,0 +1,25 @@
+.award p {
+	margin: 0;
+}
+
+.award small {
+	margin-top: 1rem;
+	display: block;
+}
+
+.award small + p {
+	margin-top: 0.5rem;
+}
+
+.award h3 {
+	margin: 0;
+	margin-bottom: 0.5rem;
+}
+
+.award-disabled {
+	opacity: var(--disabled);
+}
+
+.award ul {
+	margin-top: 0.5rem;
+}

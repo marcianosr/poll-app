@@ -72,6 +72,8 @@
 	--correct-20: #00ff3820;
 	--incorrect: #dc143c;
 	--incorrect-20: #dc143c20;
+
+	--disabled: 0.5;
 }
 
 .javascript,

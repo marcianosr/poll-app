@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { Answer, PollData, Voted } from "~/utils/polls";
-import { CodeBlock } from "../CodeBlock";
+import { CodeBlock } from "../../ui/CodeBlock";
 import { OptionInput } from "../OptionInput";
 
 interface Props {

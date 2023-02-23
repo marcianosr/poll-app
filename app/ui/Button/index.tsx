@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import classNames from "classnames";
-import { Text } from "../Text";
 
 export const variants = ["submit", "secondary"] as const;
 export const states = ["active"] as const;
@@ -10,10 +9,10 @@ export type Variants = typeof variants[number];
 export type States = typeof states[number];
 
 export type ButtonProps = {
-	type: "button" | "submit";
+	type?: "button" | "submit";
 	onClick?: () => void;
 	name?: string;
-	value: string;
+	value?: string;
 	variant: Variants;
 	state?: States;
 };
@@ -28,6 +27,7 @@ export const Button = ({
 	name,
 	variant,
 	state,
+	onClick,
 	children,
 }: PropsWithChildren<ButtonProps>) => {
 	const styles = classNames(
@@ -36,7 +36,13 @@ export const Button = ({
 		state && `button-${variant}-${state}`
 	);
 	return (
-		<button type={type} className={styles} value={value} name={name}>
+		<button
+			type={type}
+			className={styles}
+			value={value}
+			name={name}
+			onClick={onClick}
+		>
 			{children}
 		</button>
 	);

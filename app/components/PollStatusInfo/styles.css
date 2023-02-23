@@ -20,24 +20,3 @@
 	gap: 0.5rem;
 	margin-top: 1rem;
 }
-
-.poll-status-title {
-	font-weight: 700;
-	font-size: 2rem;
-	margin-bottom: 0.25rem;
-	margin: 0;
-}
-
-.voters {
-	margin-top: 1rem;
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	margin: 0;
-}
-
-.poll-title-container {
-	display: flex;
-	align-items: center;
-	gap: 1rem;
-}

@@ -8,8 +8,15 @@ import {
 } from "~/utils/seasons";
 import { PollCategory, PollData } from "~/utils/polls";
 import styles from "./styles.css";
+import { Award, links as awardLinks } from "~/ui/Award";
+import { links as textLinks } from "../../ui/Text";
+import { Title } from "~/ui/Title";
 
-export const links = () => [{ rel: "stylesheet", href: styles }];
+export const links = () => [
+	...textLinks(),
+	...awardLinks(),
+	{ rel: "stylesheet", href: styles },
+];
 
 export const awards = (users: any, polls: PollData[]) => [
 	{
@@ -446,7 +453,7 @@ type Props = {
 	polls: PollData[];
 };
 
-type AwardProps = Props & {
+export type AwardProps = Props & {
 	seasons: SeasonAwardData[];
 };
 
@@ -455,109 +462,51 @@ export type Award = {
 	type: "award";
 	requirements: (users: any, polls: PollData[]) => string[];
 	description: string;
-	seasons: SeasonData[];
 };
 
-export const UpcomingAwards: FC<Props> = ({ users, polls }) => {
-	return (
-		<>
-			<section className="awards">
-				{awards(users, polls)
-					.filter((award) => award.type === "award")
-					.filter((award) => award.upcoming)
-					.map((award) => (
-						<Fragment key={award.name}>
-							<div>
-								<h3 className="subtitle">{award.name}</h3>
-								<small>{award.description}</small>
-							</div>
-						</Fragment>
-					))}
-			</section>
-		</>
-	);
-};
-
-export const Awards: FC<AwardProps> = ({ users, polls, seasons }) => {
-	return (
-		<>
-			<section>
-				<h3 className="subtitle">Season {seasons.length + 1}</h3>
-			</section>
-			<section className="awards">
-				{awards(users, polls)
-					.filter((award) => award.type === "award")
-					.filter((award) => !award.upcoming)
-					.map((award) => (
-						<Fragment key={award.name}>
-							<div
-								className={classNames({
-									locked:
-										award.requirements(users).length === 0,
-								})}
-							>
-								<h3 className="subtitle">{award.name}</h3>
-								<small>{award.description}</small>
-								{award
-									.requirements(users)
-									// Remove users who participated in "kabisa" poll
-									.filter((user) => user.polls.total !== 0)
-									.map((user: any) => {
-										return (
-											<small
-												key={user.id}
-												className="owned-by"
-											>
-												Owned by{" "}
-												<span className="username colored-name">
-													{user.displayName}
-												</span>
-											</small>
-										);
-									})}
-							</div>
-						</Fragment>
-					))}
-			</section>
-		</>
-	);
-};
+export const Awards: FC<AwardProps> = ({ users, polls }) => (
+	<section className="awards">
+		{awards(users, polls)
+			.filter((award) => award.type === "award")
+			.filter((award) => !award.upcoming)
+			.map((award) => (
+				<Award
+					title={award.name}
+					description={award.description}
+					winners={
+						award.requirements(users).map((user: any) => user) || []
+					}
+					variant="text"
+					state={
+						award.requirements(users).length === 0
+							? "disabled"
+							: "default"
+					}
+				/>
+			))}
+	</section>
+);
 
 export const Ranks: FC<Props> = ({ users, polls }) => {
 	return (
-		<section>
+		<section className="ranks">
 			{awards(users, polls)
 				.filter((award) => award.type === "rank")
 				.map((award) => {
 					return (
-						<Fragment key={award.name}>
-							<div
-								className={classNames({
-									locked:
-										award.requirements(users).length === 0,
-								})}
-							>
-								<h3 className="subtitle">{award.name}</h3>
-								<small>{award.description}</small>
-							</div>
-							<section className="photo-container">
-								{award
-									.requirements(users)
-									// Remove users who participated in "kabisa" poll
-									.filter((user) => user.polls.total !== 0)
-									.map((user: any) => {
-										return (
-											<img
-												className="photo"
-												key={user.id}
-												src={user.photoURL}
-												alt={`Photo of ${user.displayName}`}
-											/>
-											// <small>{user.displayName}</small>
-										);
-									})}
-							</section>
-						</Fragment>
+						<Award
+							title={award.name}
+							description={award.description}
+							winners={award
+								.requirements(users)
+								.map((user) => user)}
+							variant="photo"
+							state={
+								award.requirements(users).length === 0
+									? "disabled"
+									: "default"
+							}
+						/>
 					);
 				})}
 		</section>

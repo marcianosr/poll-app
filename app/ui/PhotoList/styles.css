@@ -5,6 +5,11 @@
 	margin: 0;
 }
 
-.photo-list > li:not(:first-child) {
+.photo-list-chips > li:not(:first-child) {
 	margin-left: -16px;
+}
+
+.photo-list-default {
+	gap: 0.5rem;
+	flex-wrap: wrap;
 }
