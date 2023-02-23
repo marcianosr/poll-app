@@ -2,8 +2,7 @@ import { Title } from "../Title";
 import { Text } from "../Text";
 import styles from "./styles.css";
 import classnames from "classnames";
-import { Photo } from "../Photo";
-import { PhotoList } from "../../components/PhotoList";
+import { PhotoList } from "../../ui/PhotoList";
 
 export type AwardProps = {
 	title: string;

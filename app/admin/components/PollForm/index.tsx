@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import type { FC } from "react";
 import React, { useEffect, useState } from "react";
 import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
-import DeleteButton from "../../../../components/Button/DeleteButton";
-import MarkButton from "../../../../components/Button/MarkButton";
+import DeleteButton from "../../../components/Button/DeleteButton";
+import MarkButton from "../../../components/Button/MarkButton";
 import { useAuth } from "~/providers/AuthProvider";
 
 export type BlockType = "text" | "code";

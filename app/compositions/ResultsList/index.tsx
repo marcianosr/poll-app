@@ -1,13 +1,10 @@
 import { links as optionsLinks } from "../../ui/Options";
 import { links as photoLinks } from "../../ui/Photo";
-import { links as photoListLinks } from "../../components/PhotoList";
+import { links as photoListLinks } from "../../ui/PhotoList";
 import { Title } from "../../ui/Title";
 import { Options } from "../../ui/Options";
 import { Option } from "../../ui/Option";
-import {
-	OptionVotes,
-	links as optionVotesLinks,
-} from "../../components/OptionVotes";
+import { OptionVotes, links as optionVotesLinks } from "../../ui/OptionVotes";
 import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
