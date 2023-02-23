@@ -20,9 +20,6 @@
 	opacity: var(--disabled);
 }
 
-.award-winners-photo-list {
-	list-style-type: none;
-	padding: 0;
-	display: flex;
-	gap: 0.5rem;
+.award ul {
+	margin-top: 0.5rem;
 }

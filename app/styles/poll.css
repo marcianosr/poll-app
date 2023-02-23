@@ -25,7 +25,9 @@ button {
 	}
 
 	.ranks {
-		display: block;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 	}
 }
 
@@ -33,16 +35,6 @@ button {
 	gap: 2rem;
 	display: flex;
 	flex-direction: column;
-}
-
-.amount-of-votes {
-	font-size: 0.75rem;
-	margin-top: 0.5rem;
-}
-
-.subtitle {
-	font-size: 1rem;
-	margin: 0;
 }
 
 .poll-statistics-container {
@@ -163,27 +155,7 @@ button {
 
 .filters {
 	display: flex;
-	justify-content: center;
 	margin-bottom: 1rem;
-	flex-wrap: wrap;
-}
-
-.filter-button {
-	border: 1px dashed var(--theme-color);
-	background-color: transparent;
-	color: var(--theme-color);
-	text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
-	font-size: 0.75rem;
-	width: max-content;
-	padding: 0 0.5rem;
-	flex: 1 1 auto;
-}
-
-.filter-button:hover,
-.filter-button.active {
-	border: 1px solid var(--theme-color);
-	background-color: var(--theme-color-20);
-	cursor: pointer;
 }
 
 .responses {

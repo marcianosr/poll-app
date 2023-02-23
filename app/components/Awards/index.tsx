@@ -489,7 +489,7 @@ export const Awards: FC<AwardProps> = ({ users, polls }) => (
 
 export const Ranks: FC<Props> = ({ users, polls }) => {
 	return (
-		<section>
+		<section className="ranks">
 			{awards(users, polls)
 				.filter((award) => award.type === "rank")
 				.map((award) => {
