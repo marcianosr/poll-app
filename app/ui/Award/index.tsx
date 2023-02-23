@@ -40,7 +40,7 @@ export const Award = ({
 							<Text size="xs" tag="small" variant="primary">
 								owned by
 							</Text>
-							<Text size="lg" variant="rainbow" tag="p">
+							<Text size="md" variant="rainbow" tag="p">
 								{winner.displayName}
 							</Text>
 						</>
