@@ -7,7 +7,7 @@ export function links() {
 
 export const Footer = () => (
 	<footer className="footer">
-		<Text size="sm" variant="primary">
+		<Text size="xs" variant="primary">
 			A web app build with ❤️ &{" "}
 			<a href="https://remix.run/" target="_blank">
 				Remix
