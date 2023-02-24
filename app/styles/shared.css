@@ -177,3 +177,9 @@ button {
 	height: 2rem;
 	font-family: var(--default-font);
 }
+
+a {
+	color: var(--theme-color);
+	font-weight: 900;
+	text-decoration-thickness: 1.5px;
+}
