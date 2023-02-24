@@ -6,6 +6,7 @@ import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import DeleteButton from "../../../components/Button/DeleteButton";
 import MarkButton from "../../../components/Button/MarkButton";
 import { useAuth } from "~/providers/AuthProvider";
+import { CATEGORIES } from "~/utils/categories";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -321,14 +322,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 					</select>
 
 					<select name="category" defaultValue={poll?.category}>
-						<option value="html">HTML</option>
-						<option value="css">CSS</option>
-						<option value="javascript">JavaScript</option>
-						<option value="typescript">TypeScript</option>
-						<option value="general-frontend">
-							General frontend
-						</option>
-						<option value="react">React</option>
+						{CATEGORIES.map((category) => (
+							<option value={category}>{category}</option>
+						))}
 					</select>
 				</aside>
 			</Form>

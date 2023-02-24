@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
 import { FC } from "react";
-import { PollCategory, PollData, PollStatus } from "~/utils/polls";
+import { PollCategory, CATEGORIES } from "~/utils/categories";
+import { PollData, PollStatus } from "~/utils/polls";
 
 type FilterProps = {
 	setRenderedPolls: (polls: PollData[]) => void;
@@ -10,15 +11,6 @@ type AmountOfPollsDisplayProps = {
 	polls: PollData[];
 	status: PollStatus;
 };
-
-const categories: PollCategory[] = [
-	"html",
-	"css",
-	"general-frontend",
-	"javascript",
-	"react",
-	"typescript",
-];
 
 const statusses: PollStatus[] = ["new", "needs-revision", "open"];
 
@@ -57,7 +49,7 @@ export const Filters: FC<FilterProps> = ({ setRenderedPolls }) => {
 			</section>
 
 			<section>
-				{categories.map((category) => (
+				{CATEGORIES.map((category) => (
 					<>
 						<button
 							type="button"

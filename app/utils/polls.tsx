@@ -10,18 +10,11 @@ import {
 	orderBy,
 	where,
 } from "firebase/firestore";
-import { BlockType } from "~/admin/components/Filters/PollForm";
+import { BlockType } from "~/admin/components/PollForm";
 import { db } from "~/utils/firebase";
+import { PollCategory } from "./categories";
 
 export type InputTypes = "radio" | "checkbox";
-export type PollCategory =
-	| "html"
-	| "css"
-	| "javascript"
-	| "typescript"
-	| "general-frontend"
-	| "react"
-	| "miscellaneous";
 export type PollStatus = "open" | "closed" | "new" | "needs-revision";
 export type Answer = {
 	id: string;
