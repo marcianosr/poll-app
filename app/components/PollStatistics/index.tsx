@@ -24,6 +24,10 @@ export const PollStatistics: FC<Props> = ({ polls }) => (
 					</li>
 				)
 			)}
+			<hr />
+			<Text size="lg" variant="rainbow" tag="span">
+				{polls.length} total polls
+			</Text>
 		</ul>
 	</>
 );

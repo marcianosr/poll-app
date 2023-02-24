@@ -82,6 +82,8 @@
 	--incorrect-20: #dc143c20;
 
 	--disabled: 0.5;
+
+	--max-page-width: 1320px;
 }
 
 .javascript,
@@ -152,7 +154,7 @@
 body {
 	background-color: var(--primary-black);
 	font-family: var(--default-font);
-	max-width: 1320px;
+	max-width: var(--max-page-width);
 	margin: 0 auto;
 }
 

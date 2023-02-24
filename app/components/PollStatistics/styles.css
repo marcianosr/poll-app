@@ -12,3 +12,7 @@
 	font-weight: 900;
 	font-size: 0.75rem;
 }
+
+.categories-list hr {
+	width: 100%;
+}

@@ -13,7 +13,7 @@ export const Footer = () => (
 	<footer className="footer">
 		<section className="footer-container">
 			<section className="contribution-container">
-				<Title size="sm" variant="primary">
+				<Title size="sm" variant="primary" tag="h3">
 					Contribute to the poll app
 				</Title>
 				<ul>
@@ -27,7 +27,7 @@ export const Footer = () => (
 					<li>
 						<Text size="xs" variant="primary">
 							<Link to={"/polls/new"}>
-								suggest a poll yourself!
+								Suggest a poll yourself!
 							</Link>
 						</Text>
 					</li>
@@ -38,7 +38,7 @@ export const Footer = () => (
 			</section>
 		</section>
 		<section>
-			<Text size="xs" variant="primary">
+			<Text size="xs" variant="primary" tag="small">
 				A web app build with ❤️ &{" "}
 				<a href="https://remix.run/" target="_blank">
 					Remix
