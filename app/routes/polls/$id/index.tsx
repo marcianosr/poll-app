@@ -261,8 +261,10 @@ export default function PollDetail() {
 						setScreenState={setScreenState}
 						isAdmin={isAdmin}
 					/>
-					<section className="ranks">
-						<h2 className="title">Ranks</h2>
+					<section>
+						<Title variant="primary" size="md" tag="h3">
+							Ranks
+						</Title>
 						<Ranks users={users} polls={polls} />
 					</section>
 				</aside>
