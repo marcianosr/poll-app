@@ -41,7 +41,7 @@ export const PhotoList = ({
 	return (
 		<ul className={styles}>
 			{voters.map((voter) => (
-				<li>
+				<li key={voter.photo.url}>
 					<Photo
 						photo={{
 							url: voter.photo.url || "",

@@ -37,18 +37,16 @@ export const PollScreen: FC<Props> = ({
 				{user && (
 					<Options>
 						{currentAnswers.map((answer, idx: number) => (
-							<>
-								<PollAnswerOption
-									key={idx}
-									idx={idx}
-									answer={answer}
-									poll={poll}
-									selectedVotes={selectedVotes}
-									setSelectedVotes={setSelectedVotes}
-									showVotedBy={showVotedBy}
-									getVotesFromAllUsers={getVotesFromAllUsers}
-								/>
-							</>
+							<PollAnswerOption
+								key={answer.id}
+								idx={idx}
+								answer={answer}
+								poll={poll}
+								selectedVotes={selectedVotes}
+								setSelectedVotes={setSelectedVotes}
+								showVotedBy={showVotedBy}
+								getVotesFromAllUsers={getVotesFromAllUsers}
+							/>
 						))}
 					</Options>
 				)}

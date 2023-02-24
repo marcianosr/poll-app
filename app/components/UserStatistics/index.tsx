@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import { FC, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import { Voted } from "~/utils/polls";
 import { Team } from "~/utils/teams";
 import { Button } from "../../ui/Button";
@@ -128,7 +128,7 @@ const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 										);
 
 									return (
-										<>
+										<Fragment key={team.name}>
 											<li
 												className={classnames(
 													"team-container",
@@ -174,7 +174,12 @@ const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 																	) + 1;
 
 																return (
-																	<li className="team-list-items-photos">
+																	<li
+																		key={
+																			user.displayName
+																		}
+																		className="team-list-items-photos"
+																	>
 																		{index ===
 																		0 ? (
 																			<div className="team-addition">
@@ -217,7 +222,7 @@ const UserStatistics: FC<Props> = ({ users, voted, teams }) => {
 													</div>
 												</div>
 											</li>
-										</>
+										</Fragment>
 									);
 								})}
 						</ol>

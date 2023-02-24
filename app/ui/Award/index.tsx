@@ -3,6 +3,7 @@ import { Text } from "../Text";
 import styles from "./styles.css";
 import classnames from "classnames";
 import { PhotoList } from "../../ui/PhotoList";
+import { Fragment } from "react";
 
 export type AwardProps = {
 	title: string;
@@ -35,14 +36,14 @@ export const Award = ({
 			<>
 				{winners.length > 0 &&
 					winners.map((winner) => (
-						<>
+						<Fragment key={winner.displayName}>
 							<Text size="xs" tag="small" variant="primary">
 								owned by
 							</Text>
 							<Text size="md" variant="rainbow" tag="p">
 								{winner.displayName}
 							</Text>
-						</>
+						</Fragment>
 					))}
 			</>
 		)}

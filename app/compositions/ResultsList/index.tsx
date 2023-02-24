@@ -51,7 +51,11 @@ export const ResultsList = (props: ResultsListProps) => {
 								: "disabled";
 
 							return (
-								<Option answer={answer} variant={variant}>
+								<Option
+									answer={answer}
+									variant={variant}
+									key={answer.id}
+								>
 									<OptionVotes
 										voters={props
 											.getVotesFromAllUsers(answer.id)

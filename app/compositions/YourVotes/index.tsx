@@ -38,6 +38,7 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 					<Options>
 						{votes.map((vote: any) => (
 							<Option
+								key={vote.id}
 								answer={vote}
 								variant={
 									getCorrectAnswers(vote?.id || "")

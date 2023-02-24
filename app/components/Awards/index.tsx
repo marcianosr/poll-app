@@ -471,6 +471,7 @@ export const Awards: FC<AwardProps> = ({ users, polls }) => (
 			.filter((award) => !award.upcoming)
 			.map((award) => (
 				<Award
+					key={award.name}
 					title={award.name}
 					description={award.description}
 					winners={
@@ -495,6 +496,7 @@ export const Ranks: FC<Props> = ({ users, polls }) => {
 				.map((award) => {
 					return (
 						<Award
+							key={award.name}
 							title={award.name}
 							description={award.description}
 							winners={award
