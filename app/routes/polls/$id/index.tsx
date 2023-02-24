@@ -32,7 +32,6 @@ import UserStatistics from "~/components/UserStatistics";
 import { colors } from "~/utils/colors";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
-import { getTeams, Team, UpdateTeam, updateTeamById } from "~/utils/teams";
 import { yourVoteStyles } from "../../../compositions/YourVotes";
 import { resultsListStyles } from "../../../compositions/ResultsList";
 import { Title } from "../../../ui/Title";
@@ -134,36 +133,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 		lastPollSubmit: Date.now(),
 	});
 
-	const teams = await getTeams();
-
-	const team = teams.find((team) =>
-		team.users.find((tuid: string) => tuid === uid)
-	);
-
-	if (team) {
-		const amountOfUsersVotedByTeam =
-			team?.users.filter((tuid: string) =>
-				polls.voted.find((vote: Voted) => {
-					return vote.userId === tuid;
-				})
-			).length + 1;
-
-		const pointsPerAmountOfTeamVotes = 2 ** amountOfUsersVotedByTeam;
-
-		// find user by team id
-		// update points: get prev. team points + sum of length of teams
-		await updateTeamById<UpdateTeam>({
-			id: team?.id || "",
-			points: {
-				streak:
-					amountOfUsersVotedByTeam === team.users.length
-						? team.points.streak + 1
-						: team.points.streak,
-				total: team.points.total + pointsPerAmountOfTeamVotes,
-			},
-		});
-	}
-
 	const getUserIdsByVote = parsedVoted.map((votes) => votes.userId).flat();
 	const hasVoted = getUserIdsByVote.includes(uid);
 
@@ -179,14 +148,12 @@ export type LoaderData = {
 	users: any; // !TODO: type this
 	openedPollNumber: number;
 	seasons: SeasonAwardData[];
-	teams: Team[];
 };
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const polls = await getAllPolls();
 	const users = await getUsers();
-	const teams = await getTeams();
 	const amountOfClosedPolls = await getAmountOfClosedPolls();
 	const seasons = await getAllSeasons();
 	const openedPollNumber = amountOfClosedPolls + 1; // ! Closed polls + current open poll
@@ -204,7 +171,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 		openedPollNumber,
 		polls,
 		seasons,
-		teams,
 	};
 };
 
@@ -230,7 +196,7 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, users, openedPollNumber, polls, seasons, teams } =
+	const { poll, users, openedPollNumber, polls, seasons } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
 
@@ -338,12 +304,7 @@ export default function PollDetail() {
 						/>
 					)}
 
-					<UserStatistics
-						users={users}
-						voted={poll.voted}
-						teams={teams}
-					/>
-
+					<UserStatistics users={users} />
 					<AwardsContainer
 						users={users}
 						polls={polls}

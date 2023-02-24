@@ -8,7 +8,6 @@ import mockPolls from "~/fixtures/polls.json";
 import mockUsers from "~/fixtures/users.json";
 import mockTeams from "~/fixtures/teams.json";
 import kabisa from "../fixtures/kabisa.json";
-import { getTeams } from "./teams";
 
 // ! DEVELOPMENT INTENDED DATA POPULATION
 
@@ -37,7 +36,6 @@ export async function addTeam(data: any) {
 export const createDevData = async () => {
 	const polls = await getAllPolls();
 	const users = await getUsers();
-	const teams = await getTeams();
 
 	console.log("create dev data");
 
@@ -55,11 +53,9 @@ const writeCurrentProdDataToFile = (users, polls, teams) => {
 	console.log("write data...");
 	fs.writeFileSync("app/fixtures/polls.json", JSON.stringify(polls));
 	fs.writeFileSync("app/fixtures/users.json", JSON.stringify(users));
-	fs.writeFileSync("app/fixtures/teams.json", JSON.stringify(teams));
 };
 
 const populateFirestoreWithFileData = () => {
 	mockPolls.forEach((poll) => createPollsDev(poll));
 	mockUsers.forEach((user) => addUser(user));
-	mockTeams.forEach((team) => addTeam(team));
 };
