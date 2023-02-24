@@ -16,20 +16,10 @@ button {
 	padding: 1rem;
 }
 
-.ranks {
-	display: none;
-}
-
 @media screen and (min-width: 1024px) {
 	.page-container {
 		padding: 0;
 		grid-template-columns: 300px 1fr;
-	}
-
-	.ranks {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
 	}
 }
 

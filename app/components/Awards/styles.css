@@ -21,3 +21,15 @@
 	grid-template-columns: repeat(auto-fit, 200px);
 	gap: 3rem;
 }
+
+.ranks {
+	display: none;
+}
+
+@media screen and (min-width: 1024px) {
+	.ranks {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+}
