@@ -274,12 +274,12 @@ export default function PollDetail() {
 	};
 
 	return (
-		<>
-			<section
-				className={classNames("page-container", {
-					[poll.category]: true,
-				})}
-			>
+		<section
+			className={classNames({
+				[poll.category]: true,
+			})}
+		>
+			<div className="page-container">
 				{openedPollNumber === 100 && typeof window !== "undefined" && (
 					<Confetti width={width} height={height} colors={colors} />
 				)}
@@ -350,8 +350,8 @@ export default function PollDetail() {
 						seasons={seasons}
 					/>
 				</section>
-			</section>
+			</div>
 			<Footer />
-		</>
+		</section>
 	);
 }
