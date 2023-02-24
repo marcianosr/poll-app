@@ -1,0 +1,14 @@
+.categories-list {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	gap: 0.75rem;
+}
+
+.categories-list-item {
+	color: var(--theme-color);
+	font-weight: 900;
+	font-size: 0.75rem;
+}

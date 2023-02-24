@@ -38,6 +38,7 @@ import { resultsListStyles } from "../../../compositions/ResultsList";
 import { Title } from "../../../ui/Title";
 import { EekumBokum } from "~/components/EekumBokum";
 import { AwardsContainer } from "~/components/Awards/Container";
+import { Footer, links as footerLinks } from "~/components/Footer";
 
 export type ScreenState = "poll" | "results";
 
@@ -48,6 +49,7 @@ export function links() {
 		...yourVoteStyles(),
 		...resultsListStyles(),
 		...buttonLinks(),
+		...footerLinks(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -272,81 +274,84 @@ export default function PollDetail() {
 	};
 
 	return (
-		<section
-			className={classNames("page-container", {
-				[poll.category]: true,
-			})}
-		>
-			{openedPollNumber === 100 && typeof window !== "undefined" && (
-				<Confetti width={width} height={height} colors={colors} />
-			)}
-			<aside className="sidebar-info">
-				<PollStatusInfo
-					status={poll.status}
-					openedPollNumber={openedPollNumber}
-					pollNumber={poll.pollNumber || 0}
-				/>
-				<EekumBokum
-					showVotedBy={showVotedBy}
-					setShowVotedBy={setShowVotedBy}
-					setScreenState={setScreenState}
-					isAdmin={isAdmin}
-				/>
-				<section className="ranks">
-					<h2 className="title">Ranks</h2>
-					<Ranks users={users} polls={polls} />
-				</section>
-			</aside>
-			<section className="main-content">
-				{isAdmin && <Link to="/polls">Back to list of polls</Link>}
-
-				<Question title={poll.question} />
-				{poll.sentInByUser && (
-					<SentByUserText name={poll.sentInByUser?.displayName} />
+		<>
+			<section
+				className={classNames("page-container", {
+					[poll.category]: true,
+				})}
+			>
+				{openedPollNumber === 100 && typeof window !== "undefined" && (
+					<Confetti width={width} height={height} colors={colors} />
 				)}
-				{poll.codeSandboxExample && (
-					<iframe
-						width="100%"
-						height="500"
-						src={poll.codeSandboxExample}
+				<aside className="sidebar-info">
+					<PollStatusInfo
+						status={poll.status}
+						openedPollNumber={openedPollNumber}
+						pollNumber={poll.pollNumber || 0}
 					/>
-				)}
-				{poll.codeBlock && (
-					<>
-						<Title size="md" variant="primary" tag="span">
-							Code example
-						</Title>
-						<CodeBlock code={poll.codeBlock} />
-					</>
-				)}
-				{screenState === "poll" && (
-					<PollScreen
-						getCorrectAnswers={getCorrectAnswers}
+					<EekumBokum
 						showVotedBy={showVotedBy}
-						getVotesFromAllUsers={getVotesFromAllUsers}
-						currentAnswers={currentAnswers}
+						setShowVotedBy={setShowVotedBy}
+						setScreenState={setScreenState}
+						isAdmin={isAdmin}
 					/>
-				)}
-				{screenState === "results" && (
-					<ResultsScreen
-						getCorrectAnswers={getCorrectAnswers}
-						currentAnswers={currentAnswers}
-						getVotesFromAllUsers={getVotesFromAllUsers}
+					<section className="ranks">
+						<h2 className="title">Ranks</h2>
+						<Ranks users={users} polls={polls} />
+					</section>
+				</aside>
+				<section className="main-content">
+					{isAdmin && <Link to="/polls">Back to list of polls</Link>}
+
+					<Question title={poll.question} />
+					{poll.sentInByUser && (
+						<SentByUserText name={poll.sentInByUser?.displayName} />
+					)}
+					{poll.codeSandboxExample && (
+						<iframe
+							width="100%"
+							height="500"
+							src={poll.codeSandboxExample}
+						/>
+					)}
+					{poll.codeBlock && (
+						<>
+							<Title size="md" variant="primary" tag="span">
+								Code example
+							</Title>
+							<CodeBlock code={poll.codeBlock} />
+						</>
+					)}
+					{screenState === "poll" && (
+						<PollScreen
+							getCorrectAnswers={getCorrectAnswers}
+							showVotedBy={showVotedBy}
+							getVotesFromAllUsers={getVotesFromAllUsers}
+							currentAnswers={currentAnswers}
+						/>
+					)}
+					{screenState === "results" && (
+						<ResultsScreen
+							getCorrectAnswers={getCorrectAnswers}
+							currentAnswers={currentAnswers}
+							getVotesFromAllUsers={getVotesFromAllUsers}
+						/>
+					)}
+
+					<UserStatistics
+						users={users}
+						voted={poll.voted}
+						teams={teams}
 					/>
-				)}
 
-				<UserStatistics
-					users={users}
-					voted={poll.voted}
-					teams={teams}
-				/>
-
-				<AwardsContainer
-					users={users}
-					polls={polls}
-					seasons={seasons}
-				/>
+					<AwardsContainer
+						users={users}
+						polls={polls}
+						seasons={seasons}
+					/>
+				</section>
 			</section>
-		</section>
+			<Footer />
+		</>
 	);
 }

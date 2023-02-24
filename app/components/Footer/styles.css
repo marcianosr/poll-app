@@ -2,8 +2,12 @@
 	padding: 1rem;
 	background-color: var(--secondary-black);
 	margin-top: 2rem;
+	gap: 1rem;
+}
+
+.footer-container {
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 }
 
 @media screen and (min-width: 568px) {
@@ -15,4 +19,15 @@
 
 .footer > p {
 	color: white;
+}
+
+.footer > section:last-of-type {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: center;
+}
+
+.footer ul {
+	padding: 0;
+	list-style: none;
 }

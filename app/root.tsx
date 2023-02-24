@@ -12,14 +12,9 @@ import { Header, links as headerLinks } from "./components/Header";
 import { AuthProvider } from "./providers/AuthProvider";
 import styles from "~/styles/shared.css";
 import { getPollById } from "./utils/polls";
-import { Footer, links as footerLinks } from "./components/Footer";
 
 export function links() {
-	return [
-		...headerLinks(),
-		...footerLinks(),
-		{ rel: "stylesheet", href: styles },
-	];
+	return [...headerLinks(), { rel: "stylesheet", href: styles }];
 }
 
 export const meta: MetaFunction = () => ({
@@ -56,7 +51,6 @@ export default function App() {
 					<ScrollRestoration />
 					<Scripts />
 					<LiveReload />
-					<Footer />
 				</body>
 			</html>
 		</AuthProvider>

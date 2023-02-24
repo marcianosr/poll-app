@@ -13,6 +13,7 @@ button {
 	display: grid;
 	gap: 1rem;
 	margin-top: 2rem;
+	padding: 1rem;
 }
 
 .ranks {
@@ -21,6 +22,7 @@ button {
 
 @media screen and (min-width: 1024px) {
 	.page-container {
+		padding: 0;
 		grid-template-columns: 300px 1fr;
 	}
 

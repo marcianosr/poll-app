@@ -3,7 +3,6 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
 import { Filters } from "~/admin/components/Filters";
-import PollStatistics from "~/admin/components/PollStatistics";
 import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
 import { getAllPollsWithIds, PollData, resetVotesForPoll } from "~/utils/polls";
@@ -111,9 +110,7 @@ export default function AllPolls() {
 							value="season-reset"
 						/>
 					</Form>
-					<PollStatistics polls={polls} />
 					<Filters setRenderedPolls={setRenderedPolls} />
-
 					<Link to="/polls/new">Create new poll</Link>
 					<PollOverview polls={renderedPolls} />
 				</>

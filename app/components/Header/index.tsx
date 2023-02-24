@@ -43,9 +43,6 @@ export const Header = () => {
 								</span>
 							</span>
 							{/* <span>Max streak {user.firebase.polls.maxStreak}</span> */}
-							<Link to={"/polls/new"} className="suggest-poll">
-								Suggest poll
-							</Link>
 						</section>
 					</section>
 				</>
