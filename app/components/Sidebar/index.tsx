@@ -3,11 +3,19 @@ import { Title } from "~/ui/Title";
 import { PollData } from "~/utils/polls";
 import { Ranks } from "../Awards";
 import { EekumBokum } from "../EekumBokum";
-import { PollStatusInfo } from "../PollStatusInfo";
+import {
+	PollStatusInfoContainer,
+	links as pollStatusInfoContainerLinks,
+} from "../PollStatusInfoContainer";
+import { links as pollStatusLabelLinks } from "../PollStatusInfoContainer";
 import styles from "./styles.css";
 
 export function links() {
-	return [{ rel: "stylesheet", href: styles }];
+	return [
+		...pollStatusInfoContainerLinks(),
+		...pollStatusLabelLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 type SidebarProps = {
@@ -32,7 +40,7 @@ export const Sidebar = ({
 	polls,
 }: SidebarProps) => (
 	<aside className="sidebar">
-		<PollStatusInfo
+		<PollStatusInfoContainer
 			status={poll.status}
 			openedPollNumber={openedPollNumber}
 			pollNumber={poll.pollNumber || 0}

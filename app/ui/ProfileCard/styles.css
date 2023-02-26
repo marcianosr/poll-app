@@ -107,3 +107,58 @@
 	transform: translate3d(0, 0, 0);
 	animation: holoGradient 15s ease infinite;
 }
+
+@keyframes holoGradient {
+	3% {
+		opacity: 0;
+	}
+	5% {
+		background-position: 0% 0%;
+	}
+	7% {
+		opacity: 0.5;
+	}
+	9% {
+		background-position: 100% 100%;
+	}
+	11% {
+		opacity: 0;
+	}
+	20% {
+		opacity: 0;
+		background-position: 100% 100%;
+	}
+	25% {
+		opacity: 0.3;
+	}
+	40% {
+		opacity: 0;
+		background-position: 0% 0%;
+	}
+	43% {
+		opacity: 0;
+	}
+	45% {
+		background-position: 0% 0%;
+	}
+	47% {
+		opacity: 0.5;
+	}
+	49% {
+		background-position: 100% 100%;
+	}
+	51% {
+		opacity: 0;
+	}
+	60% {
+		opacity: 0;
+		background-position: 100% 100%;
+	}
+	65% {
+		opacity: 0.3;
+	}
+	80% {
+		opacity: 0;
+		background-position: 0% 0%;
+	}
+}

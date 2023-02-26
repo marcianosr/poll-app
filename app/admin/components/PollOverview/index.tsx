@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { transformToCodeTags } from "~/routes/polls/$id";
 import { PollData } from "~/utils/polls";
-import { SentByUserText } from "../SentByUserText";
+import { SentByUserText } from "../../../components/SentByUserText";
 import styles from "./styles.css";
 
 export function links() {

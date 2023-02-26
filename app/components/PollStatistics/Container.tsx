@@ -4,8 +4,6 @@ import { getAllPollsWithIds, PollData } from "~/utils/polls";
 import { PollStatistics } from ".";
 
 export const loader: LoaderFunction = async ({ params }) => {
-	console.log("poll loader");
-
 	const polls = await getAllPollsWithIds();
 
 	return { polls };

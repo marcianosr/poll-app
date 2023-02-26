@@ -11,7 +11,7 @@ import { getAdminUser, getUsers, resetSeasonStreak } from "~/utils/user";
 import {
 	PollOverview,
 	links as pollOverviewLinks,
-} from "~/components/PollOverview";
+} from "~/admin/components/PollOverview";
 
 type PollDataWithDocumentId = PollData & {
 	documentId: string;

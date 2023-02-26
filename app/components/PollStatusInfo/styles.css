@@ -1,22 +1,11 @@
-.status {
+.poll-status-text {
 	font-weight: 300;
+	color: var(--theme-color);
 }
 
-.closed,
-.open {
-	font-weight: 700;
-}
-
-.closed {
-	color: var(--vermillion);
-}
-
-.open {
-	color: var(--celadon);
-}
-
-.poll-status-info {
+.poll-status-container {
 	display: flex;
+	align-items: center;
 	gap: 0.5rem;
 	margin-top: 1rem;
 }

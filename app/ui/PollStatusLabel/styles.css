@@ -1,0 +1,27 @@
+:where(.open, .closed, .needs-revision, .new) {
+	font-weight: 700;
+	text-transform: uppercase;
+	border: 1px solid;
+	border-radius: 2rem;
+	padding: 0.5rem 2rem;
+}
+
+.closed {
+	color: var(--vermillion);
+	background: var(--vermillion-20);
+}
+
+.open {
+	color: var(--celadon);
+	background: var(--celadon-20);
+}
+
+.new {
+	color: var(--cerulean);
+	background: var(--cerulean-20);
+}
+
+.needs-revision {
+	color: var(--saffron);
+	background: var(--saffron-20);
+}
