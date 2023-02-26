@@ -11,15 +11,12 @@ import {
 } from "~/utils/polls";
 import type { FirebaseUserFields } from "~/providers/AuthProvider";
 import { useAuth } from "~/providers/AuthProvider";
-import {
-	PollStatusInfo,
-	links as pollStatusLinks,
-} from "~/components/PollStatusInfo";
+import { links as pollStatusLinks } from "~/components/PollStatusInfo";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import type { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
 import classNames from "classnames";
-import { links as awardsBoardLinks, Ranks } from "~/components/Awards";
+import { links as awardsBoardLinks } from "~/components/Awards";
 import { Question, links as questionLinks } from "~/components/Question";
 import { CodeBlock, links as codeBlockLinks } from "~/ui/CodeBlock";
 import { links as buttonLinks } from "~/ui/Button";
@@ -28,16 +25,17 @@ import type { SeasonAwardData } from "~/utils/seasons";
 import { SentByUserText } from "~/components/SentByUserText";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
-import UserStatistics from "~/components/UserStatistics";
+import UsersPollRankingContainer from "~/components/UsersPollRankingContainer";
 import { colors } from "~/utils/colors";
 import { ResultsScreen } from "~/components/ResultsScreen";
 import { links as pollScreenLinks, PollScreen } from "~/components/PollScreen";
 import { yourVoteStyles } from "../../../compositions/YourVotes";
 import { resultsListStyles } from "../../../compositions/ResultsList";
 import { Title } from "../../../ui/Title";
-import { EekumBokum } from "~/components/EekumBokum";
 import { AwardsContainer } from "~/components/Awards/Container";
 import { Footer, links as footerLinks } from "~/components/Footer";
+import { Sidebar } from "~/components/Sidebar";
+import { links as profileCardLinks } from "../../../ui/ProfileCard";
 
 export type ScreenState = "poll" | "results";
 
@@ -49,6 +47,7 @@ export function links() {
 		...resultsListStyles(),
 		...buttonLinks(),
 		...footerLinks(),
+		...profileCardLinks(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -249,25 +248,16 @@ export default function PollDetail() {
 				{openedPollNumber === 100 && typeof window !== "undefined" && (
 					<Confetti width={width} height={height} colors={colors} />
 				)}
-				<aside className="sidebar-info">
-					<PollStatusInfo
-						status={poll.status}
-						openedPollNumber={openedPollNumber}
-						pollNumber={poll.pollNumber || 0}
-					/>
-					<EekumBokum
-						showVotedBy={showVotedBy}
-						setShowVotedBy={setShowVotedBy}
-						setScreenState={setScreenState}
-						isAdmin={isAdmin}
-					/>
-					<section>
-						<Title variant="primary" size="md" tag="h3">
-							Ranks
-						</Title>
-						<Ranks users={users} polls={polls} />
-					</section>
-				</aside>
+				<Sidebar
+					isAdmin={isAdmin}
+					openedPollNumber={openedPollNumber}
+					poll={poll}
+					polls={polls}
+					setScreenState={setScreenState}
+					setShowVotedBy={setShowVotedBy}
+					users={users}
+					showVotedBy={showVotedBy}
+				/>
 				<section className="main-content">
 					{isAdmin && <Link to="/polls">Back to list of polls</Link>}
 
@@ -306,7 +296,7 @@ export default function PollDetail() {
 						/>
 					)}
 
-					<UserStatistics users={users} />
+					<UsersPollRankingContainer users={users} />
 					<AwardsContainer
 						users={users}
 						polls={polls}
