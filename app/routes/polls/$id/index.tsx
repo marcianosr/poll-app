@@ -11,7 +11,7 @@ import {
 } from "~/utils/polls";
 import type { FirebaseUserFields } from "~/providers/AuthProvider";
 import { useAuth } from "~/providers/AuthProvider";
-import { links as pollStatusLinks } from "~/components/PollStatusInfoContainer";
+import { links as pollStatusLinks } from "~/components/PollStatusInfo";
 import { getUserByID, getUsers, updateUserById } from "~/utils/user";
 import type { DeepPartial } from "~/utils/types";
 import styles from "~/styles/poll.css";
