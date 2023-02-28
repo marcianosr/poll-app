@@ -5,14 +5,22 @@ import FormPoll, { Errors } from "~/admin/components/PollForm";
 import {
 	createPoll,
 	getAmountOfPolls,
-	PollCategory,
 	PollData,
 	PollStatus,
 } from "~/utils/polls";
+import { links as textFieldLinks } from "../../ui/TextAreaField";
+import { links as inputFieldLinks } from "../../ui/InputField";
+import { links as buttonLinks } from "../../ui/Button";
 import styles from "~/styles/new-poll.css";
+import { PollCategory } from "~/utils/categories";
 
 export function links() {
-	return [{ rel: "stylesheet", href: styles }];
+	return [
+		...inputFieldLinks(),
+		...textFieldLinks(),
+		...buttonLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 export const action: ActionFunction = async ({ request }) => {

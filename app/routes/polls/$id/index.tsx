@@ -234,7 +234,7 @@ export default function PollDetail() {
 				.filter((vote) => vote.answerId === answerId)
 				.map((vote) => vote.userId)
 				// ! improve
-				.map((id) => users.find((user) => user.id === id))
+				.map((id) => users.find((user: any) => user.id === id))
 		);
 	};
 

@@ -1,0 +1,9 @@
+.input-field-disabled {
+	cursor: not-allowed;
+}
+
+.input-field-valid {
+	background: var(--correct-20);
+	border: 3px solid var(--correct);
+	color: var(--white);
+}

@@ -14,6 +14,7 @@
 	--pewter: #aeaeae;
 	--viridian: #40826d;
 	--indigo: #4b0082;
+	--white: "#ffffff";
 
 	--saffron-tint: #6a5000;
 	--cerulean-tint: #919efc;
@@ -182,4 +183,11 @@ a {
 	color: var(--theme-color);
 	font-weight: 900;
 	text-decoration-thickness: 1.5px;
+}
+
+input,
+textarea,
+select {
+	border-radius: 0.5rem;
+	padding: 0.7rem;
 }

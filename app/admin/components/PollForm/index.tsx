@@ -1,12 +1,16 @@
 import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import type { FC } from "react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
-import DeleteButton from "../../../components/Button/DeleteButton";
-import MarkButton from "../../../components/Button/MarkButton";
 import { useAuth } from "~/providers/AuthProvider";
 import { CATEGORIES } from "~/utils/categories";
+import { TextAreaField } from "../../../ui/TextAreaField";
+import { InputField } from "../../../ui/InputField";
+import { Text } from "../../../ui/Text";
+import { Select } from "../../../ui/Select";
+import { Button, links as buttonLinks } from "~/ui/Button";
+import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -21,7 +25,7 @@ export type CorrectAnswerType = {
 	id: string;
 	value: string;
 };
-type Mode = "edit" | "mark";
+export type Mode = "edit" | "mark";
 export type Errors = {
 	ok: boolean;
 };
@@ -32,6 +36,11 @@ type Data =
 type Props = {
 	poll?: PollData;
 };
+
+export function links() {
+	return [];
+}
+
 const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
 	const { user, isAdmin } = useAuth();
@@ -77,171 +86,60 @@ const PollForm: FC<Props> = ({ poll }) => {
 		]);
 	};
 
-	const onCMDAndEnterPressed: React.KeyboardEventHandler = (e) => {
-		if (e.metaKey && e.key === "Enter") addField();
-	};
-
 	return (
 		<section className="container">
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
-					<textarea
-						placeholder="Question"
+					<TextAreaField
 						name="question"
-						defaultValue={poll?.question}
-						className="question"
-						autoFocus
-					></textarea>
+						placeholder="Question"
+						value={poll?.question || ""}
+						autoFocus={true}
+					/>
 
 					<input
 						type="hidden"
 						name="correctAnswers"
 						defaultValue={JSON.stringify(markCorrectAnswer)}
 					/>
-					<input
+					<InputField
 						type="url"
 						placeholder="Link to codesandbox example"
 						name="codesandboxExample"
-						defaultValue={poll?.codeSandboxExample}
+						value={poll?.codeSandboxExample || ""}
 					/>
-
 					<>
 						{action?.ok === false && <span>errors</span>}
 						<>
-							<textarea
+							<TextAreaField
 								placeholder="Insert code example (not mandatory)"
 								name="codeBlock"
 								id="codeBlock"
-								defaultValue={poll?.codeBlock}
-							></textarea>
-							<button onClick={addField} type="button">
+								value={poll?.codeBlock || ""}
+							/>
+							<Button variant="secondary" onClick={addField}>
 								Add new answer option
-							</button>
+							</Button>
 							{fields.map((field, index) => (
 								<>
-									<span>Answer {index + 1}</span>
-									<section
-										className="answer-container"
-										key={field.id}
+									<Text
+										size="sm"
+										variant="primary"
+										tag="small"
 									>
-										{field.blockType === "text" ? (
-											<textarea
-												className={
-													markCorrectAnswer.find(
-														(item) =>
-															item.id === field.id
-													) && "correct"
-												}
-												placeholder={field.placeholder}
-												disabled={mode === "mark"}
-												name={`answer-${field.id}`}
-												id={field.id}
-												value={field.value}
-												autoFocus={field.autoFocus}
-												onKeyDown={(e) =>
-													onCMDAndEnterPressed(e)
-												}
-												onChange={(e) => {
-													setFields([
-														...fields.map((f) =>
-															f.id === field.id
-																? {
-																		...f,
-																		value: e
-																			.target
-																			.value,
-																  }
-																: f
-														),
-													]);
-												}}
-											></textarea>
-										) : (
-											<textarea
-												className={
-													markCorrectAnswer.find(
-														(item) =>
-															item.id === field.id
-													) && "correct"
-												}
-												placeholder={field.placeholder}
-												disabled={mode === "mark"}
-												name={`answer-${field.id}`}
-												id={field.id}
-												value={field.value}
-												onKeyDown={(e) =>
-													onCMDAndEnterPressed(e)
-												}
-												onChange={(e) => {
-													setFields([
-														...fields.map((f) =>
-															f.id === field.id
-																? {
-																		...f,
-																		value: e
-																			.target
-																			.value,
-																  }
-																: f
-														),
-													]);
-												}}
-											></textarea>
-										)}
-										<button
-											type="button"
-											className="toggle-code-button"
-											onClick={(e) => {
-												e.preventDefault();
-
-												return setFields((prev) =>
-													fields.map<NewPollType>(
-														(f, idx) =>
-															f.id === field.id
-																? {
-																		...f,
-																		blockType:
-																			prev[
-																				idx
-																			]
-																				.blockType ===
-																			"text"
-																				? "code"
-																				: "text",
-																  }
-																: f
-													)
-												);
-											}}
-										>
-											use{" "}
-											{field.blockType === "text"
-												? "code"
-												: "text"}{" "}
-											answer
-										</button>
-
-										{fields.length > 1 &&
-											mode === "edit" && (
-												<DeleteButton
-													fieldId={field.id}
-													fields={fields}
-													setFields={setFields}
-												/>
-											)}
-
-										{mode === "mark" && (
-											<MarkButton
-												markCorrectAnswer={
-													markCorrectAnswer
-												}
-												setMarkCorrectAnswer={
-													setMarkCorrectAnswer
-												}
-												field={field}
-											/>
-										)}
-									</section>
+										Answer {index + 1}
+									</Text>
+									<AnswerSettingsContainer
+										addField={addField}
+										field={field}
+										fields={fields}
+										setFields={setFields}
+										markCorrectAnswer={markCorrectAnswer}
+										setMarkCorrectAnswer={
+											setMarkCorrectAnswer
+										}
+										mode={mode}
+									/>
 								</>
 							))}
 						</>
@@ -310,7 +208,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 							</select>
 						)}
 					</div>
-
 					<select
 						name="type"
 						defaultValue={

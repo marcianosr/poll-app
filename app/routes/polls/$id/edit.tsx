@@ -1,18 +1,22 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/admin/components/PollForm";
-import {
-	getPollById,
-	PollCategory,
-	PollData,
-	updatePollById,
-} from "~/utils/polls";
+import { getPollById, PollData, updatePollById } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
 import { getAdminUser } from "~/utils/user";
 import { useAuth } from "~/providers/AuthProvider";
+import { links as textFieldLinks } from "../../../ui/TextAreaField";
+import { links as inputFieldLinks } from "../../../ui/InputField";
+import { links as buttonLinks } from "../../../ui/Button";
+import { PollCategory } from "~/utils/categories";
 
 export function links() {
-	return [{ rel: "stylesheet", href: styles }];
+	return [
+		...inputFieldLinks(),
+		...textFieldLinks(),
+		...buttonLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 export const action: ActionFunction = async ({ request, params }) => {

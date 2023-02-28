@@ -1,7 +1,3 @@
-.correct {
-	border: 3px solid green;
-}
-
 .container {
 	margin: 0 auto;
 	/* max-width: 1000px; */
@@ -55,13 +51,6 @@
 	align-items: center;
 }
 
-input,
-textarea,
-select {
-	border-radius: 0.5rem;
-	padding: 0.7rem;
-}
-
 .options {
 	max-width: 300px;
 	border-left: 1px solid var(--primary-border-color);
@@ -73,8 +62,8 @@ select {
 	gap: 1rem;
 }
 
-aside {
+/* aside {
 	display: grid;
 	grid-auto-columns: 300px;
 	gap: 1rem;
-}
+} */
