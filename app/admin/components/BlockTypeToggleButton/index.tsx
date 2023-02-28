@@ -6,6 +6,7 @@ type BlockTypeToggleButtonProps = {
 	fields: NewPollType[];
 	setFields: React.Dispatch<React.SetStateAction<NewPollType[]>>;
 };
+
 export const BlockTypeToggleButton = ({
 	blockType,
 	field,

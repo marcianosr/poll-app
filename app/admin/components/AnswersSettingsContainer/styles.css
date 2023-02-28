@@ -14,8 +14,4 @@
 		padding: 0.5rem;
 		flex-direction: column;
 	}
-
-	.toggle-code-button {
-		display: none;
-	}
 }

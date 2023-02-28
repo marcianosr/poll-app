@@ -1,0 +1,15 @@
+@media (pointer: coarse) {
+	.add-answer-button-container {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: calc(100vw - 2rem);
+		padding: 1rem;
+		background-color: var(--secondary-black);
+		border-top: 3px solid var(--theme-color);
+	}
+}
+
+.add-answer-button-container button {
+	width: 100%;
+}

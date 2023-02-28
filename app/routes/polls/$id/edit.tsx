@@ -5,28 +5,13 @@ import { getPollById, PollData, updatePollById } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
 import { getAdminUser } from "~/utils/user";
 import { useAuth } from "~/providers/AuthProvider";
-import { links as textFieldLinks } from "../../../ui/TextAreaField";
-import { links as inputFieldLinks } from "../../../ui/InputField";
-import { links as buttonLinks } from "../../../ui/Button";
 import { PollCategory } from "~/utils/categories";
-import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
-import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
-import { Title, links as titleLinks } from "~/ui/Title";
-import { links as textLinks } from "~/ui/Text";
+import { Title } from "~/ui/Title";
+import { links as commonStyleLinks } from "../../polls/commonStyleLinks";
 
 export function links() {
-	return [
-		...inputFieldLinks(),
-		...textFieldLinks(),
-		...buttonLinks(),
-		...answerSettingsContainerLinks(),
-		...pollSettingsLinks(),
-		...titleLinks(),
-		...textLinks(),
-		{ rel: "stylesheet", href: styles },
-	];
+	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
 }
-
 export const action: ActionFunction = async ({ request, params }) => {
 	let formData = await request.formData();
 	let errors: Partial<Errors> = {};

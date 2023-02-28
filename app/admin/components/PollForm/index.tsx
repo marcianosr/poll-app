@@ -11,6 +11,7 @@ import { Select } from "../../../ui/Select";
 import { Button, links as buttonLinks } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 import { PollSettingsContainer } from "../PollSettingsContainer";
+import { AddAnswerButton } from "../AddAnswerButton";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -114,9 +115,8 @@ const PollForm: FC<Props> = ({ poll }) => {
 								id="codeBlock"
 								value={poll?.codeBlock || ""}
 							/>
-							<Button variant="secondary" onClick={addField}>
-								Add new answer option
-							</Button>
+							<AddAnswerButton addField={addField} />
+
 							{fields.map((field, index) => (
 								<>
 									<Text

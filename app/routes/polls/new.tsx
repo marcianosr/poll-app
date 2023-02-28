@@ -8,27 +8,13 @@ import {
 	PollData,
 	PollStatus,
 } from "~/utils/polls";
-import { links as textFieldLinks } from "../../ui/TextAreaField";
-import { links as inputFieldLinks } from "../../ui/InputField";
-import { links as buttonLinks } from "../../ui/Button";
 import { PollCategory } from "~/utils/categories";
-import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
-import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
+import { Title } from "~/ui/Title";
+import { links as commonStyleLinks } from "../polls/commonStyleLinks";
 import styles from "~/styles/new-poll.css";
-import { Title, links as titleLinks } from "~/ui/Title";
-import { links as textLinks } from "~/ui/Text";
 
 export function links() {
-	return [
-		...inputFieldLinks(),
-		...textFieldLinks(),
-		...buttonLinks(),
-		...answerSettingsContainerLinks(),
-		...pollSettingsLinks(),
-		...titleLinks(),
-		...textLinks(),
-		{ rel: "stylesheet", href: styles },
-	];
+	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
 }
 
 export const action: ActionFunction = async ({ request }) => {
