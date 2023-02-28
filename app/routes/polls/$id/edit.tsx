@@ -9,12 +9,20 @@ import { links as textFieldLinks } from "../../../ui/TextAreaField";
 import { links as inputFieldLinks } from "../../../ui/InputField";
 import { links as buttonLinks } from "../../../ui/Button";
 import { PollCategory } from "~/utils/categories";
+import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
+import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
+import { Title, links as titleLinks } from "~/ui/Title";
+import { links as textLinks } from "~/ui/Text";
 
 export function links() {
 	return [
 		...inputFieldLinks(),
 		...textFieldLinks(),
 		...buttonLinks(),
+		...answerSettingsContainerLinks(),
+		...pollSettingsLinks(),
+		...titleLinks(),
+		...textLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -90,12 +98,13 @@ export default function EditPoll() {
 	if (!isAdmin) {
 		return <h1>404 Not Found</h1>;
 	}
-	// console.log("edit", poll);
-	return (
-		<section style={{ color: "white" }}>
-			<Link to="/polls">Back to list of polls</Link>
 
-			<h1>Edit poll #{poll.pollNumber}</h1>
+	return (
+		<section className="container">
+			<Link to="/polls">Back to list of polls</Link>
+			<Title size="xl" variant="primary">
+				Edit poll #{poll.pollNumber}
+			</Title>
 			<PollForm poll={poll} />
 		</section>
 	);

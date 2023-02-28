@@ -11,14 +11,22 @@ import {
 import { links as textFieldLinks } from "../../ui/TextAreaField";
 import { links as inputFieldLinks } from "../../ui/InputField";
 import { links as buttonLinks } from "../../ui/Button";
-import styles from "~/styles/new-poll.css";
 import { PollCategory } from "~/utils/categories";
+import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
+import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
+import styles from "~/styles/new-poll.css";
+import { Title, links as titleLinks } from "~/ui/Title";
+import { links as textLinks } from "~/ui/Text";
 
 export function links() {
 	return [
 		...inputFieldLinks(),
 		...textFieldLinks(),
 		...buttonLinks(),
+		...answerSettingsContainerLinks(),
+		...pollSettingsLinks(),
+		...titleLinks(),
+		...textLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -96,10 +104,12 @@ export default function NewPoll() {
 	const { totalPolls } = useLoaderData();
 
 	return (
-		<section style={{ color: "white" }}>
+		<section className="container">
 			<Link to="/polls">Back to list of polls</Link>
 
-			<h1>Poll #{totalPolls + 1}</h1>
+			<Title size="xl" variant="primary">
+				Add a new poll: #{totalPolls + 1}
+			</Title>
 			<FormPoll />
 		</section>
 	);

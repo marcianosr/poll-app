@@ -1,0 +1,21 @@
+.answer-settings-container {
+	display: flex;
+	gap: 1rem;
+}
+
+.answer-settings-container input,
+.answer-settings-container textarea {
+	flex: 2;
+}
+
+@media (pointer: coarse) {
+	.answer-settings-container {
+		border: 1px solid var(--white);
+		padding: 0.5rem;
+		flex-direction: column;
+	}
+
+	.toggle-code-button {
+		display: none;
+	}
+}

@@ -1,7 +1,8 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { CATEGORIES } from "~/utils/categories";
 import { PollData, PollStatus } from "~/utils/polls";
+import { Text } from "../../../ui/Text";
 import styles from "./styles.css";
 
 export function links() {
@@ -20,12 +21,14 @@ export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 	// (poll && poll?.status) || isAdmin ? "new" : "needs-revision";
 
 	return (
-		<aside className="options">
+		<aside className="sidebar-settings-container">
 			<div className="open-closed-toggle">
 				<label htmlFor="status">
-					{pollStatus !== "open"
-						? "Not accepting responses"
-						: "Accepting responses"}
+					<Text size="sm" variant="primary">
+						{pollStatus !== "open"
+							? "Not accepting responses"
+							: "Accepting responses"}
+					</Text>
 				</label>
 
 				{isAdmin ? (

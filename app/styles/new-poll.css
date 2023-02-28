@@ -24,46 +24,12 @@
 	flex: 2;
 }
 
-.answer-container {
-	display: flex;
-	gap: 1rem;
-}
-
-@media (pointer: coarse) {
-	.answer-container {
-		border: 1px solid white;
-		padding: 0.5rem;
-		flex-direction: column;
-	}
-
-	.toggle-code-button {
-		display: none;
-	}
-}
-
-.answer-container input,
-.answer-container textarea {
-	flex: 2;
-}
-
 .open-closed-toggle {
 	display: flex;
 	align-items: center;
-}
-
-.options {
-	max-width: 300px;
-	border-left: 1px solid var(--primary-border-color);
-	padding-left: 1rem;
 }
 
 .button-group {
 	display: flex;
 	gap: 1rem;
 }
-
-/* aside {
-	display: grid;
-	grid-auto-columns: 300px;
-	gap: 1rem;
-} */

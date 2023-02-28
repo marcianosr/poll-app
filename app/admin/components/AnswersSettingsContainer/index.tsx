@@ -3,6 +3,7 @@ import MarkButton from "~/components/Button/MarkButton";
 import { TextAreaField } from "~/ui/TextAreaField";
 import { BlockTypeToggleButton } from "../BlockTypeToggleButton";
 import { CorrectAnswerType, Mode, NewPollType } from "../PollForm";
+import styles from "./styles.css";
 
 type AnswerSettingsContainerProps = {
 	field: NewPollType;
@@ -15,6 +16,10 @@ type AnswerSettingsContainerProps = {
 		React.SetStateAction<CorrectAnswerType[]>
 	>;
 };
+
+export function links() {
+	return [{ rel: "stylesheet", href: styles }];
+}
 
 export const AnswerSettingsContainer = ({
 	field,
@@ -45,7 +50,7 @@ export const AnswerSettingsContainer = ({
 	};
 
 	return (
-		<section className="answer-container" key={field.id}>
+		<section className="answer-settings-container" key={field.id}>
 			<TextAreaField
 				isValid={
 					!!markCorrectAnswer.find((item) => item.id === field.id)

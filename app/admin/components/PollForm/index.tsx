@@ -84,7 +84,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 	};
 
 	return (
-		<section className="container">
+		<section>
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
 					<TextAreaField
