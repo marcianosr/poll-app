@@ -4,13 +4,13 @@ import type { FC } from "react";
 import { useEffect, useState } from "react";
 import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
-import { CATEGORIES } from "~/utils/categories";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
 import { Text } from "../../../ui/Text";
 import { Select } from "../../../ui/Select";
 import { Button, links as buttonLinks } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
+import { PollSettingsContainer } from "../PollSettingsContainer";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -46,9 +46,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 	const { user, isAdmin } = useAuth();
 
 	const [mode, setMode] = useState<Mode>("edit");
-	const [pollStatus, setPollStatus] = useState<PollStatus>(
-		(poll && poll?.status) || isAdmin ? "new" : "needs-revision"
-	);
 
 	const [fields, setFields] = useState<NewPollType[]>([
 		{
@@ -163,67 +160,29 @@ const PollForm: FC<Props> = ({ poll }) => {
 					)}
 
 					<section className="button-group">
-						<button
-							type="button"
+						<Button
+							variant="submit"
 							onClick={() => {
 								if (mode === "edit") setMode("mark");
 								if (mode === "mark") setMode("edit");
 							}}
 						>
 							{mode === "edit" ? "Mark answers" : "Done"}
-						</button>
+						</Button>
 					</section>
 
-					<button
-						type="submit"
-						disabled={
+					<Button
+						variant="submit"
+						state={
 							mode === "mark" || markCorrectAnswer.length === 0
+								? "disabled"
+								: undefined
 						}
 					>
 						Submit
-					</button>
-				</section>{" "}
-				<aside className="options">
-					<div className="open-closed-toggle">
-						<label htmlFor="status">
-							{pollStatus !== "open"
-								? "Not accepting responses"
-								: "Accepting responses"}
-						</label>
-
-						{isAdmin ? (
-							<select name="status" defaultValue={pollStatus}>
-								<option value="open">open</option>
-								<option value="closed">closed</option>
-								<option value="needs-revision">
-									needs revision
-								</option>
-								<option value="new">new</option>
-							</select>
-						) : (
-							<select name="status" defaultValue={pollStatus}>
-								<option value="needs-revision">
-									needs revision
-								</option>
-							</select>
-						)}
-					</div>
-					<select
-						name="type"
-						defaultValue={
-							poll?.type === "radio" ? "radio" : "checkbox"
-						}
-					>
-						<option value="radio">Single answer</option>
-						<option value="checkbox">Multiple answers</option>
-					</select>
-
-					<select name="category" defaultValue={poll?.category}>
-						{CATEGORIES.map((category) => (
-							<option value={category}>{category}</option>
-						))}
-					</select>
-				</aside>
+					</Button>
+				</section>
+				<PollSettingsContainer poll={poll} />
 			</Form>
 		</section>
 	);

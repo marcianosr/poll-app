@@ -3,7 +3,7 @@ import styles from "./styles.css";
 import classNames from "classnames";
 
 export const variants = ["submit", "secondary"] as const;
-export const states = ["active"] as const;
+export const states = ["active", "disabled"] as const;
 
 export type Variants = typeof variants[number];
 export type States = typeof states[number];
@@ -42,6 +42,7 @@ export const Button = ({
 			value={value}
 			name={name}
 			onClick={onClick}
+			disabled={state === "disabled"}
 		>
 			{children}
 		</button>
