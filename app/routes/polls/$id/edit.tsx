@@ -85,7 +85,7 @@ export default function EditPoll() {
 	}
 
 	return (
-		<section className="container">
+		<section className="page-container">
 			<Link to="/polls">Back to list of polls</Link>
 			<Title size="xl" variant="primary">
 				Edit poll #{poll.pollNumber}

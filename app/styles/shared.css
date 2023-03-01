@@ -191,3 +191,16 @@ select {
 	border-radius: 0.5rem;
 	padding: 0.7rem;
 }
+
+.page-container {
+	margin: 0 auto;
+	/* max-width: 1000px; */
+	display: grid;
+	padding: 1rem;
+}
+
+@media screen and (min-width: 600px) {
+	.page-container {
+		padding: 2rem;
+	}
+}
