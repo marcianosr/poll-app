@@ -1,4 +1,8 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import type {
+	ActionFunction,
+	LoaderFunction,
+	MetaFunction,
+} from "@remix-run/node";
 import {
 	Links,
 	LiveReload,

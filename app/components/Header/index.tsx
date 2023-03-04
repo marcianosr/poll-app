@@ -1,3 +1,5 @@
+import { ActionFunction } from "@remix-run/node";
+import { Form } from "@remix-run/react";
 import { Link } from "react-router-dom";
 import { useAuth } from "~/providers/AuthProvider";
 import styles from "./styles.css";
@@ -11,7 +13,7 @@ export const Header = () => {
 
 	return (
 		<header className="header">
-			{user ? (
+			{user && (
 				<>
 					<section className="data">
 						<section className="user">
@@ -46,8 +48,6 @@ export const Header = () => {
 						</section>
 					</section>
 				</>
-			) : (
-				<button onClick={googleLogin}>Login</button>
 			)}
 			{error && <h1>something went wrong...</h1>}
 		</header>

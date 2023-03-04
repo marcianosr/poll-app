@@ -3,7 +3,7 @@ import { getApp, getApps, initializeApp } from "firebase/app";
 // import admin from "firebase-admin";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
-import { getAuth } from "firebase/auth";
+import { getAuth, inMemoryPersistence, setPersistence } from "firebase/auth";
 
 require("dotenv").config();
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,6 +22,8 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+setPersistence(auth, inMemoryPersistence);
 
 const EMULATORS_STARTED = "EMULATORS_STARTED";
 function startEmulators() {

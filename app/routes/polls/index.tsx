@@ -1,4 +1,4 @@
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { awards } from "~/components/Awards";
@@ -7,11 +7,18 @@ import { useAuth } from "~/providers/AuthProvider";
 import { createDevData, createKabisaPolls } from "~/utils/dev";
 import { getAllPollsWithIds, PollData, resetVotesForPoll } from "~/utils/polls";
 import { createSeason, getAllSeasons, PollAwardData } from "~/utils/seasons";
-import { getAdminUser, getUsers, resetSeasonStreak } from "~/utils/user";
+import {
+	getAdminUser,
+	getUserByID,
+	getUsers,
+	resetSeasonStreak,
+} from "~/utils/user";
 import {
 	PollOverview,
 	links as pollOverviewLinks,
 } from "~/admin/components/PollOverview";
+import { session } from "~/utils/cookies";
+import { auth as serverAuth } from "~/firebase.server";
 
 type PollDataWithDocumentId = PollData & {
 	documentId: string;
@@ -71,30 +78,41 @@ export const action: ActionFunction = async ({ request }) => {
 	return { message: "Reset season!" };
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
-	// const isAdmin =
-	// 	(await (await getAdminUser()).map((user) => user.role)[0]) === "admin";
+export const loader: LoaderFunction = async ({ request }) => {
+	// Get the cookie value (JWT)
+	const jwt = await session.parse(request.headers.get("Cookie"));
 
-	// if (!isAdmin) {
-	// 	return redirect("/");
-	// }
+	if (!jwt) {
+		return redirect("/login");
+	}
 
-	const polls = await getAllPollsWithIds();
+	try {
+		const token = await serverAuth.verifySessionCookie(jwt);
+		const user = await getUserByID(token.uid);
+		console.log("user", user);
+		const isAdmin = user?.role === "admin";
+		const polls = await getAllPollsWithIds();
+		// Refactor this to get only the polls from the user on the server: This needs a firebase database read by ID, not when all polls are aleady fetched
+		const pollsByUser = polls
+			.filter((poll) => poll.sentInByUser)
+			.filter((poll) => poll.sentInByUser.id === user?.id);
 
-	// ! Enable when you want local DB population
-	// await createDevData();
+		if (!isAdmin) return { polls: pollsByUser };
 
-	return { polls };
+		// ! Enable when you want local DB population
+		// await createDevData();
+		// console.log("s", token);
+		return { polls };
+	} catch (e) {
+		// Invalid JWT - log them out
+		return redirect("/logout");
+	}
 };
 
 export default function AllPolls() {
 	const { polls } = useLoaderData();
-	const { user, isAdmin } = useAuth();
+	const { isAdmin } = useAuth();
 	const [renderedPolls, setRenderedPolls] = useState(polls);
-	const pollsByUser = polls.filter(
-		(poll: PollData) =>
-			poll.sentInByUser && poll?.sentInByUser.id === user?.firebase.id
-	);
 
 	return (
 		<section style={{ color: "white" }}>
@@ -119,9 +137,9 @@ export default function AllPolls() {
 					{/* ! Optimize this in it;s own component later to reduce firebase reads */}
 					<h1>Polls sent in by you</h1>
 
-					{pollsByUser.length > 0 ? (
+					{polls.length > 0 ? (
 						<ul>
-							{pollsByUser.map((poll: PollData, idx: number) => (
+							{polls.map((poll: PollData, idx: number) => (
 								<li>
 									<p>{poll.question}</p>
 									<Link to={`/polls/${poll.documentId}`}>
@@ -135,8 +153,6 @@ export default function AllPolls() {
 							Awww... no polls send in by you <em>yet!</em>
 						</p>
 					)}
-
-					{/* <h1>Your polls answered (coming soon 🚧)</h1> */}
 				</>
 			)}
 		</section>
