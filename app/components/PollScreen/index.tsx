@@ -54,21 +54,25 @@ export const PollScreen: FC<Props> = ({
 					<VoteButton poll={poll} selectedVotes={selectedVotes} />
 				)}
 				{!user && <small>Please login to submit your answer.</small>}
-				<input
-					type="hidden"
-					name="answers"
-					defaultValue={JSON.stringify(currentAnswers)}
-				/>
-				<input
-					type="hidden"
-					name="selectedVotes"
-					defaultValue={JSON.stringify(selectedVotes)}
-				/>
-				<input
-					type="hidden"
-					name="uid"
-					defaultValue={user?.firebase.id}
-				/>
+				{user && (
+					<>
+						<input
+							type="hidden"
+							name="answers"
+							defaultValue={JSON.stringify(currentAnswers)}
+						/>
+						<input
+							type="hidden"
+							name="selectedVotes"
+							defaultValue={JSON.stringify(selectedVotes)}
+						/>
+						<input
+							type="hidden"
+							name="uid"
+							defaultValue={user?.firebase.id}
+						/>
+					</>
+				)}
 			</Form>
 		</section>
 	);
