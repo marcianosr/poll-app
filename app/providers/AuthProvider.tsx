@@ -12,8 +12,9 @@ import React, { createContext, useEffect } from "react";
 import { firebaseConfig } from "~/utils/config.client";
 import { getAdminUser, getUserByEmail } from "~/utils/user";
 
+export type PollAppUser = User & FirebaseUser;
 type AuthContextState = {
-	user: (User & FirebaseUser) | null;
+	user: PollAppUser | null;
 	googleLogin: () => void;
 	error: string | null;
 	isAdmin: boolean;
