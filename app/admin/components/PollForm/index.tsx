@@ -161,6 +161,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 					<section className="button-group">
 						<Button
+							type="button"
 							variant="submit"
 							onClick={() => {
 								if (mode === "edit") setMode("mark");
