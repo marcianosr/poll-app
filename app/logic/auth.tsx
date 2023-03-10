@@ -53,7 +53,6 @@ export const loginOrCreate = async (): Promise<PollAppUser> => {
 	const provider = new GoogleAuthProvider();
 
 	const result = await signInWithPopup(auth, provider);
-	console.log("result", result);
 
 	const firebaseUserFields: FirebaseUserFields = {
 		id: result.user.uid,
