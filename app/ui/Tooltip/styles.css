@@ -1,0 +1,32 @@
+.tooltip {
+	background: var(--tooltip-color);
+	color: var(--primary-black);
+	padding: 0.5rem 1.5rem;
+	letter-spacing: -0.25px;
+	max-width: 375px;
+	position: relative;
+}
+
+.tooltip h4 {
+	margin-top: 1rem;
+	margin-bottom: 0.25rem;
+}
+
+.tooltip p {
+	font-size: 0.85rem;
+	font-weight: 300;
+	letter-spacing: -0.5px;
+}
+
+.tooltip:after {
+	--tooltip-arrow-size: 20px;
+
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: calc(50% - var(--tooltip-arrow-size));
+	margin-left: -5px;
+	border-width: var(--tooltip-arrow-size);
+	border-style: solid;
+	border-color: var(--tooltip-color) transparent transparent transparent;
+}
