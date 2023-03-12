@@ -9,6 +9,10 @@ import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
 import styles from "./styles.css";
+import {
+	OptionExplanation,
+	links as optionExplanationLinks,
+} from "../OptionExplanation";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
@@ -23,6 +27,7 @@ export function resultsListStyles() {
 		...photoLinks(),
 		...optionsLinks(),
 		...optionVotesLinks(),
+		...optionExplanationLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
@@ -51,21 +56,35 @@ export const ResultsList = (props: ResultsListProps) => {
 								: "disabled";
 
 							return (
-								<Option
-									answer={answer}
-									variant={variant}
-									key={answer.id}
+								<OptionExplanation
+									tooltip={{
+										title: "Een stukje tekst over CSS title",
+										text: "Een stukje  tekst over CSS",
+									}}
 								>
-									<OptionVotes
-										voters={props
-											.getVotesFromAllUsers(answer.id)
-											.map((user) => ({
-												photo: {
-													url: user.photoURL,
-												},
-											}))}
-									/>
-								</Option>
+									{({ setShow }) => {
+										return (
+											<Option
+												answer={answer}
+												variant={variant}
+												key={answer.id}
+												onClick={() => setShow(true)}
+											>
+												<OptionVotes
+													voters={props
+														.getVotesFromAllUsers(
+															answer.id
+														)
+														.map((user) => ({
+															photo: {
+																url: user.photoURL,
+															},
+														}))}
+												/>
+											</Option>
+										);
+									}}
+								</OptionExplanation>
 							);
 						})}
 					</Options>

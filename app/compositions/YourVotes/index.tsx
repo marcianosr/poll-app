@@ -1,4 +1,4 @@
-import { BannerBlock, links as bannerBlockLinks } from "../../ui/BannerBlock";
+import { BannerBlock, links as bannerBlockLinks } from "../BannerBlock";
 import { Options, links as optionsLinks } from "../../ui/Options";
 import { Option, links as optionLinks } from "../../ui/Option";
 import { Banner, links as bannerLinks } from "../../ui/Banner";
