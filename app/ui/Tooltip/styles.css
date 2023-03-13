@@ -6,6 +6,8 @@
 	max-width: 375px;
 	width: max-content;
 	position: absolute;
+	box-shadow: 5px 5px 0px #1a1a1a;
+	z-index: 1;
 }
 
 .tooltip h4 {

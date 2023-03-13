@@ -4,10 +4,16 @@ import styles from "./styles.css";
 
 export type OptionExplanationProps = {
 	tooltip: {
+		id: string;
+		open: string | null;
+		setOpen: (id: string | null) => void;
 		title: string;
 		text: string;
 	};
-	children: (props: { setShow: (show: boolean) => void }) => React.ReactNode;
+	children: (props: {
+		open: string | null;
+		setOpen: (id: string | null) => void;
+	}) => React.ReactNode;
 };
 
 export function links() {
@@ -15,20 +21,19 @@ export function links() {
 }
 
 export const OptionExplanation = ({
-	tooltip: { title, text },
+	tooltip: { id, open, setOpen, title, text },
 	children,
 }: OptionExplanationProps) => {
-	const [show, setShow] = useState(false);
 	return (
 		<section className="option-explanation-container">
-			{show && (
+			{open === id && (
 				<ToolTip
 					title={title}
 					text={text}
-					onClose={() => setShow(false)}
+					onClose={() => setOpen(null)}
 				/>
 			)}
-			{children({ setShow })}
+			{children({ open, setOpen })}
 		</section>
 	);
 };

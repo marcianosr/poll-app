@@ -20,6 +20,10 @@ export type Answer = {
 	id: string;
 	value: string;
 	blockType?: BlockType;
+	explanation?: {
+		value: string;
+		showField: boolean;
+	};
 };
 export type Voted = {
 	answerId: string;

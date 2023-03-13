@@ -13,6 +13,7 @@ import {
 	OptionExplanation,
 	links as optionExplanationLinks,
 } from "../OptionExplanation";
+import { useState } from "react";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
@@ -34,6 +35,8 @@ export function resultsListStyles() {
 
 export const ResultsList = (props: ResultsListProps) => {
 	const { responses, openedPollNumber } = useLoaderData() as LoaderData;
+	const [showTooltip, setShowTooltip] = useState<string | null>(null);
+	const openTooltip = (id: string) => setShowTooltip(id);
 
 	return (
 		<>
@@ -55,20 +58,23 @@ export const ResultsList = (props: ResultsListProps) => {
 								? "selected"
 								: "disabled";
 
-							return (
+							return answer.explanation?.value ? (
 								<OptionExplanation
 									tooltip={{
-										title: "Een stukje tekst over CSS title",
-										text: "Een stukje  tekst over CSS",
+										id: answer.id,
+										open: showTooltip,
+										setOpen: () => openTooltip(answer.id),
+										title: "More info about this answer",
+										text: answer.explanation?.value,
 									}}
 								>
-									{({ setShow }) => {
+									{({ open, setOpen }) => {
 										return (
 											<Option
 												answer={answer}
 												variant={variant}
 												key={answer.id}
-												onClick={() => setShow(true)}
+												onClick={() => setOpen(open)}
 											>
 												<OptionVotes
 													voters={props
@@ -85,6 +91,22 @@ export const ResultsList = (props: ResultsListProps) => {
 										);
 									}}
 								</OptionExplanation>
+							) : (
+								<Option
+									answer={answer}
+									variant={variant}
+									key={answer.id}
+								>
+									<OptionVotes
+										voters={props
+											.getVotesFromAllUsers(answer.id)
+											.map((user) => ({
+												photo: {
+													url: user.photoURL,
+												},
+											}))}
+									/>
+								</Option>
 							);
 						})}
 					</Options>

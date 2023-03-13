@@ -7,11 +7,11 @@ import { useAuth } from "~/providers/AuthProvider";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
 import { Text } from "../../../ui/Text";
-import { Select } from "../../../ui/Select";
 import { Button, links as buttonLinks } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 import { PollSettingsContainer } from "../PollSettingsContainer";
 import { AddAnswerButton } from "../AddAnswerButton";
+import styles from "./styles.css";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -21,6 +21,10 @@ export type NewPollType = {
 	placeholder?: string;
 	value?: string;
 	autoFocus?: boolean;
+	explanation?: {
+		value: string;
+		showField?: boolean;
+	};
 };
 export type CorrectAnswerType = {
 	id: string;
@@ -39,7 +43,7 @@ type Props = {
 };
 
 export function links() {
-	return [];
+	return [{ rel: "stylesheet", href: styles }];
 }
 
 const PollForm: FC<Props> = ({ poll }) => {
@@ -56,6 +60,10 @@ const PollForm: FC<Props> = ({ poll }) => {
 			placeholder: "Add option",
 			value: "",
 			autoFocus: false,
+			explanation: {
+				value: "",
+				showField: false,
+			},
 		},
 	]);
 
@@ -80,6 +88,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 				placeholder: `Add option`,
 				value: "",
 				autoFocus: true,
+				explanation: {
+					value: "",
+				},
 			},
 		]);
 	};
@@ -110,7 +121,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 						{action?.ok === false && <span>errors</span>}
 						<>
 							<TextAreaField
-								placeholder="Insert code example (not mandatory)"
+								placeholder="Insert code example (optional)"
 								name="codeBlock"
 								id="codeBlock"
 								value={poll?.codeBlock || ""}
@@ -118,7 +129,10 @@ const PollForm: FC<Props> = ({ poll }) => {
 							<AddAnswerButton addField={addField} />
 
 							{fields.map((field, index) => (
-								<>
+								<fieldset
+									className="fieldset-container"
+									key={field.id}
+								>
 									<Text
 										size="sm"
 										variant="primary"
@@ -126,6 +140,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 									>
 										Answer {index + 1}
 									</Text>
+
 									<AnswerSettingsContainer
 										addField={addField}
 										field={field}
@@ -137,7 +152,104 @@ const PollForm: FC<Props> = ({ poll }) => {
 										}
 										mode={mode}
 									/>
-								</>
+									{!field.explanation?.showField && (
+										<Button
+											type="button"
+											variant="submit"
+											onClick={() => {
+												setFields([
+													...fields.map((f) =>
+														f.id === field.id
+															? {
+																	...f,
+																	explanation:
+																		{
+																			...f.explanation,
+																			value: "",
+																			showField:
+																				true,
+																		},
+															  }
+															: f
+													),
+												]);
+											}}
+										>
+											Add explanation
+										</Button>
+									)}
+
+									{(field.explanation?.showField ||
+										field.explanation?.value) && (
+										<>
+											<Text
+												size="sm"
+												variant="primary"
+												tag="small"
+											>
+												Additional explanation for the
+												answer
+											</Text>
+											<section className="answer-settings-container">
+												<TextAreaField
+													placeholder={
+														"Add explanation to answer"
+													}
+													disabled={mode === "mark"}
+													name={`explanation-${field.id}`}
+													id={field.id}
+													value={
+														field.explanation
+															.value || ""
+													}
+													onChange={(e) => {
+														setFields([
+															...fields.map((f) =>
+																f.id ===
+																field.id
+																	? {
+																			...f,
+																			explanation:
+																				{
+																					...f.explanation,
+																					value: e
+																						.target
+																						.value,
+																				},
+																	  }
+																	: f
+															),
+														]);
+													}}
+												/>
+												<Button
+													type="button"
+													variant="submit"
+													onClick={() => {
+														setFields([
+															...fields.map((f) =>
+																f.id ===
+																field.id
+																	? {
+																			...f,
+																			explanation:
+																				{
+																					value: "",
+																					showField:
+																						false,
+																				},
+																	  }
+																	: f
+															),
+														]);
+													}}
+												>
+													Delete explanation
+												</Button>
+											</section>
+										</>
+									)}
+								</fieldset>
 							))}
 						</>
 					</>
@@ -148,6 +260,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 						name="answers"
 						value={JSON.stringify(fields)}
 					/>
+
 					{!isAdmin && (
 						<input
 							type="hidden"
