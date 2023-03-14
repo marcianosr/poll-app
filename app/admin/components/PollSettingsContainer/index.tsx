@@ -54,7 +54,9 @@ export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 
 			<select name="category" defaultValue={poll?.category}>
 				{CATEGORIES.map((category) => (
-					<option value={category}>{category}</option>
+					<option key={category} value={category}>
+						{category}
+					</option>
 				))}
 			</select>
 		</aside>

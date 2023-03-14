@@ -9,6 +9,11 @@ import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
 import styles from "./styles.css";
+import {
+	OptionExplanation,
+	links as optionExplanationLinks,
+} from "../OptionExplanation";
+import { useState } from "react";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
@@ -23,12 +28,16 @@ export function resultsListStyles() {
 		...photoLinks(),
 		...optionsLinks(),
 		...optionVotesLinks(),
+		...optionExplanationLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
 
 export const ResultsList = (props: ResultsListProps) => {
 	const { responses, openedPollNumber } = useLoaderData() as LoaderData;
+	const [showTooltip, setShowTooltip] = useState<string | null>(null);
+	const openTooltip = (id: string) => setShowTooltip(id);
+	const closeTooltip = () => setShowTooltip(null);
 
 	return (
 		<>
@@ -50,7 +59,41 @@ export const ResultsList = (props: ResultsListProps) => {
 								? "selected"
 								: "disabled";
 
-							return (
+							return answer.explanation?.value ? (
+								<OptionExplanation
+									tooltip={{
+										id: answer.id,
+										open: showTooltip,
+										setOpen: () => openTooltip(answer.id),
+										onClose: () => closeTooltip(),
+										title: "More info about this answer",
+										text: answer.explanation.value,
+									}}
+								>
+									{({ open, setOpen }) => {
+										return (
+											<Option
+												answer={answer}
+												variant={variant}
+												key={answer.id}
+												onClick={() => setOpen(open)}
+											>
+												<OptionVotes
+													voters={props
+														.getVotesFromAllUsers(
+															answer.id
+														)
+														.map((user) => ({
+															photo: {
+																url: user.photoURL,
+															},
+														}))}
+												/>
+											</Option>
+										);
+									}}
+								</OptionExplanation>
+							) : (
 								<Option
 									answer={answer}
 									variant={variant}

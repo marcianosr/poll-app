@@ -20,6 +20,11 @@ export type Answer = {
 	id: string;
 	value: string;
 	blockType?: BlockType;
+	explanation: Explanation | null;
+};
+
+export type Explanation = {
+	value: string;
 };
 export type Voted = {
 	answerId: string;

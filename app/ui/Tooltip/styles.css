@@ -1,0 +1,81 @@
+.tooltip {
+	--tooltip-size: 185px;
+	--tooltip-max: 375px;
+
+	background: var(--tooltip-color);
+	color: var(--primary-black);
+	padding: 0.5rem 1.5rem;
+	letter-spacing: -0.25px;
+	width: var(--tooltip-size);
+	max-width: var(--tooltip-max);
+	position: absolute;
+	box-shadow: 7px 7px 0px #1a1a1a;
+	z-index: 1;
+	animation: popIn 0.25s ease-in-out;
+}
+
+@media screen and (min-width: 568px) {
+	.tooltip {
+		--tooltip-size: max-content;
+	}
+}
+
+.tooltip h4 {
+	margin-top: 1rem;
+	margin-bottom: 0.25rem;
+}
+
+.tooltip p {
+	font-size: 0.85rem;
+	font-weight: 300;
+	letter-spacing: -0.5px;
+}
+
+.tooltip-button {
+	border: 2px solid var(--tertiary-black);
+	color: var(--tertiary-black);
+	padding: 0 0.75rem;
+	background-color: transparent;
+	cursor: pointer;
+	font-weight: 900;
+	font-size: 1.125rem;
+	float: right;
+	margin-right: -1rem;
+	margin-left: 1rem;
+}
+
+.tooltip:after {
+	--tooltip-arrow-size: 20px;
+
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: calc(50% - var(--tooltip-arrow-size));
+	margin-left: -5px;
+	border-width: var(--tooltip-arrow-size);
+	border-style: solid;
+	border-color: var(--tooltip-color) transparent transparent transparent;
+}
+
+@keyframes popIn {
+	0% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+
+	30% {
+		opacity: 0.5;
+		transform: translateY(0);
+	}
+	60% {
+		opacity: 0.8;
+		transform: translateY(-11px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) rotate(0deg);
+	}
+}
