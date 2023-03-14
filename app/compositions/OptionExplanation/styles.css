@@ -9,14 +9,6 @@
 	bottom: calc(100% + 0.5rem);
 }
 
-.option-explanation-container > div {
-	/* display: none; */
-}
-
-.option-explanation-container:hover > div {
-	/* display: block; */
-}
-
 .option-explanation-container:has(:hover) > label {
 	cursor: pointer;
 }

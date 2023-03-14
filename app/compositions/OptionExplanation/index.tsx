@@ -1,3 +1,4 @@
+import { Badge, links as badgeStyles } from "../../ui/Badge";
 import { ToolTip, links as tooltipStyles } from "../../ui/Tooltip";
 import styles from "./styles.css";
 
@@ -17,7 +18,11 @@ export type OptionExplanationProps = {
 };
 
 export function links() {
-	return [...tooltipStyles(), { rel: "stylesheet", href: styles }];
+	return [
+		...tooltipStyles(),
+		...badgeStyles(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 export const OptionExplanation = ({
@@ -26,6 +31,7 @@ export const OptionExplanation = ({
 }: OptionExplanationProps) => {
 	return (
 		<section className="option-explanation-container">
+			<Badge onClick={() => setOpen(id)} />
 			{open === id && (
 				<ToolTip title={title} text={text} onClose={onClose} />
 			)}

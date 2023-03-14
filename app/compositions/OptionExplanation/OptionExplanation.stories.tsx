@@ -7,6 +7,10 @@ const Story: ComponentMeta<typeof OptionExplanationComponent> = {
 	title: "Compositions/OptionExplanation",
 	args: {
 		tooltip: {
+			id: "1",
+			open: "1",
+			onClose: () => null,
+			setOpen: () => null,
 			title: "About container queries",
 			text: "Container queries enable you to apply styles to an element based on the size of the element's container. If, for example, a container has less space available in the surrounding context, you can hide certain elements or use smaller fonts. Container queries are an alternative to media queries, which apply styles to elements based on viewport size or other device characteristics.",
 		},
@@ -14,7 +18,7 @@ const Story: ComponentMeta<typeof OptionExplanationComponent> = {
 			<Option
 				answer={{ id: "", value: "Een antwoord over CSS" }}
 				variant="correct"
-				onClick={() => props.setShow(true)}
+				onClick={() => props.setOpen("1")}
 			/>
 		),
 	},

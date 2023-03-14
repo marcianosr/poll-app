@@ -1,14 +1,23 @@
 .tooltip {
+	--tooltip-size: 185px;
+	--tooltip-max: 375px;
+
 	background: var(--tooltip-color);
 	color: var(--primary-black);
 	padding: 0.5rem 1.5rem;
 	letter-spacing: -0.25px;
-	max-width: 375px;
-	width: max-content;
+	width: var(--tooltip-size);
+	max-width: var(--tooltip-max);
 	position: absolute;
-	box-shadow: 5px 5px 0px #1a1a1a;
+	box-shadow: 7px 7px 0px #1a1a1a;
 	z-index: 1;
-	animation: jumpIn 0.25s ease-in-out;
+	animation: popIn 0.25s ease-in-out;
+}
+
+@media screen and (min-width: 568px) {
+	.tooltip {
+		--tooltip-size: max-content;
+	}
 }
 
 .tooltip h4 {
@@ -48,7 +57,7 @@
 	border-color: var(--tooltip-color) transparent transparent transparent;
 }
 
-@keyframes jumpIn {
+@keyframes popIn {
 	0% {
 		opacity: 0;
 	}
