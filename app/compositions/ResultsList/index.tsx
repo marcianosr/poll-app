@@ -67,7 +67,7 @@ export const ResultsList = (props: ResultsListProps) => {
 										setOpen: () => openTooltip(answer.id),
 										onClose: () => closeTooltip(),
 										title: "More info about this answer",
-										text: answer.explanation?.value,
+										text: answer.explanation.value,
 									}}
 								>
 									{({ open, setOpen }) => {

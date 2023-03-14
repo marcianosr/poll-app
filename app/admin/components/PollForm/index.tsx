@@ -2,7 +2,7 @@ import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { InputTypes, PollData } from "~/utils/polls";
+import type { Explanation, InputTypes, PollData } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
@@ -23,10 +23,7 @@ export type NewPollType = {
 	placeholder?: string;
 	value?: string;
 	autoFocus?: boolean;
-	explanation?: {
-		value: string;
-		showField?: boolean;
-	} | null;
+	explanation: Explanation | null;
 };
 export type CorrectAnswerType = {
 	id: string;
