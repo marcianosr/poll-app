@@ -37,6 +37,7 @@ export const ResultsList = (props: ResultsListProps) => {
 	const { responses, openedPollNumber } = useLoaderData() as LoaderData;
 	const [showTooltip, setShowTooltip] = useState<string | null>(null);
 	const openTooltip = (id: string) => setShowTooltip(id);
+	const closeTooltip = () => setShowTooltip(null);
 
 	return (
 		<>
@@ -64,6 +65,7 @@ export const ResultsList = (props: ResultsListProps) => {
 										id: answer.id,
 										open: showTooltip,
 										setOpen: () => openTooltip(answer.id),
+										onClose: () => closeTooltip(),
 										title: "More info about this answer",
 										text: answer.explanation?.value,
 									}}

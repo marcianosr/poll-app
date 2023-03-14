@@ -8,6 +8,7 @@
 	position: absolute;
 	box-shadow: 5px 5px 0px #1a1a1a;
 	z-index: 1;
+	animation: jumpIn 0.25s ease-in-out;
 }
 
 .tooltip h4 {
@@ -45,4 +46,27 @@
 	border-width: var(--tooltip-arrow-size);
 	border-style: solid;
 	border-color: var(--tooltip-color) transparent transparent transparent;
+}
+
+@keyframes jumpIn {
+	0% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+
+	30% {
+		opacity: 0.5;
+		transform: translateY(0);
+	}
+	60% {
+		opacity: 0.8;
+		transform: translateY(-11px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) rotate(0deg);
+	}
 }
