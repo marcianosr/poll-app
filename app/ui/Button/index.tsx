@@ -10,7 +10,6 @@ export type States = typeof states[number];
 
 export type ButtonProps = {
 	type?: "button" | "submit";
-	id?: string;
 	onClick?: () => void;
 	name?: string;
 	value?: string;
@@ -24,7 +23,6 @@ export function links() {
 
 export const Button = ({
 	type = "submit",
-	id,
 	value,
 	name,
 	variant,
@@ -39,7 +37,6 @@ export const Button = ({
 	);
 	return (
 		<button
-			id={id}
 			type={type}
 			className={styles}
 			value={value}

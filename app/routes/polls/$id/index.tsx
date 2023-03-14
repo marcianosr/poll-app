@@ -36,6 +36,8 @@ import { AwardsContainer } from "~/components/Awards/Container";
 import { Footer, links as footerLinks } from "~/components/Footer";
 import { Sidebar } from "~/components/Sidebar";
 import { links as profileCardLinks } from "../../../ui/ProfileCard";
+import { links as tooltipLinks } from "../../../ui/Tooltip";
+import { getEggsData } from "~/utils/easter";
 
 export type ScreenState = "poll" | "results";
 
@@ -48,6 +50,7 @@ export function links() {
 		...buttonLinks(),
 		...footerLinks(),
 		...profileCardLinks(),
+		...tooltipLinks(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -149,7 +152,7 @@ export type LoaderData = {
 	seasons: SeasonAwardData[];
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, request }) => {
 	const data = await getPollById(params.id || "");
 	const polls = await getAllPolls();
 	const users = await getUsers();
@@ -162,6 +165,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 		.flat();
 
 	const responses = new Set([...getUserIdsByVote]).size;
+	const eggs = await getEggsData();
 
 	return {
 		poll: data,
@@ -170,6 +174,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 		openedPollNumber,
 		polls,
 		seasons,
+		eggs,
 	};
 };
 
@@ -195,9 +200,11 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, users, openedPollNumber, polls, seasons } =
+	const { poll, users, openedPollNumber, polls, seasons, eggs } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
+
+	console.log(eggs);
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 	const [showVotedBy, setShowVotedBy] = useState(false);

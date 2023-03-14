@@ -2,6 +2,7 @@ import { links as optionsLinks } from "../../ui/Options";
 import { links as photoLinks } from "../../ui/Photo";
 import { links as photoListLinks } from "../../ui/PhotoList";
 import { Title } from "../../ui/Title";
+import { Text } from "../../ui/Text";
 import { Options } from "../../ui/Options";
 import { Option } from "../../ui/Option";
 import { OptionVotes, links as optionVotesLinks } from "../../ui/OptionVotes";
@@ -9,11 +10,8 @@ import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "../../routes/polls/$id";
 import { Answer } from "../../utils/polls";
 import styles from "./styles.css";
-import {
-	OptionExplanation,
-	links as optionExplanationLinks,
-} from "../OptionExplanation";
-import { useState } from "react";
+import { CSSEgg } from "~/seasonal/Egg/EggContainer";
+import { Banner } from "~/ui/Banner";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
@@ -28,16 +26,12 @@ export function resultsListStyles() {
 		...photoLinks(),
 		...optionsLinks(),
 		...optionVotesLinks(),
-		...optionExplanationLinks(),
 		{ rel: "stylesheet", href: styles },
 	];
 }
 
 export const ResultsList = (props: ResultsListProps) => {
-	const { responses, openedPollNumber } = useLoaderData() as LoaderData;
-	const [showTooltip, setShowTooltip] = useState<string | null>(null);
-	const openTooltip = (id: string) => setShowTooltip(id);
-	const closeTooltip = () => setShowTooltip(null);
+	const { responses, openedPollNumber, poll } = useLoaderData() as LoaderData;
 
 	return (
 		<>
@@ -46,9 +40,28 @@ export const ResultsList = (props: ResultsListProps) => {
 			</Title>
 			<section className="results">
 				<Title size="md" tag="h2" variant="primary">
-					🎉 {responses} votes!
+					🎉 {responses} votes!{" "}
+					{responses === 5 && <CSSEgg size="xs" id="4" />}
 				</Title>
 				<section>
+					{poll.category === "javascript" && (
+						<div style={{ marginBottom: "1rem" }}>
+							<Banner size="wide">
+								<Text variant="primary" size="xs">
+									ASECRETWILLONLYSHOWWHENRESPONSESAREDOUBLEDIGIT
+								</Text>
+							</Banner>
+						</div>
+					)}
+					{poll.category === "css" && (
+						<div style={{ marginBottom: "1rem" }}>
+							<Banner size="wide">
+								<Text variant="primary" size="xs">
+									FINDINGEGGSISFORWHATYOUSTRIVEFINDONEWHENRESPONSESHITFIVE
+								</Text>
+							</Banner>
+						</div>
+					)}
 					<Options {...props}>
 						{props.currentAnswers.map((answer: Answer) => {
 							const variant = props.getCorrectAnswers(answer.id)
@@ -59,41 +72,7 @@ export const ResultsList = (props: ResultsListProps) => {
 								? "selected"
 								: "disabled";
 
-							return answer.explanation?.value ? (
-								<OptionExplanation
-									tooltip={{
-										id: answer.id,
-										open: showTooltip,
-										setOpen: () => openTooltip(answer.id),
-										onClose: () => closeTooltip(),
-										title: "More info about this answer",
-										text: answer.explanation.value,
-									}}
-								>
-									{({ open, setOpen }) => {
-										return (
-											<Option
-												answer={answer}
-												variant={variant}
-												key={answer.id}
-												onClick={() => setOpen(open)}
-											>
-												<OptionVotes
-													voters={props
-														.getVotesFromAllUsers(
-															answer.id
-														)
-														.map((user) => ({
-															photo: {
-																url: user.photoURL,
-															},
-														}))}
-												/>
-											</Option>
-										);
-									}}
-								</OptionExplanation>
-							) : (
+							return (
 								<Option
 									answer={answer}
 									variant={variant}

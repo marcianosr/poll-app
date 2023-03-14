@@ -27,6 +27,7 @@
 	justify-content: center;
 	background-color: var(--tertiary-black);
 	padding: 1rem;
+	gap: 0.5rem;
 }
 
 .footer > section:last-of-type small {

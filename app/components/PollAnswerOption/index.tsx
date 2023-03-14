@@ -1,5 +1,5 @@
 import React from "react";
-import { PollAppUser, useAuth } from "~/providers/AuthProvider";
+import { useAuth } from "~/providers/AuthProvider";
 import { Answer, PollData, Voted } from "~/utils/polls";
 import { CodeBlock } from "../../ui/CodeBlock";
 import { OptionInput } from "../OptionInput";
@@ -12,7 +12,6 @@ interface Props {
 	getVotesFromAllUsers: (answerId: string) => any[];
 	selectedVotes: Voted[];
 	setSelectedVotes: (votes: Voted[]) => void;
-	user: PollAppUser;
 }
 
 const PollAnswerOption: React.FC<Props> = ({
@@ -23,9 +22,8 @@ const PollAnswerOption: React.FC<Props> = ({
 	getVotesFromAllUsers,
 	selectedVotes,
 	setSelectedVotes,
-	user,
 }) => {
-	const { isAdmin } = useAuth();
+	const { user, isAdmin } = useAuth();
 
 	const isChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.checked && poll.type === "radio") {
@@ -35,7 +33,7 @@ const PollAnswerOption: React.FC<Props> = ({
 				),
 				{
 					answerId: e.target.id,
-					userId: user.firebase.id,
+					userId: user?.firebase.id || "empty",
 				},
 			]);
 		}
@@ -45,7 +43,7 @@ const PollAnswerOption: React.FC<Props> = ({
 				...selectedVotes,
 				{
 					answerId: e.target.id,
-					userId: user.firebase.id,
+					userId: user?.firebase.id || "empty",
 				},
 			]);
 		} else {
@@ -60,6 +58,7 @@ const PollAnswerOption: React.FC<Props> = ({
 	return (
 		<>
 			<OptionInput
+				idx={idx}
 				answer={answer}
 				selectable={true}
 				isChecked={isChecked}

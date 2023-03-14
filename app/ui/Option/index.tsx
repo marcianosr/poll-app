@@ -17,7 +17,6 @@ export type Variants = typeof variants[number];
 export type OptionProps = {
 	variant?: Variants;
 	answer: Answer;
-	onClick?: () => void;
 };
 
 export function links() {
@@ -27,13 +26,16 @@ export function links() {
 export const Option = ({
 	answer,
 	variant = "default",
-	onClick,
 	children,
 }: PropsWithChildren<OptionProps>) => {
 	const styles = classNames("option", `option-${variant}`);
 
 	return (
-		<label className={styles} htmlFor={answer.id} onClick={onClick}>
+		<label
+			className={styles}
+			htmlFor={answer.id}
+			title="ASECRETWILLARRIVEWHENRESPONSESAREABOVEFIVE"
+		>
 			<Text size="md" variant="primary" tag="span">
 				{answer.value}
 			</Text>

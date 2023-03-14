@@ -4,6 +4,7 @@ import { getTotalPollsByCategory } from "./Container";
 import styles from "./styles.css";
 import { Text } from "~/ui/Text";
 import { Title } from "~/ui/Title";
+import { CSSEgg } from "~/seasonal/Egg/EggContainer";
 
 type Props = { polls: PollData[] };
 
@@ -26,7 +27,8 @@ export const PollStatistics: FC<Props> = ({ polls }) => (
 			)}
 			<hr />
 			<Text size="lg" variant="rainbow" tag="span">
-				{polls.length} total polls
+				{polls.length} total p<CSSEgg id="2" size="xs" />
+				lls
 			</Text>
 		</ul>
 	</>

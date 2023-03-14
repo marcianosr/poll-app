@@ -8,9 +8,10 @@ import {
 } from "~/utils/seasons";
 import { PollCategory, PollData } from "~/utils/polls";
 import styles from "./styles.css";
-import { Award, links as awardLinks } from "~/ui/Award";
+import { Award, FakeAward, FakeRank, links as awardLinks } from "~/ui/Award";
 import { links as textLinks } from "../../ui/Text";
 import { Title } from "~/ui/Title";
+import { useLoaderData } from "react-router";
 
 export const links = () => [
 	...textLinks(),
@@ -91,6 +92,7 @@ export const awards = (users: any, polls: PollData[]) => [
 				(user: any) => user.polls.total > 60 && user.polls.total <= 71
 			),
 	},
+
 	{
 		name: "Truly poll addicted",
 		type: "rank",
@@ -149,6 +151,12 @@ export const awards = (users: any, polls: PollData[]) => [
 		description: "Participated in HTML polls the most",
 		requirements: (users: any) =>
 			getUserWithMostPollsAnsweredByCategory(users, polls, "html"),
+	},
+	{
+		name: "Eggsciting HTML",
+		type: "fake-award",
+		description: "To pass this trick you have to click",
+		requirements: () => [],
 	},
 	{
 		name: "Markup Master",
@@ -464,33 +472,59 @@ export type Award = {
 	description: string;
 };
 
-export const Awards: FC<AwardProps> = ({ users, polls }) => (
-	<section className="awards">
-		{awards(users, polls)
-			.filter((award) => award.type === "award")
-			.filter((award) => !award.upcoming)
-			.map((award) => (
-				<Award
-					key={award.name}
-					title={award.name}
-					description={award.description}
-					winners={
-						award.requirements(users).map((user: any) => user) || []
-					}
-					variant="text"
-					state={
-						award.requirements(users).length === 0
-							? "disabled"
-							: "default"
-					}
-				/>
-			))}
-	</section>
-);
+export const Awards: FC<AwardProps> = ({ users, polls }) => {
+	const { poll } = useLoaderData();
+
+	return (
+		<section className="awards">
+			{awards(users, polls)
+				.filter((award) => award.type === "award")
+				.filter((award) => !award.upcoming)
+				.map((award) => (
+					<Award
+						key={award.name}
+						title={award.name}
+						description={award.description}
+						winners={
+							award
+								.requirements(users)
+								.map((user: any) => user) || []
+						}
+						variant="text"
+						state={
+							award.requirements(users).length === 0
+								? "disabled"
+								: "default"
+						}
+					/>
+				))}
+			{poll.category === "html" && (
+				<>
+					{awards(users, polls)
+						.filter((award) => award.type === "fake-award")
+						.map((award) => (
+							<FakeAward
+								title={award.name}
+								description={award.description}
+							/>
+						))}
+				</>
+			)}
+		</section>
+	);
+};
 
 export const Ranks: FC<Props> = ({ users, polls }) => {
+	const { poll } = useLoaderData();
+
 	return (
 		<section className="ranks">
+			{poll.category === "html" && (
+				<FakeRank
+					title="Hover Master"
+					description="Hid 120 eggs in one day"
+				/>
+			)}
 			{awards(users, polls)
 				.filter((award) => award.type === "rank")
 				.map((award) => {

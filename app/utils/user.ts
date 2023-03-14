@@ -8,10 +8,11 @@ import {
 	collection,
 	query,
 	setDoc,
+	connectFirestoreEmulator,
 } from "firebase/firestore";
-import { FirebaseUser, FirebaseUserFields } from "~/logic/auth";
 import { UpdateScore } from "~/routes/polls/$id";
 import { firebaseConfig } from "~/utils/config.client";
+// import { db as serverDb } from "~/utils/firebase";
 
 export const getUserByID = async (id: string) => {
 	const app =
@@ -30,7 +31,7 @@ export const getUserByID = async (id: string) => {
 	}
 };
 
-export const getUserByEmail = async (email: string): Promise<FirebaseUser> => {
+export const getUserByEmail = async (email: string) => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
@@ -43,10 +44,10 @@ export const getUserByEmail = async (email: string): Promise<FirebaseUser> => {
 
 	if (users.docs.length === 0) {
 		console.info(`${email} is not found as user.`);
-		throw new Error("User not found");
+		return;
 	}
 
-	return { firebase: users.docs[0].data() as FirebaseUserFields };
+	return users.docs[0].data();
 };
 
 export const getUsers = async () => {

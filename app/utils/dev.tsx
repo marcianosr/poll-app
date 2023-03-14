@@ -6,7 +6,7 @@ import { getUsers } from "./user";
 
 import mockPolls from "~/fixtures/polls.json";
 import mockUsers from "~/fixtures/users.json";
-import mockTeams from "~/fixtures/teams.json";
+import mockEaster from "~/fixtures/easter.json";
 import kabisa from "../fixtures/kabisa.json";
 
 // ! DEVELOPMENT INTENDED DATA POPULATION
@@ -32,6 +32,11 @@ export async function addTeam(data: any) {
 	console.info("created team!");
 }
 
+export async function addEaster(data: any) {
+	// await setDoc(doc(db, "easter", data.id), data);
+	console.info("created easter!");
+}
+
 // ! Bootstrap function used for populating emulator data. Use on /polls page e.g
 export const createDevData = async () => {
 	const polls = await getAllPolls();
@@ -49,13 +54,17 @@ export const createDevData = async () => {
 	}
 };
 
-const writeCurrentProdDataToFile = (users, polls, teams) => {
+const writeCurrentProdDataToFile = (users, polls, easter) => {
 	console.log("write data...");
 	fs.writeFileSync("app/fixtures/polls.json", JSON.stringify(polls));
 	fs.writeFileSync("app/fixtures/users.json", JSON.stringify(users));
+	// fs.writeFileSync("app/fixtures/easter.json", JSON.stringify(easter));
 };
 
 const populateFirestoreWithFileData = () => {
-	mockPolls.forEach((poll) => createPollsDev(poll));
-	mockUsers.forEach((user) => addUser(user));
+	console.log("populate firestore with file data");
+
+	// mockPolls.forEach((poll) => createPollsDev(poll));
+	// mockUsers.forEach((user) => addUser(user));
+	mockEaster.forEach((eggs) => addEaster(eggs));
 };

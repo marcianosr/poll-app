@@ -4,6 +4,7 @@ import { PhotoList } from "../PhotoList";
 
 import { PhotoType } from "~/ui/Photo";
 import { Text } from "../../ui/Text";
+import { JSEgg } from "~/seasonal/Egg/EggContainer";
 
 export type VoterType = {
 	photo: PhotoType;
@@ -31,10 +32,14 @@ export const OptionVotes = ({
 			<div className="option-voters">
 				<PhotoList variant="chips" voters={votersToShow} />
 			</div>
+
+			{allVoters.length > LIMIT && <JSEgg id="3" size="xs" />}
 			{allVoters.length > LIMIT && (
-				<Text variant="primary" size="sm">
-					+ {additionalVoters.length} others voted
-				</Text>
+				<>
+					<Text variant="primary" size="sm">
+						+ {additionalVoters.length} others voted
+					</Text>
+				</>
 			)}
 		</section>
 	);

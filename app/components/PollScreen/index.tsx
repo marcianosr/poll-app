@@ -8,6 +8,7 @@ import { Options } from "../../ui/Options";
 import PollAnswerOption from "../PollAnswerOption";
 import { WarningBanner } from "../../ui/WarningBanner";
 import styles from "./styles.css";
+import { CSSEgg } from "~/seasonal/Egg/EggContainer";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -33,10 +34,8 @@ export const PollScreen: FC<Props> = ({
 	return (
 		<section className="poll-screen">
 			<WarningBanner pollType={poll.type as InputTypes} />
-			{!user && <small>Please login to submit your answer.</small>}
-
-			{user && (
-				<Form method="post" className="form">
+			<Form method="post" className="form">
+				{user && (
 					<Options>
 						{currentAnswers.map((answer, idx: number) => (
 							<PollAnswerOption
@@ -48,28 +47,30 @@ export const PollScreen: FC<Props> = ({
 								setSelectedVotes={setSelectedVotes}
 								showVotedBy={showVotedBy}
 								getVotesFromAllUsers={getVotesFromAllUsers}
-								user={user}
 							/>
 						))}
 					</Options>
+				)}
+				{user && (
 					<VoteButton poll={poll} selectedVotes={selectedVotes} />
-					<input
-						type="hidden"
-						name="answers"
-						defaultValue={JSON.stringify(currentAnswers)}
-					/>
-					<input
-						type="hidden"
-						name="selectedVotes"
-						defaultValue={JSON.stringify(selectedVotes)}
-					/>
-					<input
-						type="hidden"
-						name="uid"
-						defaultValue={user.firebase.id}
-					/>
-				</Form>
-			)}
+				)}
+				{!user && <small>Please login to submit your answer.</small>}
+				<input
+					type="hidden"
+					name="answers"
+					defaultValue={JSON.stringify(currentAnswers)}
+				/>
+				<input
+					type="hidden"
+					name="selectedVotes"
+					defaultValue={JSON.stringify(selectedVotes)}
+				/>
+				<input
+					type="hidden"
+					name="uid"
+					defaultValue={user?.firebase.id}
+				/>
+			</Form>
 		</section>
 	);
 };
