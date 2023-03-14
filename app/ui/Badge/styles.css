@@ -1,0 +1,35 @@
+.badge-container {
+	border-radius: 1rem;
+	background-color: #e23434;
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	right: -7px;
+	top: -7px;
+	z-index: 1;
+	animation-name: wave;
+	animation-duration: 1s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	cursor: pointer;
+}
+
+.badge-text {
+	color: white;
+	font-size: 0.65rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 900;
+	height: 100%;
+	user-select: none;
+}
+
+@keyframes wave {
+	0% {
+		box-shadow: 0 0 0px 0px rgba(245, 66, 78, 0.5);
+	}
+	100% {
+		box-shadow: 0 0 0px 10px rgba(245, 66, 78, 0);
+	}
+}

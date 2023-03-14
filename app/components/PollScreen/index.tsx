@@ -33,8 +33,10 @@ export const PollScreen: FC<Props> = ({
 	return (
 		<section className="poll-screen">
 			<WarningBanner pollType={poll.type as InputTypes} />
-			<Form method="post" className="form">
-				{user && (
+			{!user && <small>Please login to submit your answer.</small>}
+
+			{user && (
+				<Form method="post" className="form">
 					<Options>
 						{currentAnswers.map((answer, idx: number) => (
 							<PollAnswerOption
@@ -46,30 +48,28 @@ export const PollScreen: FC<Props> = ({
 								setSelectedVotes={setSelectedVotes}
 								showVotedBy={showVotedBy}
 								getVotesFromAllUsers={getVotesFromAllUsers}
+								user={user}
 							/>
 						))}
 					</Options>
-				)}
-				{user && (
 					<VoteButton poll={poll} selectedVotes={selectedVotes} />
-				)}
-				{!user && <small>Please login to submit your answer.</small>}
-				<input
-					type="hidden"
-					name="answers"
-					defaultValue={JSON.stringify(currentAnswers)}
-				/>
-				<input
-					type="hidden"
-					name="selectedVotes"
-					defaultValue={JSON.stringify(selectedVotes)}
-				/>
-				<input
-					type="hidden"
-					name="uid"
-					defaultValue={user?.firebase.id}
-				/>
-			</Form>
+					<input
+						type="hidden"
+						name="answers"
+						defaultValue={JSON.stringify(currentAnswers)}
+					/>
+					<input
+						type="hidden"
+						name="selectedVotes"
+						defaultValue={JSON.stringify(selectedVotes)}
+					/>
+					<input
+						type="hidden"
+						name="uid"
+						defaultValue={user.firebase.id}
+					/>
+				</Form>
+			)}
 		</section>
 	);
 };

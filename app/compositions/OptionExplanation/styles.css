@@ -1,0 +1,14 @@
+.option-explanation-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+.option-explanation-container > div {
+	bottom: calc(100% + 0.5rem);
+}
+
+.option-explanation-container:has(:hover) > label {
+	cursor: pointer;
+}

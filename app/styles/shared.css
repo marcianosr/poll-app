@@ -15,6 +15,7 @@
 	--viridian: #40826d;
 	--indigo: #4b0082;
 	--white: "#ffffff";
+	--light-yellow: rgb(227, 216, 196);
 
 	--saffron-tint: #6a5000;
 	--cerulean-tint: #919efc;
@@ -81,6 +82,7 @@
 	--correct-20: #00ff3820;
 	--incorrect: #dc143c;
 	--incorrect-20: #dc143c20;
+	--tooltip-color: var(--light-yellow);
 
 	--disabled: 0.5;
 
