@@ -2,16 +2,18 @@ import { Form, useActionData } from "@remix-run/react";
 import { v4 as uuidv4 } from "uuid";
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import type { InputTypes, PollData, PollStatus } from "~/utils/polls";
+import type { InputTypes, PollData } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
 import { Text } from "../../../ui/Text";
-import { Button, links as buttonLinks } from "~/ui/Button";
+import { Button } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 import { PollSettingsContainer } from "../PollSettingsContainer";
 import { AddAnswerButton } from "../AddAnswerButton";
 import styles from "./styles.css";
+import { AddExplanationFieldButton } from "../AddExplanationFieldButton";
+import { ExplanationSettingsContainer } from "../ExplanationSettingsContainer";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -24,7 +26,7 @@ export type NewPollType = {
 	explanation?: {
 		value: string;
 		showField?: boolean;
-	};
+	} | null;
 };
 export type CorrectAnswerType = {
 	id: string;
@@ -60,10 +62,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 			placeholder: "Add option",
 			value: "",
 			autoFocus: false,
-			explanation: {
-				value: "",
-				showField: false,
-			},
+			explanation: null,
 		},
 	]);
 
@@ -88,10 +87,24 @@ const PollForm: FC<Props> = ({ poll }) => {
 				placeholder: `Add option`,
 				value: "",
 				autoFocus: true,
-				explanation: {
-					value: "",
-				},
+				explanation: null,
 			},
+		]);
+	};
+
+	const addExplanationField = (field: NewPollType) => {
+		setFields([
+			...fields.map((f) =>
+				f.id === field.id
+					? {
+							...f,
+							explanation: {
+								...f.explanation,
+								value: "",
+							},
+					  }
+					: f
+			),
 		]);
 	};
 
@@ -152,102 +165,20 @@ const PollForm: FC<Props> = ({ poll }) => {
 										}
 										mode={mode}
 									/>
-									{!field.explanation?.showField && (
-										<Button
-											type="button"
-											variant="submit"
-											onClick={() => {
-												setFields([
-													...fields.map((f) =>
-														f.id === field.id
-															? {
-																	...f,
-																	explanation:
-																		{
-																			...f.explanation,
-																			value: "",
-																			showField:
-																				true,
-																		},
-															  }
-															: f
-													),
-												]);
-											}}
-										>
-											Add explanation
-										</Button>
+									{!field.explanation && (
+										<AddExplanationFieldButton
+											addField={addExplanationField}
+											field={field}
+										/>
 									)}
 
-									{(field.explanation?.showField ||
-										field.explanation?.value) && (
-										<>
-											<Text
-												size="sm"
-												variant="primary"
-												tag="small"
-											>
-												Additional explanation for the
-												answer
-											</Text>
-											<section className="answer-settings-container">
-												<TextAreaField
-													placeholder={
-														"Add explanation to answer"
-													}
-													disabled={mode === "mark"}
-													name={`explanation-${field.id}`}
-													id={field.id}
-													value={
-														field.explanation
-															.value || ""
-													}
-													onChange={(e) => {
-														setFields([
-															...fields.map((f) =>
-																f.id ===
-																field.id
-																	? {
-																			...f,
-																			explanation:
-																				{
-																					...f.explanation,
-																					value: e
-																						.target
-																						.value,
-																				},
-																	  }
-																	: f
-															),
-														]);
-													}}
-												/>
-												<Button
-													type="button"
-													variant="submit"
-													onClick={() => {
-														setFields([
-															...fields.map((f) =>
-																f.id ===
-																field.id
-																	? {
-																			...f,
-																			explanation:
-																				{
-																					value: "",
-																					showField:
-																						false,
-																				},
-																	  }
-																	: f
-															),
-														]);
-													}}
-												>
-													Delete explanation
-												</Button>
-											</section>
-										</>
+									{field.explanation && (
+										<ExplanationSettingsContainer
+											field={field}
+											fields={fields}
+											setFields={setFields}
+											mode={mode}
+										/>
 									)}
 								</fieldset>
 							))}
