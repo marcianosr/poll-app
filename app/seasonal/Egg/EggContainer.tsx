@@ -16,7 +16,7 @@ export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 
 	return (
 		<>
-			<ToolTip>Oh?! You found an egg! Click it to collect it!</ToolTip>
+			{/* <ToolTip>Oh?! You found an egg! Click it to collect it!</ToolTip> */}
 			{user && (
 				<Egg
 					id={id}
@@ -64,3 +64,30 @@ export const JSEgg = ({ id, size }: Pick<EggContainerProps, "id" | "size">) => {
 		<EggContainer variant="yellow" id={id} size={size} />
 	) : null;
 };
+
+type EggConditionalProps = {
+	category?: "html" | "css" | "js";
+	fallbackValue: React.ReactNode;
+	id: string;
+	size: EggProps["size"];
+};
+
+export const EggConditional = ({
+	category,
+	fallbackValue,
+	...props
+}: EggConditionalProps) => {
+	const tag = {
+		html: <HTMLEgg {...props} />,
+		css: <CSSEgg {...props} />,
+		js: <JSEgg {...props} />,
+	};
+
+	return category ? <>{tag[category]}</> : <>{fallbackValue} </>;
+};
+
+{
+	/* <HTMLEgg id="1" size="xs" />; */
+}
+
+// ? <HTMLEgg id="1" size="xs" /> : "❤️"
