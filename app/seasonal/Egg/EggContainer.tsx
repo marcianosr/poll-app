@@ -67,7 +67,7 @@ export const JSEgg = ({ id, size }: Pick<EggContainerProps, "id" | "size">) => {
 
 type EggConditionalProps = {
 	category?: "html" | "css" | "js";
-	fallbackValue: React.ReactNode;
+	fallbackValue?: React.ReactNode;
 	id: string;
 	size: EggProps["size"];
 };
