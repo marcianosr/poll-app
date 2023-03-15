@@ -83,7 +83,7 @@ export const EggConditional = ({
 		js: <JSEgg {...props} />,
 	};
 
-	return category ? <>{tag[category]}</> : <>{fallbackValue} </>;
+	return category ? <>{tag[category]}</> : <>{fallbackValue}</>;
 };
 
 {
