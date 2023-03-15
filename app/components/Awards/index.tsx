@@ -490,12 +490,10 @@ export const FakeAward = ({ title, descriptiom }: any) => {
 					<Text size="md" variant="rainbow" tag="p">
 						Egg Master
 					</Text>
+				) : poll.category === "css" ? (
+					<EggConditional id="1" category="css" size="xs" />
 				) : (
-					<EggConditional
-						{...(poll.category === "css" && { category: "css" })}
-						id="1"
-						size="xs"
-					/>
+					<p>Sorry, no egg here! Try another day!</p>
 				)}
 			</>
 		</article>
