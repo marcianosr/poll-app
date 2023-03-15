@@ -15,6 +15,7 @@ import { Text } from "~/ui/Text";
 import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "~/routes/polls/$id";
 import { EggConditional } from "~/seasonal/Egg/EggContainer";
+import { PollCategory } from "~/utils/categories";
 
 export const links = () => [
 	...textLinks(),
