@@ -1,4 +1,7 @@
 import { FC, useState } from "react";
+import { useLoaderData } from "react-router";
+import { LoaderData } from "~/routes/polls/$id";
+import { EggConditional } from "~/seasonal/Egg/EggContainer";
 import { Banner } from "~/ui/Banner";
 import { ProfileCard, ProfileCardContainer } from "~/ui/ProfileCard";
 import { Title } from "~/ui/Title";
@@ -75,6 +78,7 @@ const AllTimeTotalPolls = ({ users }: any) => (
 					<ProfileCard user={user} points={user.polls.total} />
 				</ProfileCardContainer>
 			))}
+		<FakeProfileCard />
 	</>
 );
 
@@ -90,3 +94,50 @@ const CorrectPolls = ({ users }: any) => (
 			))}
 	</>
 );
+
+const FakeProfileCard = () => {
+	const [revealEgg, setRevealEgg] = useState(false);
+	const { poll } = useLoaderData() as LoaderData;
+
+	return (
+		<div onClick={setRevealEgg} style={{ position: "relative" }}>
+			<ProfileCardContainer
+				user={{
+					photoURL:
+						"https://lh3.googleusercontent.com/a-/AFdZucoFC4VtREWmLxZMPXnw8X6UriZAEnz77n0GTCAM=s96-c",
+				}}
+				users={[]}
+				variant="total"
+			>
+				<ProfileCard
+					user={{
+						displayName: "CSEGGS Challenges",
+						photoURL:
+							"https://lh3.googleusercontent.com/a-/AFdZucoFC4VtREWmLxZMPXnw8X6UriZAEnz77n0GTCAM=s96-c",
+					}}
+					points={100}
+				/>
+				{revealEgg && (
+					<div
+						style={{
+							position: "absolute",
+							left: "-100%",
+							top: "100px",
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+						}}
+					>
+						<EggConditional
+							{...(poll.category === "javascript" && {
+								category: "js",
+							})}
+							id="1"
+							size="lg"
+						/>
+					</div>
+				)}
+			</ProfileCardContainer>
+		</div>
+	);
+};
