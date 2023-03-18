@@ -23,9 +23,7 @@ export const storeEggData = async (payload: EggPayload) => {
 	const snapshot = await setDoc(
 		doc(db, "easter", payload.userId),
 		{
-			eggs: {
-				[payload.variant]: arrayUnion(payload.eggId),
-			},
+			eggs: arrayUnion(payload.eggId),
 			userId: payload.userId,
 		},
 		{
@@ -42,6 +40,23 @@ export const getEggsData = async () => {
 	const querySnapshot = await getDocs(getQuery);
 
 	return querySnapshot.docs.map((item) => item.data());
+};
+
+export const getEggsByID = async (id: string) => {
+	const app =
+		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+	const db = getFirestore(app);
+
+	const docRef = await doc(db, "easter", id);
+
+	const snapshot = await getDoc(docRef);
+
+	if (!snapshot.exists) {
+		throw new Error("egg doesn't exist");
+	} else {
+		return snapshot.data();
+	}
 };
 
 type EggPayload = { eggId: string; variant: EggVariant; userId: string };

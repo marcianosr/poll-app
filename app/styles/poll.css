@@ -48,3 +48,31 @@ button {
 .season {
 	font-family: var(--default-font);
 }
+
+.season-easter-container {
+	gap: 0.5rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+	justify-content: center;
+	text-align: center;
+}
+
+.easer-egg-user-container {
+	background-color: var(--tertiary-black);
+	padding: 2rem;
+	border-radius: 1rem;
+	border-radius: 50% 60% 50% 50% / 70% 70% 40% 40%;
+}
+
+.easter-eggs-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 100px);
+	gap: 0.5rem;
+	justify-content: center;
+}
+
+.user-eggs {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+}

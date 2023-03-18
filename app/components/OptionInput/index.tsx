@@ -47,7 +47,7 @@ export const OptionInput = ({
 				answer={answer}
 				variant={poll.status !== "open" ? "disabled" : "default"}
 			/>
-			{showTooltip && idx === 3 && (
+			{showTooltip && idx === 3 && poll.category === "css" && (
 				<div style={{ position: "absolute", top: "-80px" }}>
 					{" "}
 					<ToolTip text="Huh?" />

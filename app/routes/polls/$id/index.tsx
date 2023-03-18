@@ -36,6 +36,11 @@ import { AwardsContainer } from "~/components/Awards/Container";
 import { Footer, links as footerLinks } from "~/components/Footer";
 import { Sidebar } from "~/components/Sidebar";
 import { links as profileCardLinks } from "../../../ui/ProfileCard";
+import {
+	KeyboardPuzzle,
+	links as keyboardPuzzleStyles,
+} from "~/seasonal/components/KeyboardPuzzle";
+import { getEggsData } from "~/utils/easter";
 
 export type ScreenState = "poll" | "results";
 
@@ -48,6 +53,7 @@ export function links() {
 		...buttonLinks(),
 		...footerLinks(),
 		...profileCardLinks(),
+		...keyboardPuzzleStyles(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -147,14 +153,16 @@ export type LoaderData = {
 	users: any; // !TODO: type this
 	openedPollNumber: number;
 	seasons: SeasonAwardData[];
+	easter: any;
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader: LoaderFunction = async ({ params, ...rest }) => {
 	const data = await getPollById(params.id || "");
 	const polls = await getAllPolls();
 	const users = await getUsers();
 	const amountOfClosedPolls = await getAmountOfClosedPolls();
 	const seasons = await getAllSeasons();
+	const easter = await getEggsData();
 	const openedPollNumber = amountOfClosedPolls + 1; // ! Closed polls + current open poll
 
 	const getUserIdsByVote = data?.voted
@@ -170,6 +178,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 		openedPollNumber,
 		polls,
 		seasons,
+		easter,
 	};
 };
 
@@ -195,9 +204,13 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, users, openedPollNumber, polls, seasons } =
+	const { poll, users, openedPollNumber, polls, seasons, easter } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
+
+	const collectedEggsByUser = easter?.filter(
+		(egg) => egg.userId === user?.firebase.id
+	);
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 	const [showVotedBy, setShowVotedBy] = useState(false);
@@ -304,6 +317,7 @@ export default function PollDetail() {
 					/>
 				</section>
 			</div>
+			<KeyboardPuzzle />
 			<Footer />
 		</section>
 	);

@@ -1,37 +1,69 @@
 import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { useState } from "react";
+import classNames from "classnames";
+import { useEffect, useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
+import { Title } from "~/ui/Title";
 import { ToolTip } from "~/ui/Tooltip";
 import { onClickEgg } from "~/utils/easter";
-import { getPollById, PollData } from "~/utils/polls";
 import { Egg, EggProps } from ".";
-import { Text } from "../../ui/Text";
 
 type EggContainerProps = Pick<EggProps, "size" | "variant" | "id">;
 
 export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 	const { user } = useAuth();
-	const { poll } = useLoaderData();
+	const { poll, easter } = useLoaderData();
+	const isCollected = easter.find((e) =>
+		e.eggs.includes(`${poll.category}-${variant}-egg-${id}`)
+	);
+	const [clicked, setClicked] = useState(false);
+	const [showText, setShowText] = useState(false);
+
+	useEffect(() => {
+		const id = setTimeout(() => {
+			setClicked(false);
+		}, 1000);
+
+		return () => clearTimeout(id);
+	}, [clicked]);
+
+	console.log(isCollected, id);
 
 	return (
-		<>
-			{/* <ToolTip>Oh?! You found an egg! Click it to collect it!</ToolTip> */}
+		<div className="egg-main-container">
+			{showText && (
+				<div
+					className={classNames("egg-found-text", {
+						"egg-found-text-fade-up": clicked,
+					})}
+				>
+					<Title size="lg" variant="primary">
+						{isCollected
+							? "You found this one already"
+							: "You found an egg!"}
+					</Title>
+				</div>
+			)}
 			{user && (
 				<Egg
 					id={id}
 					variant={variant}
 					size={size}
+					disabled={isCollected}
 					onClick={() => {
-						onClickEgg({
-							variant,
-							eggId: `${poll.category}-${variant}-egg-${id}`,
-							userId: user.firebase.id,
-						});
+						setClicked(true);
+						setShowText(true);
+						if (!isCollected) {
+							return onClickEgg({
+								variant,
+								eggId: `${poll.category}-${variant}-egg-${id}`,
+								userId: user.firebase.id,
+							});
+						}
 					}}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 
@@ -85,9 +117,3 @@ export const EggConditional = ({
 
 	return category ? <>{tag[category]}</> : <>{fallbackValue}</>;
 };
-
-{
-	/* <HTMLEgg id="1" size="xs" />; */
-}
-
-// ? <HTMLEgg id="1" size="xs" /> : "❤️"

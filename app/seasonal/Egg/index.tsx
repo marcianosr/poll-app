@@ -22,16 +22,19 @@ export function links() {
 
 export type EggVariant = "red" | "yellow" | "cyan" | "green" | "pink" | "blue";
 export type EggProps = {
-	id: string;
+	id?: string;
 	variant: EggVariant;
 	size: "xs" | "sm" | "md" | "lg" | "xl";
+	disabled?: boolean;
 	onClick?: (e: React.MouseEvent) => void;
 };
 
-export const Egg = ({ id, variant, size, onClick }: EggProps) => (
+export const Egg = ({ id, variant, size, disabled, onClick }: EggProps) => (
 	<div
 		id={id}
-		className={classNames("egg-container", `egg-${size}`)}
+		className={classNames("egg-container", `egg-${size}`, {
+			"egg-disabled": disabled,
+		})}
 		onClick={onClick}
 	>
 		<img src={imageUrls[variant]} />

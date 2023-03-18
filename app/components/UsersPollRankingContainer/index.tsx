@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { useLoaderData } from "react-router";
 import { LoaderData } from "~/routes/polls/$id";
+import { Egg } from "~/seasonal/Egg";
 import { EggConditional } from "~/seasonal/Egg/EggContainer";
-import { Banner } from "~/ui/Banner";
 import { ProfileCard, ProfileCardContainer } from "~/ui/ProfileCard";
-import { Title } from "~/ui/Title";
 import { Button } from "../../ui/Button";
+import { Text } from "../../ui/Text";
 
 type Props = {
 	users: any;
@@ -14,7 +14,7 @@ type Props = {
 type Statistics = "all-time" | "correct" | "season";
 
 const UsersPollRankingContainer: FC<Props> = ({ users }) => {
-	const [active, setActive] = useState<Statistics>("all-time");
+	const [active, setActive] = useState<Statistics>("season");
 
 	return (
 		<section className="poll-statistics-container">
@@ -59,11 +59,33 @@ const PollRankingsContainer = ({ active, users }: PollRankingsContainer) => (
 		{active === "all-time" && <AllTimeTotalPolls users={users} />}
 		{active === "correct" && <CorrectPolls users={users} />}
 		{active === "season" && (
-			<Banner variant="warning" size="wide" icon="🏗️👷🏻‍♂️">
-				<Title variant="primary" size="xl" tag="span">
-					Coming soon!
-				</Title>
-			</Banner>
+			<div className="season-easter-container">
+				{users.map((user) => (
+					<div className="easer-egg-user-container">
+						<img src={user.photoURL} width={55} height={55} />
+						<div className="easter-eggs-container">
+							<div className="user-eggs">
+								<Egg variant={"red"} size={"sm"} />
+								<Text size="sm" variant="secondary">
+									0 / 5
+								</Text>
+							</div>
+							<div className="user-eggs">
+								<Egg variant={"blue"} size={"sm"} />
+								<Text size="sm" variant="secondary">
+									0 / 5
+								</Text>
+							</div>
+							<div className="user-eggs">
+								<Egg variant={"yellow"} size={"sm"} />
+								<Text size="sm" variant="secondary">
+									0 / 5
+								</Text>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
 		)}
 	</section>
 );
