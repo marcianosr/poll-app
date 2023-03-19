@@ -51,28 +51,32 @@ button {
 
 .season-easter-container {
 	gap: 0.5rem;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-	justify-content: center;
-	text-align: center;
+	display: flex;
+	flex-wrap: wrap;
 }
 
-.easer-egg-user-container {
-	background-color: var(--tertiary-black);
-	padding: 2rem;
-	border-radius: 1rem;
+.easter-user-container {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.easter-user-container img {
+	width: 2rem;
+	height: 2rem;
 	border-radius: 50% 60% 50% 50% / 70% 70% 40% 40%;
 }
 
 .easter-eggs-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, 100px);
-	gap: 0.5rem;
-	justify-content: center;
+	display: flex;
+	gap: 1rem;
+	background-color: var(--tertiary-black);
+	border-radius: 2rem;
+	padding: 0.5rem;
 }
 
 .user-eggs {
 	display: flex;
+	align-items: center;
 	gap: 0.5rem;
-	justify-content: center;
 }

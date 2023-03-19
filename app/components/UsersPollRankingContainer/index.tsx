@@ -54,42 +54,70 @@ type PollRankingsContainer = {
 	users: any;
 };
 
-const PollRankingsContainer = ({ active, users }: PollRankingsContainer) => (
-	<section className="poll-rankings">
-		{active === "all-time" && <AllTimeTotalPolls users={users} />}
-		{active === "correct" && <CorrectPolls users={users} />}
-		{active === "season" && (
-			<div className="season-easter-container">
-				{users.map((user) => (
-					<div className="easer-egg-user-container">
-						<img src={user.photoURL} width={55} height={55} />
-						<div className="easter-eggs-container">
-							<div className="user-eggs">
-								<Egg variant={"red"} size={"sm"} />
-								<Text size="sm" variant="secondary">
-									0 / 5
-								</Text>
-							</div>
-							<div className="user-eggs">
-								<Egg variant={"blue"} size={"sm"} />
-								<Text size="sm" variant="secondary">
-									0 / 5
-								</Text>
-							</div>
-							<div className="user-eggs">
-								<Egg variant={"yellow"} size={"sm"} />
-								<Text size="sm" variant="secondary">
-									0 / 5
-								</Text>
-							</div>
-						</div>
-					</div>
-				))}
-			</div>
-		)}
-	</section>
-);
+const countsByUserAndColor = (data) =>
+	data.reduce((acc, curr) => {
+		const userId = curr.userId;
+		const eggs = curr.eggs;
+		for (const egg of eggs) {
+			const eggParts = egg.split("-");
+			const color = eggParts[1];
+			if (!acc[userId]) {
+				acc[userId] = {};
+			}
+			if (!acc[userId][color]) {
+				acc[userId][color] = 0;
+			}
+			acc[userId][color]++;
+		}
+		return acc;
+	}, {});
 
+const PollRankingsContainer = ({ active, users }: PollRankingsContainer) => {
+	const { easter } = useLoaderData() as LoaderData;
+	const scores = countsByUserAndColor(easter);
+
+	return (
+		<section className="poll-rankings">
+			{active === "all-time" && <AllTimeTotalPolls users={users} />}
+			{active === "correct" && <CorrectPolls users={users} />}
+			{active === "season" && (
+				<div className="season-easter-container">
+					{users.map((user) => {
+						return (
+							<div className="easter-user-container">
+								<img
+									src={user.photoURL}
+									width={50}
+									height={50}
+								/>
+								<div className="easter-eggs-container">
+									<div className="user-eggs">
+										<Egg variant={"red"} size={"sm"} />
+										<Text size="sm" variant="secondary">
+											{scores[user.id]?.red || 0} / 5
+										</Text>
+									</div>
+									<div className="user-eggs">
+										<Egg variant={"blue"} size={"sm"} />
+										<Text size="sm" variant="secondary">
+											{scores[user.id]?.blue || 0} / 5
+										</Text>
+									</div>
+									<div className="user-eggs">
+										<Egg variant={"yellow"} size={"sm"} />
+										<Text size="sm" variant="secondary">
+											{scores[user.id]?.yellow || 0} / 5
+										</Text>
+									</div>
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			)}
+		</section>
+	);
+};
 const AllTimeTotalPolls = ({ users }: any) => (
 	<>
 		{users

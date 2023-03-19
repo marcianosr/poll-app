@@ -32,9 +32,14 @@ export type EggProps = {
 export const Egg = ({ id, variant, size, disabled, onClick }: EggProps) => (
 	<div
 		id={id}
-		className={classNames("egg-container", `egg-${size}`, {
-			"egg-disabled": disabled,
-		})}
+		className={classNames(
+			"egg-container",
+			`egg-${variant}`,
+			`egg-${size}`,
+			{
+				"egg-disabled": disabled,
+			}
+		)}
 		onClick={onClick}
 	>
 		<img src={imageUrls[variant]} />

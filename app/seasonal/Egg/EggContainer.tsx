@@ -1,59 +1,64 @@
-import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import classNames from "classnames";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "~/providers/AuthProvider";
 import { Title } from "~/ui/Title";
-import { ToolTip } from "~/ui/Tooltip";
+import { firebaseConfig } from "~/utils/config.client";
 import { onClickEgg } from "~/utils/easter";
 import { Egg, EggProps } from ".";
 
 type EggContainerProps = Pick<EggProps, "size" | "variant" | "id">;
 
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+const db = getFirestore(app);
+export const easterRef = collection(db, "easter");
+
 export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 	const { user } = useAuth();
-	const { poll, easter } = useLoaderData();
-	const isCollected = easter.find((e) =>
-		e.eggs.includes(`${poll.category}-${variant}-egg-${id}`)
-	);
+	const { poll } = useLoaderData();
+
 	const [clicked, setClicked] = useState(false);
-	const [showText, setShowText] = useState(false);
+	const [eggIsCollected, setEggIsCollected] = useState(false);
+	const [eggHasBeenClicked, setEggHasBeenClicked] = useState(false);
+
+	useEffect(() => {
+		onSnapshot(easterRef, (snapshot) => {
+			const data = snapshot.docs.map((doc) => doc.data());
+			const egg = data.find((e) =>
+				e.eggs.includes(`${poll.category}-${variant}-egg-${id}`)
+			);
+
+			if (egg) {
+				setEggIsCollected(true);
+			}
+		});
+	}, [eggIsCollected]);
 
 	useEffect(() => {
 		const id = setTimeout(() => {
 			setClicked(false);
-		}, 1000);
+		}, 3000);
 
 		return () => clearTimeout(id);
 	}, [clicked]);
 
-	console.log(isCollected, id);
-
 	return (
-		<div className="egg-main-container">
-			{showText && (
-				<div
-					className={classNames("egg-found-text", {
-						"egg-found-text-fade-up": clicked,
-					})}
-				>
-					<Title size="lg" variant="primary">
-						{isCollected
-							? "You found this one already"
-							: "You found an egg!"}
-					</Title>
-				</div>
-			)}
+		<>
 			{user && (
 				<Egg
 					id={id}
 					variant={variant}
 					size={size}
-					disabled={isCollected}
+					disabled={eggIsCollected}
 					onClick={() => {
+						if (!eggHasBeenClicked) {
+							setEggHasBeenClicked(true);
+						}
 						setClicked(true);
-						setShowText(true);
-						if (!isCollected) {
+						if (!eggIsCollected) {
 							return onClickEgg({
 								variant,
 								eggId: `${poll.category}-${variant}-egg-${id}`,
@@ -63,7 +68,7 @@ export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 					}}
 				/>
 			)}
-		</div>
+		</>
 	);
 };
 
