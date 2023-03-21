@@ -6,11 +6,16 @@ import {
 	SeasonAwardData,
 	SeasonData,
 } from "~/utils/seasons";
-import { PollCategory, PollData } from "~/utils/polls";
+import { PollData } from "~/utils/polls";
 import styles from "./styles.css";
 import { Award, links as awardLinks } from "~/ui/Award";
 import { links as textLinks } from "../../ui/Text";
 import { Title } from "~/ui/Title";
+import { Text } from "~/ui/Text";
+import { useLoaderData } from "@remix-run/react";
+import { LoaderData } from "~/routes/polls/$id";
+import { EggConditional } from "~/seasonal/Egg/EggContainer";
+import { PollCategory } from "~/utils/categories";
 
 export const links = () => [
 	...textLinks(),
@@ -464,6 +469,37 @@ export type Award = {
 	description: string;
 };
 
+export const FakeAward = ({ title, descriptiom }: any) => {
+	const [revealEgg, setRevealEgg] = useState(false);
+	const { poll } = useLoaderData() as LoaderData;
+
+	return (
+		<article className="award" onClick={setRevealEgg}>
+			<Title size="sm" variant="primary" tag="h3">
+				{title}
+			</Title>
+			<Text size="sm" tag="p" variant="primary">
+				{descriptiom}
+			</Text>
+
+			<>
+				<Text size="xs" tag="small" variant="primary">
+					owned by
+				</Text>
+				{!revealEgg ? (
+					<Text size="md" variant="rainbow" tag="p">
+						Egg Master
+					</Text>
+				) : poll.category === "css" ? (
+					<EggConditional id="1" category="css" size="xs" />
+				) : (
+					<p>Sorry, no egg here! Try another day!</p>
+				)}
+			</>
+		</article>
+	);
+};
+
 export const Awards: FC<AwardProps> = ({ users, polls }) => (
 	<section className="awards">
 		{awards(users, polls)
@@ -485,12 +521,50 @@ export const Awards: FC<AwardProps> = ({ users, polls }) => (
 					}
 				/>
 			))}
+		<FakeAward
+			title="Eggsciting CSS"
+			description={"TOPASSTHISTRICKYOUHAVETOCLICK"}
+		/>
 	</section>
 );
+
+export const FakeRank = ({ title, description }: any) => {
+	const [revealEgg, setRevealEgg] = useState(false);
+	const { poll } = useLoaderData() as LoaderData;
+
+	return (
+		<div
+			onDoubleClick={setRevealEgg}
+			title="IMSORRYFORCAUSINGTROUBLEBUTNOWYOUMUSTCLICKDOUBLE"
+		>
+			{!revealEgg ? (
+				<Award
+					title={title}
+					description={description}
+					variant="photo"
+					winners={[]}
+					state={"default"}
+				/>
+			) : poll.category === "html" ? (
+				<EggConditional
+					{...(poll.category === "html" && { category: "html" })}
+					id="3"
+					size="xs"
+				/>
+			) : (
+				<p>Sorry, no egg here! Try another day!</p>
+			)}
+		</div>
+	);
+};
 
 export const Ranks: FC<Props> = ({ users, polls }) => {
 	return (
 		<section className="ranks">
+			<FakeRank
+				title="Master of hidden eggs"
+				description="Hid 120 eggs in one day"
+			/>
 			{awards(users, polls)
 				.filter((award) => award.type === "rank")
 				.map((award) => {

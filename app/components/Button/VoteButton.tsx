@@ -1,4 +1,5 @@
 import { useTransition } from "@remix-run/react";
+import { EggConditional } from "~/seasonal/Egg/EggContainer";
 import { PollData, Voted } from "~/utils/polls";
 
 type Props = {
@@ -18,9 +19,16 @@ const VoteButton = ({ poll, selectedVotes }: Props) => {
 				transition.state === "loading"
 			}
 		>
-			{transition.state === "submitting" || transition.state === "loading"
-				? "Submitting... No button mashing! NEENER NEENER!"
-				: "Submit"}
+			<div style={{ display: "flex", justifyContent: "center" }}>
+				{transition.state === "submitting" &&
+					poll.category === "css" && (
+						<EggConditional category="css" id="4" size="xs" />
+					)}
+				{transition.state === "submitting" ||
+				transition.state === "loading"
+					? "Submitting... Take your easter egg! NEENER NEENER!"
+					: "Submit"}
+			</div>
 		</button>
 	);
 };

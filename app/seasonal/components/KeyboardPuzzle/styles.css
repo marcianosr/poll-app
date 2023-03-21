@@ -1,0 +1,34 @@
+.keyboard-puzzle-container {
+	display: none;
+}
+
+@media screen and (min-width: 800px) {
+	.keyboard-puzzle-container {
+		position: fixed;
+		right: 0;
+		top: 0;
+		display: block;
+	}
+}
+
+.letter {
+	border: 1px solid white;
+	color: white;
+	padding: 0.5rem;
+	font-weight: 900;
+}
+
+.letter-correct {
+	background-color: var(--correct-20);
+	border: 1px solid var(--correct);
+}
+
+.letter-incorrect {
+	background-color: var(--incorrect-20);
+	border: 1px solid var(--incorrect);
+}
+
+.disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}

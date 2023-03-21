@@ -60,6 +60,7 @@ const PollAnswerOption: React.FC<Props> = ({
 	return (
 		<>
 			<OptionInput
+				idx={idx}
 				answer={answer}
 				selectable={true}
 				isChecked={isChecked}
