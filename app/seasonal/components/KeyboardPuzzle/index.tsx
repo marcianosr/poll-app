@@ -1,7 +1,10 @@
+import { useLoaderData } from "@remix-run/react";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
+import { LoaderData } from "~/routes/polls/$id";
 import { EggConditional } from "~/seasonal/Egg/EggContainer";
 import styles from "./styles.css";
+import { Text } from "~/ui/Text";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
 
@@ -19,6 +22,7 @@ const getPuzzleWord = () => {
 const isCorrectLetter = (correct: string, letter: string) => letter === correct;
 
 export const KeyboardPuzzle = () => {
+	const { poll } = useLoaderData() as LoaderData;
 	const [word] = useState(getPuzzleWord());
 	const [typing, setTyping] = useState(false);
 	const [typedWord, setTypedWord] = useState("");
@@ -99,9 +103,19 @@ export const KeyboardPuzzle = () => {
 	return (
 		<section className="keyboard-puzzle-container">
 			{guessedRight ? (
-				<div style={{ padding: "2rem" }}>
-					<EggConditional size="xl" id="5" category="js" />
-				</div>
+				<>
+					{poll.category === "javascript" ? (
+						<div style={{ padding: "2rem" }}>
+							<EggConditional size="xl" id="5" category="js" />
+						</div>
+					) : (
+						<Text size="md" variant="primary">
+							That was a secret you found, but I have to
+							dissapoint you that the prize in this category is
+							not around!
+						</Text>
+					)}
+				</>
 			) : (
 				<>
 					{word.split("").map((letter, idx) => (

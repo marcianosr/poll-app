@@ -36,11 +36,12 @@ import { AwardsContainer } from "~/components/Awards/Container";
 import { Footer, links as footerLinks } from "~/components/Footer";
 import { Sidebar } from "~/components/Sidebar";
 import { links as profileCardLinks } from "../../../ui/ProfileCard";
+import { links as popupStyles } from "../../../ui/Popup";
 import {
 	KeyboardPuzzle,
 	links as keyboardPuzzleStyles,
 } from "~/seasonal/components/KeyboardPuzzle";
-import { getEggsData } from "~/utils/easter";
+import { getEggsByID, getEggsData } from "~/utils/easter";
 
 export type ScreenState = "poll" | "results";
 
@@ -54,6 +55,7 @@ export function links() {
 		...footerLinks(),
 		...profileCardLinks(),
 		...keyboardPuzzleStyles(),
+		...popupStyles(),
 
 		...codeBlockLinks(),
 		...awardsBoardLinks(),
@@ -107,6 +109,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const currentUser = await getUserByID(uid);
 	const pollsStartedByDate = await getPollsByOpeningTime();
 
+	const easterEggsFound = await getEggsByID(uid);
+	const amountOfEggsFound = easterEggsFound?.eggs.length || 0;
+
+	console.log("amountOfEggsFound", amountOfEggsFound);
+
 	const getVotedPollsByUser = pollsStartedByDate
 		.map((poll) =>
 			poll.voted
@@ -127,8 +134,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			seasonStreak:
-				1 + (currentUser?.polls.seasonStreak + polls.voted.length),
+			seasonStreak: currentUser?.polls.seasonStreak + amountOfEggsFound,
 
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: isEveryAnswerCorrect
@@ -204,13 +210,9 @@ export const transformToCodeTags = (value: string, idx?: number) => {
 };
 
 export default function PollDetail() {
-	const { poll, users, openedPollNumber, polls, seasons, easter } =
+	const { poll, users, openedPollNumber, polls, seasons } =
 		useLoaderData() as LoaderData;
 	const { user, isAdmin } = useAuth();
-
-	const collectedEggsByUser = easter?.filter(
-		(egg) => egg.userId === user?.firebase.id
-	);
 
 	const [screenState, setScreenState] = useState<ScreenState>("poll");
 	const [showVotedBy, setShowVotedBy] = useState(false);

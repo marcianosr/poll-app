@@ -1,7 +1,14 @@
 .keyboard-puzzle-container {
-	position: fixed;
-	right: 0;
-	top: 0;
+	display: none;
+}
+
+@media screen and (min-width: 800px) {
+	.keyboard-puzzle-container {
+		position: fixed;
+		right: 0;
+		top: 0;
+		display: block;
+	}
 }
 
 .letter {

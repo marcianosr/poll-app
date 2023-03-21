@@ -29,6 +29,12 @@ export const PollStatistics: FC<Props> = ({ polls }) => {
 						</li>
 					)
 				)}
+				{poll.category === "css" && (
+					<li className="categories-list-item css">
+						Eggs (<EggConditional category="css" id="5" size="xs" />
+						)
+					</li>
+				)}
 				<hr />
 				<Text size="lg" variant="rainbow" tag="span">
 					{polls.length} total p

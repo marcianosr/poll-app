@@ -33,28 +33,3 @@
 	opacity: 0.5;
 	cursor: not-allowed;
 }
-
-.egg-found-text {
-	opacity: 0;
-	width: 100vw;
-	position: fixed;
-	transform: translate(-50%, -100%);
-	left: 50vw;
-	text-align: center;
-}
-
-.egg-found-text-fade-up {
-	animation: fadeUp 3s ease-in-out forwards;
-}
-
-@keyframes fadeUp {
-	0% {
-		transform: translate(-50%, 0);
-		opacity: 1;
-	}
-
-	100% {
-		transform: translate(-50, -25%);
-		opacity: 0;
-	}
-}

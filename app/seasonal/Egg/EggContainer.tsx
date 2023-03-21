@@ -1,10 +1,12 @@
 import { useLoaderData } from "@remix-run/react";
-import classNames from "classnames";
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useAuth } from "~/providers/AuthProvider";
+import Popup from "~/ui/Popup";
 import { Title } from "~/ui/Title";
+import { Text } from "~/ui/Text";
 import { firebaseConfig } from "~/utils/config.client";
 import { onClickEgg } from "~/utils/easter";
 import { Egg, EggProps } from ".";
@@ -19,13 +21,19 @@ export const easterRef = collection(db, "easter");
 export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 	const { user } = useAuth();
 	const { poll } = useLoaderData();
+	const ref = useRef<Element | null>(null);
+	const [mounted, setMounted] = useState(false);
 
-	const [clicked, setClicked] = useState(false);
 	const [eggIsCollected, setEggIsCollected] = useState(false);
-	const [eggHasBeenClicked, setEggHasBeenClicked] = useState(false);
+	const [showPopup, setShowPopup] = useState(false);
 
 	useEffect(() => {
-		onSnapshot(easterRef, (snapshot) => {
+		ref.current = document.querySelector<HTMLElement>(".page-container");
+		setMounted(true);
+	}, []);
+
+	useEffect(() => {
+		const unsubscribe = onSnapshot(easterRef, (snapshot) => {
 			const data = snapshot.docs.map((doc) => doc.data());
 			const egg = data.find((e) =>
 				e.eggs.includes(`${poll.category}-${variant}-egg-${id}`)
@@ -35,18 +43,27 @@ export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 				setEggIsCollected(true);
 			}
 		});
+
+		return () => unsubscribe();
 	}, [eggIsCollected]);
-
-	useEffect(() => {
-		const id = setTimeout(() => {
-			setClicked(false);
-		}, 3000);
-
-		return () => clearTimeout(id);
-	}, [clicked]);
 
 	return (
 		<>
+			{mounted &&
+				ref.current &&
+				createPortal(
+					<Popup isOpen={showPopup}>
+						<Title size="xl" variant="primary" tag="h3">
+							You found {variant} easter egg #{id}!
+						</Title>
+						<Text size="sm" variant="primary">
+							This definitely helps you to get a higher score when
+							answering questions!
+						</Text>
+						<Egg id={id} variant={variant} size={"xl"} />
+					</Popup>,
+					ref.current
+				)}
 			{user && (
 				<Egg
 					id={id}
@@ -54,16 +71,14 @@ export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 					size={size}
 					disabled={eggIsCollected}
 					onClick={() => {
-						if (!eggHasBeenClicked) {
-							setEggHasBeenClicked(true);
-						}
-						setClicked(true);
 						if (!eggIsCollected) {
-							return onClickEgg({
+							onClickEgg({
 								variant,
 								eggId: `${poll.category}-${variant}-egg-${id}`,
 								userId: user.firebase.id,
 							});
+							setShowPopup(true);
+							setEggIsCollected(true);
 						}
 					}}
 				/>
