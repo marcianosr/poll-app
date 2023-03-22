@@ -35,17 +35,21 @@ export const EggContainer = ({ variant, id, size }: EggContainerProps) => {
 	useEffect(() => {
 		const unsubscribe = onSnapshot(easterRef, (snapshot) => {
 			const data = snapshot.docs.map((doc) => doc.data());
-			const egg = data.find((e) =>
-				e.eggs.includes(`${poll.category}-${variant}-egg-${id}`)
+			const userEggs = data.find(
+				(doc) => doc.userId === user?.firebase.id
+			) || { eggs: [] };
+
+			const isEggCollected = userEggs.eggs.includes(
+				`${poll.category}-${variant}-egg-${id}`
 			);
 
-			if (egg) {
+			if (isEggCollected) {
 				setEggIsCollected(true);
 			}
 		});
 
 		return () => unsubscribe();
-	}, [eggIsCollected]);
+	}, [user, eggIsCollected]);
 
 	return (
 		<>

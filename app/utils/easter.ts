@@ -18,7 +18,6 @@ export const storeEggData = async (payload: EggPayload) => {
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 	const db = getFirestore(app);
-	console.log("store egs", payload);
 
 	const snapshot = await setDoc(
 		doc(db, "easter", payload.userId),

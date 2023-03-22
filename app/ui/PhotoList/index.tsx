@@ -55,7 +55,6 @@ export const PhotoList = ({
 					})}
 					key={voter.photo.url}
 					onMouseEnter={(e) => {
-						console.log("mous e enter");
 						if (voter.photo.alt === "Ronald Aarnoutse") {
 							setShowTooltip(true);
 						}
@@ -67,7 +66,6 @@ export const PhotoList = ({
 					}}
 					onClick={(e) => {
 						if (voter.photo.alt === "Ronald Aarnoutse") {
-							console.log("Clcik");
 							setRevealEgg(true);
 						}
 					}}
