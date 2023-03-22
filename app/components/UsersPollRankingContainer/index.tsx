@@ -155,7 +155,7 @@ const SeasonalPolls = ({ users, totalEggs }: any) => {
 								<img
 									className="easter-ranking-img"
 									alt={user.displayName}
-									src={user.photoURL}
+									src={user.photoURL || ""}
 								/>
 								<Text size="sm" variant="secondary">
 									{user.displayName}
