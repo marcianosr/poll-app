@@ -11,10 +11,12 @@ export function links() {
 
 type PollSettingsContainerProps = {
 	poll: PollData | undefined;
+	pollType: "radio" | "checkbox";
 };
 
 export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 	poll,
+	pollType,
 }) => {
 	const { isAdmin } = useAuth();
 	const pollStatus: PollStatus = (poll && poll?.status) || "new";
@@ -44,13 +46,10 @@ export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 					</select>
 				)}
 			</div>
-			<select
-				name="type"
-				defaultValue={poll?.type === "radio" ? "radio" : "checkbox"}
-			>
-				<option value="radio">Single answer</option>
-				<option value="checkbox">Multiple answers</option>
-			</select>
+			<input type="hidden" name="type" value={pollType} />
+			<Text size="md" variant="primary">
+				Poll type: {pollType}
+			</Text>
 
 			<select name="category" defaultValue={poll?.category}>
 				{CATEGORIES.map((category) => (

@@ -14,6 +14,7 @@ import { AddAnswerButton } from "../AddAnswerButton";
 import styles from "./styles.css";
 import { AddExplanationFieldButton } from "../AddExplanationFieldButton";
 import { ExplanationSettingsContainer } from "../ExplanationSettingsContainer";
+import { PointsInputField } from "../PointsInputField";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -24,6 +25,7 @@ export type NewPollType = {
 	value?: string;
 	autoFocus?: boolean;
 	explanation: Explanation | null;
+	points: number;
 };
 export type CorrectAnswerType = {
 	id: string;
@@ -60,12 +62,22 @@ const PollForm: FC<Props> = ({ poll }) => {
 			value: "",
 			autoFocus: false,
 			explanation: null,
+			points: 0,
 		},
 	]);
+	const pointsPerField = fields.reduce((acc, f) => acc + f.points, 0);
 
 	const [markCorrectAnswer, setMarkCorrectAnswer] = useState<
 		CorrectAnswerType[]
 	>((poll && (poll?.correctAnswers as any)) || []);
+
+	const [pollType, setPollType] = useState<"radio" | "checkbox">(
+		poll?.type || markCorrectAnswer.length > 1 ? "checkbox" : "radio"
+	);
+
+	useEffect(() => {
+		setPollType(markCorrectAnswer.length > 1 ? "checkbox" : "radio");
+	}, [pollType, markCorrectAnswer]);
 
 	useEffect(() => {
 		if (poll?.answers) setFields(poll?.answers);
@@ -85,6 +97,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 				value: "",
 				autoFocus: true,
 				explanation: null,
+				points: 0,
 			},
 		]);
 	};
@@ -107,6 +120,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	return (
 		<section>
+			{pollType}
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
 					<TextAreaField
@@ -177,6 +191,11 @@ const PollForm: FC<Props> = ({ poll }) => {
 											mode={mode}
 										/>
 									)}
+									<PointsInputField
+										field={field}
+										fields={fields}
+										setFields={setFields}
+									/>
 								</fieldset>
 							))}
 						</>
@@ -216,7 +235,9 @@ const PollForm: FC<Props> = ({ poll }) => {
 					<Button
 						variant="submit"
 						state={
-							mode === "mark" || markCorrectAnswer.length === 0
+							mode === "mark" || // can't submit when we are in "mark" mode
+							markCorrectAnswer.length === 0 || // when the user didn't mark a correct answer
+							pointsPerField === 0 // when the user didn't assign any points
 								? "disabled"
 								: undefined
 						}
@@ -224,7 +245,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 						Submit
 					</Button>
 				</section>
-				<PollSettingsContainer poll={poll} />
+				<PollSettingsContainer poll={poll} pollType={pollType} />
 			</Form>
 		</section>
 	);
