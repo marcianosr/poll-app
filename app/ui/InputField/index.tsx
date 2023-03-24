@@ -2,12 +2,15 @@ import classNames from "classnames";
 import styles from "./styles.css";
 
 type InputFieldProps = {
-	type: string;
+	type: "range" | "text" | string; // refactor to input types
 	placeholder: string;
 	name: string;
-	value: string;
+	value: string | number;
 	disabled?: boolean;
 	isValid?: boolean;
+	min?: number;
+	max?: number;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export function links() {
@@ -21,8 +24,13 @@ export const InputField = ({
 	value,
 	disabled,
 	isValid,
+	min,
+	max,
+	onChange,
 }: InputFieldProps) => (
 	<input
+		{...(typeof value === "number" && { min, max })}
+		onChange={onChange}
 		type={type}
 		placeholder={placeholder}
 		name={name}
