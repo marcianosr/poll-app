@@ -6,6 +6,7 @@ import { links as pollSettingsLinks } from "~/admin/components/PollSettingsConta
 import { links as titleLinks } from "~/ui/Title";
 import { links as textLinks } from "~/ui/Text";
 import { links as addAnswerButtonLinks } from "~/admin/components/AddAnswerButton";
+import { links as pointsInputFieldLinks } from "~/admin/components/PointsInputField";
 
 export function links() {
 	return [
@@ -17,5 +18,6 @@ export function links() {
 		...titleLinks(),
 		...textLinks(),
 		...addAnswerButtonLinks(),
+		...pointsInputFieldLinks(),
 	];
 }
