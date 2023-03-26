@@ -73,3 +73,23 @@
 .option > small {
 	flex-basis: 100%;
 }
+
+.option-points-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+/* Missing in storybook currently */
+.option-points {
+	border-top: none;
+	padding: 0.5rem;
+	background-color: var(--secondary-black);
+	text-align: center;
+	font-weight: 900;
+}
+
+.option-points > span,
+.option-points > p {
+	color: var(--text-color);
+	margin: 0;
+}
