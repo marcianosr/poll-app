@@ -22,6 +22,7 @@ export type FirebaseUserFields = {
 		currentStreak: number;
 		seasonStreak: number;
 		correct: number;
+		oldCorrect: number;
 		answeredById: string[];
 	};
 	role: UserRole;
@@ -65,6 +66,7 @@ export const loginOrCreate = async (): Promise<PollAppUser> => {
 			currentStreak: 0,
 			seasonStreak: 0,
 			correct: 0,
+			oldCorrect: 0,
 			answeredById: [],
 		},
 		role: "user",

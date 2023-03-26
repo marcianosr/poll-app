@@ -21,6 +21,7 @@ export type Answer = {
 	value: string;
 	blockType?: BlockType;
 	explanation: Explanation | null;
+	points: number;
 };
 
 export type Explanation = {
