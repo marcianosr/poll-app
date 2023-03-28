@@ -8,6 +8,8 @@ import { Options } from "../../ui/Options";
 import PollAnswerOption from "../PollAnswerOption";
 import { WarningBanner } from "../../ui/WarningBanner";
 import styles from "./styles.css";
+import { Banner } from "~/ui/Banner";
+import { Title } from "~/ui/Title";
 
 export function links() {
 	return [{ rel: "stylesheet", href: styles }];
@@ -28,6 +30,11 @@ export const PollScreen: FC<Props> = ({
 	const { poll } = useLoaderData() as LoaderData;
 	const { user } = useAuth();
 
+	const totalPoints = poll.answers.reduce(
+		(acc: number, answer: any) => acc + answer.points,
+		0
+	);
+
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
 	return (
@@ -36,39 +43,46 @@ export const PollScreen: FC<Props> = ({
 			{!user && <small>Please login to submit your answer.</small>}
 
 			{user && (
-				<Form method="post" className="form">
-					<Options>
-						{currentAnswers.map((answer, idx: number) => (
-							<PollAnswerOption
-								key={answer.id}
-								idx={idx}
-								answer={answer}
-								poll={poll}
-								selectedVotes={selectedVotes}
-								setSelectedVotes={setSelectedVotes}
-								showVotedBy={showVotedBy}
-								getVotesFromAllUsers={getVotesFromAllUsers}
-								user={user}
-							/>
-						))}
-					</Options>
-					<VoteButton poll={poll} selectedVotes={selectedVotes} />
-					<input
-						type="hidden"
-						name="answers"
-						defaultValue={JSON.stringify(currentAnswers)}
-					/>
-					<input
-						type="hidden"
-						name="selectedVotes"
-						defaultValue={JSON.stringify(selectedVotes)}
-					/>
-					<input
-						type="hidden"
-						name="uid"
-						defaultValue={user.firebase.id}
-					/>
-				</Form>
+				<>
+					<Form method="post" className="form">
+						<Banner size="wide">
+							<Title size="md-sm" variant="primary">
+								{totalPoints} points can be earned for this poll
+							</Title>
+						</Banner>
+						<Options>
+							{currentAnswers.map((answer, idx: number) => (
+								<PollAnswerOption
+									key={answer.id}
+									idx={idx}
+									answer={answer}
+									poll={poll}
+									selectedVotes={selectedVotes}
+									setSelectedVotes={setSelectedVotes}
+									showVotedBy={showVotedBy}
+									getVotesFromAllUsers={getVotesFromAllUsers}
+									user={user}
+								/>
+							))}
+						</Options>
+						<VoteButton poll={poll} selectedVotes={selectedVotes} />
+						<input
+							type="hidden"
+							name="answers"
+							defaultValue={JSON.stringify(currentAnswers)}
+						/>
+						<input
+							type="hidden"
+							name="selectedVotes"
+							defaultValue={JSON.stringify(selectedVotes)}
+						/>
+						<input
+							type="hidden"
+							name="uid"
+							defaultValue={user.firebase.id}
+						/>
+					</Form>
+				</>
 			)}
 		</section>
 	);

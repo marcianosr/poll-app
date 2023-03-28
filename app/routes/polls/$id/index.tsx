@@ -74,6 +74,19 @@ const findCurrentStreakLength = (streak: boolean[]) => {
 	return streak.length;
 };
 
+export const PENALTY_SCORE = -1;
+
+const getCorrectPointsForVotedAnswers = (
+	parsedVoted: Voted[],
+	poll: PollData
+) =>
+	parsedVoted.reduce((acc, voted) => {
+		const answer = poll.answers.find(
+			(answer) => answer.id === voted.answerId
+		);
+		return acc + (answer?.points || PENALTY_SCORE);
+	}, 0);
+
 export const action: ActionFunction = async ({ request, params }) => {
 	const formData = await request.formData();
 	const selectedVotes = formData.get("selectedVotes") as string;
@@ -81,9 +94,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const paramId = params.id || "";
 	const parsedVoted = JSON.parse(selectedVotes) as Voted[];
 
-	const polls = (await getPollById(paramId)) as PollData;
+	const poll = (await getPollById(paramId)) as PollData;
 
-	const hasAlreadyVoted = polls.voted.find((voted) => voted.userId === uid);
+	const hasAlreadyVoted = poll.voted.find((voted) => voted.userId === uid);
 
 	if (hasAlreadyVoted) {
 		return {
@@ -92,18 +105,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 		};
 	}
 
-	// const getAmountOfCorrectAnswers = polls.correctAnswers.filter((answer) =>
-	// 	parsedVoted.find((voted) => answer.id === voted.answerId)
-	// ).length;
-
-	const isEveryAnswerCorrect = parsedVoted
-		.map((voted) =>
-			polls.correctAnswers.find((answer) => answer.id === voted.answerId)
-		)
-		.every((answer) => answer);
+	const points = getCorrectPointsForVotedAnswers(parsedVoted, poll);
+	const totalCorrectPoints = points < 0 ? 0 : points;
 
 	await updatePollById(paramId, {
-		voted: [...polls.voted, ...parsedVoted],
+		voted: [...poll.voted, ...parsedVoted],
 	});
 
 	const currentUser = await getUserByID(uid);
@@ -111,8 +117,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	const easterEggsFound = await getEggsByID(uid);
 	const amountOfEggsFound = easterEggsFound?.eggs.length || 0;
-
-	console.log("amountOfEggsFound", amountOfEggsFound);
 
 	const getVotedPollsByUser = pollsStartedByDate
 		.map((poll) =>
@@ -138,9 +142,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 				1 + (currentUser?.polls.seasonStreak + amountOfEggsFound),
 
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
-			correct: isEveryAnswerCorrect
-				? currentUser?.polls.correct + 1
-				: currentUser?.polls.correct,
+			correct: currentUser?.polls.correct + totalCorrectPoints,
+			oldCorrect: currentUser?.polls.correct,
 		},
 		lastPollSubmit: Date.now(),
 	});

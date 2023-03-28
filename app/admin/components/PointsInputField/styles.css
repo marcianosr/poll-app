@@ -1,0 +1,10 @@
+.points-input-field-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.points-input-field {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+}
