@@ -60,6 +60,12 @@ export const Option = ({
 					<Text size="lg" variant="primary" tag="span">
 						{points}
 					</Text>
+					{points === 0 && (
+						<Text size="xs" variant="primary" tag="small">
+							{" "}
+							(-1)
+						</Text>
+					)}
 					<Text size="xs" variant="primary" tag="p">
 						points
 					</Text>
