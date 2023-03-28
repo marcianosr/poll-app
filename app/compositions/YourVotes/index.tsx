@@ -4,6 +4,7 @@ import { Option, links as optionLinks } from "../../ui/Option";
 import { Banner, links as bannerLinks } from "../../ui/Banner";
 import { Title, links as titleLinks } from "../../ui/Title";
 import styles from "./styles.css";
+import { PENALTY_SCORE } from "~/routes/polls/$id";
 
 export type YourVotesProps = {
 	votes: any;
@@ -21,20 +22,20 @@ export function yourVoteStyles() {
 	];
 }
 
-const POINTS_MESSAGE = {
+const POINTS_MESSAGE: Record<number, { icon: string; message: string }> = {
 	0: {
 		icon: "🫠",
 		message:
-			"This time no points are earned, your score being static is confirmed!",
+			"I don't want to sound dramatic, but your total score is quite static!",
 	},
 	1: {
 		icon: "🤷🏻‍♂️",
-		message: "It certainly is a start, that single point you got!",
+		message: "A total score of 1, atleast better than none!",
 	},
 	2: {
 		icon: "😐",
 		message:
-			"These points you earned are now a pair, this is how it goes only fair!",
+			"Don't complain, these points you earned are now a pair, this is how it goes, only fair!",
 	},
 	3: {
 		icon: "😤",
@@ -44,10 +45,10 @@ const POINTS_MESSAGE = {
 	4: {
 		icon: "❤️‍🩹",
 		message:
-			"A double pair of points you can see, it's slightly better than 3!",
+			"4 points, a double pair of points you as can see, it's also slightly better than 3!",
 	},
 	5: {
-		icon: "🤒",
+		icon: "🤔",
 		message:
 			"An average score of 5, this competition is real, so these points are needed to survive!",
 	},
@@ -58,7 +59,8 @@ const POINTS_MESSAGE = {
 	},
 	7: {
 		icon: "🍀",
-		message: "Lucky 7 is the score, do better and you'll get more!",
+		message:
+			"Lucky 7 is the score, sadly the luck ends, because you won't get more!",
 	},
 	8: {
 		icon: "😊",
@@ -76,9 +78,10 @@ const POINTS_MESSAGE = {
 };
 
 export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
-	const points = votes
-		.map((vote: any) => vote.points)
+	const points: number = votes
+		.map((vote: any) => (vote.points === 0 ? PENALTY_SCORE : vote.points))
 		.reduce((a: number, b: number) => a + b, 0);
+	const totalPoints: number = points < 0 ? 0 : points;
 
 	return (
 		<section className="your-votes-block">
@@ -86,9 +89,9 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 				Your votes
 			</Title>
 			<BannerBlock>
-				<Banner size="wide" icon={POINTS_MESSAGE[points].icon}>
+				<Banner size="wide" icon={POINTS_MESSAGE[totalPoints].icon}>
 					<Title size="md" variant="primary">
-						{POINTS_MESSAGE[points].message}
+						{POINTS_MESSAGE[totalPoints].message}
 					</Title>
 				</Banner>
 				<section>
