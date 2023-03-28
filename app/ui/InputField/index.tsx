@@ -10,6 +10,7 @@ type InputFieldProps = {
 	isValid?: boolean;
 	min?: number;
 	max?: number;
+	id?: string;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -26,6 +27,7 @@ export const InputField = ({
 	isValid,
 	min,
 	max,
+	id,
 	onChange,
 }: InputFieldProps) => (
 	<input
@@ -33,6 +35,7 @@ export const InputField = ({
 		onChange={onChange}
 		type={type}
 		placeholder={placeholder}
+		id={id}
 		name={name}
 		defaultValue={value}
 		disabled={disabled}

@@ -22,6 +22,7 @@ export const PointsInputField = ({
 	fields,
 }: PointsInputFieldProps) => {
 	const [points, setPoints] = useState(field.points || 0);
+
 	const pointsPerField = fields
 		.filter((f) => f.id !== field.id)
 		.reduce((acc, f) => acc + f.points, 0);
@@ -47,7 +48,8 @@ export const PointsInputField = ({
 			</Text>
 			<div className="points-input-field">
 				<InputField
-					name="points"
+					name={`points-${field.id}`}
+					id={field.id}
 					placeholder="10"
 					type="range"
 					value={points}
