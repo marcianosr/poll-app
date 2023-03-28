@@ -1,14 +1,15 @@
 import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/admin/components/PollForm";
-import { getPollById, PollData, updatePollById } from "~/utils/polls";
+import { getPollById, PollData, updatePollById, Voted } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
-import { getAdminUser } from "~/utils/user";
+import { getAdminUser, getUserByID, updateUserById } from "~/utils/user";
 import { useAuth } from "~/providers/AuthProvider";
 import { PollCategory } from "~/utils/categories";
 import { Title } from "~/ui/Title";
 import { links as commonStyleLinks } from "../../polls/commonStyleLinks";
 import { links as fieldsetLinks } from "~/admin/components/PollForm";
+import { PENALTY_SCORE } from ".";
 
 export function links() {
 	return [
@@ -61,6 +62,37 @@ export const action: ActionFunction = async ({ request, params }) => {
 		codeBlock,
 		codeSandboxExample,
 		...(status === "open" && { openingTime: Date.now() }),
+	});
+
+	const pollData = await getPollById(params.id || "");
+
+	const pointsByUserId = pollData?.voted.reduce(
+		(acc: Record<string, number>, voted: Voted) => {
+			const userId = voted.userId;
+			const answer = pollData?.answers.find(
+				(poll: PollData) => poll.id === voted.answerId
+			);
+
+			const points = answer ? answer.points : 0;
+
+			return {
+				...acc,
+				[userId]: (acc[userId] || PENALTY_SCORE) + points,
+			};
+		},
+		{}
+	);
+
+	// Correct user points when needed
+	Object.entries(pointsByUserId).forEach(async ([userId, points]) => {
+		const currentUser = await getUserByID(userId);
+
+		await updateUserById({
+			id: userId,
+			polls: {
+				correct: currentUser?.polls.oldCorrect + points,
+			},
+		});
 	});
 
 	return {
