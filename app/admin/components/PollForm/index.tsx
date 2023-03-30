@@ -33,7 +33,7 @@ export type CorrectAnswerType = {
 };
 export type Mode = "edit" | "mark";
 export type Errors = {
-	ok: boolean;
+	[key: string]: boolean;
 };
 type Data =
 	| ({ ok: boolean } & PollData)
@@ -65,11 +65,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 			points: 0,
 		},
 	]);
+
 	const pointsPerField = fields.reduce((acc, f) => acc + f.points, 0);
 
 	const [markCorrectAnswer, setMarkCorrectAnswer] = useState<
 		CorrectAnswerType[]
-	>((poll && (poll?.correctAnswers as any)) || []);
+	>((poll && poll?.correctAnswers) || []);
 
 	const [pollType, setPollType] = useState<"radio" | "checkbox">(
 		poll?.type || markCorrectAnswer.length > 1 ? "checkbox" : "radio"

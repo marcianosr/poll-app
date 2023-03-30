@@ -55,22 +55,31 @@ export const Option = ({
 				</Text>
 				{children}
 			</label>
-			{typeof points === "number" && (
-				<div className="option-points">
-					<Text size="lg" variant="primary" tag="span">
-						{points}
-					</Text>
-					{points === 0 && (
-						<Text size="xs" variant="primary" tag="small">
-							{" "}
-							(-1)
-						</Text>
-					)}
-					<Text size="xs" variant="primary" tag="p">
-						points
-					</Text>
-				</div>
-			)}
 		</>
 	);
 };
+
+type OptionWithPoints = {
+	points: number;
+};
+
+export const OptionWithPoints = ({ points }: OptionWithPoints) => (
+	<>
+		{typeof points === "number" && (
+			<div className="option-points">
+				<Text size="lg" variant="primary" tag="span">
+					{points}
+				</Text>
+				{points === 0 && (
+					<Text size="xs" variant="primary" tag="small">
+						{" "}
+						(-1)
+					</Text>
+				)}
+				<Text size="xs" variant="primary" tag="p">
+					points
+				</Text>
+			</div>
+		)}
+	</>
+);

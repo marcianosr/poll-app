@@ -25,7 +25,7 @@ export const PointsInputField = ({
 
 	const pointsPerField = fields
 		.filter((f) => f.id !== field.id)
-		.reduce((acc, f) => acc + f.points, 0);
+		.reduce((acc, f) => acc + (f.points || 0), 0);
 	const availablePoints = MAX_AMOUNT_OF_POINTS - pointsPerField;
 
 	useEffect(() => {

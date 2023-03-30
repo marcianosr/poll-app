@@ -1,10 +1,16 @@
 import { BannerBlock, links as bannerBlockLinks } from "../BannerBlock";
 import { Options, links as optionsLinks } from "../../ui/Options";
-import { Option, links as optionLinks } from "../../ui/Option";
+import {
+	Option,
+	links as optionLinks,
+	OptionWithPoints,
+} from "../../ui/Option";
 import { Banner, links as bannerLinks } from "../../ui/Banner";
 import { Title, links as titleLinks } from "../../ui/Title";
 import styles from "./styles.css";
 import { PENALTY_SCORE } from "~/routes/polls/$id";
+import { Answer } from "~/utils/polls";
+import { Fragment } from "react";
 
 export type YourVotesProps = {
 	votes: any;
@@ -35,7 +41,7 @@ const POINTS_MESSAGE: Record<number, { icon: string; message: string }> = {
 	2: {
 		icon: "😐",
 		message:
-			"Don't complain, these points you earned are now a pair, this is how it goes, only fair!",
+			"Don't complain, these points you earned are a pair, this is how it goes, only fair!",
 	},
 	3: {
 		icon: "😤",
@@ -60,11 +66,12 @@ const POINTS_MESSAGE: Record<number, { icon: string; message: string }> = {
 	7: {
 		icon: "🍀",
 		message:
-			"Lucky 7 is the score, sadly the luck ends, because you won't get more!",
+			"7 is the lucky score, but your luck ends here because you won't get more!",
 	},
 	8: {
 		icon: "😊",
-		message: "The score is 8, a bigger total score you will update!",
+		message:
+			"The score is 8, a significant bigger total score for you my app will update!",
 	},
 	9: {
 		icon: "🎉",
@@ -73,15 +80,21 @@ const POINTS_MESSAGE: Record<number, { icon: string; message: string }> = {
 	10: {
 		icon: "🤩",
 		message:
-			"Maximum score, a boot you'll put, to score and kick your colleagues butt!",
+			"A boot you'll put, with that huge score, to kick your colleagues butt!",
 	},
 };
 
 export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
-	const points: number = votes
-		.map((vote: any) => (vote.points === 0 ? PENALTY_SCORE : vote.points))
-		.reduce((a: number, b: number) => a + b, 0);
-	const totalPoints: number = points < 0 ? 0 : points;
+	const totalPointsScored: number = votes
+		.map((answer: Answer) =>
+			!answer.points || answer.points === 0
+				? PENALTY_SCORE
+				: answer.points || 0
+		) // when answer.points is not found (read: not set) in the DB, it should be 0
+		.reduce((a: number, b: number) => a + b, 0); // this variable is the result of scored points minus the penalty points
+
+	const totalPointsLeft: number =
+		totalPointsScored < 0 ? 0 : totalPointsScored; // this is the result of the score, which can never go below 0
 
 	return (
 		<section className="your-votes-block">
@@ -89,24 +102,26 @@ export const YourVotes = ({ votes, getCorrectAnswers }: YourVotesProps) => {
 				Your votes
 			</Title>
 			<BannerBlock>
-				<Banner size="wide" icon={POINTS_MESSAGE[totalPoints].icon}>
+				<Banner size="wide" icon={POINTS_MESSAGE[totalPointsLeft].icon}>
 					<Title size="md" variant="primary">
-						{POINTS_MESSAGE[totalPoints].message}
+						{POINTS_MESSAGE[totalPointsLeft].message}
 					</Title>
 				</Banner>
 				<section>
 					<Options>
-						{votes.map((vote: any) => (
-							<Option
-								key={vote.id}
-								answer={vote}
-								points={vote.points}
-								variant={
-									getCorrectAnswers(vote?.id || "")
-										? "correct"
-										: "wrong"
-								}
-							/>
+						{votes.map((answer: Answer) => (
+							<Fragment key={answer.id}>
+								<Option
+									answer={answer}
+									points={answer.points || 0}
+									variant={
+										getCorrectAnswers(answer?.id || "")
+											? "correct"
+											: "wrong"
+									}
+								/>
+								<OptionWithPoints points={answer.points || 0} />
+							</Fragment>
 						))}
 					</Options>
 				</section>
