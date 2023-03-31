@@ -30,10 +30,9 @@ export const PollScreen: FC<Props> = ({
 	const { poll } = useLoaderData() as LoaderData;
 	const { user } = useAuth();
 
-	const totalPoints = poll.answers.reduce(
-		(acc: number, answer: any) => acc + answer.points,
-		0
-	);
+	const totalPoints = poll.answers.reduce((acc: number, answer: any) => {
+		return acc + (answer.points || 0);
+	}, 0);
 
 	const [selectedVotes, setSelectedVotes] = useState<Voted[]>([]);
 
