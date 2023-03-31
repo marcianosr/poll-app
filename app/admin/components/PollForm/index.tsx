@@ -15,6 +15,7 @@ import styles from "./styles.css";
 import { AddExplanationFieldButton } from "../AddExplanationFieldButton";
 import { ExplanationSettingsContainer } from "../ExplanationSettingsContainer";
 import { PointsInputField } from "../PointsInputField";
+import { Fieldset } from "~/ui/Fieldset";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -121,7 +122,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	return (
 		<section>
-			{pollType}
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
 					<TextAreaField
@@ -154,18 +154,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 							<AddAnswerButton addField={addField} />
 
 							{fields.map((field, index) => (
-								<fieldset
-									className="fieldset-container"
+								<Fieldset
 									key={field.id}
+									title={`
+								Answer ${index + 1}
+								`}
 								>
-									<Text
-										size="sm"
-										variant="primary"
-										tag="small"
-									>
-										Answer {index + 1}
-									</Text>
-
 									<AnswerSettingsContainer
 										addField={addField}
 										field={field}
@@ -197,7 +191,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 										fields={fields}
 										setFields={setFields}
 									/>
-								</fieldset>
+								</Fieldset>
 							))}
 						</>
 					</>
