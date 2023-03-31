@@ -6,12 +6,10 @@ import type { Explanation, InputTypes, PollData } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
-import { Text } from "../../../ui/Text";
 import { Button } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 import { PollSettingsContainer } from "../PollSettingsContainer";
 import { AddAnswerButton } from "../AddAnswerButton";
-import styles from "./styles.css";
 import { AddExplanationFieldButton } from "../AddExplanationFieldButton";
 import { ExplanationSettingsContainer } from "../ExplanationSettingsContainer";
 import { PointsInputField } from "../PointsInputField";
@@ -43,10 +41,6 @@ type Data =
 type Props = {
 	poll?: PollData;
 };
-
-export function links() {
-	return [{ rel: "stylesheet", href: styles }];
-}
 
 const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
