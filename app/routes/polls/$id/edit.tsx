@@ -77,7 +77,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 			return {
 				...acc,
-				[userId]: (acc[userId] || PENALTY_SCORE) + points,
+				[userId]: (acc[userId] || 0) + points,
 			};
 		},
 		{}
