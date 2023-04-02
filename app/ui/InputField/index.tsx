@@ -39,7 +39,7 @@ export const InputField = ({
 		name={name}
 		defaultValue={value}
 		disabled={disabled}
-		className={classNames({
+		className={classNames("input-field-default", {
 			"input-field-disabled": disabled,
 			"input-field-valid": isValid,
 		})}

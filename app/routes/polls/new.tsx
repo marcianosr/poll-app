@@ -11,10 +11,21 @@ import {
 import { PollCategory } from "~/utils/categories";
 import { Title } from "~/ui/Title";
 import { links as commonStyleLinks } from "../polls/commonStyleLinks";
+import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
+import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
+import { links as addAnswerButtonLinks } from "~/admin/components/AddAnswerButton";
+import { links as pointsInputFieldLinks } from "~/admin/components/PointsInputField";
 import styles from "~/styles/new-poll.css";
 
 export function links() {
-	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
+	return [
+		...commonStyleLinks(),
+		...answerSettingsContainerLinks(),
+		...pollSettingsLinks(),
+		...addAnswerButtonLinks(),
+		...pointsInputFieldLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 export const action: ActionFunction = async ({ request }) => {

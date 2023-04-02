@@ -112,6 +112,7 @@ export default function AllPolls() {
 					</Form>
 					<Filters setRenderedPolls={setRenderedPolls} />
 					<Link to="/polls/new">Create new poll</Link>
+					<Link to="/channels/new">Create new channel</Link>
 					<PollOverview polls={renderedPolls} />
 				</>
 			) : (
