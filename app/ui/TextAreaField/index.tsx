@@ -37,7 +37,7 @@ export const TextAreaField = ({
 		disabled={disabled}
 		onKeyDown={onKeyDown}
 		onChange={onChange}
-		className={classNames({
+		className={classNames("text-area-field-default", {
 			"text-area-field-disabled": disabled,
 			"text-area-field-valid": isValid,
 		})}

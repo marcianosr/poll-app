@@ -7,3 +7,13 @@
 	border: 3px solid var(--correct);
 	color: var(--white);
 }
+
+.input-field-default {
+	background: var(--primary-black);
+	border: 1px solid var(--tertiary-black);
+	color: var(--white);
+}
+
+.input-field-default:focus {
+	color: var(--white);
+}

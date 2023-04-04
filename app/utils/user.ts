@@ -13,6 +13,8 @@ import { FirebaseUser, FirebaseUserFields } from "~/logic/auth";
 import { UpdateScore } from "~/routes/polls/$id";
 import { firebaseConfig } from "~/utils/config.client";
 
+type UserRole = "admin" | "user" | "moderator";
+
 export const getUserByID = async (id: string) => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -79,14 +81,14 @@ export const updateUserById = async <T extends UpdateScore>(payload: T) => {
 	return snapshot;
 };
 
-export const getAdminUser = async (email: string) => {
+export const getUserByRole = async (email: string, role: UserRole) => {
 	const app =
 		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
 	const db = getFirestore(app);
 
 	const ref = collection(db, "users");
-	const getQueryAdminUser = query(ref, where("role", "==", "admin"));
+	const getQueryAdminUser = query(ref, where("role", "==", role));
 
 	const querySnapshot = await getDocs(getQueryAdminUser);
 

@@ -1,23 +1,17 @@
 import { links as textFieldLinks } from "../../ui/TextAreaField";
 import { links as inputFieldLinks } from "../../ui/InputField";
 import { links as buttonLinks } from "../../ui/Button";
-import { links as answerSettingsContainerLinks } from "~/admin/components/AnswersSettingsContainer";
-import { links as pollSettingsLinks } from "~/admin/components/PollSettingsContainer";
 import { links as titleLinks } from "~/ui/Title";
 import { links as textLinks } from "~/ui/Text";
-import { links as addAnswerButtonLinks } from "~/admin/components/AddAnswerButton";
-import { links as pointsInputFieldLinks } from "~/admin/components/PointsInputField";
+import { links as fieldsetLinks } from "~/ui/Fieldset";
 
 export function links() {
 	return [
 		...inputFieldLinks(),
 		...textFieldLinks(),
+		...fieldsetLinks(),
 		...buttonLinks(),
-		...answerSettingsContainerLinks(),
-		...pollSettingsLinks(),
 		...titleLinks(),
 		...textLinks(),
-		...addAnswerButtonLinks(),
-		...pointsInputFieldLinks(),
 	];
 }

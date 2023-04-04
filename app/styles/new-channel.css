@@ -1,0 +1,125 @@
+.new-channel-page {
+	--scroll-container-height: 700px;
+
+	color: var(--theme-color);
+	width: 1100px;
+	margin: 0 auto;
+	margin-top: 1rem;
+}
+
+.new-channel-panel {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+.new-channel-input-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.new-channel-poll-queue {
+	border: 1px solid var(--pewter);
+	min-height: 100px;
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	justify-content: center;
+	user-select: none;
+}
+
+.list-sortable {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	cursor: grab;
+	overflow: scroll;
+	max-height: var(--scroll-container-height);
+}
+
+.new-channel-poll-queue-empty {
+	border: 1px dashed var(--pewter);
+	min-height: 100px;
+}
+
+.new-channel-scroll-container {
+	max-height: 700px;
+	overflow-y: auto;
+}
+
+.new-channel-poll-list {
+	padding: 0;
+	list-style: none;
+	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	font-size: 0.75rem;
+	font-weight: 900;
+	padding: 1rem;
+}
+
+.new-channel-poll-list-item {
+	background: var(--tertiary-black);
+	padding: 1rem;
+	color: var(--white);
+	gap: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.new-channel-poll-list-item-category {
+	color: var(--theme-color);
+	background: var(--theme-color-20);
+	padding: 0.5rem;
+}
+
+.new-channel-poll-list-question {
+	flex: 1;
+	font-weight: 500;
+}
+
+.new-channel-poll-category-list {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin-top: 0;
+}
+
+.new-channel-queue-poll-button {
+	border: 0;
+	cursor: pointer;
+	text-align: left;
+	color: var(--white);
+	height: 100%;
+	width: 100%;
+	font-size: 1rem;
+	background-color: transparent;
+}
+
+.new-channel-queue-poll-idx {
+	font-weight: 900;
+	color: var(--pewter);
+}
+
+.new-channel-poll-queue-content {
+	gap: 1rem;
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+	padding: 0;
+}
+
+.new-channel-secondary-text {
+	color: var(--pewter);
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
+.new-channel-queue-poll-selected {
+	opacity: 0.25;
+}
+
+.new-channel-queue-poll-selected .new-channel-queue-poll-button {
+	cursor: not-allowed;
+}

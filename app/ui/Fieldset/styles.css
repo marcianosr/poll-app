@@ -1,0 +1,15 @@
+.fieldset-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	padding: 1rem;
+	border-color: var(--tertiary-black);
+	border
+}
+
+.fieldset-legend {
+	padding: 0 1rem;
+	font-weight: 900;
+	font-size: 1.5rem;
+	color: var(--theme-color);
+}

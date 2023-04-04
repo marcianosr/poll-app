@@ -1,7 +1,12 @@
 :root {
-	--primary-black: #212424;
+	/* --primary-black: #212424;
 	--secondary-black: #2a2a2a;
-	--tertiary-black: #313131;
+	--tertiary-black: #313131; */
+
+	--primary-black: #1e1e1e;
+	--secondary-black: #252525;
+	--tertiary-black: #2e2e2e;
+
 	--text-color: #e1e1e1;
 	--primary-border-color: #cecdcc;
 
@@ -14,7 +19,7 @@
 	--pewter: #aeaeae;
 	--viridian: #40826d;
 	--indigo: #4b0082;
-	--white: "#ffffff";
+	--white: #ffffff;
 	--light-yellow: rgb(227, 216, 196);
 
 	--saffron-tint: #6a5000;
@@ -87,6 +92,7 @@
 	--disabled: 0.5;
 
 	--max-page-width: 1320px;
+	--default-border-radius: 0.5rem;
 }
 
 .javascript,
@@ -188,8 +194,13 @@ a {
 }
 
 input,
+fieldset,
 textarea,
 select {
-	border-radius: 0.5rem;
+	border-radius: var(--default-border-radius);
 	padding: 0.7rem;
+}
+
+label {
+	cursor: pointer;
 }

@@ -6,15 +6,14 @@ import type { Explanation, InputTypes, PollData } from "~/utils/polls";
 import { useAuth } from "~/providers/AuthProvider";
 import { TextAreaField } from "../../../ui/TextAreaField";
 import { InputField } from "../../../ui/InputField";
-import { Text } from "../../../ui/Text";
 import { Button } from "~/ui/Button";
 import { AnswerSettingsContainer } from "../AnswersSettingsContainer";
 import { PollSettingsContainer } from "../PollSettingsContainer";
 import { AddAnswerButton } from "../AddAnswerButton";
-import styles from "./styles.css";
 import { AddExplanationFieldButton } from "../AddExplanationFieldButton";
 import { ExplanationSettingsContainer } from "../ExplanationSettingsContainer";
 import { PointsInputField } from "../PointsInputField";
+import { Fieldset } from "~/ui/Fieldset";
 
 export type BlockType = "text" | "code";
 export type NewPollType = {
@@ -42,10 +41,6 @@ type Data =
 type Props = {
 	poll?: PollData;
 };
-
-export function links() {
-	return [{ rel: "stylesheet", href: styles }];
-}
 
 const PollForm: FC<Props> = ({ poll }) => {
 	const action: Data = useActionData();
@@ -121,7 +116,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 
 	return (
 		<section>
-			{pollType}
 			<Form method="post" className="form">
 				<section className="questions-and-answers">
 					<TextAreaField
@@ -154,18 +148,12 @@ const PollForm: FC<Props> = ({ poll }) => {
 							<AddAnswerButton addField={addField} />
 
 							{fields.map((field, index) => (
-								<fieldset
-									className="fieldset-container"
+								<Fieldset
 									key={field.id}
+									title={`
+								Answer ${index + 1}
+								`}
 								>
-									<Text
-										size="sm"
-										variant="primary"
-										tag="small"
-									>
-										Answer {index + 1}
-									</Text>
-
 									<AnswerSettingsContainer
 										addField={addField}
 										field={field}
@@ -197,7 +185,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 										fields={fields}
 										setFields={setFields}
 									/>
-								</fieldset>
+								</Fieldset>
 							))}
 						</>
 					</>
