@@ -29,7 +29,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const uid = formData.get("uid") as string;
 
 	const channelData: Channel = {
-		name: channelName,
+		name: channelName.toLocaleLowerCase(),
 		pollQueue: pollIds,
 		moderatorsIds: [uid],
 		participantsIds: [uid],
