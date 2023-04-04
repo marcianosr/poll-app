@@ -1,7 +1,7 @@
 .new-channel-page {
 	--scroll-container-height: 700px;
 
-	color: var(--theme-color);
+	color: var(--white);
 	width: 1100px;
 	margin: 0 auto;
 	margin-top: 1rem;

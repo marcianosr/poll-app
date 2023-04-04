@@ -19,6 +19,13 @@ export type Channel = {
 	moderatorsIds: string[];
 };
 
+// Refactor later to a single Channel type.
+// This is mandaroty for now because when creating a channel, the full poll data will be used to create the pollQueue
+// But when getting a channel, only the poll ids will be used
+export type FirebaseChannel = Pick<Channel, "name" | "participantsIds"> & {
+	pollQueue: string[];
+};
+
 export async function createChannel(data: Channel) {
 	const newChannelRef = await addDoc(collection(db, "channels"), data);
 

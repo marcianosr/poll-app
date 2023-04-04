@@ -11,7 +11,7 @@ export function links() {
 }
 
 export const Question: FC<Props> = ({ title }) => (
-	<Title size="xl" variant="primary">
+	<Title size="lg" variant="primary">
 		{title}
 	</Title>
 );

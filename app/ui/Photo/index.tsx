@@ -26,14 +26,19 @@ export const Photo = ({
 	photo,
 }: PropsWithChildren<PhotoProps>) => {
 	const styles = classNames("photo", `photo-${variant}`, `photo-${size}`);
+	const photoSize = {
+		small: 30,
+		medium: 50,
+		large: 100,
+	};
 
 	return (
 		<img
 			className={styles}
 			src={photo.url}
 			alt={photo.alt || ""}
-			width={30}
-			height={30}
+			width={photoSize[size]}
+			height={photoSize[size]}
 		/>
 	);
 };
