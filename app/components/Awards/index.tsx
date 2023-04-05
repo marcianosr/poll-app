@@ -241,6 +241,20 @@ export const awards = (users: any, polls: PollData[]) => [
 			),
 	},
 	{
+		name: "Git Contributor",
+		type: "award",
+		description: "Participated in Git polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "git"),
+	},
+	{
+		name: "Git GOAT",
+		type: "award",
+		description: "Participated in Git polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "git"),
+	},
+	{
 		name: "Speed Demon",
 		type: "award",
 		description:
