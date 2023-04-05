@@ -52,7 +52,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
 	const newChannel: { id: string } = await createChannel(channelData);
 
-	return redirect(`/channels/${newChannel.id}`);
+	return redirect(`/channels/${channelData.name}`);
 };
 
 export const loader: LoaderFunction = async ({ params, request }) => {
@@ -119,6 +119,7 @@ export default function NewChannel() {
 								>
 									<Button
 										variant="secondary"
+										type="button"
 										state={
 											activeCategory === category
 												? "active"

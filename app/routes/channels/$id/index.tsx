@@ -10,11 +10,17 @@ import { useLoaderData } from "@remix-run/react";
 import { getPollById, PollData } from "~/utils/polls";
 import { PollOverview } from "~/admin/components/PollOverview";
 import { getUserByID } from "~/utils/user";
-import { Photo } from "~/ui/Photo";
+import { Photo, links as photoLinks } from "~/ui/Photo";
 import { User } from "firebase/auth";
+import { PhotoList, links as photoLinksStyles } from "~/ui/PhotoList";
 
 export function links() {
-	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
+	return [
+		...commonStyleLinks(),
+		...photoLinksStyles(),
+		...photoLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -62,12 +68,14 @@ export default function NewChannel() {
 					<Title size="md" variant="primary" tag="h2">
 						Participants
 					</Title>
-					{participants.map((participant: User) => (
-						<Photo
-							size="large"
-							photo={{ url: participant.photoURL || "" }}
-						/>
-					))}
+					<PhotoList
+						voters={participants.map((participant: User) => ({
+							photo: {
+								url: participant.photoURL || "",
+								displayName: participant.displayName || "",
+							},
+						}))}
+					/>
 				</section>
 			</section>
 		)
