@@ -250,7 +250,7 @@ export const awards = (users: any, polls: PollData[]) => [
 	{
 		name: "Git GOAT",
 		type: "award",
-		description: "Have the most correct Git answers",
+		description: "Participated in Git polls the most",
 		requirements: (users: any) =>
 			getUserWithMostCorrectPollsByCategory(users, polls, "git"),
 	},
