@@ -3,14 +3,19 @@ import { Link, useLoaderData } from "@remix-run/react";
 import PollForm, { Errors } from "~/admin/components/PollForm";
 import { getPollById, PollData, updatePollById, Voted } from "~/utils/polls";
 import styles from "~/styles/new-poll.css";
-import { getAdminUser, getUserByID, updateUserById } from "~/utils/user";
+import { getUserByID, updateUserById } from "~/utils/user";
 import { useAuth } from "~/providers/AuthProvider";
 import { PollCategory } from "~/utils/categories";
 import { Title } from "~/ui/Title";
 import { links as commonStyleLinks } from "../../polls/commonStyleLinks";
+import { links as commonCRUDPollLinks } from "../../polls/commonCRUDPollLinks";
 
 export function links() {
-	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
+	return [
+		...commonStyleLinks(),
+		...commonCRUDPollLinks(),
+		{ rel: "stylesheet", href: styles },
+	];
 }
 export const action: ActionFunction = async ({ request, params }) => {
 	let formData = await request.formData();
