@@ -19,14 +19,10 @@ const VoteButton = ({ poll, selectedVotes }: Props) => {
 				transition.state === "loading"
 			}
 		>
-			<div style={{ display: "flex", justifyContent: "center" }}>
-				{transition.state === "submitting" &&
-					poll.category === "css" && (
-						<EggConditional category="css" id="4" size="xs" />
-					)}
+			<div>
 				{transition.state === "submitting" ||
 				transition.state === "loading"
-					? "Submitting... Take your easter egg! NEENER NEENER!"
+					? "Submitting... No button mashing! NEENER NEENER!"
 					: "Submit"}
 			</div>
 		</button>

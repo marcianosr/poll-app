@@ -1,24 +1,15 @@
 import styles from "./styles.css";
 import { Text } from "~/ui/Text";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { PollStatisticsContainer } from "~/components/PollStatistics/Container";
 import { links as pollStatisticsLinks } from "../PollStatistics";
 import { Title } from "~/ui/Title";
-import { links as eggLinks } from "~/seasonal/Egg";
-import { EggConditional } from "~/seasonal/Egg/EggContainer";
-import { LoaderData } from "~/routes/polls/$id";
 
 export function links() {
-	return [
-		...pollStatisticsLinks(),
-		...eggLinks(),
-		{ rel: "stylesheet", href: styles },
-	];
+	return [...pollStatisticsLinks(), { rel: "stylesheet", href: styles }];
 }
 
 export const Footer = () => {
-	const { poll } = useLoaderData() as LoaderData;
-
 	return (
 		<footer className="footer">
 			<section className="footer-container">
@@ -49,14 +40,7 @@ export const Footer = () => {
 			</section>
 			<section>
 				<Text size="xs" variant="primary" tag="small">
-					A web app build with{" "}
-					<EggConditional
-						{...(poll.category === "html" && { category: "html" })}
-						fallbackValue="❤️"
-						id="1"
-						size="xs"
-					/>{" "}
-					&{" "}
+					A web app build with ❤️ &{" "}
 					<a href="https://remix.run/" target="_blank">
 						Remix
 					</a>{" "}

@@ -2,7 +2,6 @@ import { links as optionsLinks } from "../../ui/Options";
 import { links as photoLinks } from "../../ui/Photo";
 import { links as photoListLinks } from "../../ui/PhotoList";
 import { Title } from "../../ui/Title";
-import { Text } from "../../ui/Text";
 import { Options } from "../../ui/Options";
 import { Option } from "../../ui/Option";
 import { OptionVotes, links as optionVotesLinks } from "../../ui/OptionVotes";
@@ -15,7 +14,6 @@ import {
 	links as optionExplanationLinks,
 } from "../OptionExplanation";
 import { useState } from "react";
-import { EggConditional } from "~/seasonal/Egg/EggContainer";
 
 export type ResultsListProps = {
 	currentAnswers: Answer[];
@@ -40,7 +38,6 @@ export const ResultsList = (props: ResultsListProps) => {
 	const [showTooltip, setShowTooltip] = useState<string | null>(null);
 	const openTooltip = (id: string) => setShowTooltip(id);
 	const closeTooltip = () => setShowTooltip(null);
-	const { poll } = useLoaderData() as LoaderData;
 
 	return (
 		<>
@@ -49,22 +46,8 @@ export const ResultsList = (props: ResultsListProps) => {
 			</Title>
 			<section className="results">
 				<Title size="md" tag="h2" variant="primary">
-					{responses === 5 && poll.category === "javascript" && (
-						<EggConditional
-							{...(poll.category === "javascript" && {
-								category: "js",
-							})}
-							id="3"
-							size="xs"
-						/>
-					)}
 					🎉 {responses} votes!
 				</Title>
-				{poll.category === "javascript" && (
-					<Text size="xs" tag="small" variant="primary">
-						FINDINGEGGSISFORWHATYOUSTRIVEFINDONEWHENRESPONSESHITFIVE
-					</Text>
-				)}
 				<section>
 					<Options {...props}>
 						{props.currentAnswers.map((answer: Answer) => {

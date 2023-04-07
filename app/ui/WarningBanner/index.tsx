@@ -10,21 +10,8 @@ type WarningBannerProps = {
 };
 
 export const WarningBanner = ({ pollType }: WarningBannerProps) => {
-	const { poll } = useLoaderData() as LoaderData;
-
 	return (
-		<Banner
-			size="wide"
-			icon={
-				<EggConditional
-					{...(poll.category === "html" && { category: "html" })}
-					fallbackValue="🚨"
-					id="2"
-					size="xs"
-				/>
-			}
-			variant="warning"
-		>
+		<Banner size="wide" icon="🚨" variant="warning">
 			{pollType === "radio" ? (
 				<Title size="md" variant="primary" tag="span">
 					Be careful! Only 1 answer is correct

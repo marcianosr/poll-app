@@ -37,11 +37,6 @@ import { Footer, links as footerLinks } from "~/components/Footer";
 import { Sidebar } from "~/components/Sidebar";
 import { links as profileCardLinks } from "../../../ui/ProfileCard";
 import { links as popupStyles } from "../../../ui/Popup";
-import {
-	KeyboardPuzzle,
-	links as keyboardPuzzleStyles,
-} from "~/seasonal/components/KeyboardPuzzle";
-import { getEggsByID, getEggsData } from "~/utils/easter";
 
 export type ScreenState = "poll" | "results";
 
@@ -54,7 +49,6 @@ export function links() {
 		...buttonLinks(),
 		...footerLinks(),
 		...profileCardLinks(),
-		...keyboardPuzzleStyles(),
 		...popupStyles(),
 
 		...codeBlockLinks(),
@@ -115,9 +109,6 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const currentUser = await getUserByID(uid);
 	const pollsStartedByDate = await getPollsByOpeningTime();
 
-	const easterEggsFound = await getEggsByID(uid);
-	const amountOfEggsFound = easterEggsFound?.eggs.length || 0;
-
 	const getVotedPollsByUser = pollsStartedByDate
 		.map((poll) =>
 			poll.voted
@@ -138,9 +129,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 		polls: {
 			answeredById: [...currentUser?.polls.answeredById, paramId],
 			total: currentUser?.polls.total + 1,
-			seasonStreak:
-				1 + (currentUser?.polls.seasonStreak + amountOfEggsFound),
-
+			seasonStreak: 0,
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: currentUser?.polls.correct + totalCorrectPoints,
 			oldCorrect: currentUser?.polls.correct,
@@ -163,16 +152,14 @@ export type LoaderData = {
 	users: any; // !TODO: type this
 	openedPollNumber: number;
 	seasons: SeasonAwardData[];
-	easter: any;
 };
 
-export const loader: LoaderFunction = async ({ params, ...rest }) => {
+export const loader: LoaderFunction = async ({ params }) => {
 	const data = await getPollById(params.id || "");
 	const polls = await getAllPolls();
 	const users = await getUsers();
 	const amountOfClosedPolls = await getAmountOfClosedPolls();
 	const seasons = await getAllSeasons();
-	const easter = await getEggsData();
 	const openedPollNumber = amountOfClosedPolls + 1; // ! Closed polls + current open poll
 
 	const getUserIdsByVote = data?.voted
@@ -188,7 +175,6 @@ export const loader: LoaderFunction = async ({ params, ...rest }) => {
 		openedPollNumber,
 		polls,
 		seasons,
-		easter,
 	};
 };
 
@@ -323,7 +309,6 @@ export default function PollDetail() {
 					/>
 				</section>
 			</div>
-			<KeyboardPuzzle />
 			<Footer />
 		</section>
 	);

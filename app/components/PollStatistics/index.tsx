@@ -4,9 +4,6 @@ import { getTotalPollsByCategory } from "./Container";
 import styles from "./styles.css";
 import { Text } from "~/ui/Text";
 import { Title } from "~/ui/Title";
-import { useLoaderData } from "@remix-run/react";
-import { LoaderData } from "~/routes/polls/$id";
-import { EggConditional } from "~/seasonal/Egg/EggContainer";
 
 type Props = { polls: PollData[] };
 
@@ -15,7 +12,6 @@ export function links() {
 }
 
 export const PollStatistics: FC<Props> = ({ polls }) => {
-	const { poll } = useLoaderData() as LoaderData;
 	return (
 		<>
 			<Title size="sm" variant="primary" tag="h3">
@@ -29,22 +25,9 @@ export const PollStatistics: FC<Props> = ({ polls }) => {
 						</li>
 					)
 				)}
-				{poll.category === "css" && (
-					<li className="categories-list-item css">
-						Eggs (<EggConditional category="css" id="5" size="xs" />
-						)
-					</li>
-				)}
 				<hr />
 				<Text size="lg" variant="rainbow" tag="span">
-					{polls.length} total p
-					<EggConditional
-						{...(poll.category === "css" && { category: "css" })}
-						fallbackValue="o"
-						id="2"
-						size="xs"
-					/>
-					lls
+					{polls.length} total polls
 				</Text>
 			</ul>
 		</>

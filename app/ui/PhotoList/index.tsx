@@ -1,12 +1,8 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import classNames from "classnames";
 import { Photo, PhotoSize } from "../../ui/Photo";
 import { VoterType } from "../OptionVotes";
-import { useLoaderData } from "@remix-run/react";
-import { LoaderData } from "~/routes/polls/$id";
-import { EggConditional } from "~/seasonal/Egg/EggContainer";
-import { ToolTip } from "../Tooltip";
 
 type PhotoListVariant = "chips" | "default";
 
@@ -42,10 +38,6 @@ export const PhotoList = ({
 		},
 	};
 
-	const [revealEgg, setRevealEgg] = useState(false);
-	const [showTooltip, setShowTooltip] = useState(false);
-	const { poll } = useLoaderData() as LoaderData;
-
 	return (
 		<ul className={styles}>
 			{voters.map((voter) => (
@@ -54,21 +46,6 @@ export const PhotoList = ({
 						style: { position: "relative" },
 					})}
 					key={voter.photo.url}
-					onMouseEnter={(e) => {
-						if (voter.photo.alt === "Ronald Aarnoutse") {
-							setShowTooltip(true);
-						}
-					}}
-					onMouseLeave={(e) => {
-						if (voter.photo.alt === "Ronald Aarnoutse") {
-							setShowTooltip(false);
-						}
-					}}
-					onClick={(e) => {
-						if (voter.photo.alt === "Ronald Aarnoutse") {
-							setRevealEgg(true);
-						}
-					}}
 				>
 					<Photo
 						photo={{
@@ -77,34 +54,6 @@ export const PhotoList = ({
 						}}
 						{...variantSettings[variant || "default"]}
 					/>
-					{poll.category === "javascript" &&
-						showTooltip &&
-						voter.photo.alt === "Ronald Aarnoutse" && (
-							<div
-								style={{
-									position: "absolute",
-									top: "-50%",
-									left: "-250%",
-								}}
-							>
-								<ToolTip text="HEY! THAT TICKLES! KNOCK IT OFF!" />
-							</div>
-						)}
-
-					{poll.category === "javascript" &&
-						revealEgg &&
-						voter.photo.alt === "Ronald Aarnoutse" && (
-							<div style={{ position: "absolute" }}>
-								<h1>hi</h1>
-								<EggConditional
-									{...(poll.category === "javascript" && {
-										category: "js",
-									})}
-									id="4"
-									size="xs"
-								/>
-							</div>
-						)}
 				</li>
 			))}
 		</ul>
