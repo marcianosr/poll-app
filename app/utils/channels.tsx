@@ -10,7 +10,7 @@ import {
 	where,
 } from "firebase/firestore";
 import { db } from "~/utils/firebase";
-import { PollData } from "./polls";
+import { PollData, PollStatus } from "./polls";
 
 export type Channel = {
 	name: string;
@@ -23,10 +23,14 @@ export type Channel = {
 // This is mandaroty for now because when creating a channel, the full poll data will be used to create the pollQueue
 // But when getting a channel, only the poll ids will be used
 export type FirebaseChannel = Pick<Channel, "name" | "participantsIds"> & {
-	pollQueue: string[];
+	pollQueue: {
+		documentId: string;
+		status: PollStatus;
+	}[];
+	moderatorsIds: string[];
 };
 
-export async function createChannel(data: Channel) {
+export async function createChannel(data: FirebaseChannel) {
 	const newChannelRef = await addDoc(collection(db, "channels"), data);
 
 	console.info("created channel!", newChannelRef.id);

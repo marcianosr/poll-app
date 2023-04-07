@@ -34,8 +34,8 @@ export const loader: LoaderFunction = async ({ params }) => {
 		});
 
 	const getPollsForChannel = Promise.all(
-		channel.pollQueue.map(async (pollId: string) => {
-			const poll = await getPollById(pollId);
+		channel.pollQueue.map(async (pollQueue: { documentId: string }) => {
+			const poll = await getPollById(pollQueue.documentId);
 			return poll;
 		})
 	);

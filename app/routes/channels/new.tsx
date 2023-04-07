@@ -13,7 +13,12 @@ import { getAllUniqueCategories } from "~/utils/categories";
 import { Button } from "~/ui/Button";
 import classNames from "classnames";
 import { ReactSortable } from "react-sortablejs";
-import { Channel, createChannel, getChannelByName } from "~/utils/channels";
+import {
+	Channel,
+	createChannel,
+	FirebaseChannel,
+	getChannelByName,
+} from "~/utils/channels";
 
 export function links() {
 	return [...commonStyleLinks(), { rel: "stylesheet", href: styles }];
@@ -28,9 +33,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 	);
 	const uid = formData.get("uid") as string;
 
-	const channelData: Channel = {
+	const channelData: FirebaseChannel = {
 		name: channelName.toLocaleLowerCase(),
-		pollQueue: pollIds,
+		pollQueue: pollIds.map((id: string) => ({
+			documentId: id,
+			status: "new",
+		})),
 		moderatorsIds: [uid],
 		participantsIds: [uid],
 	};
