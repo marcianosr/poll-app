@@ -9,7 +9,7 @@ type Props = {
 type Statistics = "all-time" | "correct" | "season";
 
 const UsersPollRankingContainer: FC<Props> = ({ users }) => {
-	const [active, setActive] = useState<Statistics>("season");
+	const [active, setActive] = useState<Statistics>("correct");
 
 	return (
 		<section className="poll-statistics-container">
