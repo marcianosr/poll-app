@@ -30,10 +30,10 @@ const votes = [
 ];
 
 export const YourVotes: ComponentStory<typeof YourVotesComponent> = () => (
-	<YourVotesComponent
-		votes={votes}
-		getCorrectAnswers={(string: string) => {
-			return true;
-		}}
-	/>
+	// <YourVotesComponent
+	// 	votes={votes}
+	// 	getCorrectAnswers={(string: string) => {
+	// 		return true;
+	// 	}}
+	// />
 );
