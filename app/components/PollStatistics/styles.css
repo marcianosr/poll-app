@@ -16,3 +16,7 @@
 .categories-list hr {
 	width: 100%;
 }
+
+.poll-contributors > div:last-of-type {
+	margin-top: 2rem;
+}
