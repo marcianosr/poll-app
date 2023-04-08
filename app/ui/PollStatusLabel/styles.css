@@ -1,4 +1,4 @@
-:where(.open, .closed, .needs-revision, .new) {
+:where(.open, .closed, .scheduled, .draft) {
 	font-weight: 700;
 	text-transform: uppercase;
 	border: 1px solid;
@@ -17,12 +17,12 @@
 	background: var(--celadon-20);
 }
 
-.new {
+.scheduled {
 	color: var(--cerulean);
 	background: var(--cerulean-20);
 }
 
-.needs-revision {
+.draft {
 	color: var(--saffron);
 	background: var(--saffron-20);
 }

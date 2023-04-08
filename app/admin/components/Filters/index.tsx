@@ -12,7 +12,7 @@ type AmountOfPollsDisplayProps = {
 	status: PollStatus;
 };
 
-const statusses: PollStatus[] = ["new", "needs-revision", "open"];
+const statusses: PollStatus[] = ["draft", "scheduled", "open"];
 
 export const Filters: FC<FilterProps> = ({ setRenderedPolls }) => {
 	const { polls } = useLoaderData();

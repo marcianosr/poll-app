@@ -37,7 +37,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 		name: channelName.toLocaleLowerCase(),
 		pollQueue: pollIds.map((id: string) => ({
 			documentId: id,
-			status: "new",
+			status: "scheduled", // ! fix this type
+			voted: [],
+			openingTime: null,
 		})),
 		moderatorsIds: [uid],
 		participantsIds: [uid],

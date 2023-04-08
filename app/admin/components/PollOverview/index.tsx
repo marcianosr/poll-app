@@ -13,9 +13,10 @@ export function links() {
 
 type Props = {
 	polls: PollData[];
+	variant: "channels" | "default";
 };
 
-export const PollOverview: FC<Props> = ({ polls }) => {
+export const PollOverview: FC<Props> = ({ polls, variant = "default" }) => {
 	const { isAdmin } = useAuth();
 
 	return (

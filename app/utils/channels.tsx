@@ -10,7 +10,7 @@ import {
 	where,
 } from "firebase/firestore";
 import { db } from "~/utils/firebase";
-import { PollData, PollStatus } from "./polls";
+import { PollData, PollStatus, Voted } from "./polls";
 
 export type Channel = {
 	name: string;
@@ -28,6 +28,8 @@ export type FirebaseChannel = Pick<Channel, "name" | "participantsIds"> & {
 	pollQueue: {
 		documentId: string;
 		status: ChannelPollStatus;
+		voted: Voted[];
+		openmentTime: number | null;
 	}[];
 	moderatorsIds: string[];
 };

@@ -19,7 +19,7 @@ export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 	pollType,
 }) => {
 	const { isAdmin } = useAuth();
-	const pollStatus: PollStatus = (poll && poll?.status) || "new";
+	const pollStatus: PollStatus = (poll && poll?.status) || "scheduled";
 	// (poll && poll?.status) || isAdmin ? "new" : "needs-revision";
 
 	return (
@@ -35,14 +35,12 @@ export const PollSettingsContainer: FC<PollSettingsContainerProps> = ({
 
 				{isAdmin ? (
 					<select name="status" defaultValue={pollStatus}>
-						<option value="open">open</option>
-						<option value="closed">closed</option>
-						<option value="needs-revision">needs revision</option>
-						<option value="new">new</option>
+						<option value="draft">draft</option>
+						<option value="scheduled">scheduled</option>
 					</select>
 				) : (
 					<select name="status" defaultValue={pollStatus}>
-						<option value="needs-revision">needs revision</option>
+						<option value="draft">draft</option>
 					</select>
 				)}
 			</div>

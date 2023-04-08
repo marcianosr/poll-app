@@ -15,7 +15,7 @@ import { db } from "~/utils/firebase";
 import { PollCategory } from "./categories";
 
 export type InputTypes = "radio" | "checkbox";
-export type PollStatus = "open" | "closed" | "new" | "needs-revision";
+export type PollStatus = "open" | "closed" | "draft" | "scheduled";
 export type Answer = {
 	id: string;
 	value: string;

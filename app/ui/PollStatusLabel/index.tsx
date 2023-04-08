@@ -12,8 +12,8 @@ export function links() {
 const statusEmoji = {
 	open: "✅",
 	closed: "⚠️",
-	new: "🆕",
-	["needs-revision"]: "🚧",
+	scheduled: "🆕",
+	draft: "🚧",
 };
 
 export const PollStatusLabel = ({ status }: PollStatusLabelProps) => (

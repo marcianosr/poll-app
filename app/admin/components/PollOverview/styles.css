@@ -13,7 +13,7 @@
 	font-weight: 900;
 }
 
-.label.new {
+.label.scheduled {
 	color: var(--celadon);
 }
 
@@ -21,6 +21,6 @@
 	color: var(--vermillion);
 }
 
-.label.needs-revision {
+.label.draft {
 	color: var(--saffron);
 }

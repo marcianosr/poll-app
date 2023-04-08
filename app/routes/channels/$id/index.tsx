@@ -5,7 +5,11 @@ import { Text } from "~/ui/Text";
 import { Title } from "~/ui/Title";
 import { links as commonStyleLinks } from "../../polls/commonStyleLinks";
 
-import { FirebaseChannel, getChannelByName } from "~/utils/channels";
+import {
+	ChannelPollStatus,
+	FirebaseChannel,
+	getChannelByName,
+} from "~/utils/channels";
 import { useLoaderData } from "@remix-run/react";
 import { getPollById, PollData } from "~/utils/polls";
 import { PollOverview } from "~/admin/components/PollOverview";
@@ -34,10 +38,20 @@ export const loader: LoaderFunction = async ({ params }) => {
 		});
 
 	const getPollsForChannel = Promise.all(
-		channel.pollQueue.map(async (pollQueue: { documentId: string }) => {
-			const poll = await getPollById(pollQueue.documentId);
-			return poll;
-		})
+		channel.pollQueue.map(
+			async (pollQueue: {
+				documentId: string;
+				status: ChannelPollStatus;
+			}) => {
+				const poll = await getPollById(pollQueue.documentId);
+
+				return {
+					...poll,
+					documentId: pollQueue.documentId,
+					status: pollQueue.status,
+				};
+			}
+		)
 	);
 
 	const polls = await getPollsForChannel;
@@ -54,6 +68,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function NewChannel() {
 	const { user, isAdmin, isModerator } = useAuth();
 	const { channel, polls, participants } = useLoaderData();
+
 	return (
 		user && (
 			<section className="new-channel-page">
