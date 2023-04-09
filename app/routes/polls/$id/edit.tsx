@@ -108,15 +108,16 @@ export const loader: LoaderFunction = async ({ params }) => {
 	// }
 
 	const data = await getPollById(params.id || "");
-
 	return { poll: data };
 };
 
 export default function EditPoll() {
 	const { poll } = useLoaderData();
-	const { isAdmin } = useAuth();
 
-	if (!isAdmin) {
+	const { isAdmin, user } = useAuth();
+	const pollIsFromCurrentUser = poll.sentInByUser?.id === user?.uid;
+
+	if (!isAdmin && !pollIsFromCurrentUser) {
 		return <h1>404 Not Found</h1>;
 	}
 

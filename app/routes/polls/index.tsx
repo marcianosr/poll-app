@@ -12,6 +12,7 @@ import {
 	PollOverview,
 	links as pollOverviewLinks,
 } from "~/admin/components/PollOverview";
+import { Title } from "~/ui/Title";
 
 type PollDataWithDocumentId = PollData & {
 	documentId: string;
@@ -118,26 +119,16 @@ export default function AllPolls() {
 			) : (
 				<>
 					{/* ! Optimize this in it;s own component later to reduce firebase reads */}
-					<h1>Polls sent in by you</h1>
-
 					{pollsByUser.length > 0 ? (
-						<ul>
-							{pollsByUser.map((poll: PollData, idx: number) => (
-								<li>
-									<p>{poll.question}</p>
-									<Link to={`/polls/${poll.documentId}`}>
-										Go to poll
-									</Link>
-								</li>
-							))}
-						</ul>
+						<>
+							<h1>Polls sent in by you</h1>
+							<PollOverview polls={pollsByUser} />
+						</>
 					) : (
-						<p>
-							Awww... no polls send in by you <em>yet!</em>
-						</p>
+						<Title size="md" variant="primary">
+							No polls from you here yet!
+						</Title>
 					)}
-
-					{/* <h1>Your polls answered (coming soon 🚧)</h1> */}
 				</>
 			)}
 		</section>

@@ -13,11 +13,12 @@ export function links() {
 
 type Props = {
 	polls: PollData[];
-	variant: "channels" | "default";
 };
 
-export const PollOverview: FC<Props> = ({ polls, variant = "default" }) => {
-	const { isAdmin } = useAuth();
+export const PollOverview: FC<Props> = ({ polls }) => {
+	const { isAdmin, user } = useAuth();
+	const isPollSubmittedByCurrentUser = (poll: PollData) =>
+		poll.sentInByUser?.id === user?.uid;
 
 	return (
 		<ul>
@@ -33,14 +34,11 @@ export const PollOverview: FC<Props> = ({ polls, variant = "default" }) => {
 						<span className={classNames("label", poll.status)}>
 							{poll.status}
 						</span>
-						{isAdmin && (
-							<span>
-								<Link to={`/polls/${poll.documentId}/edit`}>
-									Edit
-								</Link>
-							</span>
+						{(isAdmin || isPollSubmittedByCurrentUser(poll)) && (
+							<Link to={`/polls/${poll.documentId}/edit`}>
+								Edit
+							</Link>
 						)}
-
 						<Link to={`/polls/${poll.documentId}`}>Go to poll</Link>
 						{poll.sentInByUser && (
 							<SentByUserText
