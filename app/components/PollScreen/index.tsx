@@ -20,12 +20,14 @@ type Props = {
 	currentAnswers: Answer[];
 	showVotedBy: boolean;
 	getVotesFromAllUsers: any;
+	openedPollNumber: number;
 };
 
 export const PollScreen: FC<Props> = ({
 	showVotedBy,
 	currentAnswers,
 	getVotesFromAllUsers,
+	openedPollNumber,
 }) => {
 	const { poll } = useLoaderData() as LoaderData;
 	const { user } = useAuth();
@@ -79,6 +81,11 @@ export const PollScreen: FC<Props> = ({
 							type="hidden"
 							name="uid"
 							defaultValue={user.firebase.id}
+						/>
+						<input
+							type="hidden"
+							name="openedPollNumber"
+							defaultValue={openedPollNumber}
 						/>
 					</Form>
 				</>

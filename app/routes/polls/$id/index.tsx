@@ -87,6 +87,9 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const uid = formData.get("uid") as string;
 	const paramId = params.id || "";
 	const parsedVoted = JSON.parse(selectedVotes) as Voted[];
+	const openedPollNumber = JSON.parse(
+		formData.get("openedPollNumber") as string
+	);
 
 	const poll = (await getPollById(paramId)) as PollData;
 
@@ -133,6 +136,10 @@ export const action: ActionFunction = async ({ request, params }) => {
 			currentStreak: findCurrentStreakLength(getVotedPollsByUser),
 			correct: currentUser?.polls.correct + totalCorrectPoints,
 			oldCorrect: currentUser?.polls.correct,
+			specials: {
+				...currentUser?.polls.specials,
+				poll200: openedPollNumber === 200,
+			},
 		},
 		lastPollSubmit: Date.now(),
 	});
@@ -250,9 +257,14 @@ export default function PollDetail() {
 			})}
 		>
 			<div className="page-container">
-				{openedPollNumber === 100 && typeof window !== "undefined" && (
-					<Confetti width={width} height={height} colors={colors} />
-				)}
+				{(openedPollNumber === 100 || openedPollNumber === 200) &&
+					typeof window !== "undefined" && (
+						<Confetti
+							width={width}
+							height={height}
+							colors={colors}
+						/>
+					)}
 				<Sidebar
 					isAdmin={isAdmin}
 					openedPollNumber={openedPollNumber}
@@ -291,6 +303,7 @@ export default function PollDetail() {
 							showVotedBy={showVotedBy}
 							getVotesFromAllUsers={getVotesFromAllUsers}
 							currentAnswers={currentAnswers}
+							openedPollNumber={openedPollNumber}
 						/>
 					)}
 					{screenState === "results" && (
