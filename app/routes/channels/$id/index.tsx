@@ -103,8 +103,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 };
 
 export default function NewChannel() {
-	const { user, isAdmin, isModerator } = useAuth();
+	const { user } = useAuth();
 	const { channel, polls, participants } = useLoaderData();
+
+	const isChannelOwner = channel.moderatorsIds.find(
+		(id: string) => user?.firebase.id === id
+	);
 
 	return (
 		user && (
@@ -112,10 +116,15 @@ export default function NewChannel() {
 				<Title size="xl" variant="primary">
 					{channel.name}
 				</Title>
-				<Title size="md" variant="primary" tag="h2">
-					Polls for this channel
-				</Title>
-				<PollOverview polls={polls} channel={channel} />
+
+				{isChannelOwner && (
+					<>
+						<Title size="md" variant="primary" tag="h2">
+							Polls for this channel
+						</Title>
+						<PollOverview polls={polls} channel={channel} />
+					</>
+				)}
 				<section>
 					<Title size="md" variant="primary" tag="h2">
 						Participants
