@@ -90,8 +90,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function AllPolls() {
 	const { polls } = useLoaderData();
-	const { user, isAdmin } = useAuth();
+	const { user, isAdmin, isModerator } = useAuth();
 	const [renderedPolls, setRenderedPolls] = useState(polls);
+
+	const pollsFromSuggesters = polls.filter(
+		(poll: PollData) =>
+			poll.sentInByUser && poll?.sentInByUser.id !== user?.firebase.id
+	);
+
 	const pollsByUser = polls.filter(
 		(poll: PollData) =>
 			poll.sentInByUser && poll?.sentInByUser.id === user?.firebase.id
@@ -99,7 +105,7 @@ export default function AllPolls() {
 
 	return (
 		<section style={{ color: "white" }}>
-			{isAdmin ? (
+			{isAdmin && (
 				<>
 					<h1>All polls</h1>
 					<Form method="post">
@@ -116,7 +122,28 @@ export default function AllPolls() {
 					<Link to="/channels/new">Create new channel</Link>
 					<PollOverview polls={renderedPolls} />
 				</>
-			) : (
+			)}
+			{isModerator && (
+				<>
+					<h1>All polls</h1>
+					<Form method="post">
+						<button>Save current season and reset</button>
+						<input
+							type="hidden"
+							name="season-reset"
+							readOnly
+							value="season-reset"
+						/>
+					</Form>
+					<Filters setRenderedPolls={pollsFromSuggesters} />
+					<Link to="/polls/new">Create new poll</Link>
+					<Link to="/channels/new">Create new channel</Link>
+					<PollOverview
+						polls={[...pollsByUser, ...pollsFromSuggesters]}
+					/>
+				</>
+			)}
+			{!isAdmin && !isModerator && (
 				<>
 					{/* ! Optimize this in it;s own component later to reduce firebase reads */}
 					{pollsByUser.length > 0 ? (
