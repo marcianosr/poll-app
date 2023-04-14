@@ -17,6 +17,7 @@ export type Channel = {
 	pollQueue: PollData[];
 	participantsIds: string[];
 	moderatorsIds: string[];
+	documentId?: string;
 };
 
 export type ChannelPollStatus = Extract<PollStatus, "open" | "closed">;
@@ -24,12 +25,15 @@ export type ChannelPollStatus = Extract<PollStatus, "open" | "closed">;
 // Refactor later to a single Channel type.
 // This is mandaroty for now because when creating a channel, the full poll data will be used to create the pollQueue
 // But when getting a channel, only the poll ids will be used
-export type FirebaseChannel = Pick<Channel, "name" | "participantsIds"> & {
+export type FirebaseChannel = Pick<
+	Channel,
+	"name" | "participantsIds" | "documentId"
+> & {
 	pollQueue: {
 		documentId: string;
 		status: ChannelPollStatus;
 		voted: Voted[];
-		openmentTime: number | null;
+		openingTime: number | null;
 	}[];
 	moderatorsIds: string[];
 };
@@ -52,7 +56,9 @@ export const getChannelById = async (id: string) => {
 	}
 };
 
-export const getChannelByName = async (name: string) => {
+export const getChannelByName = async (
+	name: string
+): Promise<Channel | null> => {
 	const ref = await collection(db, "channels");
 	const getQuery = query(ref, where("name", "==", name));
 
@@ -62,7 +68,10 @@ export const getChannelByName = async (name: string) => {
 		return null;
 	}
 
-	return querySnapshot.docs[0].data();
+	return {
+		...querySnapshot.docs[0].data(),
+		documentId: querySnapshot.docs[0].id,
+	} as Channel;
 };
 
 export const updateChannelById = async (

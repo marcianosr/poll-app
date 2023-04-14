@@ -1,4 +1,4 @@
-import { LoaderFunction } from "@remix-run/node";
+import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useAuth } from "~/providers/AuthProvider";
 import styles from "~/styles/new-channel.css";
 import { Text } from "~/ui/Text";
@@ -9,6 +9,7 @@ import {
 	ChannelPollStatus,
 	FirebaseChannel,
 	getChannelByName,
+	updateChannelById,
 } from "~/utils/channels";
 import { useLoaderData } from "@remix-run/react";
 import { getPollById, PollData } from "~/utils/polls";
@@ -26,6 +27,42 @@ export function links() {
 		{ rel: "stylesheet", href: styles },
 	];
 }
+
+export const action: ActionFunction = async ({ request, params }) => {
+	const { id } = params;
+	const channel = await getChannelByName(id || "");
+
+	if (!channel) {
+		return {
+			error: "Channel not found",
+		};
+	}
+
+	let formData = await request.formData();
+
+	const pollDocumentId = formData.get("documentId") as string;
+	const pollStatus = formData.get("status");
+
+	const currentPoll = channel?.pollQueue.find(
+		(poll: PollData) => poll.documentId === pollDocumentId
+	);
+
+	updateChannelById(channel.documentId || "", {
+		pollQueue: [
+			...(channel?.pollQueue.filter(
+				(poll: PollData) => poll.documentId !== pollDocumentId
+			) || []),
+			{
+				...currentPoll,
+				status: pollStatus,
+			},
+		],
+	});
+
+	return {
+		error: false,
+	};
+};
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const channel = (await getChannelByName(
@@ -78,7 +115,7 @@ export default function NewChannel() {
 				<Title size="md" variant="primary" tag="h2">
 					Polls for this channel
 				</Title>
-				<PollOverview polls={polls} />
+				<PollOverview polls={polls} channel={channel} />
 				<section>
 					<Title size="md" variant="primary" tag="h2">
 						Participants
