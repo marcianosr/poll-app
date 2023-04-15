@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const PollOverview: FC<Props> = ({ polls, channel }) => {
-	const { isAdmin, user } = useAuth();
+	const { isAdmin, isModerator, user } = useAuth();
 
 	const submit = useSubmit();
 	const isPollSubmittedByCurrentUser = (poll: PollData) =>
@@ -59,7 +59,9 @@ export const PollOverview: FC<Props> = ({ polls, channel }) => {
 								</select>
 							</Form>
 						)}
-						{(isAdmin || isPollSubmittedByCurrentUser(poll)) && (
+						{(isAdmin ||
+							isModerator ||
+							isPollSubmittedByCurrentUser(poll)) && (
 							<Link to={`/polls/${poll.documentId}/edit`}>
 								Edit
 							</Link>
