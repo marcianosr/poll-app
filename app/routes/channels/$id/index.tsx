@@ -8,16 +8,18 @@ import { links as commonStyleLinks } from "../../polls/commonStyleLinks";
 import {
 	ChannelPollStatus,
 	FirebaseChannel,
+	addUserToChannel,
 	getChannelByName,
 	updateChannelById,
 } from "~/utils/channels";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { getPollById, PollData } from "~/utils/polls";
 import { PollOverview } from "~/admin/components/PollOverview";
 import { getUserByID } from "~/utils/user";
 import { Photo, links as photoLinks } from "~/ui/Photo";
-import { User } from "firebase/auth";
+import { User, getAuth } from "firebase/auth";
 import { PhotoList, links as photoLinksStyles } from "~/ui/PhotoList";
+import { Button } from "~/ui/Button";
 
 export function links() {
 	return [
@@ -29,16 +31,34 @@ export function links() {
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
+	let formData = await request.formData();
+
+	const auth = getAuth();
+
+	const joinChannelForm = formData.get("join-channel");
+
 	const { id } = params;
-	const channel = await getChannelByName(id || "");
+	const channelId = id || "";
+	const channel = await getChannelByName(channelId);
+
+	if (joinChannelForm === "JOIN_CHANNEL") {
+		// console.log("SUBMIT JOIN CHANNEL FORM", channel);
+
+		// Get the user id here and add it to the channel
+		// addUserToChannel(channelId);
+
+		// addParticipantToChannel(channel, request);
+
+		return {};
+	}
+
+	// return {};
 
 	if (!channel) {
 		return {
 			error: "Channel not found",
 		};
 	}
-
-	let formData = await request.formData();
 
 	const pollDocumentId = formData.get("documentId") as string;
 	const pollStatus = formData.get("status");
@@ -102,7 +122,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 	return { polls, channel, participants };
 };
 
-export default function NewChannel() {
+export default function ChannelDetail() {
 	const { user } = useAuth();
 	const { channel, polls, participants } = useLoaderData();
 
@@ -110,9 +130,25 @@ export default function NewChannel() {
 		(id: string) => user?.firebase.id === id
 	);
 
+	const userJoinedChannel = channel.participantsIds.find(
+		(id: string) => user?.firebase.id === id
+	);
+
 	return (
 		user && (
 			<section className="new-channel-page">
+				<Form method="post">
+					<Button
+						variant="submit"
+						type="submit"
+						value="JOIN_CHANNEL"
+						name="join-channel"
+						state={userJoinedChannel && "disabled"}
+					>
+						{userJoinedChannel ? "Joined" : "Join channel"}
+					</Button>
+					<input type="hidden" name="uid" defaultValue={user.uid} />
+				</Form>
 				<Title size="xl" variant="primary">
 					{channel.name}
 				</Title>

@@ -96,3 +96,12 @@ export async function getAllChannelsWithIds() {
 		documentId: item.id,
 	}));
 }
+
+export const addUserToChannel = async (channelId: string, userId: string) => {
+	const channel = (await getChannelById(channelId)) as Channel;
+	const newChannel = {
+		...channel,
+		participantsIds: [...channel.participantsIds, userId],
+	};
+	await updateChannelById(channelId, newChannel);
+};

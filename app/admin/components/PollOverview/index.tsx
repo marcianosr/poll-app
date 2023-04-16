@@ -35,7 +35,7 @@ export const PollOverview: FC<Props> = ({ polls, channel }) => {
 					</section>
 					<section className="poll-meta-info">
 						{channel && (
-							<Form method="post" action={`/polls`}>
+							<Form method="post" action="/polls">
 								<select
 									name="poll-status"
 									defaultValue={poll.status}
