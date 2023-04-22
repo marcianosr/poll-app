@@ -1,0 +1,19 @@
+{
+	"name": "poll-app",
+	"version": "0.0.1",
+	"description": "Have your daily trivia in IT",
+	"main": "index.js",
+	"repository": "git@github.com:marcianosr/poll-app.git",
+	"author": "Marciano Schildmeijer <marciano@kabisa.nl>",
+	"license": "MIT",
+	"private": true,
+	"workspaces": [
+		"channels",
+		"ui",
+		"polls",
+		"core",
+		"plugins",
+		"auth",
+		"client"
+	]
+}
