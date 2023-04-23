@@ -1,5 +1,5 @@
 {
-	"name": "frontend",
+	"name": "@poll-app/frontend",
 	"version": "0.0.1",
 	"description": "Frontend of the poll app with Remix",
 	"private": true,
@@ -18,7 +18,8 @@
 		"@remix-run/react": "^1.15.0",
 		"@remix-run/vercel": "^1.15.0",
 		"@vercel/node": "^2.10.3",
-		"isbot": "^3.6.8"
+		"isbot": "^3.6.8",
+		"@poll-app/ui": "0.0.1"
 	},
 	"devDependencies": {
 		"@remix-run/dev": "^1.15.0",

@@ -8,12 +8,6 @@
 	"license": "MIT",
 	"private": true,
 	"workspaces": [
-		"channels",
-		"ui",
-		"polls",
-		"core",
-		"plugins",
-		"auth",
-		"client"
+		"packages/*"
 	]
 }
