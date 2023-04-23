@@ -1,5 +1,6 @@
 ### Architecture
 
+```mermaid
 flowchart TD
 
 Player
@@ -60,3 +61,4 @@ end
 
 Question --> Content
 Question --> Tag
+```
