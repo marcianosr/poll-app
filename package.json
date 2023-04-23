@@ -1,0 +1,18 @@
+{
+	"name": "poll-app",
+	"version": "0.0.1",
+	"description": "Have your daily trivia in IT",
+	"main": "index.js",
+	"repository": "git@github.com:marcianosr/poll-app.git",
+	"author": "Marciano Schildmeijer <marciano@kabisa.nl>",
+	"license": "MIT",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"@parcel/packager-ts": "2.8.3",
+		"@parcel/transformer-typescript-types": "2.8.3",
+		"typescript": ">=3.0.0"
+	}
+}
