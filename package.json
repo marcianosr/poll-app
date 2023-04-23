@@ -9,5 +9,10 @@
 	"private": true,
 	"workspaces": [
 		"packages/*"
-	]
+	],
+	"devDependencies": {
+		"@parcel/packager-ts": "2.8.3",
+		"@parcel/transformer-typescript-types": "2.8.3",
+		"typescript": ">=3.0.0"
+	}
 }
