@@ -13,7 +13,7 @@
 		"react-dom": "^18.2.0"
 	},
 	"dependencies": {
-		"@marcianosrs/ui": "^0.0.5",
+		"@marcianosrs/ui": "*",
 		"@remix-run/node": "^1.15.0",
 		"@remix-run/react": "^1.15.0",
 		"@remix-run/vercel": "^1.15.0",
