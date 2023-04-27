@@ -2,3 +2,5 @@ node_modules
 .parcel-cache
 yarn-error.log
 dist
+polls-d8b3d-fa6512eea816.json
+.env

@@ -18,7 +18,7 @@
 		"@storybook/react": "^7.0.6",
 		"@storybook/react-webpack5": "^7.0.6",
 		"@storybook/testing-library": "^0.0.14-next.2",
-		"parcel": "^2.8.3",
+		"parcel": "latest",
 		"prop-types": "^15.8.1",
 		"storybook": "^7.0.6"
 	},

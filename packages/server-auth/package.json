@@ -1,0 +1,20 @@
+{
+	"name": "@marcianosrs/server-auth",
+	"version": "0.0.1",
+	"description": "Poll app auth package",
+	"source": "src/index.ts",
+	"main": "dist/main.js",
+	"types": "dist/index.d.ts",
+	"author": "Marciano",
+	"license": "MIT",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"firebase": "^9.20.0",
+		"firebase-admin": "^11.7.0",
+		"parcel": "latest"
+	},
+	"scripts": {
+		"watch": "parcel watch",
+		"build": "parcel build"
+	}
+}
