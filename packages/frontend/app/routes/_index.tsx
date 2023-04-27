@@ -12,6 +12,7 @@ import {
 	sessionLogin,
 	sessionLogout,
 } from "~/util/session.server";
+import { auth, app, db } from "~/lib/firebaseAdmin.server";
 
 export const meta: V2_MetaFunction = () => {
 	return [{ title: "New Remix App" }];
@@ -36,6 +37,8 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const { decodedClaims, error } = await isSessionValid(request);
+
+	// console.group("DB", db.collection("users"));
 
 	return { decodedClaims, error };
 };

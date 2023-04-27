@@ -1,5 +1,5 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
-import { auth } from "@marcianosrs/server-auth";
+import { auth } from "../lib/firebaseAdmin.server";
 
 require("dotenv").config({
 	path: `../../.env`,
