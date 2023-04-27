@@ -52,7 +52,7 @@ export default function Index() {
 			submit(
 				{
 					idToken: idToken,
-					"google-login": true,
+					"google-login": "true",
 				},
 				{ method: "post", action: "/?index" }
 			);
@@ -61,7 +61,7 @@ export default function Index() {
 
 	const logout = () => {
 		submit(
-			{ "google-logout": true },
+			{ "google-logout": "true" },
 			{ method: "post", action: "/?index" }
 		);
 	};
