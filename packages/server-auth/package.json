@@ -15,6 +15,7 @@
 	},
 	"scripts": {
 		"watch": "parcel watch",
-		"build": "parcel build"
+		"build": "parcel build",
+		"dev": "NODE_ENV=development parcel build"
 	}
 }
