@@ -23,7 +23,6 @@ const initServerFirebase = () => {
 		app =
 			getApps().length === 0
 				? initializeApp({
-						// projectId: "demo-polls-d8b3d",
 						credential: applicationDefault(),
 				  })
 				: getApp();
