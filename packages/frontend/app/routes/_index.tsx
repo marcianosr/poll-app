@@ -38,8 +38,6 @@ export const action: ActionFunction = async ({ request }) => {
 export const loader: LoaderFunction = async ({ request }) => {
 	const { decodedClaims, error } = await isSessionValid(request);
 
-	// console.group("DB", db.collection("users"));
-
 	return { decodedClaims, error };
 };
 
