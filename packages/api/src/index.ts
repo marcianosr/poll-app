@@ -1,3 +1,1 @@
-console.log("API");
-
-export const add = () => 1 + 2;
+export { getUserRole, setUserRole, isAdmin } from "./roles";

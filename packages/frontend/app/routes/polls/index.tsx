@@ -1,6 +1,6 @@
 import { LoaderFunction, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { db } from "~/lib/firebaseAdmin.server";
+import { auth, db, app, getUserRole } from "~/lib/firebaseAdmin.server";
 import { isSessionValid } from "~/util/session.server";
 
 // move to engine?
@@ -46,6 +46,16 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+	// setUserRole("g9AUpcvdu3fO40kKfhTnGXay5rx1");
+
+	const user = await getUserRole("g9AUpcvdu3fO40kKfhTnGXay5rx1").then(
+		(role) => {
+			return role.role;
+		}
+	);
+
+	console.log(user);
+
 	const { decodedClaims, error } = await isSessionValid(request);
 	const isLoggedIn = !!decodedClaims?.email;
 

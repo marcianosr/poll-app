@@ -8,10 +8,12 @@
 	"author": "Marciano",
 	"license": "MIT",
 	"dependencies": {
-		"parcel": "latest"
+		"parcel": "latest",
+		"@marcianosrs/server-auth": "*"
 	},
 	"scripts": {
 		"watch": "parcel watch",
-		"build": "parcel build"
+		"build": "parcel build",
+		"dev": "NODE_ENV=development parcel build"
 	}
 }
