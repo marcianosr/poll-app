@@ -46,16 +46,6 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-	// setUserRole("g9AUpcvdu3fO40kKfhTnGXay5rx1");
-
-	const user = await getUserRole("g9AUpcvdu3fO40kKfhTnGXay5rx1").then(
-		(role) => {
-			return role.role;
-		}
-	);
-
-	console.log(user);
-
 	const { decodedClaims, error } = await isSessionValid(request);
 	const isLoggedIn = !!decodedClaims?.email;
 
