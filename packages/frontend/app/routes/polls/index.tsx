@@ -1,6 +1,6 @@
 import { LoaderFunction, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { db } from "~/lib/firebaseAdmin.server";
+import { auth, db, app, getUserRole } from "~/lib/firebaseAdmin.server";
 import { isSessionValid } from "~/util/session.server";
 
 // move to engine?
