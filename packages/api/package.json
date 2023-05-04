@@ -1,0 +1,17 @@
+{
+	"name": "@marcianosrs/api",
+	"version": "0.0.1",
+	"description": "Poll app API",
+	"source": "src/index.ts",
+	"main": "dist/main.js",
+	"types": "dist/index.d.ts",
+	"author": "Marciano",
+	"license": "MIT",
+	"dependencies": {
+		"parcel": "latest"
+	},
+	"scripts": {
+		"watch": "parcel watch",
+		"build": "parcel build"
+	}
+}
