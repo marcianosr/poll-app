@@ -1,8 +1,3 @@
-// export { getUserRole, setUserRole, isAdmin } from "./roles";
-require("dotenv").config({
-	path: `../.env`,
-});
-
 import { initServerFirebase } from "@marcianosrs/server-auth";
 import express, { Request, Response } from "express";
 import { NextFunction } from "express";
