@@ -1,21 +1,17 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "../../../firebaseConfig";
 
+let app: FirebaseApp;
+
 export const initFirebaseClient = () => {
-	const app =
-		getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+	if (!app) {
+		app = initializeApp(firebaseConfig);
+	}
 
 	const auth = getAuth(app);
 
+	console.log("initiated firebase client");
+
 	return { auth };
-};
-
-export const loginAndCreate = async () => {
-	const { auth } = initFirebaseClient();
-
-	const provider = new GoogleAuthProvider();
-	const result = signInWithPopup(auth, provider);
-
-	return result;
 };
