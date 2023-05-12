@@ -1,5 +1,6 @@
 import { initServerFirebase } from "@marcianosrs/server-auth";
 import express, { Request, Response } from "express";
+import cors from "cors";
 import { NextFunction } from "express";
 
 const { db, auth } = initServerFirebase();
@@ -7,6 +8,11 @@ const { db, auth } = initServerFirebase();
 const app = express();
 
 app.use(express.json());
+app.use(
+	cors({
+		origin: ["http://localhost:3000", "https://poll-app-ivory.vercel.app"],
+	})
+);
 
 type AuthTokenRequest = Request & {
 	authToken?: string | null;
