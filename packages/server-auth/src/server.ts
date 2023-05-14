@@ -8,6 +8,7 @@ import {
 	getApp,
 } from "firebase-admin/app";
 import { Auth, getAuth } from "firebase-admin/auth";
+import { firebaseConfig } from "../../../firebaseConfig";
 
 require("dotenv").config();
 // TODO: Add SDKs for Firebase products that you want to use
@@ -19,23 +20,13 @@ const initServerFirebase = () => {
 	let db: Firestore;
 
 	if (process.env.NODE_ENV === "development") {
-		console.log("Development");
-		app =
-			getApps().length === 0
-				? initializeApp({
-						credential: applicationDefault(),
-				  })
-				: getApp();
+		console.log("Development zone 🚧");
+		app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 		auth = getAuth();
 		db = getFirestore();
 	} else {
-		console.log("PRd");
-		app =
-			getApps().length === 0
-				? initializeApp({
-						credential: applicationDefault(),
-				  })
-				: getApp();
+		console.log("Production zone ⛔️");
+		app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 		auth = getAuth();
 		db = getFirestore();
 	}
