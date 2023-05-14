@@ -1,7 +1,7 @@
 import { initServerFirebase } from "@marcianosrs/server-auth";
 import express, { Request, Response } from "express";
-import cors from "cors";
 import { NextFunction } from "express";
+import cors from "cors";
 
 const { db, auth } = initServerFirebase();
 
@@ -24,7 +24,6 @@ const getAuthToken = (
 	res: Response,
 	next: NextFunction
 ) => {
-	// console.log("Auth", req.headers.authorization);
 	if (
 		req.headers.authorization &&
 		req.headers.authorization.split(" ")[0] === "Bearer"
@@ -130,3 +129,5 @@ app.get(
 app.listen(process.env.PORT || 1305, () => {
 	console.log(`Server Started at ${1305}`);
 });
+
+// export * from "./roles";

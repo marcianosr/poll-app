@@ -1,7 +1,11 @@
-import { LoaderFunction, json } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { auth, db, app, getUserRole } from "~/lib/firebaseAdmin.server";
-import { isSessionValid } from "~/util/session.server";
+import { useUser } from "hooks/useUser";
+import { db } from "~/lib/firebaseAdmin.server";
+import { API_ENDPOINT } from "~/util";
+
+import { getSession, isSessionValid } from "~/util/session.server";
 
 // move to engine?
 type PollType =
@@ -47,6 +51,8 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const { decodedClaims, error } = await isSessionValid(request);
+	const session = await getSession(request.headers.get("cookie"));
+
 	const isLoggedIn = !!decodedClaims?.email;
 
 	if (!isLoggedIn) {
@@ -56,14 +62,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 		});
 	}
 
-	// move to engine?
-	const collection = await db.collection("polls").get();
-	const polls = collection.docs.map((doc) => ({
-		id: doc.id,
-		...doc.data(),
-	}));
+	const response = await fetch(`${API_ENDPOINT}/polls`, {
+		headers: {
+			Authorization: `Bearer ${session.get("accessToken")}`,
+		},
+	});
 
-	return json({ polls });
+	const data = await response.json();
+
+	return json({ polls: data });
 };
 
 export default function Index() {

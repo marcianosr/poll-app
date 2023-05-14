@@ -21,12 +21,22 @@ const initServerFirebase = () => {
 
 	if (process.env.NODE_ENV === "development") {
 		console.log("Development zone 🚧");
-		app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+		app =
+			getApps().length === 0
+				? initializeApp({
+						credential: applicationDefault(),
+				  })
+				: getApp();
 		auth = getAuth();
 		db = getFirestore();
 	} else {
 		console.log("Production zone ⛔️");
-		app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+		app =
+			getApps().length === 0
+				? initializeApp({
+						credential: applicationDefault(),
+				  })
+				: getApp();
 		auth = getAuth();
 		db = getFirestore();
 	}
