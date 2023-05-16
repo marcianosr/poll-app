@@ -8,12 +8,17 @@
 	"author": "Marciano",
 	"license": "MIT",
 	"dependencies": {
-		"parcel": "latest",
-		"@marcianosrs/server-auth": "*"
+		"@marcianosrs/server-auth": "*",
+		"@types/cors": "^2.8.13",
+		"@types/express": "^4.17.17",
+		"cors": "^2.8.5",
+		"express": "^4.18.2",
+		"nodemon": "^2.0.22",
+		"parcel": "latest"
 	},
 	"scripts": {
 		"watch": "parcel watch",
 		"build": "parcel build",
-		"dev": "NODE_ENV=development parcel build"
+		"start": "yarn build && nodemon --delay 500ms src/index.ts"
 	}
 }

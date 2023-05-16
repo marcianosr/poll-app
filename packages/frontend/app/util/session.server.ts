@@ -27,7 +27,8 @@ export const sessionLogin = async (
 	idToken: any,
 	redirectTo: any
 ) => {
-	const token = await auth.verifyIdToken(idToken);
+	const token = await auth.verifyIdToken(idToken); // this toke should be send to the backend as auth
+
 	return auth
 		.createSessionCookie(idToken, {
 			expiresIn: 60 * 60 * 24 * 5 * 1000,
@@ -35,7 +36,12 @@ export const sessionLogin = async (
 		.then(
 			(sessionCookie) => {
 				// Set cookie policy for session cookie.
-				return setCookieAndRedirect(request, sessionCookie, redirectTo);
+				return setCookieAndRedirect(
+					request,
+					sessionCookie,
+					redirectTo,
+					idToken
+				);
 			},
 			(error) => {
 				return {
@@ -55,7 +61,10 @@ export const isSessionValid = async (request: Request) => {
 			session.get("idToken"),
 			true /** checkRevoked */
 		);
-		return { success: true, decodedClaims };
+		return {
+			success: true,
+			decodedClaims,
+		};
 	} catch (error) {
 		// Session cookie is unavailable or invalid. Force user to login.
 		return { error: error?.message };
@@ -68,10 +77,15 @@ export const isSessionValid = async (request: Request) => {
 const setCookieAndRedirect = async (
 	request: Request,
 	sessionCookie: any,
-	redirectTo = "/"
+	redirectTo = "/",
+	idToken: any
 ) => {
 	const session = await getSession(request.headers.get("cookie"));
 	session.set("idToken", sessionCookie);
+
+	console.log("TOKEN", idToken);
+	session.set("accessToken", idToken);
+
 	return redirect(redirectTo, {
 		headers: {
 			"Set-Cookie": await commitSession(session),

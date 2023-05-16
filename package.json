@@ -14,5 +14,13 @@
 		"@parcel/packager-ts": "2.8.3",
 		"@parcel/transformer-typescript-types": "2.8.3",
 		"typescript": ">=3.0.0"
+	},
+	"dependencies": {
+		"concurrently": "^8.0.1"
+	},
+	"scripts": {
+		"api": "yarn workspace @marcianosrs/api start",
+		"frontend": "yarn workspace @marcianosrs/frontend run dev",
+		"start": "concurrently --kill-others-on-fail \"yarn api\"  \"yarn frontend\""
 	}
 }

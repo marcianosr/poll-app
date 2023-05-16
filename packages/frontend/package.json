@@ -13,9 +13,9 @@
 		"react-dom": "^18.2.0"
 	},
 	"dependencies": {
+		"@marcianosrs/api": "*",
 		"@marcianosrs/client-auth": "*",
 		"@marcianosrs/server-auth": "*",
-		"@marcianosrs/api": "*",
 		"@marcianosrs/ui": "*",
 		"@remix-run/node": "^1.15.0",
 		"@remix-run/react": "^1.15.0",
