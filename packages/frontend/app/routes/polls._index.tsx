@@ -1,8 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { useUser } from "hooks/useUser";
-import { db } from "~/lib/firebaseAdmin.server";
 import { API_ENDPOINT } from "~/util";
 
 import { getSession, isSessionValid } from "~/util/session.server";
