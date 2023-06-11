@@ -1,12 +1,18 @@
 import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
-import { useState } from "react";
+import type { PropsWithChildren } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { API_ENDPOINT } from "~/util";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { getSession, isSessionValid } from "~/util/session.server";
-import type { PollType, PollOption, CreatePoll } from "@marcianosrs/engine";
+import type {
+	PollType,
+	PollOption,
+	CreatePoll,
+	Poll,
+} from "@marcianosrs/engine";
 import { POLL_TAGS, POLL_TYPES } from "@marcianosrs/engine";
 
 export const action = async ({ request }: ActionArgs) => {
@@ -91,12 +97,17 @@ export default function NewPoll() {
 	);
 }
 
-export type Mode = "edit" | "mark";
+export type FormMode = "create" | "edit";
+export type OptionsMode = "default" | "mark";
+export type PollFormProps = {
+	poll?: Poll;
+};
 
-const PollForm = () => {
+export const PollForm = ({ poll }: PropsWithChildren<PollFormProps>) => {
 	const action = useActionData();
 
-	const [mode, setMode] = useState<Mode>("edit");
+	const formMode = poll ? "edit" : "create";
+	const [optionsMode, setOptionsMode] = useState<OptionsMode>("default");
 	const [options, setOptions] = useState<PollOption[]>([
 		{
 			id: "banjo-kazooie",
@@ -119,6 +130,10 @@ const PollForm = () => {
 			},
 		]);
 	};
+
+	useEffect(() => {
+		setOptions(poll?.options || []);
+	}, [poll?.options]);
 
 	const removeOption = (id: string) => {
 		setOptions(options.filter((option) => option.id !== id));
@@ -179,32 +194,40 @@ const PollForm = () => {
 		if (e.metaKey && e.key === "Enter") addOption();
 	};
 
-	console.log("action", action);
-
 	return (
 		<Form method="post" className="form">
 			{action?.errors.map((error) => (
 				<p key={error}>{error}</p>
 			))}
-			<textarea name="question" placeholder="Question" defaultValue="" />
+			<textarea
+				name="question"
+				placeholder="Question"
+				defaultValue={poll?.question}
+			/>
 
 			<input
 				type="url"
 				id="visualCodeExample"
 				name="visualCodeExample"
 				placeholder="Link to codesandbox example"
+				defaultValue={poll?.visualCodeExample || ""}
 			/>
 
 			<textarea
 				name="codeBlockExample"
 				id="codeBlockExample"
 				placeholder="Insert code example"
+				defaultValue={poll?.codeBlockExample || ""}
 			/>
 			<div>
 				Tag:
 				<select name="tags" multiple>
 					{POLL_TAGS.map((tag) => (
-						<option key={tag} value={tag}>
+						<option
+							key={tag}
+							value={tag}
+							selected={poll?.tags.includes(tag)}
+						>
 							{tag}
 						</option>
 					))}
@@ -214,7 +237,11 @@ const PollForm = () => {
 				Type:
 				<select name="type">
 					{POLL_TYPES.map((type) => (
-						<option key={type} value={type}>
+						<option
+							key={type}
+							value={type}
+							defaultValue={poll?.type}
+						>
 							{type}
 						</option>
 					))}
@@ -230,7 +257,7 @@ const PollForm = () => {
 							onChange={onChangeOption}
 							defaultValue={option.value}
 							onKeyDown={(e) => onCMDAndEnterPressed(e)}
-							disabled={mode === "mark"}
+							disabled={optionsMode === "mark"}
 						></textarea>
 						{option.isCorrect && <span>✅</span>}
 						{!option.explanation && (
@@ -245,7 +272,7 @@ const PollForm = () => {
 							<>
 								<textarea
 									id={`explanation-${option.id}`}
-									disabled={mode === "mark"}
+									disabled={optionsMode === "mark"}
 									name={`explanation-${option.id}`}
 									placeholder={`Add an explanation`}
 									onChange={(e) =>
@@ -262,7 +289,7 @@ const PollForm = () => {
 							</>
 						)}
 					</div>
-					{options.length > 1 && mode === "edit" && (
+					{options.length > 1 && optionsMode === "default" && (
 						<button
 							type="button"
 							onClick={() => removeOption(option.id)}
@@ -270,7 +297,7 @@ const PollForm = () => {
 							Remove option
 						</button>
 					)}
-					{mode === "mark" && (
+					{optionsMode === "mark" && (
 						<button
 							type="button"
 							onClick={() => markAsCorrect(option.id)}
@@ -288,22 +315,22 @@ const PollForm = () => {
 			<button
 				type="button"
 				onClick={addOption}
-				disabled={mode === "mark"}
+				disabled={optionsMode === "mark"}
 			>
 				Add option
 			</button>
-			{mode === "edit" && (
-				<button type="button" onClick={() => setMode("mark")}>
+			{optionsMode === "default" && (
+				<button type="button" onClick={() => setOptionsMode("mark")}>
 					Mark correct answers
 				</button>
 			)}
-			{mode === "mark" && (
-				<button type="button" onClick={() => setMode("edit")}>
+			{optionsMode === "mark" && (
+				<button type="button" onClick={() => setOptionsMode("default")}>
 					Edit options
 				</button>
 			)}
-			<button type="submit" disabled={mode === "mark"}>
-				Create poll
+			<button type="submit" disabled={optionsMode === "mark"}>
+				{formMode === "create" ? "Create poll" : "Update poll"}
 			</button>
 		</Form>
 	);

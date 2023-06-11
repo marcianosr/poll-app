@@ -37,6 +37,7 @@ export default function Index() {
 				{polls.map((poll) => (
 					<li key={poll.id}>
 						#{poll.no} - {poll.question}
+						<Link to={`/polls/${poll.id}`}>Go to poll</Link>
 					</li>
 				))}
 			</ul>
