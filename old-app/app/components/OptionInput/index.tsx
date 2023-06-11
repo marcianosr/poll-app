@@ -1,6 +1,7 @@
 import { useLoaderData } from "@remix-run/react";
-import { LoaderData } from "~/routes/polls/$id";
-import { Option, OptionProps } from "~/ui/Option";
+import type { LoaderData } from "~/routes/polls/$id";
+import type { OptionProps } from "~/ui/Option";
+import { Option } from "~/ui/Option";
 
 export type OptionInputProps = Pick<OptionProps, "answer"> & {
 	idx: number;

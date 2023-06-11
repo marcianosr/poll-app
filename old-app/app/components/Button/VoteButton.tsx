@@ -1,6 +1,6 @@
 import { useTransition } from "@remix-run/react";
 import { EggConditional } from "~/seasonal/Egg/EggContainer";
-import { PollData, Voted } from "~/utils/polls";
+import type { PollData, Voted } from "~/utils/polls";
 
 type Props = {
 	poll: PollData;
