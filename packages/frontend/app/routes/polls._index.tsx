@@ -38,6 +38,7 @@ export default function Index() {
 					<li key={poll.id}>
 						#{poll.no} - {poll.question}
 						<Link to={`/polls/${poll.id}`}>Go to poll</Link>
+						<Link to={`/polls/${poll.id}/edit`}>Edit</Link>
 					</li>
 				))}
 			</ul>
