@@ -2,6 +2,11 @@ import { initServerFirebase } from "@marcianosrs/server-auth";
 import express, { Request, Response } from "express";
 import { NextFunction } from "express";
 import cors from "cors";
+import {
+	CreatePoll,
+	UpdatePoll,
+	validateCreatePoll,
+} from "@marcianosrs/engine";
 
 const { db, auth } = initServerFirebase();
 
@@ -81,7 +86,7 @@ export const checkIfAdmin = (
 
 app.get(
 	"/polls",
-	checkIfAuthenticated,
+	// checkIfAuthenticated,
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const polls = db
@@ -90,15 +95,15 @@ app.get(
 				.then((snapshot) => {
 					const polls = snapshot.docs.map((doc) => {
 						return {
-							id: doc.id,
 							...doc.data(),
+							id: doc.id,
 						};
 					});
 
 					return polls;
 				});
 
-			res.send(await polls);
+			res.json(await polls);
 		} catch (err) {
 			console.log("Error getting document", err);
 			next(err);
@@ -106,9 +111,65 @@ app.get(
 	}
 );
 
+app.get("/polls/count", async (req: Request, res: Response) => {
+	try {
+		const polls = db.collection("polls").get();
+
+		res.json((await polls).size);
+	} catch (err) {
+		console.log("Error getting document", err);
+	}
+});
+
+app.post(
+	"/polls/new",
+	// checkIfAuthenticated,
+	async (req: Request, res: Response) => {
+		try {
+			const poll: CreatePoll = req.body;
+
+			const errors = validateCreatePoll(poll);
+
+			if (errors.length > 0) {
+				return res.status(400).json(errors);
+			}
+
+			const newPoll = await db.collection("polls").add(poll);
+
+			return res.json({ pollId: newPoll.id });
+		} catch (err) {
+			console.log("Error getting document", err);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+	}
+);
+
+app.put("/polls/:id/edit", async (req: Request, res: Response) => {
+	console.log("Updating poll", req.body);
+	try {
+		const poll = req.body;
+
+		const errors = validateCreatePoll(poll);
+
+		if (errors.length > 0) {
+			return res.status(400).json(errors);
+		}
+
+		const updatePoll = await db
+			.collection("polls")
+			.doc(req.params.id)
+			.update(poll);
+
+		return res.json({ message: "Poll updated" });
+	} catch (err) {
+		console.log("Error getting document", err);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+});
+
 app.get(
 	"/polls/:id",
-	checkIfAuthenticated,
+	// checkIfAuthenticated,
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const doc = await db.collection("polls").doc(req.params.id).get();

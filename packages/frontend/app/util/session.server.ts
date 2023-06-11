@@ -82,8 +82,6 @@ const setCookieAndRedirect = async (
 ) => {
 	const session = await getSession(request.headers.get("cookie"));
 	session.set("idToken", sessionCookie);
-
-	console.log("TOKEN", idToken);
 	session.set("accessToken", idToken);
 
 	return redirect(redirectTo, {
