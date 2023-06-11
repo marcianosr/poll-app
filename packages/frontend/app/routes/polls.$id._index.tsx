@@ -1,13 +1,28 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useLoaderData, useNavigation } from "@remix-run/react";
 import { API_ENDPOINT } from "~/util";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
-import { getSession } from "~/util/session.server";
+import { getSession, isSessionValid } from "~/util/session.server";
 import type { Poll } from "@marcianosrs/engine";
+import { useState } from "react";
 
 type LoaderData = {
 	poll: Poll;
+};
+
+export const action: ActionFunction = async ({ request, params }) => {
+	await throwIfNotAuthorized(request);
+
+	const { decodedClaims } = await isSessionValid(request);
+	const session = await getSession(request.headers.get("cookie"));
+
+	const formData = await request.formData();
+	const votes = formData.getAll("options");
+
+	console.log(votes, decodedClaims);
+
+	return {};
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
@@ -32,6 +47,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function PollDetail() {
 	const { poll } = useLoaderData<LoaderData>();
+	const [selectedVotes, setSelectedVotes] = useState<string[]>([]);
+	const transition = useNavigation();
+
+	const isVoteButtonDisabled =
+		selectedVotes.length === 0 ||
+		transition.state === "submitting" ||
+		transition.state === "loading";
 
 	return (
 		<main>
@@ -42,11 +64,41 @@ export default function PollDetail() {
 					<li key={tag}>{tag}</li>
 				))}
 			</ul>
-			<ul>
-				{poll.options.map((option) => (
-					<li key={option.id}>{option.value}</li>
-				))}
-			</ul>
+
+			<Form method="POST">
+				<ul>
+					{poll.options.map((option) => (
+						<li key={option.id}>
+							<label htmlFor={option.id}>{option.value}</label>
+							<input
+								id={option.id}
+								name="votes"
+								value={option.value}
+								onChange={(e) => {
+									if (poll.type === "single-choice") {
+										setSelectedVotes([e.target.value]);
+									}
+
+									if (poll.type === "multiple-choice") {
+										setSelectedVotes([
+											...selectedVotes,
+											e.target.value,
+										]);
+									}
+								}}
+								type={
+									poll.type === "single-choice"
+										? "radio"
+										: "checkbox"
+								}
+							/>
+						</li>
+					))}
+				</ul>
+				<button type="submit" disabled={isVoteButtonDisabled}>
+					Cast your vote
+				</button>
+			</Form>
 		</main>
 	);
 }
