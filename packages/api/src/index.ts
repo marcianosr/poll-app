@@ -242,18 +242,10 @@ app.post(
 		try {
 			const channel = req.body;
 
-			// Fetch channels with the given name from the database
 			const channelSnapshot = await db
 				.collection("channels")
 				.where("name", "==", channel.name)
 				.get();
-
-			// // Check if a channel with the given name already exists
-			// if (!channelSnapshot.empty) {
-			// 	return res
-			// 		.status(400)
-			// 		.json({ error: "Channel with this name already exists" });
-			// }
 
 			const errors = validateCreateChannel(channel, channelSnapshot);
 
