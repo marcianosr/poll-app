@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { Firestore, getFirestore } from "firebase-admin/firestore";
+import { FieldValue, Firestore, getFirestore } from "firebase-admin/firestore";
 
 import {
 	initializeApp,
@@ -8,7 +8,6 @@ import {
 	getApp,
 } from "firebase-admin/app";
 import { Auth, getAuth } from "firebase-admin/auth";
-import { firebaseConfig } from "../../../firebaseConfig";
 
 require("dotenv").config();
 // TODO: Add SDKs for Firebase products that you want to use
@@ -41,7 +40,12 @@ const initServerFirebase = () => {
 		db = getFirestore();
 	}
 
-	return { app, auth, db };
+	return { app, auth, db, FieldValue };
 };
 
+export type {
+	DocumentData,
+	DocumentReference,
+	QuerySnapshot,
+} from "firebase-admin/firestore";
 export { initServerFirebase };

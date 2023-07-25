@@ -7,12 +7,19 @@ Setup the app:
 -   yarn install in all packages
 -   Run the app in the root: yarn start
 
-To run the app connected to the locak firestore, run the following:
+To run the app connected to the local firestore, run the following:
 
 -   In the API packages, uncomment 'FIRESTORE_EMULATOR_HOST="localhost:8080"' in the .env file
 -   For now, uncomment checkIfAuthenticated function for each request you're working with
 -   Run the firestore command found in the package.json of the server-auth package to startup an empty or seeded firestore
 -   In the root, run yarn start to concurrently start the api and remix frontend
+
+### Learning goals
+
+-   Improve skills on how to use Remix / Firebase / React / Typescript (Full-stack)
+-   Learn how to manage a bigger project which is live and used by people
+-   Allow room for my own "creative nostalgia" with gamification applications
+-   Create a project that is fun to work on and can be used by others
 
 ### Architecture
 

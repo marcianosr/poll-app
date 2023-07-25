@@ -47,3 +47,58 @@ export type Poll = {
 };
 
 export type CreatePoll = Poll;
+export type UpdatePoll = Partial<Poll>;
+
+export type CreateAppChannel = Channel<AppChannel>;
+
+export type PollStatus = "open" | "upcoming" | "closed";
+type ChannelPlaylist = {
+	pollId: string;
+	status: PollStatus;
+	openedAt: number | null;
+};
+
+export type Channel<P> = {
+	id: string;
+	name: string;
+	moderatorIds: string[];
+	createdAt: number;
+	createdBy: string | null;
+	playlist: P[];
+	distributionChannelName: DistributionChannelName;
+};
+
+type DistributionChannelName = "App" | "Slack" | "LinkedIn";
+
+type AppChannelPlaylist = ChannelPlaylist & {
+	votedBy: string[];
+};
+
+type AppChannel = Channel<AppChannelPlaylist> & {
+	playerIds: string[];
+	plugins: PollPlugins[];
+};
+
+type SlackChannel = Channel<ChannelPlaylist>;
+type LinkedInChannel = Channel<ChannelPlaylist>;
+
+export type ChannelTypeMap = {
+	App: AppChannel;
+	Slack: SlackChannel;
+	LinkedIn: LinkedInChannel;
+};
+
+export type CreateChannelFn<K extends keyof ChannelTypeMap> = (
+	key: K,
+	channel: ChannelTypeMap[K]
+) => ChannelTypeMap[K];
+
+type PollPlugins =
+	| "seasons"
+	| "teams"
+	| "christmas-2023"
+	| "easter-2023"
+	| "harry-potter"
+	| "kabisino"
+	| "double-points"
+	| "1-vs-1";

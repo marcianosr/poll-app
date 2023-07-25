@@ -6,9 +6,10 @@ import {
 	CreatePoll,
 	UpdatePoll,
 	validateCreatePoll,
+	validateCreateChannel,
 } from "@marcianosrs/engine";
 
-const { db, auth } = initServerFirebase();
+const { db, auth, FieldValue } = initServerFirebase();
 
 const app = express();
 
@@ -183,6 +184,123 @@ app.get(
 		} catch (err) {
 			console.log("Error getting document", err);
 			next(err);
+		}
+	}
+);
+
+app.get(
+	"/channels",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const channels = db
+				.collection("channels")
+				.get()
+				.then((snapshot) => {
+					const polls = snapshot.docs.map((doc) => {
+						return {
+							...doc.data(),
+							id: doc.id,
+						};
+					});
+
+					return polls;
+				});
+
+			res.json(await channels);
+		} catch (err) {
+			console.log("Error getting document", err);
+			next(err);
+		}
+	}
+);
+
+app.get(
+	"/channels/:id",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const doc = await db
+				.collection("channels")
+				.doc(req.params.id)
+				.get();
+
+			if (!doc.exists) {
+				throw new Error("404 channel not found");
+			}
+
+			const channelData = doc.data();
+			res.send(channelData);
+		} catch (err) {
+			console.log("Error getting document", err);
+			next(err);
+		}
+	}
+);
+
+app.post(
+	"/channels/new",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const channel = req.body;
+
+			// Fetch channels with the given name from the database
+			const channelSnapshot = await db
+				.collection("channels")
+				.where("name", "==", channel.name)
+				.get();
+
+			// // Check if a channel with the given name already exists
+			// if (!channelSnapshot.empty) {
+			// 	return res
+			// 		.status(400)
+			// 		.json({ error: "Channel with this name already exists" });
+			// }
+
+			const errors = validateCreateChannel(channel, channelSnapshot);
+
+			if (errors.length > 0) {
+				return res.status(400).json(errors);
+			}
+
+			const newChannel = await db.collection("channels").add(channel);
+
+			return res.json({ message: "Channel created" });
+		} catch (err) {
+			console.log("Error getting document", err);
+			next(err);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+	}
+);
+
+app.post(
+	"/channels/:id/join",
+	async (req: Request, res: Response, next: NextFunction) => {
+		console.log("Call join route");
+		const data = req.body;
+
+		try {
+			const channelRef = db.collection("channels").doc(req.params.id);
+			const channelDoc = await db
+				.collection("channels")
+				.doc(req.params.id)
+				.get();
+
+			if (!channelDoc.exists) {
+				throw new Error("404 channel not found");
+			}
+
+			console.log(FieldValue);
+			console.log(data.playerId);
+
+			await channelRef.update({
+				playerIds: FieldValue.arrayUnion(data.user),
+			});
+
+			console.log("JOIN");
+		} catch (err) {
+			console.log("Error getting document", err);
+			next(err);
+			return res.status(500).json({ error: "Internal server error" });
 		}
 	}
 );
