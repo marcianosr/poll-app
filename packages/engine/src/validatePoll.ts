@@ -13,7 +13,10 @@ export const validateCreatePoll = (poll: CreatePoll) => {
 			"All options must have a value",
 		],
 		[
-			poll.options.some((option) => option?.explanation?.length < 1),
+			poll.options.some(
+				(option) =>
+					option.explanation && option?.explanation?.length < 1
+			),
 			"Explanation can't be empty",
 		],
 		[poll.tags.length < 1, "At least one tag is required"],
