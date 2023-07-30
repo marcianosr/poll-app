@@ -13,7 +13,7 @@ import type { AppChannelPlaylist, Channel, Poll } from "@marcianosrs/engine";
 import { useState } from "react";
 
 type LoaderData = {
-	poll: Poll;
+	poll: Poll & AppChannelPlaylist;
 	selectedChannel: string | null;
 	joinedChannels: Channel<AppChannelPlaylist>[];
 };
@@ -99,7 +99,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 	return json({
 		poll: !getPollIdFromSelectedChannel
 			? null
-			: await getPollById(session, getPollIdFromSelectedChannel.pollId),
+			: {
+					...(await getPollById(
+						session,
+						getPollIdFromSelectedChannel.pollId
+					)),
+					...getPollIdFromSelectedChannel,
+			  },
 		selectedChannel: selectedChannelFromQuery,
 		joinedChannels,
 	});
@@ -116,7 +122,7 @@ export default function PollDetail() {
 			channel.slug === selectedChannel
 	);
 
-	console.log(joinedChannels);
+	const isPollOpen = poll.status === "open";
 
 	const isVoteButtonDisabled =
 		selectedVotes.length === 0 ||
@@ -172,6 +178,9 @@ export default function PollDetail() {
 
 	return (
 		<main>
+			<p>
+				This poll is <strong>{poll.status}</strong>
+			</p>
 			<small>#{poll.no}</small>
 			<h1>{poll.question}</h1>
 			<ul>
