@@ -64,7 +64,7 @@ export default function Index() {
 				{/* TODO: Fix these TS errors */}
 				{channel.playlist.map((poll) => (
 					<li key={poll.id}>
-						<Link to={`/polls/${poll.id}?channel=${channel.name}`}>
+						<Link to={`/polls/${poll.id}?channel=${channel.slug}`}>
 							{poll.question}
 						</Link>
 					</li>
