@@ -40,7 +40,7 @@ export default function Index() {
 			<ul>
 				{channels.map((channel: AppChannel) => (
 					<li key={channel.id}>
-						<Link to={`/channels/${channel.id}`}>
+						<Link to={`/channels/${channel.slug}`}>
 							{channel.name}
 						</Link>
 						<button

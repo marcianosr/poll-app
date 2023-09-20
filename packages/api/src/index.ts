@@ -4,9 +4,9 @@ import { NextFunction } from "express";
 import cors from "cors";
 import {
 	CreatePoll,
-	UpdatePoll,
 	validateCreatePoll,
 	validateCreateChannel,
+	AppChannelPlaylist,
 } from "@marcianosrs/engine";
 
 const { db, auth, FieldValue } = initServerFirebase();
@@ -16,7 +16,11 @@ const app = express();
 app.use(express.json());
 app.use(
 	cors({
-		origin: ["http://localhost:3000", "https://poll-app-ivory.vercel.app"],
+		origin: [
+			"http://localhost:3000",
+			"http://localhost:3001",
+			"https://poll-app-ivory.vercel.app",
+		],
 	})
 );
 
@@ -188,9 +192,54 @@ app.get(
 	}
 );
 
+app.post("/polls/:id/vote", async (req: Request, res: Response) => {
+	try {
+		const channel = await db
+			.collection("channels")
+			.where("slug", "==", req.body.channel)
+			.get();
+
+		if (!channel.docs.length) {
+			throw new Error("404 channel not found");
+		}
+
+		const userDidVote = channel.docs[0]
+			.data()
+			.playlist.find(
+				(playlistItem: AppChannelPlaylist) =>
+					playlistItem.pollId === req.params.id &&
+					playlistItem.votedBy.includes(req.body.uid)
+			);
+
+		if (userDidVote) {
+			return res.status(400).json({ error: "User already voted" });
+		}
+
+		const currentChannel = channel.docs[0].data();
+
+		const updatedPlaylist = currentChannel.playlist.map(
+			(playlistItem: AppChannelPlaylist) => {
+				if (playlistItem.pollId === req.params.id) {
+					playlistItem.votedBy.push(req.body.uid);
+				}
+
+				return playlistItem;
+			}
+		);
+
+		channel.docs[0].ref.update({ playlist: updatedPlaylist });
+
+		return res.json({ message: "Vote added" });
+	} catch (err) {
+		console.log("Error getting document", err);
+		return res.status(500).json({ error: "Internal server error" });
+	}
+});
+
 app.get(
 	"/channels",
 	async (req: Request, res: Response, next: NextFunction) => {
+		console.log("Call channels route");
 		try {
 			const channels = db
 				.collection("channels")
@@ -214,21 +263,38 @@ app.get(
 	}
 );
 
+app.get("/channels/joined", async (req: Request, res: Response) => {
+	const user = req.headers.user;
+
+	try {
+		const joinedChannels = db
+			.collection("channels")
+			.where("playerIds", "array-contains", user)
+			.get();
+		res.json((await joinedChannels).docs.map((doc) => doc.data()));
+	} catch (err) {
+		console.log("Error getting document", err);
+	}
+});
+
 app.get(
 	"/channels/:id",
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
 			const doc = await db
 				.collection("channels")
-				.doc(req.params.id)
+				.where("slug", "==", req.params.id)
 				.get();
 
-			if (!doc.exists) {
+			console.log("RE", req.params.id);
+
+			if (doc.empty) {
 				throw new Error("404 channel not found");
 			}
 
-			const channelData = doc.data();
-			res.send(channelData);
+			const channel = doc.docs[0].data();
+
+			res.send(channel);
 		} catch (err) {
 			console.log("Error getting document", err);
 			next(err);
@@ -281,7 +347,6 @@ app.post(
 				throw new Error("404 channel not found");
 			}
 
-			console.log(FieldValue);
 			console.log(data.playerId);
 
 			await channelRef.update({
@@ -296,6 +361,16 @@ app.post(
 		}
 	}
 );
+
+app.get("/channels/names", async (req: Request, res: Response) => {
+	try {
+		const channels = db.collection("channels").get();
+
+		res.json((await channels).docs.map((doc) => doc.data().name));
+	} catch (err) {
+		console.log("Error getting document", err);
+	}
+});
 
 app.listen(process.env.PORT || 1305, () => {
 	console.log(`Server Started at ${1305}`);

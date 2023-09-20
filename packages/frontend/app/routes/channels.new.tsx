@@ -34,6 +34,7 @@ export const action = async ({ request }: ActionArgs) => {
 		playerIds: [],
 		moderatorIds: [decodedClaims?.uid || ""],
 		name,
+		slug: name.toLowerCase().replace(/\s/g, "-"),
 		playlist: [
 			...pollPlaylistIds.map((id: string) => ({
 				pollId: id,

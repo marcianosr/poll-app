@@ -61,6 +61,7 @@ type ChannelPlaylist = {
 export type Channel<P> = {
 	id: string;
 	name: string;
+	slug: string;
 	moderatorIds: string[];
 	createdAt: number;
 	createdBy: string | null;
