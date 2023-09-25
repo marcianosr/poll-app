@@ -1,8 +1,9 @@
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import styles from "./styles.css";
 import { Text } from "../Text";
 import classNames from "classnames";
-import { Answer } from "~/utils/polls";
+import type { Answer } from "~/utils/polls";
+import { CodeBlock } from "../CodeBlock";
 
 export const variants = [
 	"default",
@@ -21,7 +22,6 @@ export type OptionProps = {
 	onMouseOver?: any;
 	onMouseOut?: any;
 	onClick?: () => void;
-	points?: number;
 };
 
 export function links() {
@@ -35,7 +35,6 @@ export const Option = ({
 	style,
 	onMouseOver,
 	onMouseOut,
-	points,
 	children,
 }: PropsWithChildren<OptionProps>) => {
 	const styles = classNames("option", `option-${variant}`);
@@ -50,20 +49,27 @@ export const Option = ({
 				htmlFor={answer.id}
 				onClick={onClick}
 			>
-				<Text size="md" variant="primary" tag="span">
-					{answer.value}
-				</Text>
+				{answer.blockType === "code" && (
+					<CodeBlock size="sm" code={answer.value} />
+				)}
+				{answer.blockType !== "code" && (
+					<Text size="md" variant="primary" tag="span">
+						{answer.value}
+					</Text>
+				)}
 				{children}
 			</label>
 		</>
 	);
 };
 
-type OptionWithPoints = {
+type OptionWithPointsProps = {
 	points: number;
 };
 
-export const OptionWithPoints = ({ points }: OptionWithPoints) => (
+export const OptionWithPoints: React.FC<OptionWithPointsProps> = ({
+	points,
+}) => (
 	<>
 		{typeof points === "number" && (
 			<div className="option-points">

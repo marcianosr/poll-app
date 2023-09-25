@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import styles from "./styles.css";
 
 export const sizes = ["xl", "md", "sm", "lg", "xs"] as const;
