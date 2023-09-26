@@ -26,7 +26,7 @@ export const CodeBlock: FC<Props> = ({
 			const totalLineNumbers = code.split("\n").length;
 			const lineNumberWidth = `${totalLineNumbers}`.length + 1;
 			return (
-				<pre className={classNames(`text-${size}`)}>
+				<pre className={classNames(`text-${size}`, "code-block")}>
 					{tokens.map((line, i) => (
 						<div
 							{...getLineProps({

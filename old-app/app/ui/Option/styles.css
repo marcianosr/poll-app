@@ -13,14 +13,6 @@
 	row-gap: 0.5rem;
 }
 
-.option.option-codeblock {
-	padding: 0;
-}
-.option.option-codeblock pre {
-	padding: 1rem;
-	margin: 0;
-}
-
 .option > span {
 	color: white;
 	font-weight: 700;

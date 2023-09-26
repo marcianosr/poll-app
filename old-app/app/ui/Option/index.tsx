@@ -37,9 +37,7 @@ export const Option = ({
 	onMouseOut,
 	children,
 }: PropsWithChildren<OptionProps>) => {
-	const styles = classNames("option", `option-${variant}`, {
-		"option-codeblock": answer.blockType === "code",
-	});
+	const styles = classNames("option", `option-${variant}`);
 
 	return (
 		<>
