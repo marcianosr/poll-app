@@ -5,3 +5,8 @@
 	user-select: none;
 	display: inline-block;
 }
+
+pre.codeblock {
+	padding: 0.5rem;
+	margin: 0;
+}
