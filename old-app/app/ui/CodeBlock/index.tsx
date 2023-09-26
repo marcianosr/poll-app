@@ -1,38 +1,38 @@
 import type { FC } from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import styles from "./styles.css";
+import textStyles from "../Text/styles.css";
 import classNames from "classnames";
+import type { Sizes } from "../Text";
 
 type Props = {
 	code: string;
 	withLineNumbers?: boolean;
-	isAnswerField?: boolean;
+	size: Sizes;
 };
 
-export const links = () => [{ rel: "stylesheet", href: styles }];
+export const links = () => [
+	{ rel: "stylesheet", href: styles },
+	{ rel: "stylesheet", href: textStyles },
+];
 
 export const CodeBlock: FC<Props> = ({
 	code,
 	withLineNumbers = true,
-	isAnswerField = false,
+	size = "md",
 }) => (
 	<Highlight {...defaultProps} code={code} language="jsx">
 		{({ tokens, getLineProps, getTokenProps }) => {
 			const totalLineNumbers = code.split("\n").length;
 			const lineNumberWidth = `${totalLineNumbers}`.length + 1;
 			return (
-				<pre
-					className={classNames({
-						"text-question-answer": tokens.length === 1,
-						"code-block": tokens.length > 1,
-					})}
-				>
+				<pre className={classNames(`text-${size}`)}>
 					{tokens.map((line, i) => (
 						<div
 							{...getLineProps({
 								line,
-								key: i,
 							})}
+							key={i}
 						>
 							<>
 								{withLineNumbers && (
@@ -51,6 +51,7 @@ export const CodeBlock: FC<Props> = ({
 											token,
 											key,
 										})}
+										key={key}
 									/>
 								))}
 							</>
