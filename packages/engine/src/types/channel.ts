@@ -1,4 +1,5 @@
 import { ContentIdentifier, UserId } from "./identifiers";
+import { PollItem } from "./poll";
 
 export type Channel = {
   id: ContentIdentifier;
@@ -7,6 +8,12 @@ export type Channel = {
   owner: UserId;
   theme: ContentIdentifier;
   scoreSystems: ContentIdentifier[];
+  moderatorIds: string[];
+	createdAt: number;
+	createdBy: string;
+	playlist: PollItem[];
+	frequency: "daily" | "weekly";
+	order: "shuffle" | "asc" | "desc";
 };
 
 export type Season = {
