@@ -36,17 +36,6 @@ export type ProductDefinition = {
 };
 
 /**
- * Theme adjust the looks and terminology of the website.
- */
-export type Theme<T extends Record<string, unknown>> = {
-  id: ContentIdentifier;
-  name: string;
-  internalThemeId: string;
-
-  config: T; // Could contain theme specific settings, like colors, terminology, etc.
-};
-
-/**
  * Score mutator could:
  *
  * - Duplicate score

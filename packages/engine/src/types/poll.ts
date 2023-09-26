@@ -1,12 +1,12 @@
 import { ContentIdentifier, UserId } from "./identifiers";
 
-export type PollQuestion<T extends Record<string, unknown>> = {
+export type PollQuestion<QuestionData extends Record<string, unknown>> = {
   id: ContentIdentifier;
   submitter: UserId;
   created: Date;
   status: "draft" | "approved";
 
-  content: T;
+  content: QuestionData;
   contentType: string;
   tags: string[];
 };
@@ -26,11 +26,11 @@ export type PollItem = {
   questionId: ContentIdentifier;
 };
 
-export type PollUserResult<T extends Record<string, unknown>> = {
+export type PollUserResult<AnswerData extends Record<string, unknown>> = {
   pollId: ContentIdentifier;
   questionId: ContentIdentifier;
   userId: UserId;
-  result: T;
+  result: AnswerData;
   rawAnswerScore: number; // percentage
   timeUsed: number;
   scorePluginsActive: ContentIdentifier[];
