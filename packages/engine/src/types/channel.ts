@@ -36,28 +36,15 @@ export type ProductDefinition = {
 };
 
 /**
- * Score mutator could:
- *
- * - Duplicate score
- * - Half the score
- * - Pick all wrong answers instead of right ones ? 'reverse' (how? can this be applied to all 'question types?')
- */
-export type ScoreMutator<T extends Record<string, unknown>> = {
-  id: ContentIdentifier;
-  name: string;
-  internalMutatorId: string;
-
-  config: T; // Settings like 'multiplier value'
-};
-
-/**
  * TODO: Not sure if this is needed, but could be doing things like removing time limits,
- * setting time limits, halving time limits, etc. But maybe this should be merged with the score mutator?
+ * setting time limits, halving time limits, etc.
+ *
+ * This is about ways to answer the question, the score is how to process the result
  */
 export type QuestionModifier<T extends Record<string, unknown>> = {
   id: ContentIdentifier;
   name: string;
   internalMutatorId: string;
 
-  config: T; // Settings like 'multiplier value'
+  config: T; // Settings like time-limit
 };

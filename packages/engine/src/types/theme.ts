@@ -1,3 +1,4 @@
+import { Editor } from "./content-editing";
 import { ContentIdentifier } from "./identifiers";
 
 /**
@@ -15,12 +16,7 @@ export type ThemePlugin<ThemeConfigData extends Record<string, unknown>> = {
   theme: string;
   verifyContent: (settings: unknown) => ThemeConfigData | false;
 
-  EditTheme: () => Promise<
-    React.FC<{
-      settings: ThemeConfigData;
-      onUpdate: (newSettings: ThemeConfigData) => void;
-    }>
-  >;
+  EditTheme: Editor<ThemeConfigData>;
 
   /**
    * Not yet sure what other function should go in here. We need to experiment with 'themed' components first
