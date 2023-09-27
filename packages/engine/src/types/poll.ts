@@ -1,4 +1,6 @@
+import { Editor } from "./content-editing";
 import { ContentIdentifier, UserId } from "./identifiers";
+import { QuestionScoreResult } from "./poll-result";
 
 export type PollQuestion<QuestionData extends Record<string, unknown>> = {
   id: ContentIdentifier;
@@ -30,9 +32,11 @@ export type PollUserResult<AnswerData extends Record<string, unknown>> = {
   pollId: ContentIdentifier;
   questionId: ContentIdentifier;
   userId: UserId;
-  result: AnswerData;
-  rawAnswerScore: number; // percentage
-  timeUsed: number;
+  questionResult: AnswerData;
+
+  originalScoreResult: QuestionScoreResult;
+  // After the scorePlugins have mutated the result
+  processedScoreResult: QuestionScoreResult;
   scorePluginsActive: ContentIdentifier[];
 };
 
@@ -43,12 +47,8 @@ export type PollQuestionPlugin<
   contentType: string;
   verifyContent: (settings: unknown) => QuestionData | false;
 
-  EditQuestion: () => Promise<
-    React.FC<{
-      settings: QuestionData;
-      onUpdate: (newSettings: QuestionData) => void;
-    }>
-  >;
+  EditQuestion: Editor<QuestionData>;
+
   ShowQuestion: () => Promise<
     React.FC<{
       settings: QuestionData;
