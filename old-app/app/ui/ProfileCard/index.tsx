@@ -1,6 +1,6 @@
 import styles from "./styles.css";
 import { Text } from "../Text";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import classnames from "classnames";
 
 export function links() {
@@ -81,7 +81,9 @@ const DisplayName = ({ user }: DisplayNameProps) => (
 			{user.displayName.split(" ")[0]}
 		</Text>
 		<Text variant="secondary" tag="span" size="md">
-			{user.displayName.split(" ")[1]} {user.displayName.split(" ")[2]}
+			{user.displayName.split(" ")[1]}&nbsp;
+			<wbr />
+			{user.displayName.split(" ")[2]}
 		</Text>
 	</div>
 );
