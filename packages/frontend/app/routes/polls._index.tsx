@@ -11,7 +11,10 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+	console.log("GETTING LOADER");
 	const session = await getSession(request.headers.get("cookie"));
+
+	console.log(session.get("accessToken"));
 
 	await throwIfNotAuthorized(request);
 

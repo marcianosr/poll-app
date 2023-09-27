@@ -1,7 +1,7 @@
 import type {
 	ActionFunction,
 	LoaderFunction,
-	V2_MetaFunction,
+	MetaFunction,
 } from "@remix-run/node";
 import { Title } from "@marcianosrs/ui";
 import { useLoaderData, useSubmit } from "@remix-run/react";
@@ -13,7 +13,7 @@ import {
 	sessionLogout,
 } from "~/util/session.server";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
 	return [{ title: "New Remix App" }];
 };
 

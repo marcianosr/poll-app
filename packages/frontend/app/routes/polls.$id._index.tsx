@@ -117,7 +117,7 @@ export default function PollDetail() {
 	const [selectedVotes, setSelectedVotes] = useState<string[]>([]);
 	const transition = useNavigation();
 
-	const hasJoinedChannel: boolean = !!joinedChannels?.find(
+	const hasJoinedChannel = !!joinedChannels?.find(
 		(channel: Channel<AppChannelPlaylist>) =>
 			channel.slug === selectedChannel
 	);

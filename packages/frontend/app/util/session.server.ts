@@ -10,17 +10,18 @@ const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
 	throw new Error("SESSION_SECRET must be set");
 }
-let { getSession, commitSession, destroySession } = createCookieSessionStorage({
-	cookie: {
-		name: "__session",
-		secure: true,
-		secrets: [sessionSecret],
-		sameSite: "lax", // to help with CSRF
-		path: "/",
-		maxAge: 60 * 60 * 24 * 5, // 5 days
-		httpOnly: true,
-	},
-});
+const { getSession, commitSession, destroySession } =
+	createCookieSessionStorage({
+		cookie: {
+			name: "__session",
+			secure: true,
+			secrets: [sessionSecret],
+			sameSite: "lax", // to help with CSRF
+			path: "/",
+			maxAge: 60 * 60 * 24 * 5, // 5 days
+			httpOnly: true,
+		},
+	});
 
 export const sessionLogin = async (
 	request: Request,
