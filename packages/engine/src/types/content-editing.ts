@@ -19,10 +19,11 @@ export type Editor<T extends Record<string, unknown>> = EditorAsComponent<T>; //
 
 //export type EditorWithSchema<T extends Record<string, unknown>> = FormSchemaFor<T>;
 
+export type SettingsEditComponent<T extends Record<string, unknown>> =
+  React.FC<{
+    data: T;
+    onUpdate: (updatedData: T) => void;
+  }>;
+
 export type EditorAsComponent<T extends Record<string, unknown>> =
-  () => Promise<
-    React.FC<{
-      data: T;
-      onUpdate: (updatedData: T) => void;
-    }>
-  >;
+  () => Promise<SettingsEditComponent<T>>;

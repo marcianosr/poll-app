@@ -9,11 +9,11 @@ export type Channel = {
   theme: ContentIdentifier;
   scoreSystems: ContentIdentifier[];
   moderatorIds: string[];
-	createdAt: number;
-	createdBy: string;
-	playlist: PollItem[];
-	frequency: "daily" | "weekly";
-	order: "shuffle" | "asc" | "desc";
+  createdAt: number;
+  createdBy: string;
+  playlist: PollItem[];
+  frequency: "daily" | "weekly";
+  order: "shuffle" | "asc" | "desc";
 };
 
 export type Season = {

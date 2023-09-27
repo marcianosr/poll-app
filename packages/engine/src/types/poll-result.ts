@@ -31,7 +31,7 @@ export type PollScoreProcessorPlugin<
   ProcessorSettings extends Record<string, unknown>
 > = {
   processorType: string;
-  verifySettings: (settings: unknown) => ProcessorSettings | false;
+  verifySettings: (settings: unknown) => settings is ProcessorSettings;
   defaultSettings: () => ProcessorSettings;
 
   EditProcessor: Editor<ProcessorSettings>;
