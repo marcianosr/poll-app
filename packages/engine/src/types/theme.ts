@@ -1,4 +1,5 @@
-import { Editor } from "./content-editing";
+import { TypedForm } from "../form-schema/field-types";
+import { FormDataObject } from "./form";
 import { ContentIdentifier } from "./identifiers";
 
 /**
@@ -12,11 +13,11 @@ export type Theme<ThemeConfigData extends Record<string, unknown>> = {
   config: ThemeConfigData; // Could contain theme specific settings, like colors, terminology, etc.
 };
 
-export type ThemePlugin<ThemeConfigData extends Record<string, unknown>> = {
+export type ThemePlugin<FormDefinition extends TypedForm> = {
   theme: string;
-  verifyContent: (settings: unknown) => ThemeConfigData | false;
+  verifyContent: (settings: unknown) => FormDataObject<FormDefinition> | false;
 
-  EditTheme: Editor<ThemeConfigData>;
+  editForm: FormDefinition;
 
   /**
    * Not yet sure what other function should go in here. We need to experiment with 'themed' components first

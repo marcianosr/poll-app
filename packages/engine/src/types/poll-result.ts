@@ -1,5 +1,4 @@
 import { TypedForm } from "../form-schema/field-types";
-import { Editor } from "./content-editing";
 import { FormDataObject } from "./form";
 import { ContentIdentifier, Milliseconds } from "./identifiers";
 

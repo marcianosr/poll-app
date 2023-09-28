@@ -3,7 +3,7 @@ import { FormDataObject } from "../../types/form";
 import { PollScoreProcessorPlugin } from "../../types/poll-result";
 
 const form = [
-  { name: "multiplier", displayName: "multiplier", valueType: "number", fieldType: "number", optional: false, defaultValue: 1 },
+  { name: "multiplier", displayName: "multiplier", valueType: "number", fieldType: "number", optional: false, defaultValue: 1, min: 0.1, max: 5.0 },
 ] as const satisfies TypedForm;
 
 type MultiplierSettings = FormDataObject<typeof form>;
