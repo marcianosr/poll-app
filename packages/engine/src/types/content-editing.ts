@@ -15,15 +15,15 @@
  *
  */
 
-export type Editor<T extends Record<string, unknown>> = EditorAsComponent<T>; // | EditorWithSchema<T>
+export type Editor<T extends unknown> = EditorAsComponent<T>; // | EditorWithSchema<T>
 
 //export type EditorWithSchema<T extends Record<string, unknown>> = FormSchemaFor<T>;
 
-export type SettingsEditComponent<T extends Record<string, unknown>> =
-  React.FC<{
-    data: T;
-    onUpdate: (updatedData: T) => void;
-  }>;
+export type SettingsEditComponent<T extends unknown> = React.FC<{
+  data: T;
+  onUpdate: (updatedData: T) => void;
+}>;
 
-export type EditorAsComponent<T extends Record<string, unknown>> =
-  () => Promise<SettingsEditComponent<T>>;
+export type EditorAsComponent<T extends unknown> = <
+  Settings extends T
+>() => Promise<SettingsEditComponent<Settings>>;

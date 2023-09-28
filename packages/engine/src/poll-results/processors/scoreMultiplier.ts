@@ -1,0 +1,21 @@
+import { TypedForm } from "../../form-schema/field-types";
+import { FormDataObject } from "../../types/form";
+import { PollScoreProcessorPlugin } from "../../types/poll-result";
+
+const form = [
+  { name: "multiplier", displayName: "multiplier", valueType: "number", fieldType: "number", optional: false, defaultValue: 1 },
+] as const satisfies TypedForm;
+
+type MultiplierSettings = FormDataObject<typeof form>;
+
+export const ScoreMultiplier: PollScoreProcessorPlugin<typeof form> = {
+  processorType: "multiplier",
+  defaultSettings: () => ({ multiplier: 1 }),
+  verifySettings: (e): e is MultiplierSettings =>
+    typeof e === "object" && e !== null && "multiplier" in e,
+  editForm: form,
+  processResult: (score, settings) => ({
+    ...score,
+    rawPoints: score.rawPoints * settings.multiplier,
+  }),
+};

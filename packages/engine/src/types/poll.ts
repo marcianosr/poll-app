@@ -1,4 +1,6 @@
+import { TypedForm } from "../form-schema/field-types";
 import { Editor } from "./content-editing";
+import { FormDataObject } from "./form";
 import { ContentIdentifier, UserId } from "./identifiers";
 import { QuestionScoreResult } from "./poll-result";
 
@@ -41,24 +43,23 @@ export type PollUserResult<AnswerData extends Record<string, unknown>> = {
 };
 
 export type PollQuestionPlugin<
-  QuestionData extends Record<string, unknown>,
+  FormDefinition extends TypedForm,
   AnswerData extends Record<string, unknown>
 > = {
   contentType: string;
-  verifyContent: (settings: unknown) => QuestionData | false;
+  verifySettings: (
+    settings: unknown
+  ) => settings is FormDataObject<FormDefinition>;
+  defaultSettings: () => FormDataObject<FormDefinition>;
 
-  EditQuestion: Editor<QuestionData>;
+  editForm: FormDefinition;
 
   ShowQuestion: () => Promise<
     React.FC<{
-      settings: QuestionData;
+      settings: FormDataObject<FormDefinition>;
       mode: "preview" | "answer" | "result";
       pollUserResults?: PollUserResult<AnswerData>[];
-      onAnswer?: (
-        data: AnswerData,
-        rawAnswerScore: number,
-        timeUsed: number
-      ) => void;
+      onAnswer?: (data: AnswerData, result: QuestionScoreResult) => void;
     }>
   >;
 };

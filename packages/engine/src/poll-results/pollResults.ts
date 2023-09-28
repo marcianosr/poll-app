@@ -1,9 +1,7 @@
+import { TypedForm } from "../form-schema/field-types";
 import { createPluginStore } from "../generic/pluginStore";
 import { PollScoreProcessorPlugin } from "../types/poll-result";
 
-export type GenericQuestionScoreMutator<
-  T extends Record<string, unknown> = Record<string, unknown>
-> = PollScoreProcessorPlugin<T>;
-
-export const scoreProcessorStore =
-  createPluginStore<GenericQuestionScoreMutator>((p) => p.processorType);
+export const scoreProcessorStore = createPluginStore<
+  PollScoreProcessorPlugin<TypedForm>
+>((p) => p.processorType);

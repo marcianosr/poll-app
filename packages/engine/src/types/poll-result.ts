@@ -1,4 +1,6 @@
+import { TypedForm } from "../form-schema/field-types";
 import { Editor } from "./content-editing";
+import { FormDataObject } from "./form";
 import { ContentIdentifier, Milliseconds } from "./identifiers";
 
 export type QuestionScoreResult = {
@@ -27,17 +29,17 @@ export type QuestionScoreMutator<T extends Record<string, unknown>> = {
   config: T; // Settings like 'multiplier value'
 };
 
-export type PollScoreProcessorPlugin<
-  ProcessorSettings extends Record<string, unknown>
-> = {
+export type PollScoreProcessorPlugin<FormDefinition extends TypedForm> = {
   processorType: string;
-  verifySettings: (settings: unknown) => settings is ProcessorSettings;
-  defaultSettings: () => ProcessorSettings;
+  verifySettings: (
+    settings: unknown
+  ) => settings is FormDataObject<FormDefinition>;
+  defaultSettings: () => FormDataObject<FormDefinition>;
 
-  EditProcessor: Editor<ProcessorSettings>;
+  editForm: FormDefinition;
 
-  processResult: (
+  processResult: <Settings extends FormDataObject<FormDefinition>>(
     score: QuestionScoreResult,
-    settings: ProcessorSettings
+    settings: Settings
   ) => QuestionScoreResult;
 };

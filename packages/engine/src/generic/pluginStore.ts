@@ -4,8 +4,8 @@ export const createPluginStore = <BasePlugin>(
   const plugins: BasePlugin[] = [];
 
   return {
-    add: <Plugin>(type: Plugin) => {
-      plugins.push(type as unknown as BasePlugin);
+    add: <Plugin extends BasePlugin>(type: Plugin) => {
+      plugins.push(type);
     },
     get: (pluginId: string): BasePlugin | undefined =>
       plugins.find((e) => getIdentifier(e) === pluginId),
