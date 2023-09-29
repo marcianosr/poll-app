@@ -2,9 +2,9 @@ import { OmitNever } from "./utils";
 
 export type FormSchema<
   Field extends
-    | BaseOpenFormField<unknown, string, ValueTypes, {}>
+    | BaseOpenFormField<unknown, string, ValueTypes>
     | BaseFixedFormField<unknown, string, Readonly<string[]>, {}> =
-    | BaseOpenFormField<unknown, string, ValueTypes, {}>
+    | BaseOpenFormField<unknown, string, ValueTypes>
     | BaseFixedFormField<unknown, string, Readonly<string[]>, {}>
 > = Readonly<Field[]>;
 
@@ -21,13 +21,15 @@ export type BaseOpenFormField<
   KeyName,
   FieldType,
   ValueType extends ValueTypes,
-  Extra extends Record<string, unknown> = {}
+  Extra extends Record<string, unknown> = {},
+  DefaultValue extends TypeMapping[ValueType] = TypeMapping[ValueType]
 > = {
   name: KeyName;
   displayName: string;
   fieldType: FieldType;
   valueType: ValueType;
   optional: boolean;
+  defaultValue: DefaultValue;
 } & Extra;
 
 export type BaseFixedFormField<
@@ -47,11 +49,11 @@ export type BaseFixedFormField<
 
 export type ValueTypeOfField<
   Field extends
-    | BaseOpenFormField<unknown, string, ValueTypes, {}>
-    | BaseFixedFormField<unknown, string, Readonly<string[]>, {}>
-> = Field extends BaseFixedFormField<string, string, infer FieldType, {}>
+    | BaseOpenFormField<unknown, string, ValueTypes>
+    | BaseFixedFormField<unknown, string, Readonly<string[]>>
+> = Field extends BaseFixedFormField<string, string, infer FieldType>
   ? FieldType[number]
-  : Field extends BaseOpenFormField<unknown, string, infer FieldKey, {}>
+  : Field extends BaseOpenFormField<unknown, string, infer FieldKey>
   ? TypeMapping[FieldKey & ValueTypes]
   : never;
 

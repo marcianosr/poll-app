@@ -33,7 +33,6 @@ export type PollScoreProcessorPlugin<FormDefinition extends TypedForm> = {
   verifySettings: (
     settings: unknown
   ) => settings is FormDataObject<FormDefinition>;
-  defaultSettings: () => FormDataObject<FormDefinition>;
 
   editForm: FormDefinition;
 
