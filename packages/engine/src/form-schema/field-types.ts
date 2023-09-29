@@ -1,19 +1,33 @@
 import { BaseFixedFormField, BaseOpenFormField } from "../types/form";
 
 export type Title<Key> = BaseOpenFormField<Key, "title", "none">;
+
+export type TextFieldExtra = {
+  prefix?: string;
+  postfix?: string;
+  defaultValue?: string;
+};
 export type TextField<Key> = BaseOpenFormField<
   Key,
   "text",
   "string",
-  { prefix?: string; postfix?: string; defaultValue?: string }
+  TextFieldExtra
 >;
+
+export type NumberFieldExtra = {
+  min?: number;
+  max?: number;
+  defaultValue?: number;
+};
 export type NumberField<Key> = BaseOpenFormField<
   Key,
   "number",
   "number",
-  { min?: number; max?: number; defaultValue?: number }
+  NumberFieldExtra
 >;
+
 export type CheckboxField<Key> = BaseOpenFormField<Key, "checkbox", "boolean">;
+
 export type PickListField<
   Key,
   Options extends readonly string[]

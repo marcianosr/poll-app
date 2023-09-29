@@ -55,15 +55,16 @@ export type ValueTypeOfField<
   ? TypeMapping[FieldKey & ValueTypes]
   : never;
 
-export type FormDataObject<Fields extends FormSchema> = Partial<
-  OmitNever<{
-    [Field in Fields[number] as Field["name"] &
-      string]: Field["optional"] extends true ? ValueTypeOfField<Field> : never;
-  }>
-> &
-  OmitNever<{
-    [Field in Fields[number] as Field["name"] &
-      string]: Field["optional"] extends false
-      ? ValueTypeOfField<Field>
-      : never;
-  }>;
+type SelectOptional<
+  Fields extends FormSchema,
+  Value extends boolean
+> = OmitNever<{
+  [Field in Fields[number] as Field["name"] &
+    string]: Field["optional"] extends Value ? ValueTypeOfField<Field> : never;
+}>;
+
+type Prettify<O> = { [K in keyof O]: O[K] } & {};
+
+export type FormDataObject<Fields extends FormSchema> = Prettify<
+  SelectOptional<Fields, false> & Partial<SelectOptional<Fields, true>>
+>;
