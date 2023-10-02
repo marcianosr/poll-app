@@ -31,11 +31,17 @@ export type PickListField<
   Options extends readonly string[]
 > = BaseFixedFormField<Key, "select", Options>;
 
+export type RadioField<
+  Key,
+  Options extends readonly string[]
+> = BaseFixedFormField<Key, "radio", Options>;
+
 export type FieldType<Key> =
   | Title<Key>
   | TextField<Key>
   | NumberField<Key>
   | CheckboxField<Key>
-  | PickListField<Key, Readonly<string[]>>;
+  | PickListField<Key, Readonly<string[]>>
+  | RadioField<Key, Readonly<string[]>>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;
