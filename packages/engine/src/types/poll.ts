@@ -41,6 +41,16 @@ export type PollUserResult<AnswerData extends Record<string, unknown>> = {
   scorePluginsActive: ContentIdentifier[];
 };
 
+/**
+ * Allows for different types of questions:
+ *
+ * Question type could be:
+ *
+ * - Poll with one / multiple correct answers
+ * - Poll where chain of answers should be provided (like going to flow chart)
+ * - Minigame
+ * - Question about opinion where you can choose to already see what others voted or not (Tabs vs spaces!!!)
+ */
 export type PollQuestionPlugin<
   FormDefinition extends TypedForm,
   AnswerData extends Record<string, unknown>
@@ -49,7 +59,6 @@ export type PollQuestionPlugin<
   verifySettings: (
     settings: unknown
   ) => settings is FormDataObject<FormDefinition>;
-  defaultSettings: () => FormDataObject<FormDefinition>;
 
   editForm: FormDefinition;
 

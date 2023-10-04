@@ -14,13 +14,14 @@ export type QuestionScoreResult = {
 };
 
 /**
- * Score mutator could:
+ * Question mutator could:
  *
- * - Duplicate score
- * - Half the score
+ * - Make questions time based
  * - Pick all wrong answers instead of right ones ? 'reverse' (how? can this be applied to all 'question types?')
+ * - Shuffle answer options
+ * - Flip screen upside down?
  */
-export type QuestionScoreMutator<T extends Record<string, unknown>> = {
+export type QuestionMutator<T extends Record<string, unknown>> = {
   id: ContentIdentifier;
   name: string;
   internalMutatorId: string;
@@ -28,6 +29,15 @@ export type QuestionScoreMutator<T extends Record<string, unknown>> = {
   config: T; // Settings like 'multiplier value'
 };
 
+/**
+ * Score mutator could:
+ *
+ * - Duplicate score
+ * - Half the score
+ * - Cut off score based on time
+ * - Duplicate score if you are first one correct
+ *
+ */
 export type PollScoreProcessorPlugin<FormDefinition extends TypedForm> = {
   processorType: string;
   verifySettings: (

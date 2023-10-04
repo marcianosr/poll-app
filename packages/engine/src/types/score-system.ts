@@ -2,6 +2,22 @@ import { TypedForm } from "../form-schema/field-types";
 import { FormDataObject } from "./form";
 import { QuestionScoreResult } from "./poll-result";
 
+type PlayerData = unknown;
+
+/**
+ * Score systems define how ranking works.
+ *
+ * They process the `QuestionScoreResult` with player data into their own defined
+ * `ScoreSystemData`.
+ *
+ * The plugin can then based on the ScoreSystemData show a highscore page, that could be based on:
+ *
+ * - Teams
+ * - Points
+ * - Time
+ * - Streak
+ *
+ */
 export type ScoreSystemPlugin<
   FormDefinition extends TypedForm,
   ScoreSystemData
@@ -22,6 +38,7 @@ export type ScoreSystemPlugin<
 
   processResult: <Settings extends FormDataObject<FormDefinition>>(
     score: QuestionScoreResult,
+    player: PlayerData,
     settings: Settings,
     systemData: ScoreSystemData
   ) => ScoreSystemData;
