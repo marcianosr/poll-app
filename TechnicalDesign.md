@@ -4,18 +4,17 @@
 
 ```mermaid
 classDiagram
-    class Channel{
+    class Channel {
         +String name
+        +User owner
     }
     Channel --* ValutaConfig
-    Channel --> Theme
+    Channel --> Theme : DefaultTheme
 
     class ValutaConfig {
         +String valutaSign
         +String valutaName
     }
-
-    class Theme
 
     class Season {
         +Date start
@@ -24,21 +23,21 @@ classDiagram
     }
 
     Channel <-- Season
-    Season --> Theme
-    Season --> Product
-    Channel --> ScoreMutator
-    Season --> ScoreMutator
+    Season --> Theme : Season specific theme
+    Season --> Product : Season specific products
+    Channel --> ScoreMutator : Default mutator
+    Season --> ScoreMutator : Seaon specific mutator
 
     class PollQuestion {
-        +String questionType
-        +Config questionData
+        +String questionTypePluginId
+        +Config questionPluginConfig
         +String status
         +User submitter
         +Array~String~ tags
     }
 
     PollQuestion <-- Feedback
-    Channel --> PollQuestion
+    Channel --> PollQuestion : Playlist
 
     Channel --> Product
 
@@ -63,9 +62,9 @@ classDiagram
 
     Product --> ScoreMutator
 
-    class ScoreMutator{
-        +String mutatorType
-        +Config mutatorConfig
+    class ScoreMutator {
+        +String scoreMutatorPluginTypeId
+        +Config scoreMutatorPluginConfig
     }
 
     class ProductUse {
@@ -74,10 +73,22 @@ classDiagram
         +ChannelUser: targetUser
         +boolean: hasTriggered
         +number: userCountdown /* when cast on next user */
+    }
 
+    class Theme {
+        +String name
+        +String themePluginId
+        +Config themePluginConfig
     }
     ProductUse --> ChannelUser
-
     ProductUse --> Product
+
+    Channel --> ScoreData : Default score systems
+    Season --> ScoreData : Season specific score systems
+
+    class ScoreData {
+        +String scoreSystemPluginId
+        +Config scoreSystemPluginConfig
+    }
 
 ```
