@@ -1,6 +1,12 @@
-import { BaseFixedFormField, BaseOpenFormField } from "../types/form";
+import {
+  BaseFixedFormField,
+  BaseObjectListFormField,
+  BaseOpenFormField,
+  FormField,
+  FormSchema,
+} from "../types/form";
 
-export type Title<Key> = BaseOpenFormField<Key, "title", "none">;
+export type Title<Key> = BaseOpenFormField<Key, "title", "none", {}, undefined>;
 
 export type TextFieldExtra = {
   prefix?: string;
@@ -36,12 +42,23 @@ export type RadioField<
   Options extends readonly string[]
 > = BaseFixedFormField<Key, "radio", Options>;
 
+export type ObjectListExtra = {
+  minimalAmount: number;
+  maximumAmount?: number;
+};
+
+export type ObjectListField<
+  Key,
+  ObjectSchema extends TypedForm
+> = BaseObjectListFormField<Key, "objectList", ObjectSchema, ObjectListExtra>;
+
 export type FieldType<Key> =
   | Title<Key>
   | TextField<Key>
   | NumberField<Key>
   | CheckboxField<Key>
   | PickListField<Key, Readonly<string[]>>
-  | RadioField<Key, Readonly<string[]>>;
+  | RadioField<Key, Readonly<string[]>>
+  | ObjectListField<Key, readonly FieldType<string>[]>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;

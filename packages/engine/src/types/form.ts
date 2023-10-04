@@ -1,12 +1,11 @@
 import { OmitNever } from "./utils";
 
-export type FormSchema<
-  Field extends
-    | BaseOpenFormField<unknown, string, ValueTypes>
-    | BaseFixedFormField<unknown, string, Readonly<string[]>, {}> =
-    | BaseOpenFormField<unknown, string, ValueTypes>
-    | BaseFixedFormField<unknown, string, Readonly<string[]>, {}>
-> = Readonly<Field[]>;
+export type FormField =
+  | BaseOpenFormField<unknown, string, ValueTypes>
+  | BaseObjectListFormField<unknown, string, readonly FormField[]>
+  | BaseFixedFormField<unknown, string, Readonly<string[]>>;
+
+export type FormSchema<Field extends FormField = FormField> = Readonly<Field[]>;
 
 export type TypeMapping = {
   none: never;
@@ -22,7 +21,9 @@ export type BaseOpenFormField<
   FieldType,
   ValueType extends ValueTypes,
   Extra extends Record<string, unknown> = {},
-  DefaultValue extends TypeMapping[ValueType] = TypeMapping[ValueType]
+  DefaultValue extends TypeMapping[ValueType] | undefined =
+    | TypeMapping[ValueType]
+    | undefined
 > = {
   name: KeyName;
   displayName: string;
@@ -47,15 +48,28 @@ export type BaseFixedFormField<
   defaultValue: AllowedValues[number];
 } & Extra;
 
-export type ValueTypeOfField<
-  Field extends
-    | BaseOpenFormField<unknown, string, ValueTypes>
-    | BaseFixedFormField<unknown, string, Readonly<string[]>>
-> = Field extends BaseFixedFormField<string, string, infer FieldType>
-  ? FieldType[number]
-  : Field extends BaseOpenFormField<unknown, string, infer FieldKey>
-  ? TypeMapping[FieldKey & ValueTypes]
-  : never;
+export type BaseObjectListFormField<
+  KeyName,
+  FieldType,
+  ObjectSchema extends FormSchema,
+  Extra extends Record<string, unknown> = {}
+> = {
+  name: KeyName;
+  displayName: string;
+  fieldType: FieldType;
+  valueType: "objects";
+  optional: boolean;
+  objectSchema: ObjectSchema;
+} & Extra;
+
+export type ValueTypeOfField<Field extends FormField> =
+  Field extends BaseFixedFormField<string, string, infer FieldType>
+    ? FieldType[number]
+    : Field extends BaseObjectListFormField<unknown, string, infer Schema>
+    ? FormDataObject<Schema>[]
+    : Field extends BaseOpenFormField<unknown, string, infer FieldKey>
+    ? TypeMapping[FieldKey & ValueTypes]
+    : never;
 
 type SelectOptional<
   Fields extends FormSchema,
