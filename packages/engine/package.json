@@ -1,18 +1,14 @@
 {
-	"name": "@marcianosrs/engine",
-	"version": "0.0.1",
-	"description": "Poll app engine",
-	"source": "src/index.ts",
-	"main": "dist/main.js",
-	"types": "dist/index.d.ts",
-	"author": "Marciano",
-	"license": "MIT",
-	"dependencies": {
-		"parcel": "latest",
-		"@marcianosrs/server-auth": "*"
-	},
-	"scripts": {
-		"watch": "parcel watch",
-		"build": "parcel build"
-	}
+  "name": "@marcianosrs/engine",
+  "version": "0.0.1",
+  "description": "Poll app engine",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Marciano",
+  "license": "MIT",
+  "dependencies": {
+    "parcel": "latest",
+    "@marcianosrs/server-auth": "workspace:*"
+  }
 }

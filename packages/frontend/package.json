@@ -1,42 +1,42 @@
 {
-	"name": "@marcianosrs/frontend",
-	"version": "0.0.1",
-	"description": "Frontend of the poll app with Remix",
-	"sideEffects": false,
-	"scripts": {
-		"build": "remix build",
-		"dev": "remix dev",
-		"typecheck": "tsc"
-	},
-	"peerDependencies": {
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
-	},
-	"dependencies": {
-		"@marcianosrs/api": "*",
-		"@marcianosrs/client-auth": "*",
-		"@marcianosrs/server-auth": "*",
-		"@marcianosrs/ui": "*",
-		"@marcianosrs/engine": "*",
-		"@remix-run/node": "^1.15.0",
-		"@remix-run/react": "^1.15.0",
-		"@remix-run/vercel": "^1.15.0",
-		"@types/uuid": "^9.0.1",
-		"@vercel/node": "^2.10.3",
-		"dotenv": "^16.0.3",
-		"isbot": "^3.6.8",
-		"uuid": "^9.0.0"
-	},
-	"devDependencies": {
-		"@remix-run/dev": "^1.15.0",
-		"@remix-run/eslint-config": "^1.15.0",
-		"@remix-run/serve": "^1.15.0",
-		"@types/react": "^18.0.35",
-		"@types/react-dom": "^18.0.11",
-		"eslint": "^8.38.0",
-		"typescript": "^4.9.5"
-	},
-	"engines": {
-		"node": ">=14"
-	}
+  "name": "@marcianosrs/frontend",
+  "version": "0.0.1",
+  "description": "Frontend of the poll app with Remix",
+  "sideEffects": false,
+  "scripts": {
+    "build": "remix build",
+    "dev": "remix dev",
+    "typecheck": "tsc"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@marcianosrs/api": "workspace:*",
+    "@marcianosrs/client-auth": "workspace:*",
+    "@marcianosrs/server-auth": "workspace:*",
+    "@marcianosrs/ui": "workspace:*",
+    "@marcianosrs/engine": "workspace:*",
+    "@remix-run/node": "^1.15.0",
+    "@remix-run/react": "^1.15.0",
+    "@remix-run/vercel": "^1.15.0",
+    "@types/uuid": "^9.0.1",
+    "@vercel/node": "^2.10.3",
+    "dotenv": "^16.0.3",
+    "isbot": "^3.6.8",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^1.15.0",
+    "@remix-run/eslint-config": "^1.15.0",
+    "@remix-run/serve": "^1.15.0",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "eslint": "^8.38.0",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": ">=14"
+  }
 }
