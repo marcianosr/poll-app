@@ -2,9 +2,7 @@ import {
   BaseFixedFormField,
   BaseObjectListFormField,
   BaseOpenFormField,
-  FormField,
-  FormSchema,
-} from "../types/form";
+} from "./form";
 
 export type Title<Key> = BaseOpenFormField<Key, "title", "none", {}, undefined>;
 

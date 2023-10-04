@@ -1,4 +1,4 @@
-import { TypedForm } from "../form-schema/field-types";
+import { TypedForm } from "@marcianosrs/form";
 import { createPluginStore } from "../generic/pluginStore";
 import { PollScoreProcessorPlugin } from "../types/poll-result";
 

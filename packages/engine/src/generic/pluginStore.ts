@@ -9,5 +9,6 @@ export const createPluginStore = <BasePlugin>(
     },
     get: (pluginId: string): BasePlugin | undefined =>
       plugins.find((e) => getIdentifier(e) === pluginId),
+    getIdentifiers: () => plugins.map(getIdentifier),
   };
 };

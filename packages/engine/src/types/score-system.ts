@@ -1,5 +1,4 @@
-import { TypedForm } from "../form-schema/field-types";
-import { FormDataObject } from "./form";
+import { FormDataObject, TypedForm } from "@marcianosrs/form";
 import { QuestionScoreResult } from "./poll-result";
 
 type PlayerData = unknown;

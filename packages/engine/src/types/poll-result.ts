@@ -1,5 +1,4 @@
-import { TypedForm } from "../form-schema/field-types";
-import { FormDataObject } from "./form";
+import { FormDataObject, TypedForm } from "@marcianosrs/form";
 import { ContentIdentifier, Milliseconds } from "./identifiers";
 
 export type QuestionScoreResult = {

@@ -1,5 +1,4 @@
-import { TypedForm } from "../../form-schema/field-types";
-import { FormDataObject } from "../../types/form";
+import { TypedForm, FormDataObject } from "@marcianosrs/form";
 import { PollScoreProcessorPlugin } from "../../types/poll-result";
 
 const form = [
