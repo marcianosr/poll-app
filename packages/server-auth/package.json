@@ -18,6 +18,7 @@
 		"build": "parcel build",
 		"dev": "NODE_ENV=development parcel build",
 		"firestore:seed": "firebase emulators:start --export-on-exit ./exports --import ./exports --only firestore",
+		"firestore:import": "firebase emulators:start --import ./exports --only firestore",
 		"firestore": "firebase emulators:start --only firestore"
 	}
 }
