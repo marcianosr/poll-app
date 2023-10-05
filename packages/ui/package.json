@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "author": "Marciano",
+  "type": "module",
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
