@@ -22,5 +22,6 @@
     "api": "yarn workspace @marcianosrs/api start",
     "frontend": "yarn workspace @marcianosrs/frontend run dev",
     "start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\""
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }

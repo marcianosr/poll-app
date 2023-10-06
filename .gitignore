@@ -4,3 +4,11 @@ yarn-error.log
 dist
 polls-d8b3d-fa6512eea816.json
 .env
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
