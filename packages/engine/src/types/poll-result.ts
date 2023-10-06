@@ -1,8 +1,11 @@
 import { FormDataObject, TypedForm } from "@marcianosrs/form";
 import { ContentIdentifier, Milliseconds } from "./identifiers";
 
+type Percentage = number;
+
 export type QuestionScoreResult = {
   rawPoints: number;
+  questionDifficulty: Percentage;
   maxPointsAvailable: number;
 
   timeTaken: Milliseconds;
