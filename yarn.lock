@@ -15929,6 +15929,7 @@ parcel@latest:
     "@parcel/transformer-typescript-types": 2.9.2
     concurrently: ^8.0.1
     nx: 16.10.0
+    ts-node: ^10.9.1
     typescript: ">=3.0.0"
   languageName: unknown
   linkType: soft
@@ -18315,7 +18316,7 @@ parcel@latest:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.9.1":
+"ts-node@npm:10.9.1, ts-node@npm:^10.9.1":
   version: 10.9.1
   resolution: "ts-node@npm:10.9.1"
   dependencies:
