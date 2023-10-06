@@ -2975,6 +2975,9 @@ __metadata:
   dependencies:
     "@marcianosrs/server-auth": "*"
     parcel: latest
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
