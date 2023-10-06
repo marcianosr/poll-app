@@ -13,3 +13,11 @@ packages/ui/storybook-static
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+/old-app/.pnp.*
+/old-app/.yarn/*
+!/old-app/.yarn/patches
+!/old-app/.yarn/plugins
+!/old-app/.yarn/releases
+!/old-app/.yarn/sdks
+!/old-app/.yarn/versions
