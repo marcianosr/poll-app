@@ -20,7 +20,7 @@
   },
   "scripts": {
     "api": "yarn workspace @marcianosrs/api start",
-    "frontend": "PORT=3010 yarn workspace @marcianosrs/frontend run dev",
+    "frontend": "yarn workspace @marcianosrs/frontend run dev",
     "start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\""
   }
 }
