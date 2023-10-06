@@ -8,8 +8,8 @@
 	"author": "Marciano",
 	"license": "MIT",
 	"dependencies": {
-		"parcel": "latest",
-		"@marcianosrs/server-auth": "*"
+		"@marcianosrs/server-auth": "*",
+		"parcel": "latest"
 	},
 	"scripts": {
 		"watch": "parcel watch",

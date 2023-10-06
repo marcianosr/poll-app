@@ -8,7 +8,7 @@
   "author": "Marciano",
   "license": "MIT",
   "dependencies": {
-    "parcel": "latest"
+    "parcel": "2.9.3"
   },
   "scripts": {
     "watch": "parcel watch",

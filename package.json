@@ -11,16 +11,20 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@parcel/packager-ts": "2.9.2",
-    "@parcel/transformer-typescript-types": "2.9.2",
+    "@parcel/packager-ts": "2.9.3",
+    "@parcel/transformer-typescript-types": "2.9.3",
+    "nx": "16.10.0",
+    "ts-node": "^10.9.1",
     "typescript": ">=3.0.0"
   },
   "dependencies": {
     "concurrently": "^8.0.1"
   },
   "scripts": {
+    "build": "yarn nx run-many --target=build",
     "api": "yarn workspace @marcianosrs/api start",
     "frontend": "yarn workspace @marcianosrs/frontend run dev",
     "start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\""
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }

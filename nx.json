@@ -1,0 +1,32 @@
+{
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "build-storybook",
+          "typecheck"
+        ]
+      }
+    }
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
+    },
+    "build-storybook": {
+      "outputs": [
+        "{projectRoot}/storybook-static"
+      ]
+    }
+  },
+  "affected": {
+    "defaultBase": "main"
+  }
+}
