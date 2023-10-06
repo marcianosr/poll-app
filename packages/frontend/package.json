@@ -16,6 +16,7 @@
     "@marcianosrs/api": "*",
     "@marcianosrs/client-auth": "*",
     "@marcianosrs/engine": "*",
+    "@marcianosrs/form": "*",
     "@marcianosrs/server-auth": "*",
     "@marcianosrs/ui": "*",
     "@remix-run/node": "2.0.0",

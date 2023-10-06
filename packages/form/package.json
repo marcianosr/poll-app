@@ -10,6 +10,9 @@
   "dependencies": {
     "parcel": "2.9.2"
   },
+  "peerDependencies": {
+    "react": "18.2.0"
+  },
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build"

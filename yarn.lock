@@ -2981,11 +2981,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/form@workspace:packages/form":
+"@marcianosrs/form@*, @marcianosrs/form@workspace:packages/form":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/form@workspace:packages/form"
   dependencies:
     parcel: 2.9.2
+  peerDependencies:
+    react: 18.2.0
   languageName: unknown
   linkType: soft
 
@@ -2996,6 +2998,7 @@ __metadata:
     "@marcianosrs/api": "*"
     "@marcianosrs/client-auth": "*"
     "@marcianosrs/engine": "*"
+    "@marcianosrs/form": "*"
     "@marcianosrs/server-auth": "*"
     "@marcianosrs/ui": "*"
     "@remix-run/dev": ^2.0.0
