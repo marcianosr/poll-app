@@ -3055,6 +3055,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@marcianosrs/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@marcianosrs/utils@workspace:packages/utils"
+  dependencies:
+    parcel: 2.9.2
+  peerDependencies:
+    react: 18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@mdx-js/mdx@npm:^2.3.0":
   version: 2.3.0
   resolution: "@mdx-js/mdx@npm:2.3.0"

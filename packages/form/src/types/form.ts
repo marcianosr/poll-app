@@ -1,4 +1,4 @@
-import { OmitNever } from "./utils";
+import { OmitNever } from "../../../utils/src/types/utils";
 
 export type FormField =
   | BaseOpenFormField<unknown, string, ValueTypes>

@@ -8,7 +8,8 @@
   "author": "Marciano",
   "license": "MIT",
   "dependencies": {
-    "parcel": "2.9.2"
+    "parcel": "2.9.2",
+    "@marcianosrs/utils": "*"
   },
   "peerDependencies": {
     "react": "18.2.0"
