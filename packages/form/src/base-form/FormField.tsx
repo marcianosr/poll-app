@@ -16,6 +16,5 @@ export const FormField = <T extends FieldType<string>>({
     return <div>Sorry field of {field.fieldType} is not supported</div>;
   }
 
-  const Field = React.lazy(plugin.Component);
-  return <Field field={field} value={value} onChange={onChange} />;
+  return <plugin.Component field={field} value={value} onChange={onChange} />;
 };

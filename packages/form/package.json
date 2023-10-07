@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "parcel": "2.9.2",
-    "@marcianosrs/utils": "*"
+    "@marcianosrs/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "18.2.0"

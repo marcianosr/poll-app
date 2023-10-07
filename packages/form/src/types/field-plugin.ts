@@ -10,7 +10,5 @@ export type FormFieldProps<T extends FieldType<string>> = {
 
 export type FormFieldPlugin<T extends FieldType<string>> = {
   fieldType: T["fieldType"];
-  Component: () => Promise<{
-    default: ComponentType<FormFieldProps<T>>;
-  }>;
+  Component: ComponentType<FormFieldProps<T>>;
 };

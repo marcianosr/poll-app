@@ -13,11 +13,11 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@marcianosrs/api": "*",
-    "@marcianosrs/client-auth": "*",
-    "@marcianosrs/engine": "*",
-    "@marcianosrs/form": "*",
-    "@marcianosrs/server-auth": "*",
+    "@marcianosrs/api": "workspace:*",
+    "@marcianosrs/client-auth": "workspace:*",
+    "@marcianosrs/engine": "workspace:*",
+    "@marcianosrs/form": "workspace:*",
+    "@marcianosrs/server-auth": "workspace:*",
     "@marcianosrs/ui": "*",
     "@remix-run/node": "2.0.0",
     "@remix-run/react": "2.0.0",

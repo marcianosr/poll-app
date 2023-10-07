@@ -1,4 +1,4 @@
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 import { TypedForm } from "../types/field-types";
 import { FormDataObject, ValueTypeOfField } from "../types/form";
 import React from "react";
@@ -18,20 +18,18 @@ export const Form = <FormSchema extends TypedForm>({
   return (
     <>
       <p>Hello world</p> {JSON.stringify(schema)}
-      <Suspense>
-        {schema.map((field) => (
-          <FormField
-            field={field}
-            value={
-              data
-                ? (data as Record<string, ValueTypeOfField<typeof field>>)[
-                    field.name
-                  ]
-                : undefined
-            }
-          />
-        ))}
-      </Suspense>
+      {schema.map((field) => (
+        <FormField
+          field={field}
+          value={
+            data
+              ? (data as Record<string, ValueTypeOfField<typeof field>>)[
+                  field.name
+                ]
+              : undefined
+          }
+        />
+      ))}
     </>
   );
 };

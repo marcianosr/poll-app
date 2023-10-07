@@ -1,5 +1,5 @@
 import React from "react";
-import { FormFieldProps } from "../types/field-plugin";
+import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { TextField } from "../types/field-types";
 
 const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
@@ -11,4 +11,7 @@ const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
   );
 };
 
-export default TextField;
+export const textFieldPlugin: FormFieldPlugin<TextField<string>> = {
+  fieldType: "text",
+  Component: TextField,
+};
