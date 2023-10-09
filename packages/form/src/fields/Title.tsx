@@ -7,11 +7,8 @@ const TitleField = ({ field }: FormFieldProps<Title<string>>) => {
   return <h1>{field.displayName}</h1>;
 };
 
-export const titlePlugin: FormFieldPlugin<
-  Title<string>,
-  z.ZodOptional<z.ZodUndefined>
-> = {
+export const titlePlugin: FormFieldPlugin<Title<string>, z.ZodNever> = {
   fieldType: "title",
   Component: TitleField,
-  toZodSchema: () => z.undefined().optional(),
+  toZodSchema: () => z.never(),
 };

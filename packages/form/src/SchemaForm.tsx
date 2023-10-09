@@ -13,16 +13,18 @@ export const SchemaForm = <Schema extends TypedForm>({
 }: SchemaFormProps<Schema>) => {
   const zodSchema = convertToZod(schema);
   return (
-    <RemixForm
-      schema={zodSchema}
-      renderField={(props) => {
-        const field = schema.find((f) => f.name === props.name);
-
-        if (!field) {
-          return <p>404: Field not found</p>;
-        }
-        return <FormField key={props.name} value={props.value} field={field} />;
+    <RemixForm schema={zodSchema}>
+      {({ Field, Errors, Button, watch, setValue }) => {
+        return (
+          <>
+            {schema.map((field) => (
+              <FormField key={field.name} field={field} />
+            ))}
+            <Errors />
+            <Button />
+          </>
+        );
       }}
-    />
+    </RemixForm>
   );
 };

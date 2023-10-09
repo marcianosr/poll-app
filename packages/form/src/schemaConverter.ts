@@ -19,7 +19,16 @@ export const convertToZod = <T extends TypedForm>(
       | FormFieldPlugin<FieldType<string>>
       | undefined;
 
-    fields[field.name] = plugin?.toZodSchema(field) ?? z.never();
+    const fieldType = plugin?.toZodSchema(field) ?? z.never();
+
+    if (fieldType instanceof z.ZodNever) continue;
+    if (
+      fieldType instanceof z.ZodOptional &&
+      fieldType.unwrap() instanceof z.ZodNever
+    )
+      continue;
+
+    fields[field.name] = fieldType;
   }
 
   return z.object(fields) as ZodSchemaType<T>;
