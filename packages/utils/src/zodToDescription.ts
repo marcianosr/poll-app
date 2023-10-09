@@ -8,6 +8,20 @@ import {
   ZodOptional,
 } from "zod";
 
+const indented = (amount: number, key: string, value: string) => {
+  const padding = Array(amount).fill(" ").join("");
+  const valueLines = value.trimEnd().split("\n");
+
+  if (valueLines.length === 1) {
+    return `${padding}${key}${value}`;
+  }
+
+  return `${padding}${key}${valueLines[0]}\n${valueLines
+    .slice(1)
+    .map((l) => `${padding}${l}`)
+    .join("\n")}`;
+};
+
 export const zodToDescription = <Z extends z.ZodTypeAny>(zod: Z): string => {
   if (zod instanceof ZodString) {
     return "string";
@@ -32,9 +46,9 @@ export const zodToDescription = <Z extends z.ZodTypeAny>(zod: Z): string => {
     return `{\n${keys
       .map((key) => {
         const isOptional = zod.shape[key] instanceof ZodOptional;
-        return `  ${key}${isOptional ? "?" : ""}: ${zodToDescription(
-          zod.shape[key]
-        )};\n`;
+        const name = `${key}${isOptional ? "?" : ""}: `;
+
+        return indented(2, name, zodToDescription(zod.shape[key]) + ";") + "\n";
       })
       .join("")}}`;
   }
