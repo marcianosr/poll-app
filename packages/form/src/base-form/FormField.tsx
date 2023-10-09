@@ -13,7 +13,7 @@ export const FormField = <T extends FieldType<string>>({
     | undefined;
 
   if (!plugin) {
-    return <div>Sorry field of {field.fieldType} is not supported</div>;
+    return <p>Sorry field of {field.fieldType} is not supported</p>;
   }
 
   return <plugin.Component field={field} value={value} keyPrefix={keyPrefix} />;

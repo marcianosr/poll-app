@@ -19,7 +19,7 @@ export const SchemaForm = <Schema extends TypedForm>({
         const field = schema.find((f) => f.name === props.name);
 
         if (!field) {
-          return <div>404: Field not found</div>;
+          return <p>404: Field not found</p>;
         }
         return <FormField key={props.name} value={props.value} field={field} />;
       }}
