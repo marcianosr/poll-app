@@ -1,31 +1,75 @@
 import type { ActionFunction } from "@remix-run/node";
-import { ZodArray, ZodObject, z } from "zod";
 import { formAction } from "~/form-action.server"; /* path to your custom formAction */
 import { makeDomainFunction } from "domain-functions";
-import { Form } from "~/form"; /* path to your custom Form */
+import type { TypedForm } from "@marcianosrs/form";
+import { convertToZod, SchemaForm } from "@marcianosrs/form";
 
-const plugin = () =>
-  z.object({
-    multiplier: z.number().min(0.1).max(5).default(1.0),
-  });
+const teamFormDefinition = [
+  {
+    name: "teamKey",
+    fieldType: "text",
+    valueType: "string",
+    displayName: "Team key",
+    optional: false,
+    defaultValue: "",
+  },
+  {
+    name: "teamName",
+    fieldType: "text",
+    valueType: "string",
+    displayName: "Team name",
+    optional: false,
+    defaultValue: "",
+  },
+  {
+    name: "teamColor",
+    fieldType: "text" /* color ? */,
+    valueType: "string",
+    displayName: "Team color",
+    optional: false,
+    defaultValue: "blue",
+  },
+] as const satisfies TypedForm;
 
-const schema = z.object({
-  product: z.enum(["multiplier", "item"]),
-  productSettings: plugin(),
+const formDefinition = [
+  {
+    name: "multiplier",
+    displayName: "multiplier",
+    valueType: "number",
+    fieldType: "number",
+    optional: false,
+    defaultValue: 1,
+    min: 0.1,
+    max: 5.0,
+  },
+  {
+    name: "title",
+    fieldType: "title",
+    valueType: "none",
+    displayName: "Team play setup",
+    optional: false,
+    defaultValue: undefined,
+  },
+  {
+    name: "name",
+    fieldType: "text",
+    valueType: "string",
+    displayName: "Scoreboard name",
+    optional: false,
+    defaultValue: "",
+  },
+  {
+    name: "teams",
+    fieldType: "objectList",
+    valueType: "objects",
+    displayName: "Scoreboard name",
+    optional: false,
+    objectSchema: teamFormDefinition,
+    minimalAmount: 2,
+  },
+] as const satisfies TypedForm;
 
-  channelName: z.string().min(1),
-  teams: z
-    .array(
-      z.object({
-        name: z.string().min(1),
-        key: z.string().min(1),
-        color: z.string(),
-      })
-    )
-    .min(1),
-});
-
-type Data = z.infer<typeof schema>;
+const schema = convertToZod(formDefinition);
 
 const mutation = makeDomainFunction(schema)(
   async (values) =>
@@ -44,82 +88,7 @@ export default function FormTest() {
   return (
     <main>
       <h1>Form testing area</h1>
-      <Form
-        schema={schema}
-        values={{
-          channelName: "FLuttterz",
-          teams: [{ name: "Huffelpuf" }],
-          productSettings: { multiplier: 2 },
-        }}
-        renderField={({ Field, ...props }) => {
-          const { shape, name, label, required, value } = props;
-          console.log(value);
-
-          if (shape instanceof ZodObject) {
-            return (
-              <Field key={name} {...props}>
-                {({ Label, Errors }) => {
-                  return (
-                    <>
-                      {<Label />}
-                      <p>
-                        An object here{" "}
-                        {value === undefined
-                          ? "undefined"
-                          : JSON.stringify(value)}
-                      </p>
-                      {<Errors />}
-                    </>
-                  );
-                }}
-              </Field>
-            );
-          }
-
-          if (shape instanceof ZodArray) {
-            return (
-              <Field key={name} {...props}>
-                {({ Label, Errors }) => {
-                  return (
-                    <>
-                      {<Label />}
-                      <p>An list here</p>
-                      {<Errors />}
-                    </>
-                  );
-                }}
-              </Field>
-            );
-          }
-
-          return (
-            <Field key={name} {...props}>
-              {({ Label, SmartInput, Errors }) => {
-                const labelElement = (
-                  <Label>
-                    {label}
-                    {required && <sup>*</sup>}
-                  </Label>
-                );
-
-                const inputWithLabel = (
-                  <>
-                    {labelElement}
-                    <SmartInput />
-                  </>
-                );
-
-                return (
-                  <>
-                    {inputWithLabel}
-                    <Errors />
-                  </>
-                );
-              }}
-            </Field>
-          );
-        }}
-      />
+      <SchemaForm schema={formDefinition} />
     </main>
   );
 }

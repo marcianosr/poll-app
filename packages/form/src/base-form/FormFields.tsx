@@ -6,14 +6,13 @@ import { FormField } from "./FormField";
 
 type FormComponentProps<FormSchema extends TypedForm> = {
   schema: FormSchema;
-  data?: FormDataObject<FormSchema>;
-  onDataUpdate: (data: FormDataObject<FormSchema>) => void;
+  value?: FormDataObject<FormSchema>;
+  onChange?: (data: FormDataObject<FormSchema>) => void;
 };
 
-export const Form = <FormSchema extends TypedForm>({
+export const FormFields = <FormSchema extends TypedForm>({
   schema,
-  data,
-  onDataUpdate,
+  value: data,
 }: FormComponentProps<FormSchema>): ReactNode => {
   return (
     <>

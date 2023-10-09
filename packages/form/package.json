@@ -8,8 +8,11 @@
   "author": "Marciano",
   "license": "MIT",
   "dependencies": {
+    "@marcianosrs/utils": "workspace:*",
+    "@remix-run/react": "^2.0.1",
     "parcel": "2.9.2",
-    "@marcianosrs/utils": "workspace:*"
+    "remix-forms": "^2.1.0",
+    "zod": "^3.22.4"
   },
   "peerDependencies": {
     "react": "18.2.0"

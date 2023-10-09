@@ -11,5 +11,5 @@ module.exports = {
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // publicPath: "/build/",
-  watchPaths: ["../form/dist"],
+  watchPaths: ["../form/dist/"],
 };
