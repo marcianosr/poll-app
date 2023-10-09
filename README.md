@@ -5,7 +5,7 @@ Setup the app:
 - Gain all `.env` files
 - Gain the firebase service account key
 - `yarn install` in the root
-- `yarn build` in the root
+- `yarn build-libs` in the root
 - Run the app in the root: `yarn start`
 
 To run the app connected to the local firestore, run the following:
@@ -13,7 +13,7 @@ To run the app connected to the local firestore, run the following:
 - In the API packages, uncomment 'FIRESTORE_EMULATOR_HOST="localhost:8080"' in the .env file
 - For now, uncomment checkIfAuthenticated function for each request you're working with
 - Run the firestore command found in the package.json of the server-auth package to startup an empty or seeded firestore
-- In the root, run yarn start to concurrently start the api and remix frontend
+- In the root, run `yarn start` to concurrently start the api and remix frontend
 
 ### Learning goals
 
