@@ -19,6 +19,7 @@
     "@marcianosrs/form": "workspace:*",
     "@marcianosrs/server-auth": "workspace:*",
     "@marcianosrs/ui": "*",
+    "@marcianosrs/utils": "workspace:*",
     "@remix-run/node": "2.0.0",
     "@remix-run/react": "2.0.0",
     "@remix-run/vercel": "1.19.3",

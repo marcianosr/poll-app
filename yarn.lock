@@ -3015,6 +3015,7 @@ __metadata:
     "@marcianosrs/form": "workspace:*"
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/ui": "*"
+    "@marcianosrs/utils": "workspace:*"
     "@remix-run/dev": ^2.0.0
     "@remix-run/eslint-config": ^2.0.0
     "@remix-run/node": 2.0.0
@@ -3080,6 +3081,7 @@ __metadata:
     parcel: 2.9.2
   peerDependencies:
     react: 18.2.0
+    zod: "*"
   languageName: unknown
   linkType: soft
 

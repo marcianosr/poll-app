@@ -3,6 +3,7 @@ import { formAction } from "~/form-action.server"; /* path to your custom formAc
 import { makeDomainFunction } from "domain-functions";
 import type { TypedForm } from "@marcianosrs/form";
 import { convertToZod, SchemaForm } from "@marcianosrs/form";
+import { zodToDescription } from "@marcianosrs/utils";
 
 const teamFormDefinition = [
   {
@@ -70,6 +71,7 @@ const formDefinition = [
 ] as const satisfies TypedForm;
 
 const schema = convertToZod(formDefinition);
+console.log(zodToDescription(schema));
 
 const mutation = makeDomainFunction(schema)(
   async (values) =>
