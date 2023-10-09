@@ -63,7 +63,7 @@ const formDefinition = [
     name: "teams",
     fieldType: "objectList",
     valueType: "objects",
-    displayName: "Scoreboard name",
+    displayName: "Teams",
     optional: false,
     objectSchema: teamFormDefinition,
     minimalAmount: 2,

@@ -7,27 +7,17 @@ import { FormField } from "./FormField";
 type FormComponentProps<FormSchema extends TypedForm> = {
   schema: FormSchema;
   value?: FormDataObject<FormSchema>;
-  onChange?: (data: FormDataObject<FormSchema>) => void;
+  keyPrefix?: string[];
 };
 
 export const FormFields = <FormSchema extends TypedForm>({
   schema,
-  value: data,
+  keyPrefix,
 }: FormComponentProps<FormSchema>): ReactNode => {
   return (
     <>
-      <p>Hello world</p> {JSON.stringify(schema)}
       {schema.map((field) => (
-        <FormField
-          field={field}
-          value={
-            data
-              ? (data as Record<string, ValueTypeOfField<typeof field>>)[
-                  field.name
-                ]
-              : undefined
-          }
-        />
+        <FormField key={field.name} field={field} keyPrefix={keyPrefix} />
       ))}
     </>
   );

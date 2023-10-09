@@ -6,6 +6,7 @@ import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 export const FormField = <T extends FieldType<string>>({
   field,
   value,
+  keyPrefix,
 }: FormFieldProps<T>) => {
   const plugin = formFieldPlugins.get(field.fieldType) as unknown as
     | FormFieldPlugin<T>
@@ -15,5 +16,5 @@ export const FormField = <T extends FieldType<string>>({
     return <div>Sorry field of {field.fieldType} is not supported</div>;
   }
 
-  return <plugin.Component field={field} value={value} />;
+  return <plugin.Component field={field} value={value} keyPrefix={keyPrefix} />;
 };

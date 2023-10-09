@@ -2,12 +2,19 @@ import React from "react";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { NumberField } from "../types/field-types";
 import { z } from "zod";
+import { createFieldName } from "../base-form/createFieldName";
 
-const NumberField = ({ field, value }: FormFieldProps<NumberField<string>>) => {
+const NumberField = ({
+  field,
+  keyPrefix,
+}: FormFieldProps<NumberField<string>>) => {
   return (
     <>
       <label>{field.displayName}</label>
-      <input type="number" name={field.name} value={value}></input>
+      <input
+        type="number"
+        name={createFieldName(keyPrefix, field.name)}
+      ></input>
     </>
   );
 };
