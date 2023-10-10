@@ -94,3 +94,11 @@ Question --> Tag
 - **api** - Responsible for building the API with Node.js and Express. This agnostic package should provide endpoints the frontend can use to fetch data.
 - **server-auth** - Responsible for connecting with firebase-admin to get data from firebase. This package should be used by the api package to get data from firebase.
 - **client-auth** - Responsible for providing GoogleAuth login.
+
+### Architecture Decision Records (ADR)
+
+An architecture decision record (ADR) is a document that captures an important architecture decision made along with its context and consequences.
+
+Our team documents architecture decisions in the `architecture-decision-records` directory of this repo.
+
+For more info on the ADR's, examples and templates, see [here](https://github.com/joelparkerhenderson/architecture-decision-record/blob/main/README.md)
