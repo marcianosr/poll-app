@@ -1,15 +1,14 @@
-import { TypedForm } from "./types/field-types";
-import { z } from "zod";
-import { FormSchema } from "./types/form";
-import { formFieldPlugins } from "./field-plugins";
-import { FormFieldPlugin } from "./types/field-plugin";
-import { FieldType } from "../dist";
+import { FieldType, TypedForm } from "../types/field-types";
+import { ZodOptional, ZodTypeAny, z } from "zod";
+import { FormSchema } from "../types/form";
+import { formFieldPlugins } from "../field-plugins";
+import { FormFieldPlugin } from "../types/field-plugin";
 
 export type ZodSchemaType<Fields extends FormSchema> = z.ZodObject<{
   [Key in Fields[number] as Key["name"] & string]: z.ZodTypeAny;
 }>;
 
-export const convertToZod = <T extends TypedForm>(
+export const schemaToZod = <T extends TypedForm>(
   schema: T
 ): ZodSchemaType<T> => {
   const fields: Record<string, z.ZodTypeAny> = {};

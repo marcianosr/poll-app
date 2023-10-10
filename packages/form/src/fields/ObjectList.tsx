@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { ObjectListField, TypedForm } from "../types/field-types";
 import { z } from "zod";
-import { convertToZod } from "../schemaConverter";
+import { schemaToZod } from "../schema/schemaToZod";
 import { FormFields } from "../base-form/FormFields";
 import { ObjectListProvider, useCustomField } from "../base-form/FieldContext";
 import { FormDataObject } from "../types/form";
@@ -18,8 +18,6 @@ const ObjectList = ({
   const objectList: FormDataObject<typeof objectSchema>[] = watch(
     field.name
   ) as FormDataObject<typeof field.objectSchema>[];
-
-  const newObjectRef = useRef({});
 
   const fieldName = field.name;
 
@@ -51,24 +49,27 @@ const ObjectList = ({
         <fieldset>
           <ObjectListProvider
             schema={field.objectSchema}
-            objectRef={newObjectRef}
             setValue={setValue}
             watch={watch}
           >
-            <FormFields schema={objectSchema} />
+            {({ reset, getValues }) => (
+              <>
+                <FormFields schema={objectSchema} />
+                <button
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setValue(field.name, [...objectList, { ...getValues() }], {
+                      shouldValidate: true,
+                    });
+                    reset({});
+                  }}
+                >
+                  Add
+                </button>
+              </>
+            )}
           </ObjectListProvider>
         </fieldset>
-        <button
-          onClick={(event) => {
-            event.preventDefault();
-            setValue(field.name, [...objectList, { ...newObjectRef.current }], {
-              shouldValidate: true,
-            });
-            // now to clear the form...
-          }}
-        >
-          Add
-        </button>
       </div>
       <Errors />
     </>
@@ -81,5 +82,5 @@ export const objectListPlugin: FormFieldPlugin<
 > = {
   fieldType: "objectList",
   Component: ObjectList,
-  toZodSchema: (field) => convertToZod(field.objectSchema).array(),
+  toZodSchema: (field) => schemaToZod(field.objectSchema).array(),
 };

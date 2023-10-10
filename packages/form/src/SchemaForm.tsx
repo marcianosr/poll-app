@@ -1,10 +1,11 @@
 import React from "react";
 import { RemixForm } from "./RemixForm";
-import { ZodSchemaType, convertToZod } from "./schemaConverter";
+import { ZodSchemaType, schemaToZod } from "./schema/schemaToZod";
 import { TypedForm } from "./types/field-types";
 import { FormField } from "./base-form/FormField";
 import { FieldProvider } from "./base-form/FieldContext";
 import { z } from "zod";
+import { schemaToDefaultValues } from "./schema/schemaToDefaultValues";
 
 type SchemaFormProps<Schema extends TypedForm> = {
   schema: Schema;
@@ -21,12 +22,8 @@ type RemixFormValues<Schema extends TypedForm> = Partial<
 export const SchemaForm = <Schema extends TypedForm>({
   schema,
 }: SchemaFormProps<Schema>) => {
-  const zodSchema = convertToZod(schema);
-
-  // build defaultValues
-  const values: FormValues = {
-    teams: [],
-  };
+  const zodSchema = schemaToZod(schema);
+  const values: FormValues = schemaToDefaultValues(schema);
 
   return (
     <RemixForm schema={zodSchema} values={values as RemixFormValues<Schema>}>

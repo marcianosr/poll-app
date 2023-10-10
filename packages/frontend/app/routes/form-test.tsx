@@ -2,7 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { formAction } from "~/form-action.server"; /* path to your custom formAction */
 import { makeDomainFunction } from "domain-functions";
 import type { TypedForm } from "@marcianosrs/form";
-import { convertToZod, SchemaForm } from "@marcianosrs/form";
+import { schemaToZod, SchemaForm } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
 
 const teamFormDefinition = [
@@ -70,7 +70,7 @@ const formDefinition = [
   },
 ] as const satisfies TypedForm;
 
-const schema = convertToZod(formDefinition);
+const schema = schemaToZod(formDefinition);
 console.log(zodToDescription(schema));
 
 const mutation = makeDomainFunction(schema)(
