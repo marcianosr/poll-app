@@ -4,12 +4,13 @@ import { TextField } from "../types/field-types";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 
-const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
+const TextField = ({ field, Errors }: FormFieldProps<TextField<string>>) => {
   const { register } = useCustomField();
   return (
     <>
       <label>{field.displayName}</label>
       <input type="text" {...register(field.name)}></input>
+      <Errors />
     </>
   );
 };

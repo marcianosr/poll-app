@@ -5,7 +5,7 @@ import { formFieldPlugins } from "./field-plugins";
 import { FormFieldPlugin } from "./types/field-plugin";
 import { FieldType } from "../dist";
 
-type ZodSchemaType<Fields extends FormSchema> = z.ZodObject<{
+export type ZodSchemaType<Fields extends FormSchema> = z.ZodObject<{
   [Key in Fields[number] as Key["name"] & string]: z.ZodTypeAny;
 }>;
 

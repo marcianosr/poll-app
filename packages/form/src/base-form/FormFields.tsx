@@ -16,7 +16,7 @@ export const FormFields = <FormSchema extends TypedForm>({
   return (
     <>
       {schema.map((field) => (
-        <FormField key={field.name} field={field} />
+        <FormField key={field.name} field={field} Errors={() => <div></div>} />
       ))}
     </>
   );
