@@ -28,7 +28,7 @@ const teamFormDefinition = [
     valueType: "string",
     displayName: "Team color",
     optional: false,
-    defaultValue: "blue",
+    defaultValue: "#0000ff",
   },
 ] as const satisfies TypedForm;
 

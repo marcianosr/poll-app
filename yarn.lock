@@ -3002,6 +3002,7 @@ __metadata:
     zod: ^3.22.4
   peerDependencies:
     react: 18.2.0
+    react-hook-form: "*"
   languageName: unknown
   linkType: soft
 

@@ -2,13 +2,14 @@ import React from "react";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { TextField } from "../types/field-types";
 import { z } from "zod";
-import { createFieldName } from "../base-form/createFieldName";
+import { useCustomField } from "../base-form/FieldContext";
 
-const TextField = ({ field, keyPrefix }: FormFieldProps<TextField<string>>) => {
+const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
+  const { register } = useCustomField();
   return (
     <>
       <label>{field.displayName}</label>
-      <input type="text" name={createFieldName(keyPrefix, field.name)}></input>
+      <input type="text" {...register(field.name)}></input>
     </>
   );
 };

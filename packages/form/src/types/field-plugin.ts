@@ -6,7 +6,6 @@ import { z } from "zod";
 export type FormFieldProps<T extends FieldType<string>> = {
   field: T;
   value?: ValueTypeOfField<T>;
-  keyPrefix?: string[];
 };
 
 export type FormFieldPlugin<

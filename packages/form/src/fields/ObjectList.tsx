@@ -8,16 +8,12 @@ import { FormFields } from "../base-form/FormFields";
 const ObjectList = ({
   field,
   value,
-  keyPrefix = [],
 }: FormFieldProps<ObjectListField<string, TypedForm>>) => {
   return (
     <>
       <label>{field.displayName}</label>
       <div style={{ border: "1px solid red", padding: "0.5rem" }}>
-        <FormFields
-          schema={field.objectSchema}
-          keyPrefix={[...keyPrefix, field.name, "0"]}
-        />
+        <FormFields schema={field.objectSchema} />
         <button>Add</button>
       </div>
     </>
