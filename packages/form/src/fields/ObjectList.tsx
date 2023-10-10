@@ -7,10 +7,11 @@ import { FormFields } from "../base-form/FormFields";
 import { ObjectListProvider, useCustomField } from "../base-form/FieldContext";
 import { FormDataObject } from "../types/form";
 import { HiddenFormData } from "../base-form/HiddenFormData";
+import { transform } from "@marcianosrs/utils";
 
 const ObjectList = ({
   field,
-  Errors,
+  errors,
 }: FormFieldProps<ObjectListField<string, TypedForm>>) => {
   const { setValue, watch, register } = useCustomField();
   const objectSchema = field.objectSchema;
@@ -71,7 +72,9 @@ const ObjectList = ({
           </ObjectListProvider>
         </fieldset>
       </div>
-      <Errors />
+      {errors?.map((e, i) => (
+        <p key={i}>{e}</p>
+      ))}
     </>
   );
 };
@@ -82,5 +85,8 @@ export const objectListPlugin: FormFieldPlugin<
 > = {
   fieldType: "objectList",
   Component: ObjectList,
-  toZodSchema: (field) => schemaToZod(field.objectSchema).array(),
+  toZodSchema: (field) =>
+    transform(schemaToZod(field.objectSchema).array())
+      .apply(field.minimalAmount, (z, min) => z.min(min))
+      .result(),
 };

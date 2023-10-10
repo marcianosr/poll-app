@@ -7,14 +7,16 @@ import { transform } from "@marcianosrs/utils";
 
 const NumberField = ({
   field,
-  Errors,
+  errors,
 }: FormFieldProps<NumberField<string>>) => {
   const { register } = useCustomField();
   return (
     <>
       <label>{field.displayName}</label>
       <input type="number" {...register(field.name)}></input>
-      <Errors />
+      {errors?.map((e, i) => (
+        <p key={i}>{e}</p>
+      ))}
     </>
   );
 };

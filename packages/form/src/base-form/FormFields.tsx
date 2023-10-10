@@ -12,12 +12,10 @@ type FormComponentProps<FormSchema extends TypedForm> = {
 
 export const FormFields = <FormSchema extends TypedForm>({
   schema,
-}: FormComponentProps<FormSchema>): ReactNode => {
-  return (
-    <>
-      {schema.map((field) => (
-        <FormField key={field.name} field={field} Errors={() => <div></div>} />
-      ))}
-    </>
-  );
-};
+}: FormComponentProps<FormSchema>): ReactNode => (
+  <>
+    {schema.map((field) => (
+      <FormField key={field.name} field={field} />
+    ))}
+  </>
+);

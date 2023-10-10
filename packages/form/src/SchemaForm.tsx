@@ -27,21 +27,19 @@ export const SchemaForm = <Schema extends TypedForm>({
 
   return (
     <RemixForm schema={zodSchema} values={values as RemixFormValues<Schema>}>
-      {({ Field, Errors, Button, watch, setValue, register }) => {
-        return (
-          <FieldProvider watch={watch} setValue={setValue} register={register}>
-            {schema.map((field) => (
-              <Field key={field.name} name={field.name}>
-                {({ Errors }) => (
-                  <FormField key={field.name} field={field} Errors={Errors} />
-                )}
-              </Field>
-            ))}
-            <Errors />
-            <Button />
-          </FieldProvider>
-        );
-      }}
+      {({ Field, Errors, Button, watch, setValue, register }) => (
+        <FieldProvider watch={watch} setValue={setValue} register={register}>
+          {schema.map((field) => (
+            <Field key={field.name} name={field.name}>
+              {({ errors }) => (
+                <FormField key={field.name} field={field} errors={errors} />
+              )}
+            </Field>
+          ))}
+          <Errors />
+          <Button />
+        </FieldProvider>
+      )}
     </RemixForm>
   );
 };
