@@ -77,7 +77,7 @@ export const ObjectScopeProvider = <TValueType,>({
     getValues,
   }: {
     reset: (values: Partial<TValueType>) => void;
-    getValues: () => Partial<TValueType>;
+    getValues: () => TValueType;
   }) => React.ReactNode;
   path: string[];
   defaultValues: Partial<TValueType>;
@@ -96,8 +96,7 @@ export const ObjectScopeProvider = <TValueType,>({
         reset: (newValues) => {
           setValue(objectPath.join("."), newValues);
         },
-        getValues: () =>
-          watch(objectPath.join(".")) as unknown as Partial<TValueType>,
+        getValues: () => watch(objectPath.join(".")) as TValueType,
       })}
     </FormObjectScopeContext.Provider>
   );

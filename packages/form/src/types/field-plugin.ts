@@ -6,6 +6,11 @@ import { z } from "zod";
 export type FormFieldProps<T extends FieldType<string>> = {
   field: T;
   errors?: string[];
+};
+
+export type DisplayValueProps<T extends FieldType<string>> = {
+  field: T;
+  errors?: string[];
   value?: ValueTypeOfField<T>;
 };
 
@@ -15,5 +20,6 @@ export type FormFieldPlugin<
 > = {
   fieldType: T["fieldType"];
   Component: ComponentType<FormFieldProps<T>>;
+  Show: ComponentType<DisplayValueProps<T>>;
   toZodSchema: (field: T) => Z;
 };

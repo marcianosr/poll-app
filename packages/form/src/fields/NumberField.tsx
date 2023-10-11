@@ -27,6 +27,7 @@ export const numberFieldPlugin: FormFieldPlugin<
 > = {
   fieldType: "number",
   Component: NumberField,
+  Show: ({ value }) => value ?? null,
   toZodSchema: (field) =>
     transform(z.number())
       .apply(field.max, (z, max) => z.max(max))

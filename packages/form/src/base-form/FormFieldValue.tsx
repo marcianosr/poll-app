@@ -1,12 +1,13 @@
 import React from "react";
 import { FieldType } from "../types/field-types";
 import { formFieldPlugins } from "../field-plugins";
-import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
+import { DisplayValueProps, FormFieldPlugin } from "../types/field-plugin";
 
-export const FormField = <T extends FieldType<string>>({
+export const FormFieldValue = <T extends FieldType<string>>({
   field,
+  value,
   errors,
-}: FormFieldProps<T>) => {
+}: DisplayValueProps<T>) => {
   const plugin = formFieldPlugins.get(field.fieldType) as unknown as
     | FormFieldPlugin<T>
     | undefined;
@@ -15,5 +16,5 @@ export const FormField = <T extends FieldType<string>>({
     return <p>Sorry field of {field.fieldType} is not supported</p>;
   }
 
-  return <plugin.Component field={field} errors={errors} />;
+  return <plugin.Show field={field} value={value} errors={errors} />;
 };

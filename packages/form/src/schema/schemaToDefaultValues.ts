@@ -1,8 +1,9 @@
 import { TypedForm } from "../types/field-types";
+import { FormDataObject } from "../types/form";
 
 export const schemaToDefaultValues = <T extends TypedForm>(
   schema: T
-): Record<string, unknown> => {
+): FormDataObject<T> => {
   const fields: Record<string, unknown> = {};
 
   for (const field of schema) {
@@ -14,5 +15,5 @@ export const schemaToDefaultValues = <T extends TypedForm>(
     }
   }
 
-  return fields;
+  return fields as FormDataObject<T>;
 };

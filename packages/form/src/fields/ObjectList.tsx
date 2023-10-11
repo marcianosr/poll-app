@@ -9,14 +9,16 @@ import { HiddenFormData } from "../base-form/HiddenFormData";
 import { FormFields } from "../base-form/FormFields";
 import { FormDataObject } from "../types/form";
 import { schemaToDefaultValues } from "../schema/schemaToDefaultValues";
+import { FormFieldValue } from "../base-form/FormFieldValue";
 
-const ObjectList = ({
+const ObjectList = <TForm extends TypedForm>({
   field,
   errors,
-}: FormFieldProps<ObjectListField<string, TypedForm>>) => {
+}: FormFieldProps<ObjectListField<string, TForm>>) => {
   const { watch, setValue } = useCustomField(field);
   const objectSchema = field.objectSchema;
-  const objectList: Record<string, unknown>[] = watch();
+  type RecordType = FormDataObject<typeof field.objectSchema>;
+  const objectList = watch();
   const [editIndex, setEditIndex] = useState<number | undefined>(undefined);
 
   const resetValues = schemaToDefaultValues(objectSchema);
@@ -39,7 +41,12 @@ const ObjectList = ({
               <React.Fragment key={index}>
                 <tr>
                   {objectSchema.map((field) => (
-                    <td key={field.name}>{JSON.stringify(item[field.name])}</td>
+                    <td key={field.name}>
+                      <FormFieldValue
+                        field={field}
+                        value={item[field.name as keyof RecordType]}
+                      />
+                    </td>
                   ))}
                   <td>
                     <button
@@ -64,9 +71,7 @@ const ObjectList = ({
                     <td colSpan={objectSchema.length + 1}>
                       <fieldset>
                         <legend>Edit item</legend>
-                        <ObjectScopeProvider<
-                          FormDataObject<typeof objectSchema>
-                        >
+                        <ObjectScopeProvider<RecordType>
                           path={[`${field.name}__edit`]}
                           defaultValues={item}
                         >
@@ -78,7 +83,7 @@ const ObjectList = ({
                                   event.preventDefault();
                                   setEditIndex(undefined);
                                   setValue(
-                                    objectList.map((item, index) =>
+                                    objectList.map<RecordType>((item, index) =>
                                       index === editIndex
                                         ? { ...getValues() }
                                         : item
@@ -146,6 +151,7 @@ export const objectListPlugin: FormFieldPlugin<
 > = {
   fieldType: "objectList",
   Component: ObjectList,
+  Show: ({ value = [] }) => `${value.length} items`,
   toZodSchema: (field) =>
     transform(schemaToZod(field.objectSchema).array())
       .apply(field.minimalAmount, (z, min) =>

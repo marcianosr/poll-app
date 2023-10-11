@@ -10,5 +10,6 @@ const TitleField = ({ field }: FormFieldProps<Title<string>>) => {
 export const titlePlugin: FormFieldPlugin<Title<string>, z.ZodNever> = {
   fieldType: "title",
   Component: TitleField,
+  Show: () => null,
   toZodSchema: () => z.never(),
 };

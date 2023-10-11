@@ -23,5 +23,6 @@ export const textFieldPlugin: FormFieldPlugin<
 > = {
   fieldType: "text",
   Component: TextField,
+  Show: ({ value }) => value ?? null,
   toZodSchema: () => z.string().min(1),
 };
