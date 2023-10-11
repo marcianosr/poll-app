@@ -5,6 +5,8 @@ dist
 polls-d8b3d-fa6512eea816.json
 .env
 packages/ui/storybook-static
+packages/frontend/api/metafile.*.json
+packages/frontend/api/version.txt
 
 .pnp.*
 .yarn/*
