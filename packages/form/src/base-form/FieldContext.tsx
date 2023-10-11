@@ -116,6 +116,9 @@ export const ObjectListProvider = <
         reset: (newValues) => {
           for (const [name, data] of Object.entries(fieldRefs.current)) {
             // This should be repeated for checkboxes, radio, selects and text areas
+            // Based loosely on the implementation of react-hook-form:
+            // https://github.com/react-hook-form/react-hook-form/blob/master/src/logic/createFormControl.ts#L520
+
             if (isInputElement(data.ref)) {
               data.ref.value = `${
                 newValues[name as keyof FormDataObject<FormSchema>] ?? ""
