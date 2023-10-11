@@ -122,7 +122,7 @@ export const useCustomField = <TField extends FieldType<string>>(
       const value = watch(fieldPath) as ValueTypeOfField<TField>;
       if (
         (value === "" || value === undefined) &&
-        field.fieldType === "objectList"
+        field.valueType === "objects"
       ) {
         return [] as unknown as ValueTypeOfField<TField>;
       }
