@@ -4,16 +4,15 @@ import { formFieldPlugins } from "../field-plugins";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 
 export const FormField = <T extends FieldType<string>>({
-  field,
-  errors,
+    field,
 }: FormFieldProps<T>) => {
-  const plugin = formFieldPlugins.get(field.fieldType) as unknown as
-    | FormFieldPlugin<T>
-    | undefined;
+    const plugin = formFieldPlugins.get(field.fieldType) as unknown as
+        | FormFieldPlugin<T>
+        | undefined;
 
-  if (!plugin) {
-    return <p>Sorry field of {field.fieldType} is not supported</p>;
-  }
+    if (!plugin) {
+        return <p>Sorry field of {field.fieldType} is not supported</p>;
+    }
 
-  return <plugin.Component field={field} errors={errors} />;
+    return <plugin.Component field={field} />;
 };
