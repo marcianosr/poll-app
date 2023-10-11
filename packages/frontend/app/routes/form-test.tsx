@@ -5,6 +5,25 @@ import type { TypedForm } from "@marcianosrs/form";
 import { schemaToZod, SchemaForm } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
 
+// const memberFormDefinition = [
+//   {
+//     name: "firstName",
+//     fieldType: "text",
+//     valueType: "string",
+//     displayName: "First name",
+//     optional: false,
+//     defaultValue: "",
+//   },
+//   {
+//     name: "lastName",
+//     fieldType: "text" /* color ? */,
+//     valueType: "string",
+//     displayName: "Last name",
+//     optional: false,
+//     defaultValue: "",
+//   },
+// ] as const satisfies TypedForm;
+
 const teamFormDefinition = [
   {
     name: "teamKey",
@@ -30,12 +49,21 @@ const teamFormDefinition = [
     optional: false,
     defaultValue: "#0000ff",
   },
+  // {
+  //   name: "members",
+  //   fieldType: "objectList",
+  //   valueType: "objects",
+  //   displayName: "Members",
+  //   optional: false,
+  //   objectSchema: memberFormDefinition,
+  //   minimalAmount: 1,
+  // },
 ] as const satisfies TypedForm;
 
 const formDefinition = [
   {
     name: "multiplier",
-    displayName: "multiplier",
+    displayName: "Multiplier",
     valueType: "number",
     fieldType: "number",
     optional: false,
