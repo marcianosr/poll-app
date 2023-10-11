@@ -5,24 +5,24 @@ import type { TypedForm } from "@marcianosrs/form";
 import { schemaToZod, SchemaForm } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
 
-// const memberFormDefinition = [
-//   {
-//     name: "firstName",
-//     fieldType: "text",
-//     valueType: "string",
-//     displayName: "First name",
-//     optional: false,
-//     defaultValue: "",
-//   },
-//   {
-//     name: "lastName",
-//     fieldType: "text" /* color ? */,
-//     valueType: "string",
-//     displayName: "Last name",
-//     optional: false,
-//     defaultValue: "",
-//   },
-// ] as const satisfies TypedForm;
+const memberFormDefinition = [
+  {
+    name: "firstName",
+    fieldType: "text",
+    valueType: "string",
+    displayName: "First name",
+    optional: false,
+    defaultValue: "",
+  },
+  {
+    name: "lastName",
+    fieldType: "text" /* color ? */,
+    valueType: "string",
+    displayName: "Last name",
+    optional: false,
+    defaultValue: "",
+  },
+] as const satisfies TypedForm;
 
 const teamFormDefinition = [
   {
@@ -49,15 +49,15 @@ const teamFormDefinition = [
     optional: false,
     defaultValue: "#0000ff",
   },
-  // {
-  //   name: "members",
-  //   fieldType: "objectList",
-  //   valueType: "objects",
-  //   displayName: "Members",
-  //   optional: false,
-  //   objectSchema: memberFormDefinition,
-  //   minimalAmount: 1,
-  // },
+  {
+    name: "members",
+    fieldType: "objectList",
+    valueType: "objects",
+    displayName: "Members",
+    optional: false,
+    objectSchema: memberFormDefinition,
+    minimalAmount: 1,
+  },
 ] as const satisfies TypedForm;
 
 const formDefinition = [
@@ -101,10 +101,10 @@ const formDefinition = [
 const schema = schemaToZod(formDefinition);
 console.log(zodToDescription(schema));
 
-const mutation = makeDomainFunction(schema)(
-  async (values) =>
-    console.log(values) /* or anything else, like saveMyValues(values) */
-);
+const mutation = makeDomainFunction(schema)(async (values) => {
+  console.log(values); /* or anything else, like saveMyValues(values) */
+  return values;
+});
 
 export const action: ActionFunction = async ({ request }) =>
   formAction({

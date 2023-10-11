@@ -1,28 +1,24 @@
-import React, { useRef } from "react";
+import React from "react";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { ObjectListField, TypedForm } from "../types/field-types";
 import { z } from "zod";
 import { schemaToZod } from "../schema/schemaToZod";
-import { FormFields } from "../base-form/FormFields";
-import { ObjectListProvider, useCustomField } from "../base-form/FieldContext";
-import { FormDataObject } from "../types/form";
-import { HiddenFormData } from "../base-form/HiddenFormData";
+import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
+import { HiddenFormData } from "../base-form/HiddenFormData";
+import { FormFields } from "../base-form/FormFields";
+import { FormDataObject } from "../types/form";
+import { schemaToDefaultValues } from "../schema/schemaToDefaultValues";
 
 const ObjectList = ({
   field,
   errors,
 }: FormFieldProps<ObjectListField<string, TypedForm>>) => {
-  const { setValue, watch } = useCustomField();
+  const { watch, setValue } = useCustomField(field);
   const objectSchema = field.objectSchema;
+  const objectList: Record<string, unknown>[] = watch();
 
-  const objectList: Record<string, unknown>[] = watch(field.name) as Record<
-    string,
-    unknown
-  >[];
-
-  const fieldName = field.name;
-
+  const resetValues = schemaToDefaultValues(objectSchema);
   // Maybe add option to object list to display as table or as cards?
   return (
     <>
@@ -46,11 +42,7 @@ const ObjectList = ({
                 <td>
                   <button
                     onClick={() => {
-                      setValue(
-                        field.name,
-                        objectList.filter((e) => e !== item),
-                        { shouldValidate: true }
-                      );
+                      setValue(objectList.filter((e) => e !== item));
                     }}
                   >
                     Remove
@@ -61,30 +53,27 @@ const ObjectList = ({
           </tbody>
         </table>
 
-        <HiddenFormData object={objectList} prefix={[fieldName]} />
+        <HiddenFormData field={field} />
         <fieldset>
-          <ObjectListProvider
-            schema={field.objectSchema}
-            setValue={setValue}
-            watch={watch}
+          <ObjectScopeProvider<FormDataObject<typeof objectSchema>>
+            path={[`${field.name}_new`]}
+            defaultValues={resetValues}
           >
-            {({ reset, getValues }) => (
+            {({ getValues, reset }) => (
               <>
                 <FormFields schema={objectSchema} />
                 <button
                   onClick={(event) => {
                     event.preventDefault();
-                    setValue(field.name, [...objectList, { ...getValues() }], {
-                      shouldValidate: true,
-                    });
-                    reset({});
+                    setValue([...objectList, { ...getValues() }]);
+                    reset(resetValues);
                   }}
                 >
                   Add
                 </button>
               </>
             )}
-          </ObjectListProvider>
+          </ObjectScopeProvider>
         </fieldset>
       </div>
       {errors?.map((e, i) => (

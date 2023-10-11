@@ -1,9 +1,6 @@
 import React from "react";
-
-type HiddenFormDataProps = {
-  object: unknown;
-  prefix: string[];
-};
+import { FieldType } from "../types/field-types";
+import { useCustomField } from "./FieldContext";
 
 const createFieldName = (path: string[]) =>
   `${path[0]}[${[...path.slice(1)].join("][")}]`;
@@ -34,11 +31,16 @@ const objectToFormMapping = (
   return { [createFieldName(prefix)]: `${object}` };
 };
 
-export const HiddenFormData: React.FC<HiddenFormDataProps> = ({
-  object,
-  prefix,
-}) => {
-  const fields = objectToFormMapping(prefix, object);
+type HiddenFormDataProps<TField extends FieldType<string>> = {
+  field: TField;
+};
+
+export const HiddenFormData = <TField extends FieldType<string>>({
+  field,
+}: HiddenFormDataProps<TField>) => {
+  const { watch } = useCustomField(field);
+  const object = watch();
+  const fields = objectToFormMapping([field.name], object);
   return (
     <>
       {Object.entries(fields).map(([name, value]) => (

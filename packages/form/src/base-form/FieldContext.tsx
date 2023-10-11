@@ -1,10 +1,8 @@
 import React, {
-  ChangeEvent,
   PropsWithChildren,
   createContext,
   useContext,
-  useMemo,
-  useRef,
+  useEffect,
 } from "react";
 import type {
   FieldPath,
@@ -13,9 +11,8 @@ import type {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { TypedForm } from "../types/field-types";
-import { FormDataObject } from "../types/form";
-import { isInputElement } from "@marcianosrs/utils";
+import { FieldType, TypedForm } from "../types/field-types";
+import { ValueTypeOfField } from "../types/form";
 
 /**
  * This file uses some nasty type casting to interface with React hook form
@@ -64,73 +61,75 @@ export const FieldProvider = <TFieldValues extends FieldValues>({
   </FieldContext.Provider>
 );
 
-export const ObjectListProvider = <
-  TFieldValues extends FieldValues,
-  FormSchema extends TypedForm
->({
+const FormObjectScopeContext = createContext<{ path: string[] }>({
+  path: [],
+});
+
+const useObjectScope = () => useContext(FormObjectScopeContext).path;
+
+export const ObjectScopeProvider = <TValueType,>({
   children,
-  schema,
-  ...props
-}: Omit<FieldContextType<TFieldValues>, "register"> & {
-  schema: FormSchema;
+  path,
+  defaultValues,
+}: {
   children: ({
     reset,
     getValues,
   }: {
-    reset: (values: Partial<FormDataObject<FormSchema>>) => void;
-    getValues: () => Partial<FormDataObject<FormSchema>>;
+    reset: (values: Partial<TValueType>) => void;
+    getValues: () => Partial<TValueType>;
   }) => React.ReactNode;
+  path: string[];
+  defaultValues: Partial<TValueType>;
 }) => {
-  const objectRef = useRef<Record<string, unknown>>({});
-  const fieldRefs = useRef<
-    Record<
-      string,
-      {
-        ref?: HTMLElement;
-      }
-    >
-  >({});
+  const existingPath = useObjectScope();
+  const { watch, setValue } = useContext(FieldContext);
+  const objectPath = existingPath.concat(path);
 
-  const contextValue = useMemo(() => {
-    return {
-      register: (fieldName: string) => ({
-        onChange: (
-          event: ChangeEvent<
-            HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-          >
-        ) => {
-          objectRef.current[fieldName] = event.target.value;
-        },
-        ref: (item: HTMLElement) => {
-          fieldRefs.current[fieldName] = { ref: item };
-        },
-      }),
-    };
-  }, [schema]);
+  useEffect(() => {
+    setValue(objectPath.join("."), defaultValues);
+  }, []);
 
   return (
-    <FieldContext.Provider
-      value={contextValue as FieldContextType<FieldValues>}
-    >
+    <FormObjectScopeContext.Provider value={{ path: objectPath }}>
       {children({
         reset: (newValues) => {
-          for (const [name, data] of Object.entries(fieldRefs.current)) {
-            // This should be repeated for checkboxes, radio, selects and text areas
-            // Based loosely on the implementation of react-hook-form:
-            // https://github.com/react-hook-form/react-hook-form/blob/master/src/logic/createFormControl.ts#L520
-
-            if (isInputElement(data.ref)) {
-              data.ref.value = `${
-                newValues[name as keyof FormDataObject<FormSchema>] ?? ""
-              }`;
-            }
-          }
+          setValue(objectPath.join("."), newValues);
         },
         getValues: () =>
-          ({ ...objectRef.current } as FormDataObject<FormSchema>),
+          watch(objectPath.join(".")) as unknown as Partial<TValueType>,
       })}
-    </FieldContext.Provider>
+    </FormObjectScopeContext.Provider>
   );
 };
 
-export const useCustomField = () => useContext(FieldContext);
+type CustomFieldResult<TField extends FieldType<string>> = {
+  register: () => UseFormRegisterReturn<string>;
+  watch: () => ValueTypeOfField<TField>;
+  setValue: (value: ValueTypeOfField<TField>) => void;
+};
+
+export const useCustomField = <TField extends FieldType<string>>(
+  field: TField
+): CustomFieldResult<TField> => {
+  const { watch, register, setValue } = useContext(FieldContext);
+  const path = useObjectScope();
+
+  const fieldPath = path.concat(field.name).join(".");
+  return {
+    register: () => register(fieldPath),
+    watch: () => {
+      const value = watch(fieldPath) as ValueTypeOfField<TField>;
+      if (
+        (value === "" || value === undefined) &&
+        field.fieldType === "objectList"
+      ) {
+        return [] as unknown as ValueTypeOfField<TField>;
+      }
+      return value;
+    },
+    setValue: (value) => {
+      setValue(fieldPath, value, { shouldValidate: true });
+    },
+  };
+};

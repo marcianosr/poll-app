@@ -5,11 +5,11 @@ import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 
 const TextField = ({ field, errors }: FormFieldProps<TextField<string>>) => {
-  const { register } = useCustomField();
+  const { register } = useCustomField(field);
   return (
     <>
       <label>{field.displayName}</label>
-      <input type="text" {...register(field.name)}></input>
+      <input type="text" {...register()}></input>
       {errors?.map((e, i) => (
         <p key={i}>{e}</p>
       ))}

@@ -9,11 +9,11 @@ const NumberField = ({
   field,
   errors,
 }: FormFieldProps<NumberField<string>>) => {
-  const { register } = useCustomField();
+  const { register } = useCustomField(field);
   return (
     <>
       <label>{field.displayName}</label>
-      <input type="number" {...register(field.name)}></input>
+      <input type="number" {...register()}></input>
       {errors?.map((e, i) => (
         <p key={i}>{e}</p>
       ))}
