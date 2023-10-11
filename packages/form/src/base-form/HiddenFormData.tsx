@@ -28,6 +28,12 @@ const objectToFormMapping = (
     );
   }
 
+  if (
+    prefix.some((part) => part.endsWith("__edit")) ||
+    prefix.some((part) => part.endsWith("__new"))
+  ) {
+    return {};
+  }
   return { [createFieldName(prefix)]: `${object}` };
 };
 

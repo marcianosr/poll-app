@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { ObjectListField, TypedForm } from "../types/field-types";
 import { z } from "zod";
@@ -17,13 +17,14 @@ const ObjectList = ({
   const { watch, setValue } = useCustomField(field);
   const objectSchema = field.objectSchema;
   const objectList: Record<string, unknown>[] = watch();
+  const [editIndex, setEditIndex] = useState<number | undefined>(undefined);
 
   const resetValues = schemaToDefaultValues(objectSchema);
   // Maybe add option to object list to display as table or as cards?
   return (
     <>
       <label>{field.displayName}</label>
-      <div style={{ border: "1px solid red", padding: "0.5rem" }}>
+      <div>
         <table>
           <thead>
             <tr>
@@ -35,28 +36,83 @@ const ObjectList = ({
           </thead>
           <tbody>
             {objectList.map((item, index) => (
-              <tr key={index}>
-                {objectSchema.map((field) => (
-                  <td key={field.name}>{JSON.stringify(item[field.name])}</td>
-                ))}
-                <td>
-                  <button
-                    onClick={() => {
-                      setValue(objectList.filter((e) => e !== item));
-                    }}
-                  >
-                    Remove
-                  </button>
-                </td>
-              </tr>
+              <React.Fragment key={index}>
+                <tr>
+                  {objectSchema.map((field) => (
+                    <td key={field.name}>{JSON.stringify(item[field.name])}</td>
+                  ))}
+                  <td>
+                    <button
+                      onClick={() => {
+                        setEditIndex(index);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditIndex(undefined);
+                        setValue(objectList.filter((e) => e !== item));
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+                {index === editIndex && (
+                  <tr>
+                    <td colSpan={objectSchema.length + 1}>
+                      <fieldset>
+                        <legend>Edit item</legend>
+                        <ObjectScopeProvider<
+                          FormDataObject<typeof objectSchema>
+                        >
+                          path={[`${field.name}__edit`]}
+                          defaultValues={item}
+                        >
+                          {({ getValues }) => (
+                            <>
+                              <FormFields schema={objectSchema} />
+                              <button
+                                onClick={(event) => {
+                                  event.preventDefault();
+                                  setEditIndex(undefined);
+                                  setValue(
+                                    objectList.map((item, index) =>
+                                      index === editIndex
+                                        ? { ...getValues() }
+                                        : item
+                                    )
+                                  );
+                                }}
+                              >
+                                Update item
+                              </button>{" "}
+                              <button
+                                onClick={(event) => {
+                                  event.preventDefault();
+                                  setEditIndex(undefined);
+                                }}
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          )}
+                        </ObjectScopeProvider>
+                      </fieldset>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
 
         <HiddenFormData field={field} />
         <fieldset>
+          <legend>Add new</legend>
           <ObjectScopeProvider<FormDataObject<typeof objectSchema>>
-            path={[`${field.name}_new`]}
+            path={[`${field.name}__new`]}
             defaultValues={resetValues}
           >
             {({ getValues, reset }) => (
@@ -65,11 +121,12 @@ const ObjectList = ({
                 <button
                   onClick={(event) => {
                     event.preventDefault();
+                    setEditIndex(undefined);
                     setValue([...objectList, { ...getValues() }]);
                     reset(resetValues);
                   }}
                 >
-                  Add
+                  Add Item
                 </button>
               </>
             )}
@@ -91,6 +148,10 @@ export const objectListPlugin: FormFieldPlugin<
   Component: ObjectList,
   toZodSchema: (field) =>
     transform(schemaToZod(field.objectSchema).array())
-      .apply(field.minimalAmount, (z, min) => z.min(min))
+      .apply(field.minimalAmount, (z, min) =>
+        z.min(min, {
+          message: `List must contain at least ${min} ${field.displayName}`,
+        })
+      )
       .result(),
 };
