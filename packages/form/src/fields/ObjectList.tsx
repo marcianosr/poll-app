@@ -13,40 +13,55 @@ const ObjectList = ({
   field,
   errors,
 }: FormFieldProps<ObjectListField<string, TypedForm>>) => {
-  const { setValue, watch, register } = useCustomField();
+  const { setValue, watch } = useCustomField();
   const objectSchema = field.objectSchema;
 
-  const objectList: FormDataObject<typeof objectSchema>[] = watch(
-    field.name
-  ) as FormDataObject<typeof field.objectSchema>[];
+  const objectList: Record<string, unknown>[] = watch(field.name) as Record<
+    string,
+    unknown
+  >[];
 
   const fieldName = field.name;
 
+  // Maybe add option to object list to display as table or as cards?
   return (
     <>
       <label>{field.displayName}</label>
       <div style={{ border: "1px solid red", padding: "0.5rem" }}>
-        <ul>
-          {objectList.map((item, index) => {
-            return (
-              <li key={index}>
-                {JSON.stringify(item)}{" "}
-                <button
-                  onClick={() => {
-                    setValue(
-                      field.name,
-                      objectList.filter((e) => e !== item),
-                      { shouldValidate: true }
-                    );
-                  }}
-                >
-                  Remove
-                </button>
-              </li>
-            );
-          })}
-          <HiddenFormData object={objectList} prefix={[fieldName]} />
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              {objectSchema.map((field) => (
+                <th key={field.name}>{field.displayName}</th>
+              ))}
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {objectList.map((item, index) => (
+              <tr key={index}>
+                {objectSchema.map((field) => (
+                  <td key={field.name}>{JSON.stringify(item[field.name])}</td>
+                ))}
+                <td>
+                  <button
+                    onClick={() => {
+                      setValue(
+                        field.name,
+                        objectList.filter((e) => e !== item),
+                        { shouldValidate: true }
+                      );
+                    }}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <HiddenFormData object={objectList} prefix={[fieldName]} />
         <fieldset>
           <ObjectListProvider
             schema={field.objectSchema}
