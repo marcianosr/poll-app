@@ -23,5 +23,6 @@ export const colorFieldPlugin: FormFieldPlugin<
 > = {
 	fieldType: "color",
 	Component: ColorField,
+	Show: ({ value }) => <h1>{value}</h1> ?? null,
 	toZodSchema: () => z.string().min(1),
 };
