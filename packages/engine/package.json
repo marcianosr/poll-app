@@ -12,7 +12,8 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@marcianosrs/server-auth": "*",
+    "@marcianosrs/server-auth": "workspace:*",
+    "@marcianosrs/utils": "workspace:*",
     "parcel": "2.9.2"
   },
   "scripts": {

@@ -13,19 +13,25 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@marcianosrs/api": "*",
-    "@marcianosrs/client-auth": "*",
-    "@marcianosrs/engine": "*",
-    "@marcianosrs/server-auth": "*",
+    "@marcianosrs/api": "workspace:*",
+    "@marcianosrs/client-auth": "workspace:*",
+    "@marcianosrs/engine": "workspace:*",
+    "@marcianosrs/form": "workspace:*",
+    "@marcianosrs/server-auth": "workspace:*",
     "@marcianosrs/ui": "*",
+    "@marcianosrs/utils": "workspace:*",
     "@remix-run/node": "2.0.0",
     "@remix-run/react": "2.0.0",
     "@remix-run/vercel": "1.19.3",
     "@types/uuid": "^9.0.1",
     "@vercel/node": "^2.10.3",
+    "domain-functions": "^2.4.0",
     "dotenv": "^16.0.3",
     "isbot": "^3.6.8",
-    "uuid": "^9.0.0"
+    "react-hook-form": "^7.47.0",
+    "remix-forms": "^2.1.0",
+    "uuid": "^9.0.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.0.0",

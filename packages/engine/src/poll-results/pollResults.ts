@@ -1,5 +1,5 @@
 import { TypedForm } from "@marcianosrs/form";
-import { createPluginStore } from "../generic/pluginStore";
+import { createPluginStore } from "@marcianosrs/utils";
 import { PollScoreProcessorPlugin } from "../types/poll-result";
 
 export const scoreProcessorStore = createPluginStore<

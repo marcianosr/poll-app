@@ -2682,6 +2682,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.8.8":
+  version: 2.9.11
+  resolution: "@hookform/resolvers@npm:2.9.11"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 977ea038bb94457ac9f6c7ca65438ce8fcd0cf7643b9925d8bc4d66df6faa0f49ad642bee7362f86a4d3ff7ff53d18b7aea0597085993971cae00e86bf6eda73
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.11":
   version: 0.11.11
   resolution: "@humanwhocodes/config-array@npm:0.11.11"
@@ -2943,7 +2952,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marcianosrs/api@*, @marcianosrs/api@workspace:packages/api":
+"@marcianosrs/api@workspace:*, @marcianosrs/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/api@workspace:packages/api"
   dependencies:
@@ -2958,7 +2967,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/client-auth@*, @marcianosrs/client-auth@workspace:packages/client-auth":
+"@marcianosrs/client-auth@workspace:*, @marcianosrs/client-auth@workspace:packages/client-auth":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/client-auth@workspace:packages/client-auth"
   dependencies:
@@ -2969,11 +2978,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/engine@*, @marcianosrs/engine@workspace:packages/engine":
+"@marcianosrs/engine@*, @marcianosrs/engine@workspace:*, @marcianosrs/engine@workspace:packages/engine":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/engine@workspace:packages/engine"
   dependencies:
-    "@marcianosrs/server-auth": "*"
+    "@marcianosrs/server-auth": "workspace:*"
+    "@marcianosrs/utils": "workspace:*"
     parcel: 2.9.2
   peerDependencies:
     react: ^18.2.0
@@ -2981,11 +2991,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/form@workspace:packages/form":
+"@marcianosrs/form@workspace:*, @marcianosrs/form@workspace:packages/form":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/form@workspace:packages/form"
   dependencies:
+    "@marcianosrs/utils": "workspace:*"
+    "@remix-run/react": ^2.0.1
     parcel: 2.9.2
+    remix-forms: ^2.1.0
+    zod: ^3.22.4
+  peerDependencies:
+    react: 18.2.0
+    react-hook-form: "*"
   languageName: unknown
   linkType: soft
 
@@ -2993,11 +3010,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marcianosrs/frontend@workspace:packages/frontend"
   dependencies:
-    "@marcianosrs/api": "*"
-    "@marcianosrs/client-auth": "*"
-    "@marcianosrs/engine": "*"
-    "@marcianosrs/server-auth": "*"
+    "@marcianosrs/api": "workspace:*"
+    "@marcianosrs/client-auth": "workspace:*"
+    "@marcianosrs/engine": "workspace:*"
+    "@marcianosrs/form": "workspace:*"
+    "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/ui": "*"
+    "@marcianosrs/utils": "workspace:*"
     "@remix-run/dev": ^2.0.0
     "@remix-run/eslint-config": ^2.0.0
     "@remix-run/node": 2.0.0
@@ -3008,18 +3027,22 @@ __metadata:
     "@types/react-dom": ^18.0.11
     "@types/uuid": ^9.0.1
     "@vercel/node": ^2.10.3
+    domain-functions: ^2.4.0
     dotenv: ^16.0.3
     eslint: ^8.38.0
     isbot: ^3.6.8
+    react-hook-form: ^7.47.0
+    remix-forms: ^2.1.0
     typescript: ^4.9.5
     uuid: ^9.0.0
+    zod: ^3.22.4
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/server-auth@*, @marcianosrs/server-auth@workspace:packages/server-auth":
+"@marcianosrs/server-auth@*, @marcianosrs/server-auth@workspace:*, @marcianosrs/server-auth@workspace:packages/server-auth":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/server-auth@workspace:packages/server-auth"
   dependencies:
@@ -3049,6 +3072,17 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     storybook: ^7.0.7
+  languageName: unknown
+  linkType: soft
+
+"@marcianosrs/utils@workspace:*, @marcianosrs/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@marcianosrs/utils@workspace:packages/utils"
+  dependencies:
+    parcel: 2.9.2
+  peerDependencies:
+    react: 18.2.0
+    zod: "*"
   languageName: unknown
   linkType: soft
 
@@ -5067,6 +5101,24 @@ __metadata:
     typescript:
       optional: true
   checksum: e74c79dd19a3fdb1a51ae0ff4e3028c2e602ff5aa1f83a9f9dd08dd6abfeb31f66f05bae23e4abf5880d48ccce4f3b2d6acf157f72f7980224e4aab089a2a372
+  languageName: node
+  linkType: hard
+
+"@remix-run/react@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@remix-run/react@npm:2.0.1"
+  dependencies:
+    "@remix-run/router": 1.9.0
+    "@remix-run/server-runtime": 2.0.1
+    react-router-dom: 6.16.0
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+    typescript: ^5.1.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 16efdb234105c9544c5b9077929805e8f9686acd9efc74f30c38a8c980dfea17caed633a451a2332cb85bc17baaf88118b4d3cafa0e5843b4ad2834c058c2864
   languageName: node
   linkType: hard
 
@@ -9549,6 +9601,13 @@ __metadata:
     domhandler: ^4.2.0
     entities: ^2.0.0
   checksum: fbb0b01f87a8a2d18e6e5a388ad0f7ec4a5c05c06d219377da1abc7bb0f674d804f4a8a94e3f71ff15f6cb7dcfc75704a54b261db672b9b3ab03da6b758b0b22
+  languageName: node
+  linkType: hard
+
+"domain-functions@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "domain-functions@npm:2.4.0"
+  checksum: 8978d16ebff0d68963f10bb926ff3424455be4f87baa660d54fbaf51f34a4febc72a98a6253b3ad3054fcf708dea2471b8cf05397e8214e495efd89c0491076b
   languageName: node
   linkType: hard
 
@@ -16691,6 +16750,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:^7.47.0":
+  version: 7.47.0
+  resolution: "react-hook-form@npm:7.47.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: dec192fec9c54e436f9e47008635dd7849b6b119ed477a9b0cd491367a0b2ced3427cd937febfb245e1cb7578c863917181d903eff4519c2787bf713ec7d3426
+  languageName: node
+  linkType: hard
+
 "react-inspector@npm:^6.0.0":
   version: 6.0.2
   resolution: "react-inspector@npm:6.0.2"
@@ -17098,6 +17166,20 @@ __metadata:
     mdast-util-to-string: ^1.0.0
     unist-util-visit: ^2.0.0
   checksum: 81fff0dcfaf6d6117ef1293bb1d26c3e25483d99c65c22434298eed93583a89ea5d7b94063d9a7f47c0647a708ce84f00ff62d274503f248feec03c344cabb20
+  languageName: node
+  linkType: hard
+
+"remix-forms@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "remix-forms@npm:2.1.0"
+  dependencies:
+    "@hookform/resolvers": ^2.8.8
+  peerDependencies:
+    domain-functions: 2.x
+    react: ">=16.8"
+    react-hook-form: ">=7.27"
+    zod: ">=3.12"
+  checksum: 2f7d3efafa4399149e14f592caddda918173d0c3cc3a04286c5011bd52a0070f4099514271f1145b1f1d8996807a0f1a173a60c061775f210e0b6927c2933610
   languageName: node
   linkType: hard
 
@@ -19732,6 +19814,13 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 2cac84540f65c64ccc1683c267edce396b26b1e931aa429660aefac8fbe0188167b7aee815a3c22fa59a28a58d898d1a2b1825048f834d8d629f4c2a5d443801
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.22.4":
+  version: 3.22.4
+  resolution: "zod@npm:3.22.4"
+  checksum: 80bfd7f8039b24fddeb0718a2ec7c02aa9856e4838d6aa4864335a047b6b37a3273b191ef335bf0b2002e5c514ef261ffcda5a589fb084a48c336ffc4cdbab7f
   languageName: node
   linkType: hard
 

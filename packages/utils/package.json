@@ -1,22 +1,18 @@
 {
-  "name": "@marcianosrs/form",
+  "name": "@marcianosrs/utils",
   "version": "0.0.1",
-  "description": "Poll app form system",
+  "description": "Poll app utils",
   "source": "src/index.ts",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "author": "Marciano",
   "license": "MIT",
   "dependencies": {
-    "@marcianosrs/utils": "workspace:*",
-    "@remix-run/react": "^2.0.1",
-    "parcel": "2.9.2",
-    "remix-forms": "^2.1.0",
-    "zod": "^3.22.4"
+    "parcel": "2.9.2"
   },
   "peerDependencies": {
     "react": "18.2.0",
-    "react-hook-form": "*"
+    "zod": "*"
   },
   "scripts": {
     "watch": "parcel watch",

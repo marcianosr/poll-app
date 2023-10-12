@@ -21,7 +21,7 @@
     "concurrently": "^8.0.1"
   },
   "scripts": {
-    "build": "yarn nx run-many --target=build",
+    "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
     "api": "yarn workspace @marcianosrs/api start",
     "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
     "frontend": "yarn workspace @marcianosrs/frontend run dev",
