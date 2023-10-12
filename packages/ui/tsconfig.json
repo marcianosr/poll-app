@@ -1,9 +1,10 @@
 {
-	"compilerOptions": {
-		"experimentalDecorators": true,
-		"jsx": "react",
-		"esModuleInterop": true,
-		"target": "es2016",
-		"module": "commonjs"
-	}
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "target": "es2016",
+    "module": "commonjs",
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  }
 }

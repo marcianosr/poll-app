@@ -22,9 +22,13 @@
     "prop-types": "^15.8.1",
     "storybook": "^7.0.7"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@marcianosrs/form-schema": "workspace:*",
+    "@marcianosrs/utils": "workspace:*"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",

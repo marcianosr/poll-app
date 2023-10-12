@@ -1,6 +1,6 @@
 import React from "react";
+import { NumberField } from "@marcianosrs/form-schema";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
-import { NumberField } from "../types/field-types";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";

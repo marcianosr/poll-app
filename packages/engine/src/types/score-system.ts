@@ -1,5 +1,5 @@
-import { FormDataObject, TypedForm } from "@marcianosrs/form";
-import { QuestionScoreResult } from "./poll-result";
+import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
+import type { QuestionScoreResult } from "./poll-result";
 
 type PlayerData = unknown;
 
@@ -18,27 +18,27 @@ type PlayerData = unknown;
  *
  */
 export type ScoreSystemPlugin<
-  FormDefinition extends TypedForm,
-  ScoreSystemData
+    FormDefinition extends TypedForm,
+    ScoreSystemData
 > = {
-  scoreSystemType: string;
-  verifySettings: (
-    settings: unknown
-  ) => settings is FormDataObject<FormDefinition>;
+    scoreSystemType: string;
+    verifySettings: (
+        settings: unknown
+    ) => settings is FormDataObject<FormDefinition>;
 
-  editForm: FormDefinition;
+    editForm: FormDefinition;
 
-  renderScorePage: () => Promise<
-    React.FC<{
-      settings: FormDataObject<FormDefinition>;
-      data: ScoreSystemData;
-    }>
-  >;
+    renderScorePage: () => Promise<
+        React.FC<{
+            settings: FormDataObject<FormDefinition>;
+            data: ScoreSystemData;
+        }>
+    >;
 
-  processResult: <Settings extends FormDataObject<FormDefinition>>(
-    score: QuestionScoreResult,
-    player: PlayerData,
-    settings: Settings,
-    systemData: ScoreSystemData
-  ) => ScoreSystemData;
+    processResult: <Settings extends FormDataObject<FormDefinition>>(
+        score: QuestionScoreResult,
+        player: PlayerData,
+        settings: Settings,
+        systemData: ScoreSystemData
+    ) => ScoreSystemData;
 };

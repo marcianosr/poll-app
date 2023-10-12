@@ -1,0 +1,25 @@
+{
+  "name": "@marcianosrs/form-schema",
+  "version": "0.0.1",
+  "description": "Poll app form schema",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "types": "dist/index.d.ts",
+  "author": "Marciano",
+  "license": "MIT",
+  "dependencies": {
+    "@marcianosrs/utils": "workspace:*",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "parcel": "2.9.2"
+  },
+  "peerDependencies": {
+    "react": "18.2.0",
+    "react-hook-form": "*"
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  }
+}

@@ -1,7 +1,7 @@
-import { TypedForm } from "@marcianosrs/form";
+import type { TypedForm } from "@marcianosrs/form-schema";
 import { createPluginStore } from "@marcianosrs/utils";
-import { PollScoreProcessorPlugin } from "../types/poll-result";
+import type { PollScoreProcessorPlugin } from "../types/poll-result";
 
 export const scoreProcessorStore = createPluginStore<
-  PollScoreProcessorPlugin<TypedForm>
+    PollScoreProcessorPlugin<TypedForm>
 >((p) => p.processorType);

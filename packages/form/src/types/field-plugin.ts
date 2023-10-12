@@ -1,6 +1,5 @@
 import { ComponentType } from "react";
-import { FieldType } from "./field-types";
-import { ValueTypeOfField } from "./form";
+import { FieldType, ValueTypeOfField } from "@marcianosrs/form-schema";
 import { z } from "zod";
 
 export type FormFieldProps<T extends FieldType<string>> = {

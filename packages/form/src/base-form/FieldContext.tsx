@@ -1,3 +1,4 @@
+import { FieldType, ValueTypeOfField } from "@marcianosrs/form-schema";
 import React, {
     type PropsWithChildren,
     createContext,
@@ -12,8 +13,6 @@ import type {
     UseFormWatch,
     UseFormReturn,
 } from "react-hook-form";
-import type { FieldType } from "../types/field-types";
-import type { ValueTypeOfField } from "../types/form";
 
 /**
  * This file uses some nasty type casting to interface with React hook form

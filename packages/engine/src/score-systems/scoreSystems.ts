@@ -1,7 +1,7 @@
-import { TypedForm } from "@marcianosrs/form";
+import { TypedForm } from "@marcianosrs/form-schema";
 import { createPluginStore } from "@marcianosrs/utils";
 import { ScoreSystemPlugin } from "../types/score-system";
 
 export const scoreSystemStore = createPluginStore<
-  ScoreSystemPlugin<TypedForm, unknown>
+    ScoreSystemPlugin<TypedForm, unknown>
 >((p) => p.scoreSystemType);
