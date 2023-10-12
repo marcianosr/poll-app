@@ -4,7 +4,8 @@ Setup the app:
 
 - Gain all `.env` files
 - Gain the firebase service account key
-- yarn install in all packages
+- `yarn install` in the root
+- `yarn build` in the root
 - Run the app in the root: `yarn start`
 
 To run the app connected to the local firestore, run the following:

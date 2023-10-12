@@ -1,18 +1,13 @@
 {
-  "name": "@marcianosrs/engine",
+  "name": "@marcianosrs/form",
   "version": "0.0.1",
-  "description": "Poll app engine",
+  "description": "Poll app form system",
   "source": "src/index.ts",
   "main": "dist/main.js",
   "types": "dist/index.d.ts",
   "author": "Marciano",
   "license": "MIT",
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "dependencies": {
-    "@marcianosrs/server-auth": "*",
     "parcel": "2.9.2"
   },
   "scripts": {
