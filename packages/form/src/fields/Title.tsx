@@ -1,7 +1,7 @@
 import React from "react";
-import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
+import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
-import { Title } from "@marcianosrs/form-schema";
+import type { Title } from "@marcianosrs/form-schema";
 
 const TitleField = ({ field }: FormFieldProps<Title<string>>) => {
     return <h1>{field.displayName}</h1>;

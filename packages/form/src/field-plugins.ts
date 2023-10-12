@@ -1,6 +1,6 @@
 import { createPluginStore } from "@marcianosrs/utils";
-import { FormFieldPlugin } from "./types/field-plugin";
-import { FieldType } from "@marcianosrs/form-schema";
+import type { FormFieldPlugin } from "./types/field-plugin";
+import type { FieldType } from "@marcianosrs/form-schema";
 
 export const formFieldPlugins = createPluginStore<
     FormFieldPlugin<FieldType<string>>,

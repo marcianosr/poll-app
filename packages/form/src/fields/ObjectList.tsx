@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
+import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { schemaToZod } from "../schema/schemaToZod";
 import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
@@ -8,7 +8,7 @@ import { HiddenFormData } from "../base-form/HiddenFormData";
 import { FormFields } from "../base-form/FormFields";
 import { schemaToDefaultValues } from "../schema/schemaToDefaultValues";
 import { FormFieldValue } from "../base-form/FormFieldValue";
-import {
+import type {
     FormDataObject,
     ObjectListField,
     TypedForm,
