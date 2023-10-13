@@ -1,7 +1,7 @@
 import React from "react";
 import { forwardRef } from "react";
 import { ButtonProps } from "../../theming/ThemeType";
-import styles from "./Button.module.css";
+import * as styles from "./Button.module.css";
 import { useThemeSettings } from "./themeSettings";
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

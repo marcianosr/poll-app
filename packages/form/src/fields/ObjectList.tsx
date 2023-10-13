@@ -7,6 +7,7 @@ import { transform } from "@marcianosrs/utils";
 import { HiddenFormData } from "../base-form/HiddenFormData";
 import { FormFields } from "../base-form/FormFields";
 import { FormFieldValue } from "../base-form/FormFieldValue";
+import { Button } from "@marcianosrs/ui";
 import {
     schemaToDefaultValues,
     type FormDataObject,
@@ -55,15 +56,15 @@ const ObjectList = <TForm extends TypedForm>({
                                         </td>
                                     ))}
                                     <td>
-                                        <button
+                                        <Button
                                             onClick={() => {
                                                 setEditIndex(index);
                                             }}
                                             disabled={editIndex === index}
                                         >
                                             Edit
-                                        </button>{" "}
-                                        <button
+                                        </Button>{" "}
+                                        <Button
                                             onClick={() => {
                                                 setEditIndex(undefined);
                                                 setValue(
@@ -74,7 +75,7 @@ const ObjectList = <TForm extends TypedForm>({
                                             }}
                                         >
                                             Remove
-                                        </button>
+                                        </Button>
                                         {hasErrors([`${index}`]) && (
                                             <span title="Item has errors">
                                                 ⚠️
@@ -101,7 +102,7 @@ const ObjectList = <TForm extends TypedForm>({
                                                                     objectSchema
                                                                 }
                                                             />
-                                                            <button
+                                                            <Button
                                                                 onClick={(
                                                                     event
                                                                 ) => {
@@ -126,8 +127,8 @@ const ObjectList = <TForm extends TypedForm>({
                                                                 }}
                                                             >
                                                                 Update item
-                                                            </button>{" "}
-                                                            <button
+                                                            </Button>{" "}
+                                                            <Button
                                                                 onClick={(
                                                                     event
                                                                 ) => {
@@ -138,7 +139,7 @@ const ObjectList = <TForm extends TypedForm>({
                                                                 }}
                                                             >
                                                                 Cancel
-                                                            </button>
+                                                            </Button>
                                                         </>
                                                     )}
                                                 </ObjectScopeProvider>
@@ -152,7 +153,7 @@ const ObjectList = <TForm extends TypedForm>({
                 </table>
 
                 <HiddenFormData field={field} />
-                <button
+                <Button
                     onClick={(event) => {
                         event.preventDefault();
                         setValue([...objectList, { ...resetValues }]);
@@ -160,7 +161,7 @@ const ObjectList = <TForm extends TypedForm>({
                     }}
                 >
                     Add Item
-                </button>
+                </Button>
             </div>
             {errors?.map((e, i) => (
                 <p key={i}>{e}</p>
