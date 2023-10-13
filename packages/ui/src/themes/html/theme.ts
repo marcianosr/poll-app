@@ -1,5 +1,5 @@
-import { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
-import { ThemePlugin } from "../../theming/types";
+import type { TypedForm } from "@marcianosrs/form-schema";
+import type { ThemePlugin } from "../../theming/types";
 import { Button } from "./Button";
 
 const themeSettings = [] as const satisfies TypedForm;
@@ -11,6 +11,4 @@ export const htmlTheme: ThemePlugin<typeof themeSettings> = {
     components: {
         button: Button,
     },
-    verifySettings: (e: unknown): e is FormDataObject<typeof themeSettings> =>
-        true,
 };
