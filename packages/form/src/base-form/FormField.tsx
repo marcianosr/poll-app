@@ -1,7 +1,7 @@
 import React from "react";
-import { FieldType } from "../types/field-types";
 import { formFieldPlugins } from "../field-plugins";
 import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
+import { FieldType } from "@marcianosrs/form-schema";
 
 export const FormField = <T extends FieldType<string>>({
     field,

@@ -1,12 +1,12 @@
-import { TypedForm } from "@marcianosrs/form";
+import type { TypedForm } from "@marcianosrs/form-schema";
 import { createPluginStore } from "@marcianosrs/utils";
-import { PollQuestionPlugin } from "../types/poll";
+import type { PollQuestionPlugin } from "../types/poll";
 
 export type GenericPollQuestionPlugin = PollQuestionPlugin<
-  TypedForm,
-  Record<string, unknown>
+    TypedForm,
+    Record<string, unknown>
 >;
 
 export const questionTypeStore = createPluginStore<GenericPollQuestionPlugin>(
-  (p) => p.contentType
+    (p) => p.contentType
 );

@@ -1,6 +1,6 @@
 import React from "react";
-import { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
-import { ColorField } from "../types/field-types";
+import type { ColorField } from "@marcianosrs/form-schema";
+import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 
