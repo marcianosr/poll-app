@@ -2992,7 +2992,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/form-schema@workspace:*, @marcianosrs/form-schema@workspace:packages/form-schema":
+"@marcianosrs/form-schema@workspace:*, @marcianosrs/form-schema@workspace:^, @marcianosrs/form-schema@workspace:packages/form-schema":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/form-schema@workspace:packages/form-schema"
   dependencies:
@@ -3030,6 +3030,7 @@ __metadata:
     "@marcianosrs/client-auth": "workspace:*"
     "@marcianosrs/engine": "workspace:*"
     "@marcianosrs/form": "workspace:*"
+    "@marcianosrs/form-schema": "workspace:^"
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/ui": "*"
     "@marcianosrs/utils": "workspace:*"
