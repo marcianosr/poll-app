@@ -62,11 +62,11 @@ const teamFormDefinition = [
 
 const formDefinition = [
 	{
-		name: "Theme form",
+		name: "theme-form",
 		fieldType: "select",
 		valueType: "none",
 		displayName: "Select theme form",
-		optional: false,
+		optional: true,
 		defaultValue: "html",
 		options: ["winter", "html"],
 	},
