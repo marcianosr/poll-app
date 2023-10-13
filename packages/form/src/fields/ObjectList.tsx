@@ -6,12 +6,12 @@ import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
 import { HiddenFormData } from "../base-form/HiddenFormData";
 import { FormFields } from "../base-form/FormFields";
-import { schemaToDefaultValues } from "../schema/schemaToDefaultValues";
 import { FormFieldValue } from "../base-form/FormFieldValue";
-import type {
-    FormDataObject,
-    ObjectListField,
-    TypedForm,
+import {
+    schemaToDefaultValues,
+    type FormDataObject,
+    type ObjectListField,
+    type TypedForm,
 } from "@marcianosrs/form-schema";
 
 const ObjectList = <TForm extends TypedForm>({

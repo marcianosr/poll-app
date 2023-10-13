@@ -1,4 +1,5 @@
-import { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
+import { TypedForm } from "../types/field-types";
+import { FormDataObject } from "../types/form";
 
 export const schemaToDefaultValues = <T extends TypedForm>(
     schema: T

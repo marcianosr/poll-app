@@ -4,8 +4,10 @@ import { type ZodSchemaType, schemaToZod } from "./schema/schemaToZod";
 import { FormField } from "./base-form/FormField";
 import { FieldProvider } from "./base-form/FieldContext";
 import { z } from "zod";
-import { schemaToDefaultValues } from "./schema/schemaToDefaultValues";
-import type { TypedForm } from "@marcianosrs/form-schema";
+import {
+    schemaToDefaultValues,
+    type TypedForm,
+} from "@marcianosrs/form-schema";
 
 type SchemaFormProps<Schema extends TypedForm> = {
     schema: Schema;
