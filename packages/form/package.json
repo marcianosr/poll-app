@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "@marcianosrs/form-schema": "workspace:*",
+    "@marcianosrs/ui": "workspace:^",
     "@marcianosrs/utils": "workspace:*",
     "@remix-run/react": "^2.0.1",
     "remix-forms": "^2.1.0",

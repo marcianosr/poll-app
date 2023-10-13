@@ -11,7 +11,7 @@ export type ButtonProps = PropsWithChildren<
          * This prop is just as test, the real interface props are not defined yet.
          */
         size?: "small" | "medium" | "large";
-    } & HTMLAttributes<HTMLButtonElement>
+    } & JSX.IntrinsicElements["button"]
 >;
 
 export type Theme = {

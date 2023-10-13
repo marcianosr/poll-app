@@ -8,6 +8,7 @@ import {
     schemaToDefaultValues,
     type TypedForm,
 } from "@marcianosrs/form-schema";
+import { Button as SubmitButton } from "@marcianosrs/ui";
 
 type SchemaFormProps<Schema extends TypedForm> = {
     schema: Schema;
@@ -32,15 +33,7 @@ export const SchemaForm = <Schema extends TypedForm>({
             schema={zodSchema}
             values={values as RemixFormValues<Schema>}
         >
-            {({
-                Field,
-                Errors,
-                Button,
-                watch,
-                setValue,
-                register,
-                formState,
-            }) => (
+            {({ Field, Errors, watch, setValue, register, formState }) => (
                 <FieldProvider
                     watch={watch}
                     setValue={setValue}
@@ -53,7 +46,8 @@ export const SchemaForm = <Schema extends TypedForm>({
                         </Field>
                     ))}
                     <Errors />
-                    <Button />
+
+                    <SubmitButton type="submit">Ok</SubmitButton>
                 </FieldProvider>
             )}
         </RemixForm>
