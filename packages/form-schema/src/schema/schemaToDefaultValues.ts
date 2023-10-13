@@ -13,6 +13,9 @@ export const schemaToDefaultValues = <T extends TypedForm>(
         if (field.valueType === "objects") {
             fields[field.name] = [];
         }
+        if (field.valueType === "object") {
+            fields[field.name] = schemaToDefaultValues(field.objectSchema);
+        }
     }
 
     return fields as FormDataObject<T>;
