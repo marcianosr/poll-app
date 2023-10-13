@@ -1,4 +1,4 @@
-import { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import { TypedForm } from "@marcianosrs/form-schema";
 import { Theme } from "./ThemeType";
 
 export type ThemePlugin<TFormDefinition extends TypedForm> = {
@@ -6,7 +6,4 @@ export type ThemePlugin<TFormDefinition extends TypedForm> = {
     description: string;
     editForm: TFormDefinition;
     components: Theme;
-    verifySettings: (
-        settings: unknown
-    ) => settings is FormDataObject<TFormDefinition>;
 };
