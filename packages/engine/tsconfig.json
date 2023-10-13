@@ -1,6 +1,7 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
+    "jsx": "react",
     "lib": ["ES2019", "dom"],
     "isolatedModules": true,
     "esModuleInterop": true,
