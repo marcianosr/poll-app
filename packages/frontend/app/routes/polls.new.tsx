@@ -27,7 +27,10 @@ const questionTypes = [
     {
         fieldType: "select",
         valueType: "list",
-        options: questionTypeStore.getIdentifiers(),
+        options: questionTypeStore.getIdentifiers().map((pluginId) => {
+            const plugin = questionTypeStore.get(pluginId);
+            return { display: plugin.displayName, value: pluginId };
+        }),
         optional: false,
         name: "questionType",
         displayName: "Question type",
