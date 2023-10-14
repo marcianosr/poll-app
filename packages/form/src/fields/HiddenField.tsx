@@ -16,6 +16,6 @@ export const hiddenFieldPlugin: FormFieldPlugin<
 > = {
 	fieldType: "hidden",
 	Component: HiddenField,
-	Show: ({ value }) => value ?? null,
+	Show: () => null,
 	toZodSchema: () => z.string().min(1),
 };
