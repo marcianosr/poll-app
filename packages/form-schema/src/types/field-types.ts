@@ -1,3 +1,4 @@
+import { Plugin, PluginField } from "./fields/plugin-field";
 import {
     BaseFixedFormField,
     BaseObjectFormField,
@@ -68,6 +69,7 @@ export type FieldType<Key> =
     | PickListField<Key, Readonly<FixedOption[]>>
     | RadioField<Key, Readonly<FixedOption[]>>
     | ObjectField<Key, readonly FieldType<string>[]>
-    | ObjectListField<Key, readonly FieldType<string>[]>;
+    | ObjectListField<Key, readonly FieldType<string>[]>
+    | PluginField<Key, Plugin>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;

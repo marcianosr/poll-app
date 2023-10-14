@@ -13,6 +13,7 @@ export type TypeMapping = {
     string: string;
     number: number;
     boolean: boolean;
+    unknown: unknown;
 };
 
 export type ValueTypes = keyof TypeMapping;

@@ -1,5 +1,5 @@
 import { questionTypeStore } from "@marcianosrs/engine";
-import { SchemaForm, schemaToZod } from "@marcianosrs/form";
+import { SchemaForm, getFormId, schemaToZod } from "@marcianosrs/form";
 import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 import { zodToDescription } from "@marcianosrs/utils";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
@@ -41,27 +41,18 @@ const questionTypes = [
 const schema = schemaToZod(questionTypes);
 console.log(zodToDescription(schema));
 
-const mutation = makeDomainFunction(schema)(async (values) => {
-    console.log(values); /* or anything else, like saveMyValues(values) */
-    return values;
-});
-
-export const action: ActionFunction = async ({ request }) =>
-    formAction({
-        request,
-        schema,
-        mutation,
-        // successPath: "/success" /* path to redirect on success */,
-    });
-
-export default function NewPoll() {
-    const data = useActionData<FormDataObject<typeof questionTypes>>();
-
-    const questionType =
-        data?.questionType ?? questionTypeStore.getIdentifiers()[0];
+const createQuestionSchema = (questionType: string) => {
     const plugin = questionTypeStore.get(questionType);
 
     const questionData = [
+        {
+            fieldType: "text", // This should be a new field type
+            valueType: "string",
+            optional: false,
+            name: "questionType",
+            displayName: "QuestionType",
+            defaultValue: questionType,
+        },
         {
             fieldType: "object",
             valueType: "object",
@@ -80,14 +71,62 @@ export default function NewPoll() {
         },
     ] as const satisfies TypedForm;
 
+    return questionData;
+};
+
+const mutation = makeDomainFunction(schema)(async (values) => {
+    console.log(values); /* or anything else, like saveMyValues(values) */
+    return values;
+});
+
+export const action: ActionFunction = async ({ request }) => {
+    const formId = await getFormId(request);
+    if (formId === "questionType") {
+        return formAction({
+            request,
+            schema,
+            mutation,
+            // successPath: "/success" /* path to redirect on success */,
+        });
+    }
+
+    // if (formId == "questionData") {
+
+    //     const questionSchema = createQuestionSchema()
+
+    //     const questionMutation = makeDomainFunction(questionSchema)(
+    //         async (values) => {
+    //             console.log(
+    //                 values
+    //             ); /* or anything else, like saveMyValues(values) */
+    //             return values;
+    //         }
+    //     );
+    //     return formAction({
+    //         request,
+    //         questionSchema,
+    //         mutation: questionMutation,
+    //         // successPath: "/success" /* path to redirect on success */,
+    //     });
+    // }
+};
+
+export default function NewPoll() {
+    const data = useActionData<FormDataObject<typeof questionTypes>>();
+
+    const questionType =
+        data?.questionType ?? questionTypeStore.getIdentifiers()[0];
+
+    const questionData = createQuestionSchema(questionType);
+
     const schema = schemaToZod(questionData);
     console.log(zodToDescription(schema));
     return (
         <main>
             <Link to="/polls">Back to list of polls</Link>
             <h1>Create new poll</h1>
-            <SchemaForm schema={questionTypes} />
-            {plugin && <SchemaForm schema={questionData} />}
+            <SchemaForm schema={questionTypes} formId="questionType" />
+            <SchemaForm schema={questionData} formId="questionData" />
         </main>
     );
 }

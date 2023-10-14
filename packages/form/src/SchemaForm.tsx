@@ -10,8 +10,11 @@ import {
 } from "@marcianosrs/form-schema";
 import { Button as SubmitButton } from "@marcianosrs/ui";
 
+const FORM_ID_FIELD = "__formAction";
+
 type SchemaFormProps<Schema extends TypedForm> = {
     schema: Schema;
+    formId: string;
 };
 
 interface FormValues {
@@ -22,8 +25,14 @@ type RemixFormValues<Schema extends TypedForm> = Partial<
     Record<keyof z.infer<ZodSchemaType<Schema>>, unknown>
 >;
 
+export const getFormId = async (
+    request: Request
+): Promise<FormDataEntryValue | null> =>
+    (await request.clone().formData()).get(FORM_ID_FIELD);
+
 export const SchemaForm = <Schema extends TypedForm>({
     schema,
+    formId,
 }: SchemaFormProps<Schema>) => {
     const zodSchema = schemaToZod(schema);
     const values: FormValues = schemaToDefaultValues(schema);
@@ -40,6 +49,7 @@ export const SchemaForm = <Schema extends TypedForm>({
                     register={register}
                     state={formState}
                 >
+                    <input type="hidden" name={FORM_ID_FIELD} value={formId} />
                     {schema.map((field) => (
                         <Field key={field.name} name={field.name}>
                             {() => <FormField key={field.name} field={field} />}

@@ -1,9 +1,9 @@
 import type { ActionFunction } from "@remix-run/node";
 import { formAction } from "~/form-action.server"; /* path to your custom formAction */
 import { makeDomainFunction } from "domain-functions";
-import { schemaToZod, SchemaForm } from "@marcianosrs/form";
+import { schemaToZod, SchemaForm, pluginField } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
-import { ThemeProvider } from "@marcianosrs/ui";
+import { ThemeProvider, themeStore } from "@marcianosrs/ui";
 import { useActionData } from "@remix-run/react";
 import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 
@@ -63,18 +63,18 @@ import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 // ] as const satisfies TypedForm;
 
 const formDefinition = [
-    {
-        name: "theme-form",
-        fieldType: "select",
-        valueType: "list",
-        displayName: "Select theme form",
-        optional: true,
-        defaultValue: "html",
-        options: [
-            { display: "Winter theme", value: "winter" },
-            { display: "Base theme", value: "html" },
-        ],
-    },
+    // { name: "theme-form",
+    //     fieldType: "select",
+    //     valueType: "list",
+    //     displayName: "Select theme form",
+    //     optional: true,
+    //     defaultValue: "html",
+    //     options: [
+    //         { display: "Winter theme", value: "winter" },
+    //         { display: "Base theme", value: "html" },
+    //     ],
+    // },
+    pluginField("theme", "Theme", themeStore, "displayName", "editForm"),
     {
         name: "multiplier",
         displayName: "Multiplier",
@@ -93,14 +93,14 @@ const formDefinition = [
         optional: false,
         defaultValue: undefined,
     },
-    {
-        name: "name",
-        fieldType: "text",
-        valueType: "string",
-        displayName: "Scoreboard name",
-        optional: false,
-        defaultValue: "",
-    },
+    // {
+    //     name: "name",
+    //     fieldType: "text",
+    //     valueType: "string",
+    //     displayName: "Scoreboard name",
+    //     optional: false,
+    //     defaultValue: "",
+    // },
     // {
     //     name: "teams",
     //     fieldType: "objectList",
@@ -137,7 +137,7 @@ export default function FormTest() {
                 themeSettings={{ snow: false }}
             >
                 <h1>Form testing area</h1>
-                <SchemaForm schema={formDefinition} />
+                <SchemaForm schema={formDefinition} formId="pluginTest" />
             </ThemeProvider>
         </main>
     );
