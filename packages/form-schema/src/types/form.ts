@@ -4,7 +4,7 @@ export type FormField =
     | BaseOpenFormField<unknown, string, ValueTypes>
     | BaseObjectListFormField<unknown, string, readonly FormField[]>
     | BaseObjectFormField<unknown, string, readonly FormField[]>
-    | BaseFixedFormField<unknown, string, Readonly<string[]>>;
+    | BaseFixedFormField<unknown, string, Readonly<FixedOption[]>>;
 
 export type FormSchema<Field extends FormField = FormField> = Readonly<Field[]>;
 
@@ -34,10 +34,15 @@ export type BaseOpenFormField<
     defaultValue: DefaultValue;
 } & Extra;
 
+export type FixedOption<TType = string | number | boolean> = {
+    display: string;
+    value: TType;
+};
+
 export type BaseFixedFormField<
     KeyName,
     FieldType,
-    AllowedValues extends readonly string[],
+    AllowedValues extends readonly FixedOption[],
     Extra extends Record<string, unknown> = {}
 > = {
     name: KeyName;
@@ -46,7 +51,7 @@ export type BaseFixedFormField<
     valueType: "list";
     optional: boolean;
     options: AllowedValues;
-    defaultValue: AllowedValues[number];
+    defaultValue: AllowedValues[number]["value"];
 } & Extra;
 
 export type BaseObjectListFormField<
@@ -79,7 +84,9 @@ export type BaseObjectFormField<
 
 export type ValueTypeOfField<Field extends FormField> =
     Field extends BaseFixedFormField<string, string, infer FieldType>
-        ? FieldType[number]
+        ? FieldType[number] extends FixedOption<infer ValueType>
+            ? ValueType
+            : never
         : Field extends BaseObjectListFormField<unknown, string, infer Schema>
         ? FormDataObject<Schema>[]
         : Field extends BaseObjectFormField<unknown, string, infer Schema>
@@ -89,17 +96,17 @@ export type ValueTypeOfField<Field extends FormField> =
         : never;
 
 type SelectOptional<
-    Fields extends FormSchema,
-    Value extends boolean
+    TFields extends FormSchema,
+    TValue extends boolean
 > = OmitNever<{
-    [Field in Fields[number] as Field["name"] &
-        string]: Field["optional"] extends Value
+    [Field in TFields[number] as Field["name"] &
+        string]: Field["optional"] extends TValue
         ? ValueTypeOfField<Field>
         : never;
 }>;
 
 type Prettify<O> = { [K in keyof O]: O[K] } & {};
 
-export type FormDataObject<Fields extends FormSchema> = Prettify<
-    SelectOptional<Fields, false> & Partial<SelectOptional<Fields, true>>
+export type FormDataObject<TFields extends FormSchema> = Prettify<
+    SelectOptional<TFields, false> & Partial<SelectOptional<TFields, true>>
 >;

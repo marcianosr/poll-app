@@ -82,6 +82,7 @@ export const pollQuestion: PollQuestionPlugin<
     { pickedAnswers: string[] }
 > = {
     contentType: "pollQuestion",
+    displayName: "Regular poll question",
     editForm: pollQuestionForm,
     ShowQuestion: () => (
         <div>

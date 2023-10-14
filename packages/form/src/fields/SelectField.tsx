@@ -1,5 +1,5 @@
 import React from "react";
-import type { PickListField } from "@marcianosrs/form-schema";
+import type { FixedOption, PickListField } from "@marcianosrs/form-schema";
 import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
@@ -8,7 +8,7 @@ import { schemaToZod } from "../schema/schemaToZod";
 
 const SelectField = ({
     field,
-}: FormFieldProps<PickListField<string, string[]>>) => {
+}: FormFieldProps<PickListField<string, FixedOption[]>>) => {
     const { register, errors } = useCustomField(field);
 
     return (
@@ -16,8 +16,8 @@ const SelectField = ({
             <div>{field.displayName}</div>
             <select {...register()}>
                 {field.options.map((option) => (
-                    <option key={option} value={option}>
-                        {option}
+                    <option key={option.display} value={`${option.value}`}>
+                        {option.display}
                     </option>
                 ))}
             </select>
@@ -29,7 +29,7 @@ const SelectField = ({
 };
 
 export const selectFieldPlugin: FormFieldPlugin<
-    PickListField<string, string[]>,
+    PickListField<string, FixedOption[]>,
     z.ZodString | z.ZodOptional<z.ZodString>
 > = {
     fieldType: "select",
