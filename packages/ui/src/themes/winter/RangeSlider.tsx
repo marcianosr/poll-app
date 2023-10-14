@@ -5,10 +5,9 @@ import * as styles from "./RangeSlider.module.css";
 import { useThemeSettings } from "./themeSettings";
 
 export const RangeSlider = forwardRef<HTMLInputElement, RangeSliderProps>(
-	({ children, ...props }, ref) => {
+	({ children, max, min, step, labels, ...props }, ref) => {
 		const settings = useThemeSettings();
-
-		const { min, max, step, list } = props;
+		const listName = `${props.name}-list`;
 
 		const styleClasses = [styles.input, settings.snow && styles.snow]
 			.filter((e) => e !== undefined)
@@ -17,15 +16,17 @@ export const RangeSlider = forwardRef<HTMLInputElement, RangeSliderProps>(
 		return (
 			<>
 				<input
+					ref={ref}
 					type="range"
 					min={min}
 					max={max}
 					step={step}
-					list={list}
 					className={styleClasses}
+					list={listName}
+					{...props}
 				/>
-				<datalist id="values" className={styles.default.dataList}>
-					{props.labels?.map((label) => (
+				<datalist id={listName} className={styles.default.dataList}>
+					{labels.map((label) => (
 						<option key={label.value} value={label.value}>
 							{label.title}
 						</option>

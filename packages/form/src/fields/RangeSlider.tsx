@@ -17,7 +17,6 @@ const RangeSlider = ({ field }: FormFieldProps<RangeSlider<string>>) => {
 				min={field.min}
 				max={field.max}
 				step={field.step}
-				list="values"
 				labels={labels}
 			/>
 

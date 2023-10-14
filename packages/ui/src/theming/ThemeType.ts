@@ -23,7 +23,6 @@ export type RangeSliderProps = PropsWithChildren<
 		min: number;
 		max: number;
 		step: number;
-		list: string;
 	} & JSX.IntrinsicElements["input"]
 >;
 export type Theme = {
