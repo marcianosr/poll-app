@@ -3,6 +3,8 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import type { TextField } from "@marcianosrs/form-schema";
+import { transform } from "@marcianosrs/utils";
+import { makeOptionalString } from "../schema/zodUtils";
 
 const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
     const { register, errors } = useCustomField(field);
@@ -19,10 +21,13 @@ const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
 
 export const textFieldPlugin: FormFieldPlugin<
     TextField<string>,
-    z.ZodString
+    z.ZodString | z.ZodOptional<z.ZodString>
 > = {
     fieldType: "text",
     Component: TextField,
     Show: ({ value }) => value ?? null,
-    toZodSchema: () => z.string().min(1),
+    toZodSchema: (field) =>
+        transform(z.string().min(1))
+            .apply(field.optional, makeOptionalString)
+            .result(),
 };

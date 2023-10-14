@@ -14,11 +14,15 @@
   "dependencies": {
     "@marcianosrs/form-schema": "workspace:*",
     "@marcianosrs/server-auth": "workspace:*",
-    "@marcianosrs/utils": "workspace:*",
-    "parcel": "2.9.2"
+    "@marcianosrs/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "parcel": "2.9.2",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build"
+    "build": "parcel build",
+    "check-types": "tsc --noEmit"
   }
 }

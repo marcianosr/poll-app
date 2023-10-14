@@ -1,7 +1,9 @@
 import {
 	BaseFixedFormField,
+	BaseObjectFormField,
 	BaseObjectListFormField,
 	BaseOpenFormField,
+	FixedOption,
 } from "./form";
 
 export type Title<Key> = BaseOpenFormField<Key, "title", "none", {}, undefined>;
@@ -19,6 +21,7 @@ export type TextField<Key> = BaseOpenFormField<
 export type ColorField<Key> = BaseOpenFormField<Key, "color", "string">;
 
 export type NumberFieldExtra = {
+	integerValue?: boolean;
 	min?: number;
 	max?: number;
 };
@@ -53,12 +56,12 @@ export type CheckboxField<Key> = BaseOpenFormField<Key, "checkbox", "boolean">;
 
 export type PickListField<
 	Key,
-	Options extends readonly string[]
+	Options extends readonly FixedOption[]
 > = BaseFixedFormField<Key, "select", Options>;
 
 export type RadioField<
 	Key,
-	Options extends readonly string[]
+	Options extends readonly FixedOption[]
 > = BaseFixedFormField<Key, "radio", Options>;
 
 export type ObjectListExtra = {
@@ -68,8 +71,13 @@ export type ObjectListExtra = {
 
 export type ObjectListField<
 	Key,
-	ObjectSchema extends TypedForm
-> = BaseObjectListFormField<Key, "objectList", ObjectSchema, ObjectListExtra>;
+	TObjectSchema extends TypedForm
+> = BaseObjectListFormField<Key, "objectList", TObjectSchema, ObjectListExtra>;
+
+export type ObjectField<
+	Key,
+	TObjectSchema extends TypedForm
+> = BaseObjectFormField<Key, "object", TObjectSchema>;
 
 export type FieldType<Key> =
 	| Title<Key>
@@ -77,9 +85,10 @@ export type FieldType<Key> =
 	| TextField<Key>
 	| NumberField<Key>
 	| CheckboxField<Key>
-	| PickListField<Key, Readonly<string[]>>
-	| RadioField<Key, Readonly<string[]>>
+	| PickListField<Key, Readonly<FixedOption[]>>
+	| RadioField<Key, Readonly<FixedOption[]>>
 	| RangeSlider<Key>
+	| ObjectField<Key, readonly FieldType<string>[]>
 	| ObjectListField<Key, readonly FieldType<string>[]>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;

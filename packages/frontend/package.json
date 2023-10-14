@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
-    "typecheck": "tsc"
+    "check-types": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -17,6 +17,7 @@
     "@marcianosrs/client-auth": "workspace:*",
     "@marcianosrs/engine": "workspace:*",
     "@marcianosrs/form": "workspace:*",
+    "@marcianosrs/form-schema": "workspace:^",
     "@marcianosrs/server-auth": "workspace:*",
     "@marcianosrs/ui": "*",
     "@marcianosrs/utils": "workspace:*",

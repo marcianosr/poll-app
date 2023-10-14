@@ -3,63 +3,64 @@ import { formAction } from "~/form-action.server"; /* path to your custom formAc
 import { makeDomainFunction } from "domain-functions";
 import { schemaToZod, SchemaForm } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
-import { Button, ThemeProvider } from "@marcianosrs/ui";
-import type { TypedForm } from "@marcianosrs/form-schema";
+import { ThemeProvider } from "@marcianosrs/ui";
+import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import { useActionData } from "@remix-run/react";
 
-const memberFormDefinition = [
-	{
-		name: "firstName",
-		fieldType: "text",
-		valueType: "string",
-		displayName: "First name",
-		optional: false,
-		defaultValue: "",
-	},
-	{
-		name: "lastName",
-		fieldType: "text" /* color ? */,
-		valueType: "string",
-		displayName: "Last name",
-		optional: false,
-		defaultValue: "",
-	},
-] as const satisfies TypedForm;
+// const memberFormDefinition = [
+//     {
+//         name: "firstName",
+//         fieldType: "text",
+//         valueType: "string",
+//         displayName: "First name",
+//         optional: false,
+//         defaultValue: "",
+//     },
+//     {
+//         name: "lastName",
+//         fieldType: "text" /* color ? */,
+//         valueType: "string",
+//         displayName: "Last name",
+//         optional: false,
+//         defaultValue: "",
+//     },
+// ] as const satisfies TypedForm;
 
-const teamFormDefinition = [
-	{
-		name: "teamKey",
-		fieldType: "text",
-		valueType: "string",
-		displayName: "Team key",
-		optional: false,
-		defaultValue: "",
-	},
-	{
-		name: "teamName",
-		fieldType: "text",
-		valueType: "string",
-		displayName: "Team name",
-		optional: false,
-		defaultValue: "",
-	},
-	{
-		name: "teamColor",
-		fieldType: "color",
-		valueType: "string",
-		displayName: "Team color",
-		optional: false,
-		defaultValue: "#0000ff",
-	},
-	{
-		name: "members",
-		fieldType: "objectList",
-		valueType: "objects",
-		displayName: "Members",
-		optional: false,
-		objectSchema: memberFormDefinition,
-		minimalAmount: 1,
-	},
-] as const satisfies TypedForm;
+// const teamFormDefinition = [
+//     {
+//         name: "teamKey",
+//         fieldType: "text",
+//         valueType: "string",
+//         displayName: "Team key",
+//         optional: false,
+//         defaultValue: "",
+//     },
+//     {
+//         name: "teamName",
+//         fieldType: "text",
+//         valueType: "string",
+//         displayName: "Team name",
+//         optional: false,
+//         defaultValue: "",
+//     },
+//     {
+//         name: "teamColor",
+//         fieldType: "color",
+//         valueType: "string",
+//         displayName: "Team color",
+//         optional: false,
+//         defaultValue: "#0000ff",
+//     },
+//     {
+//         name: "members",
+//         fieldType: "objectList",
+//         valueType: "objects",
+//         displayName: "Members",
+//         optional: false,
+//         objectSchema: memberFormDefinition,
+//         minimalAmount: 1,
+//     },
+// ] as const satisfies TypedForm;
 
 const formDefinition = [
 	{
@@ -106,7 +107,10 @@ const formDefinition = [
 		displayName: "Select theme form",
 		optional: true,
 		defaultValue: "html",
-		options: ["winter", "html"],
+		options: [
+			{ display: "Winter theme", value: "winter" },
+			{ display: "Base theme", value: "html" },
+		],
 	},
 	{
 		name: "multiplier",
@@ -134,15 +138,15 @@ const formDefinition = [
 		optional: false,
 		defaultValue: "",
 	},
-	{
-		name: "teams",
-		fieldType: "objectList",
-		valueType: "objects",
-		displayName: "Teams",
-		optional: false,
-		objectSchema: teamFormDefinition,
-		minimalAmount: 2,
-	},
+	// {
+	//     name: "teams",
+	//     fieldType: "objectList",
+	//     valueType: "objects",
+	//     displayName: "Teams",
+	//     optional: false,
+	//     objectSchema: teamFormDefinition,
+	//     minimalAmount: 2,
+	// },
 ] as const satisfies TypedForm;
 
 const schema = schemaToZod(formDefinition);
@@ -162,9 +166,13 @@ export const action: ActionFunction = async ({ request }) =>
 	});
 
 export default function FormTest() {
+	const data = useActionData<FormDataObject<typeof formDefinition>>();
 	return (
 		<main>
-			<ThemeProvider theme="winter" themeSettings={{ snow: false }}>
+			<ThemeProvider
+				theme={data?.["theme-form"] ?? "html"}
+				themeSettings={{ snow: false }}
+			>
 				<h1>Form testing area</h1>
 				<SchemaForm schema={formDefinition} />
 			</ThemeProvider>
