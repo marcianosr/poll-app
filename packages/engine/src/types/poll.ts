@@ -55,9 +55,7 @@ export type PollQuestionPlugin<
     AnswerData extends Record<string, unknown>
 > = {
     contentType: string;
-    // verifySettings: (
-    //     settings: unknown
-    // ) => settings is FormDataObject<FormDefinition>;
+    displayName: string;
 
     editForm: FormDefinition;
 
