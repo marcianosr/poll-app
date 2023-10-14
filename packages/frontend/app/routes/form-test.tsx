@@ -1,5 +1,5 @@
 import type { ActionFunction } from "@remix-run/node";
-import { formAction } from "~/form-action.server"; /* path to your custom formAction */
+import { formAction } from "../form-action.server"; /* path to your custom formAction */
 import { makeDomainFunction } from "domain-functions";
 import { schemaToZod, SchemaForm, pluginField } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";

@@ -97,7 +97,7 @@ const ObjectList = <TForm extends TypedForm>({
                                                     ]}
                                                     defaultValues={item}
                                                 >
-                                                    {({ getValues }) => (
+                                                    {() => (
                                                         <>
                                                             <FormFields
                                                                 schema={
@@ -112,25 +112,11 @@ const ObjectList = <TForm extends TypedForm>({
                                                                     setEditIndex(
                                                                         undefined
                                                                     );
-                                                                    setValue(
-                                                                        objectList.map<RecordType>(
-                                                                            (
-                                                                                item,
-                                                                                index
-                                                                            ) =>
-                                                                                index ===
-                                                                                editIndex
-                                                                                    ? {
-                                                                                          ...getValues(),
-                                                                                      }
-                                                                                    : item
-                                                                        )
-                                                                    );
                                                                 }}
                                                             >
                                                                 Update item
-                                                            </Button>{" "}
-                                                            <Button
+                                                            </Button>
+                                                            {/* <Button
                                                                 onClick={(
                                                                     event
                                                                 ) => {
@@ -141,7 +127,7 @@ const ObjectList = <TForm extends TypedForm>({
                                                                 }}
                                                             >
                                                                 Cancel
-                                                            </Button>
+                                                            </Button> */}
                                                         </>
                                                     )}
                                                 </ObjectScopeProvider>

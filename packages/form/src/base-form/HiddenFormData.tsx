@@ -1,9 +1,7 @@
 import React from "react";
-import { useCustomField } from "./FieldContext";
+import { useCustomField, useObjectScope } from "./FieldContext";
 import { FieldType } from "@marcianosrs/form-schema";
-
-const createFieldName = (path: string[]) =>
-    `${path[0]}[${[...path.slice(1)].join("][")}]`;
+import { createFieldName } from "./createFieldName";
 
 const objectToFormMapping = (
     prefix: string[],
@@ -39,8 +37,9 @@ export const HiddenFormData = <TField extends FieldType<string>>({
     field,
 }: HiddenFormDataProps<TField>) => {
     const { watch } = useCustomField(field);
+    const existingPath = useObjectScope();
     const object = watch();
-    const fields = objectToFormMapping([field.name], object);
+    const fields = objectToFormMapping(existingPath.concat(field.name), object);
     return (
         <>
             {Object.entries(fields).map(([name, value]) => (
