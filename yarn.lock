@@ -2986,6 +2986,7 @@ __metadata:
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/utils": "workspace:*"
     parcel: 2.9.2
+    typescript: ^5.2.2
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -2998,6 +2999,7 @@ __metadata:
   dependencies:
     "@marcianosrs/utils": "workspace:*"
     parcel: 2.9.2
+    typescript: ^5.2.2
     zod: ^3.22.4
   peerDependencies:
     react: 18.2.0
@@ -3015,6 +3017,7 @@ __metadata:
     "@remix-run/react": ^2.0.1
     parcel: 2.9.2
     remix-forms: ^2.1.0
+    typescript: ^5.2.2
     zod: ^3.22.4
   peerDependencies:
     react: 18.2.0
@@ -3090,6 +3093,7 @@ __metadata:
     parcel: 2.9.2
     prop-types: ^15.8.1
     storybook: ^7.0.7
+    typescript: ^5.2.2
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -18773,7 +18777,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=3.0.0":
+"typescript@npm:>=3.0.0, typescript@npm:^5.2.2":
   version: 5.2.2
   resolution: "typescript@npm:5.2.2"
   bin:
@@ -18793,7 +18797,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@>=3.0.0#~builtin<compat/typescript>":
+"typescript@patch:typescript@>=3.0.0#~builtin<compat/typescript>, typescript@patch:typescript@^5.2.2#~builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
   bin:

@@ -1,5 +1,5 @@
-import { TypedForm } from "../types/field-types";
-import { FormDataObject } from "../types/form";
+import type { TypedForm } from "../types/field-types";
+import type { FormDataObject } from "../types/form";
 
 export const schemaToDefaultValues = <T extends TypedForm>(
     schema: T
@@ -12,6 +12,9 @@ export const schemaToDefaultValues = <T extends TypedForm>(
         }
         if (field.valueType === "objects") {
             fields[field.name] = [];
+        }
+        if (field.valueType === "object") {
+            fields[field.name] = schemaToDefaultValues(field.objectSchema);
         }
     }
 

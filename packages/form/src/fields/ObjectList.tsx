@@ -24,7 +24,9 @@ const ObjectList = <TForm extends TypedForm>({
     const objectList = watch();
     const [editIndex, setEditIndex] = useState<number | undefined>(undefined);
 
-    const resetValues = schemaToDefaultValues(objectSchema);
+    const resetValues = schemaToDefaultValues(
+        objectSchema
+    ) as unknown as RecordType;
     // Maybe add option to object list to display as table or as cards?
     return (
         <div>
@@ -156,7 +158,7 @@ const ObjectList = <TForm extends TypedForm>({
                 <Button
                     onClick={(event) => {
                         event.preventDefault();
-                        setValue([...objectList, { ...resetValues }]);
+                        setValue(objectList.concat({ ...resetValues }));
                         setEditIndex(objectList.length);
                     }}
                 >

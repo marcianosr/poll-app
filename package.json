@@ -24,6 +24,7 @@
   },
   "scripts": {
     "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
+    "check-types": "yarn nx run-many --target=check-types",
     "api": "yarn workspace @marcianosrs/api start",
     "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
     "frontend": "yarn workspace @marcianosrs/frontend run dev",

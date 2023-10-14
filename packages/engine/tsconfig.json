@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["dist/"],
   "compilerOptions": {
     "jsx": "react",
     "lib": ["ES2019", "dom"],
@@ -7,6 +8,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "target": "ES2019",
     "strict": true,
     "allowJs": true,

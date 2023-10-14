@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["dist/"],
   "compilerOptions": {
     "jsx": "react",
     "lib": ["ES2020", "dom"],
@@ -7,6 +8,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "skipDefaultLibCheck": true,
     "target": "ES2020",
     "strict": true,
     "allowJs": true,

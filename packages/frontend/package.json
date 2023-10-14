@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
-    "typecheck": "tsc"
+    "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^18.2.0",
