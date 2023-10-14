@@ -58,12 +58,33 @@ export default function NewPoll() {
         data?.questionType ?? questionTypeStore.getIdentifiers()[0];
     const plugin = questionTypeStore.get(questionType);
 
+    const questionData = [
+        {
+            fieldType: "object",
+            valueType: "object",
+            optional: false,
+            displayName: "Plugin Data",
+            name: "pluginData",
+            objectSchema: plugin.editForm,
+        },
+        {
+            fieldType: "text", // This should be a new field type
+            valueType: "string",
+            optional: true,
+            name: "tags",
+            displayName: "Tags",
+            defaultValue: "",
+        },
+    ] as const satisfies TypedForm;
+
+    const schema = schemaToZod(questionData);
+    console.log(zodToDescription(schema));
     return (
         <main>
             <Link to="/polls">Back to list of polls</Link>
             <h1>Create new poll</h1>
             <SchemaForm schema={questionTypes} />
-            {plugin && <SchemaForm schema={plugin.editForm} />}
+            {plugin && <SchemaForm schema={questionData} />}
         </main>
     );
 }

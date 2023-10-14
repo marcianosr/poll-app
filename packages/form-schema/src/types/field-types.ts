@@ -55,7 +55,7 @@ export type ObjectListField<
 export type ObjectField<
     Key,
     ObjectSchema extends TypedForm
-> = BaseObjectFormField<Key, "object", ObjectSchema, ObjectListExtra>;
+> = BaseObjectFormField<Key, "object", ObjectSchema>;
 
 export type FieldType<Key> =
     | Title<Key>
