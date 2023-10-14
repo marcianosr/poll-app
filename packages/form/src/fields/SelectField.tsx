@@ -6,35 +6,37 @@ import { useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
 import { schemaToZod } from "../schema/schemaToZod";
 
-const SelectField = ({ field }: FormFieldProps<PickListField<string>>) => {
-	const { register, errors } = useCustomField(field);
+const SelectField = ({
+    field,
+}: FormFieldProps<PickListField<string, string[]>>) => {
+    const { register, errors } = useCustomField(field);
 
-	return (
-		<div>
-			<div>{field.displayName}</div>
-			<select {...register()}>
-				{field.options.map((option) => (
-					<option key={option} value={option}>
-						{option}
-					</option>
-				))}
-			</select>
-			{errors?.map((e, i) => (
-				<p key={i}>{e}</p>
-			))}
-		</div>
-	);
+    return (
+        <div>
+            <div>{field.displayName}</div>
+            <select {...register()}>
+                {field.options.map((option) => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+            {errors?.map((e, i) => (
+                <p key={i}>{e}</p>
+            ))}
+        </div>
+    );
 };
 
 export const selectFieldPlugin: FormFieldPlugin<
-	PickListField<string>,
-	z.ZodString | z.ZodOptional<z.ZodString>
+    PickListField<string, string[]>,
+    z.ZodString | z.ZodOptional<z.ZodString>
 > = {
-	fieldType: "select",
-	Component: SelectField,
-	Show: ({ value }) => value ?? null,
-	toZodSchema: (field) =>
-		transform(z.string().min(1))
-			.apply(field.optional, (z) => z.optional())
-			.result(),
+    fieldType: "select",
+    Component: SelectField,
+    Show: ({ value }) => value ?? null,
+    toZodSchema: (field) =>
+        transform(z.string().min(1))
+            .apply(field.optional, (z) => z.optional())
+            .result(),
 };

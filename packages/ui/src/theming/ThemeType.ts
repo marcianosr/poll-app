@@ -1,8 +1,7 @@
 import {
+    ClassAttributes,
     ForwardRefExoticComponent,
-    HTMLAttributes,
     PropsWithChildren,
-    RefAttributes,
 } from "react";
 
 export type ButtonProps = PropsWithChildren<
@@ -16,6 +15,6 @@ export type ButtonProps = PropsWithChildren<
 
 export type Theme = {
     button: ForwardRefExoticComponent<
-        ButtonProps & RefAttributes<HTMLButtonElement>
+        ButtonProps & ClassAttributes<HTMLButtonElement>
     >;
 };
