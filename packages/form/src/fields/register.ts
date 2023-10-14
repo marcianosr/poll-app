@@ -6,6 +6,7 @@ import { objectListPlugin } from "./ObjectList";
 import { objectFieldPlugin } from "./ObjectField";
 import { colorFieldPlugin } from "./ColorField";
 import { selectFieldPlugin } from "./SelectField";
+import { hiddenFieldPlugin } from "./HiddenField";
 import { rangeSliderPlugin } from "./RangeSlider";
 
 formFieldPlugins.add(textFieldPlugin);
@@ -15,4 +16,5 @@ formFieldPlugins.add(numberFieldPlugin);
 formFieldPlugins.add(objectListPlugin);
 formFieldPlugins.add(objectFieldPlugin);
 formFieldPlugins.add(selectFieldPlugin);
+formFieldPlugins.add(hiddenFieldPlugin);
 formFieldPlugins.add(rangeSliderPlugin);

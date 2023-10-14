@@ -113,6 +113,14 @@ const formDefinition = [
 		],
 	},
 	{
+		name: "hidden-field",
+		fieldType: "hidden",
+		valueType: "string",
+		displayName: "Hidden field",
+		optional: false,
+		defaultValue: undefined,
+	},
+	{
 		name: "multiplier",
 		displayName: "Multiplier",
 		valueType: "number",

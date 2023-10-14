@@ -19,6 +19,7 @@ export type TextField<Key> = BaseOpenFormField<
 	TextFieldExtra
 >;
 export type ColorField<Key> = BaseOpenFormField<Key, "color", "string">;
+export type HiddenField<Key> = BaseOpenFormField<Key, "hidden", "string">;
 
 export type NumberFieldExtra = {
 	integerValue?: boolean;
@@ -85,6 +86,7 @@ export type FieldType<Key> =
 	| TextField<Key>
 	| NumberField<Key>
 	| CheckboxField<Key>
+	| HiddenField<Key>
 	| PickListField<Key, Readonly<FixedOption[]>>
 	| RadioField<Key, Readonly<FixedOption[]>>
 	| RangeSlider<Key>
