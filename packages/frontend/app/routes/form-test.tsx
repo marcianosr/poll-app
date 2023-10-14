@@ -4,8 +4,9 @@ import { makeDomainFunction } from "domain-functions";
 import { schemaToZod, SchemaForm, pluginField } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
 import { ThemeProvider, themeStore } from "@marcianosrs/ui";
+import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
 import { useActionData } from "@remix-run/react";
-import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
+import React from "react";
 
 // const memberFormDefinition = [
 //     {
@@ -101,6 +102,68 @@ const formDefinition = [
     //     optional: false,
     //     defaultValue: "",
     // },
+    // {
+    //     name: "teams",
+    //     fieldType: "objectList",
+    //     valueType: "objects",
+    //     displayName: "Teams",
+    //     optional: false,
+    //     objectSchema: teamFormDefinition,
+    //     minimalAmount: 2,
+    // },
+    {
+        name: "difficulty-slider",
+        fieldType: "range",
+        valueType: "number",
+        displayName: "Select difficulty:",
+        optional: true,
+        defaultValue: 1,
+        min: 1,
+        max: 10,
+        step: 1,
+        labels: [
+            {
+                title: "Very easy",
+                value: 1,
+            },
+            {
+                title: "Easy",
+                value: 3,
+            },
+            {
+                title: "Medium",
+                value: 5,
+            },
+            {
+                title: "Hard",
+                value: 8,
+            },
+            {
+                title: "Expert",
+                value: 9,
+            },
+            {
+                title: "Godlike",
+                value: 10,
+            },
+        ],
+    },
+    {
+        name: "hidden-field",
+        fieldType: "hidden",
+        valueType: "string",
+        displayName: "Hidden field",
+        optional: false,
+        defaultValue: undefined,
+    },
+    {
+        name: "name",
+        fieldType: "text",
+        valueType: "string",
+        displayName: "Scoreboard name",
+        optional: false,
+        defaultValue: "",
+    },
     // {
     //     name: "teams",
     //     fieldType: "objectList",

@@ -1,5 +1,6 @@
 import type { ThemePlugin } from "../../theming/types";
 import { Button } from "./Button";
+import { RangeSlider } from "./RangeSlider";
 import { themeSettings } from "./themeSettings";
 
 export const winterTheme: ThemePlugin<typeof themeSettings> = {
@@ -9,5 +10,6 @@ export const winterTheme: ThemePlugin<typeof themeSettings> = {
     editForm: themeSettings,
     components: {
         button: Button,
+        rangeSlider: RangeSlider,
     },
 };
