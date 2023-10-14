@@ -4,8 +4,8 @@ import { makeDomainFunction } from "domain-functions";
 import { schemaToZod, SchemaForm } from "@marcianosrs/form";
 import { zodToDescription } from "@marcianosrs/utils";
 import { ThemeProvider } from "@marcianosrs/ui";
+import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
 import { useActionData } from "@remix-run/react";
-import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 
 // const memberFormDefinition = [
 //     {
@@ -63,6 +63,43 @@ import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 // ] as const satisfies TypedForm;
 
 const formDefinition = [
+	{
+		name: "difficulty-slider",
+		fieldType: "range",
+		valueType: "number",
+		displayName: "Select difficulty:",
+		optional: true,
+		defaultValue: 1,
+		min: 1,
+		max: 10,
+		step: 1,
+		labels: [
+			{
+				title: "Very easy",
+				value: 1,
+			},
+			{
+				title: "Easy",
+				value: 3,
+			},
+			{
+				title: "Medium",
+				value: 5,
+			},
+			{
+				title: "Hard",
+				value: 8,
+			},
+			{
+				title: "Expert",
+				value: 9,
+			},
+			{
+				title: "Godlike",
+				value: 10,
+			},
+		],
+	},
 	{
 		name: "theme-form",
 		fieldType: "select",

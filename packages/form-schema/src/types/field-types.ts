@@ -26,11 +26,31 @@ export type NumberFieldExtra = {
 	min?: number;
 	max?: number;
 };
+
+export type RangeSliderLabel = {
+	title: string;
+	value: number;
+};
+
+export type RangeSliderExtra = {
+	min: number;
+	max: number;
+	step: number;
+	labels: readonly RangeSliderLabel[];
+};
+
 export type NumberField<Key> = BaseOpenFormField<
 	Key,
 	"number",
 	"number",
 	NumberFieldExtra
+>;
+
+export type RangeSlider<Key> = BaseOpenFormField<
+	Key,
+	"range",
+	"number",
+	RangeSliderExtra
 >;
 
 export type CheckboxField<Key> = BaseOpenFormField<Key, "checkbox", "boolean">;
@@ -69,6 +89,7 @@ export type FieldType<Key> =
 	| HiddenField<Key>
 	| PickListField<Key, Readonly<FixedOption[]>>
 	| RadioField<Key, Readonly<FixedOption[]>>
+	| RangeSlider<Key>
 	| ObjectField<Key, readonly FieldType<string>[]>
 	| ObjectListField<Key, readonly FieldType<string>[]>;
 
