@@ -20,6 +20,7 @@ export type TextField<Key> = BaseOpenFormField<
 export type ColorField<Key> = BaseOpenFormField<Key, "color", "string">;
 
 export type NumberFieldExtra = {
+    integerValue?: boolean;
     min?: number;
     max?: number;
 };
