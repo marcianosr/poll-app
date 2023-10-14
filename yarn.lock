@@ -2986,6 +2986,7 @@ __metadata:
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/utils": "workspace:*"
     parcel: 2.9.2
+    typescript: ^5.2.2
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
