@@ -70,7 +70,10 @@ const formDefinition = [
         displayName: "Select theme form",
         optional: true,
         defaultValue: "html",
-        options: ["winter", "html"],
+        options: [
+            { display: "Winter theme", value: "winter" },
+            { display: "Base theme", value: "html" },
+        ],
     },
     {
         name: "multiplier",
