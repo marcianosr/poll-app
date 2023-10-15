@@ -4,6 +4,7 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
+import { FormField } from "@marcianosrs/ui";
 
 const SelectField = ({
     field,
@@ -11,19 +12,25 @@ const SelectField = ({
     const { register, errors } = useCustomField(field);
 
     return (
-        <div>
-            <div>{field.displayName}</div>
-            <select {...register()}>
-                {field.options.map((option) => (
-                    <option key={option.display} value={`${option.value}`}>
-                        {option.display}
-                    </option>
-                ))}
-            </select>
-            {errors?.map((e, i) => (
-                <p key={i}>{e}</p>
-            ))}
-        </div>
+        <FormField
+            fieldTitle={<label>{field.displayName}</label>}
+            fieldInput={
+                <select {...register()}>
+                    {field.options.map((option) => (
+                        <option key={option.display} value={`${option.value}`}>
+                            {option.display}
+                        </option>
+                    ))}
+                </select>
+            }
+            fieldErrors={
+                <>
+                    {errors?.map((e, i) => (
+                        <p key={i}>{e}</p>
+                    ))}
+                </>
+            }
+        />
     );
 };
 
