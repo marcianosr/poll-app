@@ -112,7 +112,7 @@ export const ObjectScopeProvider = <TValueType,>({
                 reset: (newValues) => {
                     setValue(fieldName, newValues);
                 },
-                getValues: () => watch(createFieldName) as TValueType,
+                getValues: () => watch(objectPath.join(".")) as TValueType,
             })}
         </FormObjectScopeContext.Provider>
     );
@@ -152,16 +152,7 @@ export const useCustomField = <TField extends FieldType<string>>(
     const fieldPathKey = fieldPath.join(".");
 
     return {
-        register: () => {
-            const props = register(fieldPathKey);
-
-            return {
-                ...props,
-                // get name() {
-                //     return createFieldName(fieldPath);
-                // },
-            };
-        },
+        register: () => register(fieldPathKey),
         watch: () => {
             const value = watch(fieldPathKey) as ValueTypeOfField<TField>;
             if (
