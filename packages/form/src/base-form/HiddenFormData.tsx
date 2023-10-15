@@ -51,9 +51,11 @@ export const HiddenFormData = <TField extends FieldType<string>>({
     const fields = objectToFormMapping(existingPath.concat(field.name), object);
     return (
         <>
-            {Object.entries(fields).map(([name, value]) => (
-                <input type="hidden" name={name} value={value} key={name} />
-            ))}
+            {Object.entries(fields)
+                .filter(([name]) => name.includes("["))
+                .map(([name, value]) => (
+                    <input type="hidden" name={name} value={value} key={name} />
+                ))}
         </>
     );
 };
