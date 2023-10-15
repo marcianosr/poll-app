@@ -1,8 +1,8 @@
 import {
     BaseFixedFormField,
     BaseObjectFormField,
-    BaseOpenFormField,
     FixedOption,
+    FormField,
 } from "../form";
 
 export type Plugin = Record<string, unknown>;
@@ -21,7 +21,7 @@ type PluginFieldExtra<TPluginType extends Plugin> = {
 type PluginForm = Readonly<
     [
         BaseFixedFormField<"type", "pluginType", Readonly<FixedOption[]>>,
-        BaseOpenFormField<"data", "pluginData", "unknown">
+        BaseObjectFormField<"data", "pluginData", Readonly<FormField[]>>
     ]
 >;
 

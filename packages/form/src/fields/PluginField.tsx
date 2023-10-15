@@ -11,9 +11,11 @@ import {
     type PickListField,
     type TypedForm,
     schemaToDefaultValues,
+    type FieldType,
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
+import { schemaToZod } from "../schema/schemaToZod";
 
 const PluginField = ({
     field,
@@ -44,6 +46,8 @@ const PluginField = ({
     const hasSettings = objectSchema?.length > 0;
 
     const data = hasSettings ? schemaToDefaultValues(objectSchema) : {};
+
+    console.log("pluginfield", value, objectSchema);
 
     return (
         <div>
@@ -83,11 +87,23 @@ export const pluginFieldPlugin: FormFieldPlugin<
     fieldType: "plugin",
     Component: PluginField,
     Show: ({ field }) => `${field.displayName}`,
-    toZodSchema: (field) =>
-        z.object({
-            type: z.string(),
-            data: z.unknown(),
-        }),
+    toZodSchema: (field) => {
+        const pluginIds = field.store.getIdentifiers();
+
+        return z.union(
+            pluginIds.map((id) => {
+                const plugin = field.store.get(id);
+                return z.object({
+                    type: z.literal(id),
+                    data: schemaToZod(
+                        plugin[
+                            `${field.formSchemaProp}`
+                        ] as unknown as Readonly<FieldType<string>[]>
+                    ),
+                });
+            }) as unknown as Readonly<[z.ZodTypeAny, z.ZodTypeAny]>
+        );
+    },
 };
 
 export const pluginField = <TKey extends string, TPluginType extends Plugin>(
@@ -111,9 +127,9 @@ export const pluginField = <TKey extends string, TPluginType extends Plugin>(
             name: "data",
             displayName: "Settings",
             fieldType: "pluginData",
-            valueType: "unknown",
+            valueType: "object",
             optional: false,
-            defaultValue: {},
+            objectSchema: [],
         },
     ] as const satisfies PluginForm;
 

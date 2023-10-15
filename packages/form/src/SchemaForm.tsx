@@ -9,6 +9,8 @@ import {
     type TypedForm,
 } from "@marcianosrs/form-schema";
 import { Button as SubmitButton } from "@marcianosrs/ui";
+import { HiddenFormData } from "./base-form/HiddenFormData";
+import { zodToDescription } from "@marcianosrs/utils";
 
 const FORM_ID_FIELD = "__formAction";
 
@@ -35,6 +37,9 @@ export const SchemaForm = <Schema extends TypedForm>({
     formId,
 }: SchemaFormProps<Schema>) => {
     const zodSchema = schemaToZod(schema);
+
+    console.log("SchemaForm", schema, zodToDescription(zodSchema));
+
     const values: FormValues = schemaToDefaultValues(schema);
 
     return (
@@ -54,6 +59,9 @@ export const SchemaForm = <Schema extends TypedForm>({
                         <Field key={field.name} name={field.name}>
                             {() => <FormField key={field.name} field={field} />}
                         </Field>
+                    ))}
+                    {schema.map((field) => (
+                        <HiddenFormData field={field} key={field.name} />
                     ))}
                     <Errors />
 

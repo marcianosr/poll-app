@@ -7,6 +7,7 @@ import {
     ZodObject,
     ZodOptional,
     ZodUnknown,
+    ZodLiteral,
 } from "zod";
 
 const indented = (amount: number, key: string, value: string) => {
@@ -32,6 +33,9 @@ export const zodToDescription = <Z extends z.ZodTypeAny>(zod: Z): string => {
     }
     if (zod instanceof ZodUnknown) {
         return "unknown";
+    }
+    if (zod instanceof ZodLiteral) {
+        return `"${zod.value}"`;
     }
     if (zod instanceof ZodOptional) {
         return `${zodToDescription(zod.unwrap())} | undefined`;

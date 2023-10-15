@@ -4,35 +4,41 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { RangeSlider as RangeSliderUIComponent } from "@marcianosrs/ui";
+import { transform } from "@marcianosrs/utils";
 
 const RangeSlider = ({ field }: FormFieldProps<RangeSlider<string>>) => {
-	const { register, errors } = useCustomField(field);
-	const labels = [...field.labels];
+    const { register, errors } = useCustomField(field);
+    const labels = [...field.labels];
 
-	return (
-		<div>
-			<label>{field.displayName}</label>
-			<RangeSliderUIComponent
-				{...register()}
-				min={field.min}
-				max={field.max}
-				step={field.step}
-				labels={labels}
-			/>
+    return (
+        <div>
+            <label>{field.displayName}</label>
+            <RangeSliderUIComponent
+                {...register()}
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                labels={labels}
+            />
 
-			{errors?.map((e, i) => (
-				<p key={i}>{e}</p>
-			))}
-		</div>
-	);
+            {errors?.map((e, i) => (
+                <p key={i}>{e}</p>
+            ))}
+        </div>
+    );
 };
 
 export const rangeSliderPlugin: FormFieldPlugin<
-	RangeSlider<string>,
-	z.ZodString | z.ZodOptional<z.ZodString>
+    RangeSlider<string>,
+    z.ZodNumber | z.ZodOptional<z.ZodNumber>
 > = {
-	fieldType: "range",
-	Component: RangeSlider,
-	Show: ({ value }) => value ?? null,
-	toZodSchema: () => z.string().min(1),
+    fieldType: "range",
+    Component: RangeSlider,
+    Show: ({ value }) => value ?? null,
+    toZodSchema: (field) =>
+        transform(z.coerce.number())
+            .apply(field.max, (z, max) => z.max(max))
+            .apply(field.min, (z, min) => z.min(min))
+            .apply(field.optional, (z) => z.optional())
+            .result(),
 };

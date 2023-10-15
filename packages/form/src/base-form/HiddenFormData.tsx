@@ -18,12 +18,18 @@ const objectToFormMapping = (
     }
     if (typeof object === "object" && object !== null) {
         return Object.entries(object).reduce(
-            (result, [name, value]) => ({
-                ...result,
-                ...objectToFormMapping([...prefix, name], value),
-            }),
+            (result, [name, value]) =>
+                value === undefined
+                    ? result
+                    : {
+                          ...result,
+                          ...objectToFormMapping([...prefix, name], value),
+                      },
             {}
         );
+    }
+    if (object === undefined) {
+        return {};
     }
 
     return { [createFieldName(prefix)]: `${object}` };
@@ -36,6 +42,9 @@ type HiddenFormDataProps<TField extends FieldType<string>> = {
 export const HiddenFormData = <TField extends FieldType<string>>({
     field,
 }: HiddenFormDataProps<TField>) => {
+    if (field.valueType === "none") {
+        return null;
+    }
     const { watch } = useCustomField(field);
     const existingPath = useObjectScope();
     const object = watch();

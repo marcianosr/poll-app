@@ -4,7 +4,6 @@ import { z } from "zod";
 import { schemaToZod } from "../schema/schemaToZod";
 import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
-import { HiddenFormData } from "../base-form/HiddenFormData";
 import { FormFields } from "../base-form/FormFields";
 import { FormFieldValue } from "../base-form/FormFieldValue";
 import { Button } from "@marcianosrs/ui";
@@ -140,7 +139,6 @@ const ObjectList = <TForm extends TypedForm>({
                     </tbody>
                 </table>
 
-                <HiddenFormData field={field} />
                 <Button
                     onClick={(event) => {
                         event.preventDefault();
