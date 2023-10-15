@@ -93,15 +93,17 @@ type PluginFieldExtra<TPluginType extends Plugin> = {
     formSchemaProp: keyof TPluginType;
 };
 
+export type PluginForm = Readonly<
+    [
+        PickListField<"type", Readonly<FixedOption<string>[]>>,
+        ObjectField<"data", readonly FieldType<string>[]>
+    ]
+>;
+
 export type PluginField<TKey, TPlugin extends Plugin> = BaseObjectFormField<
     TKey,
     "plugin",
-    Readonly<
-        [
-            PickListField<"type", Readonly<FixedOption[]>>,
-            ObjectField<"data", readonly FieldType<string>[]>
-        ]
-    >,
+    PluginForm,
     PluginFieldExtra<TPlugin>
 >;
 

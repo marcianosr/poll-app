@@ -37,9 +37,6 @@ export const SchemaForm = <Schema extends TypedForm>({
     formId,
 }: SchemaFormProps<Schema>) => {
     const zodSchema = schemaToZod(schema);
-
-    console.log("SchemaForm", schema, zodToDescription(zodSchema));
-
     const values: FormValues = schemaToDefaultValues(schema);
 
     return (

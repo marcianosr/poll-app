@@ -6,12 +6,12 @@ import {
     type PluginField,
     type Plugin,
     type PluginStore,
-    type PluginForm,
     type FixedOption,
     type PickListField,
     type TypedForm,
     schemaToDefaultValues,
     type FieldType,
+    type PluginForm,
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
@@ -20,7 +20,7 @@ import { schemaToZod } from "../schema/schemaToZod";
 const PluginField = ({
     field,
 }: FormFieldProps<PluginField<string, Plugin>>) => {
-    const { errors, watch } = useCustomField(field);
+    const { errors, watch, setValue } = useCustomField(field);
 
     const SelectField = selectFieldPlugin.Component;
 
@@ -41,11 +41,15 @@ const PluginField = ({
 
     const value = watch() as { type: string; data: unknown };
 
-    const fieldPlugin = field.store.get(value.type);
+    const selectedPluginId = value.type ?? pluginIds[0];
+
+    const fieldPlugin = field.store.get(selectedPluginId);
     const objectSchema = fieldPlugin?.[field.formSchemaProp] as TypedForm;
     const hasSettings = objectSchema?.length > 0;
 
-    const data = hasSettings ? schemaToDefaultValues(objectSchema) : {};
+    const data = hasSettings
+        ? value.data ?? schemaToDefaultValues(objectSchema)
+        : {};
 
     console.log("pluginfield", value, objectSchema);
 
@@ -53,11 +57,11 @@ const PluginField = ({
         <div>
             <ObjectScopeProvider<{}>
                 path={[`${field.name}`]}
-                defaultValues={{ type: pluginIds[0] }}
+                defaultValues={{ type: selectedPluginId, data }}
             >
                 {() => (
                     <>
-                        <SelectField field={selectFieldDefinition as any} />
+                        <SelectField field={selectFieldDefinition} />
                         <fieldset>
                             <legend>{field.displayName} Settings</legend>
                             {hasSettings && (
@@ -112,12 +116,42 @@ export const pluginField = <TKey extends string, TPluginType extends Plugin>(
     store: PluginStore<TPluginType>,
     displayProp: keyof TPluginType,
     formSchemaProp: keyof TPluginType
-) => {
+): Readonly<{
+    name: TKey;
+    displayName: string;
+    fieldType: "plugin";
+    valueType: "object";
+    store: PluginStore<TPluginType>;
+    displayProp: keyof TPluginType;
+    formSchemaProp: keyof TPluginType;
+    optional: false;
+    objectSchema: Readonly<
+        [
+            {
+                name: "type";
+                displayName: string;
+                fieldType: "select";
+                valueType: "list";
+                optional: false;
+                options: Readonly<FixedOption<string>[]>;
+                defaultValue: "";
+            },
+            {
+                name: "data";
+                displayName: "Settings";
+                fieldType: "object";
+                valueType: "object";
+                optional: false;
+                objectSchema: Readonly<[]>;
+            }
+        ]
+    >;
+}> => {
     const pluginForm = [
         {
             name: "type",
             displayName,
-            fieldType: "pluginType",
+            fieldType: "select",
             valueType: "list",
             optional: false,
             options: [],
@@ -126,7 +160,7 @@ export const pluginField = <TKey extends string, TPluginType extends Plugin>(
         {
             name: "data",
             displayName: "Settings",
-            fieldType: "pluginData",
+            fieldType: "object",
             valueType: "object",
             optional: false,
             objectSchema: [],
