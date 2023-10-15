@@ -25,7 +25,7 @@ const objectToFormMapping = (
                           ...result,
                           ...objectToFormMapping([...prefix, name], value),
                       },
-            {}
+            { ...objectToFormMapping([...prefix, "__objKeep"], "true") }
         );
     }
     if (object === undefined) {

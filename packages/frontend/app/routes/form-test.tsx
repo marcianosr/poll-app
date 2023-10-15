@@ -2,7 +2,6 @@ import type { ActionFunction } from "@remix-run/node";
 import { formAction } from "../form-action.server"; /* path to your custom formAction */
 import { makeDomainFunction } from "domain-functions";
 import { schemaToZod, SchemaForm, pluginField } from "@marcianosrs/form";
-import { zodToDescription } from "@marcianosrs/utils";
 import { ThemeProvider, themeStore } from "@marcianosrs/ui";
 import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
 import { useActionData } from "@remix-run/react";
@@ -139,7 +138,6 @@ const formDefinition = [
 ] as const satisfies TypedForm;
 
 const schema = schemaToZod(formDefinition);
-console.log(zodToDescription(schema));
 
 const mutation = makeDomainFunction(schema)(async (values) => {
     console.log(values); /* or anything else, like saveMyValues(values) */
@@ -154,13 +152,13 @@ export const action: ActionFunction = async ({ request }) =>
         // successPath: "/success" /* path to redirect on success */,
     });
 
+type FormDataStructure = FormDataObject<typeof formDefinition>;
+
 export default function FormTest() {
-    const data = useActionData<FormDataObject<typeof formDefinition>>();
+    const data = useActionData<FormDataStructure>();
 
-    const themeName = data?.theme?.type ?? "html";
-    const themeSettings = data?.theme?.data ?? {};
-
-    console.log(themeName, themeSettings);
+    const themeName = data?.theme.type ?? "html";
+    const themeSettings = data?.theme.data ?? {};
 
     return (
         <main>
