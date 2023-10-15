@@ -1,9 +1,7 @@
 import React from "react";
-import { useCustomField } from "./FieldContext";
+import { useCustomField, useObjectScope } from "./FieldContext";
 import { FieldType } from "@marcianosrs/form-schema";
-
-const createFieldName = (path: string[]) =>
-    `${path[0]}[${[...path.slice(1)].join("][")}]`;
+import { createFieldName } from "./createFieldName";
 
 const objectToFormMapping = (
     prefix: string[],
@@ -20,12 +18,18 @@ const objectToFormMapping = (
     }
     if (typeof object === "object" && object !== null) {
         return Object.entries(object).reduce(
-            (result, [name, value]) => ({
-                ...result,
-                ...objectToFormMapping([...prefix, name], value),
-            }),
+            (result, [name, value]) =>
+                value === undefined
+                    ? result
+                    : {
+                          ...result,
+                          ...objectToFormMapping([...prefix, name], value),
+                      },
             {}
         );
+    }
+    if (object === undefined) {
+        return {};
     }
 
     return { [createFieldName(prefix)]: `${object}` };
@@ -38,9 +42,13 @@ type HiddenFormDataProps<TField extends FieldType<string>> = {
 export const HiddenFormData = <TField extends FieldType<string>>({
     field,
 }: HiddenFormDataProps<TField>) => {
+    if (field.valueType === "none") {
+        return null;
+    }
     const { watch } = useCustomField(field);
+    const existingPath = useObjectScope();
     const object = watch();
-    const fields = objectToFormMapping([field.name], object);
+    const fields = objectToFormMapping(existingPath.concat(field.name), object);
     return (
         <>
             {Object.entries(fields).map(([name, value]) => (

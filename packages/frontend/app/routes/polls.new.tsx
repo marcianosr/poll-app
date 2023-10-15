@@ -1,12 +1,13 @@
 import { questionTypeStore } from "@marcianosrs/engine";
-import { SchemaForm, schemaToZod } from "@marcianosrs/form";
-import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
+import { SchemaForm, pluginField, schemaToZod } from "@marcianosrs/form";
+import type { TypedForm } from "@marcianosrs/form-schema";
 import { zodToDescription } from "@marcianosrs/utils";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link, useActionData } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { makeDomainFunction } from "domain-functions";
-import { formAction } from "~/form-action.server";
-import { throwIfNotAuthorized } from "~/util/isAuthorized";
+import React from "react";
+import { formAction } from "../form-action.server";
+import { throwIfNotAuthorized } from "../util/isAuthorized";
 
 // export const action = async ({ request }: ActionArgs) => {
 //     await throwIfNotAuthorized(request);
@@ -23,71 +24,38 @@ export const loader: LoaderFunction = async ({ request }) => {
     return {};
 };
 
-const questionTypes = [
-    {
-        fieldType: "select",
-        valueType: "list",
-        options: questionTypeStore.getIdentifiers().map((pluginId) => {
-            const plugin = questionTypeStore.get(pluginId);
-            return { display: plugin.displayName, value: pluginId };
-        }),
-        optional: false,
-        name: "questionType",
-        displayName: "Question type",
-        defaultValue: questionTypeStore.getIdentifiers()[0],
-    },
+const schema = [
+    pluginField(
+        "question",
+        "Question",
+        questionTypeStore,
+        "displayName",
+        "editForm"
+    ),
 ] as const satisfies TypedForm;
+const zodSchema = schemaToZod(schema);
 
-const schema = schemaToZod(questionTypes);
-console.log(zodToDescription(schema));
-
-const mutation = makeDomainFunction(schema)(async (values) => {
+const mutation = makeDomainFunction(zodSchema)(async (values) => {
     console.log(values); /* or anything else, like saveMyValues(values) */
     return values;
 });
 
-export const action: ActionFunction = async ({ request }) =>
-    formAction({
+export const action: ActionFunction = async ({ request }) => {
+    return formAction({
         request,
-        schema,
+        schema: zodSchema,
         mutation,
         // successPath: "/success" /* path to redirect on success */,
     });
+};
 
 export default function NewPoll() {
-    const data = useActionData<FormDataObject<typeof questionTypes>>();
-
-    const questionType =
-        data?.questionType ?? questionTypeStore.getIdentifiers()[0];
-    const plugin = questionTypeStore.get(questionType);
-
-    const questionData = [
-        {
-            fieldType: "object",
-            valueType: "object",
-            optional: false,
-            displayName: "Plugin Data",
-            name: "pluginData",
-            objectSchema: plugin.editForm,
-        },
-        {
-            fieldType: "text", // This should be a new field type
-            valueType: "string",
-            optional: true,
-            name: "tags",
-            displayName: "Tags",
-            defaultValue: "",
-        },
-    ] as const satisfies TypedForm;
-
-    const schema = schemaToZod(questionData);
-    console.log(zodToDescription(schema));
+    console.log(zodToDescription(zodSchema));
     return (
         <main>
             <Link to="/polls">Back to list of polls</Link>
             <h1>Create new poll</h1>
-            <SchemaForm schema={questionTypes} />
-            {plugin && <SchemaForm schema={questionData} />}
+            <SchemaForm schema={schema} formId="questionType" />
         </main>
     );
 }

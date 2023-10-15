@@ -7,7 +7,7 @@ export const schemaToDefaultValues = <T extends TypedForm>(
     const fields: Record<string, unknown> = {};
 
     for (const field of schema) {
-        if ("defaultValue" in field) {
+        if ("defaultValue" in field && field.valueType !== "list") {
             fields[field.name] = field.defaultValue;
         }
         if (field.valueType === "objects") {

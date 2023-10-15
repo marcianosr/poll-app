@@ -4,7 +4,6 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
-import { schemaToZod } from "../schema/schemaToZod";
 
 const SelectField = ({
     field,

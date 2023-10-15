@@ -13,6 +13,7 @@ import type {
     UseFormWatch,
     UseFormReturn,
 } from "react-hook-form";
+import { createFieldName } from "./createFieldName";
 
 /**
  * This file uses some nasty type casting to interface with React hook form
@@ -79,7 +80,7 @@ const FormObjectScopeContext = createContext<{ path: string[] }>({
     path: [],
 });
 
-const useObjectScope = () => useContext(FormObjectScopeContext).path;
+export const useObjectScope = () => useContext(FormObjectScopeContext).path;
 
 export const ObjectScopeProvider = <TValueType,>({
     children,
@@ -99,18 +100,19 @@ export const ObjectScopeProvider = <TValueType,>({
     const existingPath = useObjectScope();
     const { watch, setValue } = useContext(FieldContext);
     const objectPath = existingPath.concat(path);
+    const fieldName = createFieldName(objectPath);
 
     useEffect(() => {
-        setValue(objectPath.join("."), defaultValues);
+        setValue(fieldName, defaultValues);
     }, []);
 
     return (
         <FormObjectScopeContext.Provider value={{ path: objectPath }}>
             {children({
                 reset: (newValues) => {
-                    setValue(objectPath.join("."), newValues);
+                    setValue(fieldName, newValues);
                 },
-                getValues: () => watch(objectPath.join(".")) as TValueType,
+                getValues: () => watch(createFieldName) as TValueType,
             })}
         </FormObjectScopeContext.Provider>
     );
@@ -150,7 +152,16 @@ export const useCustomField = <TField extends FieldType<string>>(
     const fieldPathKey = fieldPath.join(".");
 
     return {
-        register: () => register(fieldPathKey),
+        register: () => {
+            const props = register(fieldPathKey);
+
+            return {
+                ...props,
+                // get name() {
+                //     return createFieldName(fieldPath);
+                // },
+            };
+        },
         watch: () => {
             const value = watch(fieldPathKey) as ValueTypeOfField<TField>;
             if (

@@ -4,11 +4,12 @@ import { RangeSlider } from "./RangeSlider";
 import { themeSettings } from "./themeSettings";
 
 export const winterTheme: ThemePlugin<typeof themeSettings> = {
-	name: "winter",
-	description: "Celebrate the winter with this theme!",
-	editForm: themeSettings,
-	components: {
-		button: Button,
-		rangeSlider: RangeSlider,
-	},
+    name: "winter",
+    displayName: "Spirit of Winter",
+    description: "Celebrate the winter with this theme!",
+    editForm: themeSettings,
+    components: {
+        button: Button,
+        rangeSlider: RangeSlider,
+    },
 };
