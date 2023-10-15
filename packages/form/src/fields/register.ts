@@ -9,6 +9,7 @@ import { rangeSliderPlugin } from "./RangeSlider";
 import { selectFieldPlugin } from "./SelectField";
 import { textFieldPlugin } from "./TextField";
 import { titlePlugin } from "./Title";
+import { checkboxPlugin } from "./Checkbox";
 
 formFieldPlugins.add(colorFieldPlugin);
 formFieldPlugins.add(hiddenFieldPlugin);
@@ -20,3 +21,4 @@ formFieldPlugins.add(rangeSliderPlugin);
 formFieldPlugins.add(selectFieldPlugin);
 formFieldPlugins.add(textFieldPlugin);
 formFieldPlugins.add(titlePlugin);
+formFieldPlugins.add(checkboxPlugin);
