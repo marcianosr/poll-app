@@ -131,13 +131,12 @@ app.post(
 	// checkIfAuthenticated,
 	async (req: Request, res: Response) => {
 		try {
-			const poll: CreatePoll = req.body;
-
-			const errors = validateCreatePoll(poll);
-
-			if (errors.length > 0) {
-				return res.status(400).json(errors);
-			}
+			const data: CreatePoll = req.body;
+			const poll = {
+				...data,
+				createdAt: FieldValue.serverTimestamp(),
+				createdBy: null, // TODO: Should be the user ID
+			};
 
 			const newPoll = await db.collection("polls").add(poll);
 

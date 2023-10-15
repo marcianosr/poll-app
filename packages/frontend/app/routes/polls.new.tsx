@@ -8,6 +8,7 @@ import { makeDomainFunction } from "domain-functions";
 import React from "react";
 import { formAction } from "../form-action.server";
 import { throwIfNotAuthorized } from "../util/isAuthorized";
+import { API_ENDPOINT } from "~/util";
 
 // export const action = async ({ request }: ActionArgs) => {
 //     await throwIfNotAuthorized(request);
@@ -19,43 +20,51 @@ import { throwIfNotAuthorized } from "../util/isAuthorized";
 // };
 
 export const loader: LoaderFunction = async ({ request }) => {
-    await throwIfNotAuthorized(request);
+	await throwIfNotAuthorized(request);
 
-    return {};
+	return {};
 };
 
 const schema = [
-    pluginField(
-        "question",
-        "Question",
-        questionTypeStore,
-        "displayName",
-        "editForm"
-    ),
+	pluginField(
+		"question",
+		"Question",
+		questionTypeStore,
+		"displayName",
+		"editForm"
+	),
 ] as const satisfies TypedForm;
 const zodSchema = schemaToZod(schema);
 
 const mutation = makeDomainFunction(zodSchema)(async (values) => {
-    console.log(values); /* or anything else, like saveMyValues(values) */
-    return values;
+	await fetch(`${API_ENDPOINT}/polls/new`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			// Authorization: `Bearer ${session.get("accessToken")}`,
+		},
+		body: JSON.stringify(values),
+	});
+
+	return values;
 });
 
 export const action: ActionFunction = async ({ request }) => {
-    return formAction({
-        request,
-        schema: zodSchema,
-        mutation,
-        // successPath: "/success" /* path to redirect on success */,
-    });
+	return formAction({
+		request,
+		schema: zodSchema,
+		mutation,
+		// successPath: "/success" /* path to redirect on success */,
+	});
 };
 
 export default function NewPoll() {
-    console.log(zodToDescription(zodSchema));
-    return (
-        <main>
-            <Link to="/polls">Back to list of polls</Link>
-            <h1>Create new poll</h1>
-            <SchemaForm schema={schema} formId="questionType" />
-        </main>
-    );
+	console.log(zodToDescription(zodSchema));
+	return (
+		<main>
+			<Link to="/polls">Back to list of polls</Link>
+			<h1>Create new poll</h1>
+			<SchemaForm schema={schema} formId="questionType" />
+		</main>
+	);
 }
