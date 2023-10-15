@@ -15,7 +15,7 @@ import {
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
-import { schemaToZod } from "../schema/schemaToZod";
+import { ZodSchemaType, schemaToZod } from "../schema/schemaToZod";
 
 const PluginField = ({
     field,
@@ -92,7 +92,8 @@ export const pluginFieldPlugin: FormFieldPlugin<
     toZodSchema: (field) => {
         const pluginIds = field.store.getIdentifiers();
 
-        return z.union(
+        return z.discriminatedUnion(
+            "type",
             pluginIds.map((id) => {
                 const plugin = field.store.get(id);
                 return z.object({
@@ -103,7 +104,16 @@ export const pluginFieldPlugin: FormFieldPlugin<
                         ] as unknown as Readonly<FieldType<string>[]>
                     ),
                 });
-            }) as unknown as Readonly<[z.ZodTypeAny, z.ZodTypeAny]>
+            }) as unknown as [
+                z.ZodObject<{
+                    type: z.ZodLiteral<string>;
+                    data: ZodSchemaType<readonly FieldType<string>[]>;
+                }>,
+                z.ZodObject<{
+                    type: z.ZodLiteral<string>;
+                    data: ZodSchemaType<readonly FieldType<string>[]>;
+                }>
+            ]
         );
     },
 };

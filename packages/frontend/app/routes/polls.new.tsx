@@ -51,6 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function NewPoll() {
     console.log(zodToDescription(zodSchema));
+
     return (
         <main>
             <Link to="/polls">Back to list of polls</Link>
