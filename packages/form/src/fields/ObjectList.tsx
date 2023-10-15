@@ -12,6 +12,7 @@ import {
     type FormDataObject,
     type ObjectListField,
     type TypedForm,
+    type ValueTypeOfField,
 } from "@marcianosrs/form-schema";
 
 const ObjectList = <TForm extends TypedForm>({
@@ -51,7 +52,9 @@ const ObjectList = <TForm extends TypedForm>({
                                                 value={
                                                     item[
                                                         field.name as keyof RecordType
-                                                    ]
+                                                    ] as ValueTypeOfField<
+                                                        typeof field
+                                                    >
                                                 }
                                             />
                                         </td>
@@ -96,7 +99,7 @@ const ObjectList = <TForm extends TypedForm>({
                                                     ]}
                                                     defaultValues={item}
                                                 >
-                                                    {() => (
+                                                    {({ getValues }) => (
                                                         <>
                                                             <FormFields
                                                                 schema={
@@ -110,6 +113,20 @@ const ObjectList = <TForm extends TypedForm>({
                                                                     event.preventDefault();
                                                                     setEditIndex(
                                                                         undefined
+                                                                    );
+                                                                    setValue(
+                                                                        objectList.map<RecordType>(
+                                                                            (
+                                                                                item,
+                                                                                index
+                                                                            ) =>
+                                                                                index ===
+                                                                                editIndex
+                                                                                    ? {
+                                                                                          ...getValues(),
+                                                                                      }
+                                                                                    : item
+                                                                        )
                                                                     );
                                                                 }}
                                                             >

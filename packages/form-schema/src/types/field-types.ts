@@ -1,4 +1,3 @@
-import { Plugin, PluginField } from "./fields/plugin-field";
 import {
     BaseFixedFormField,
     BaseObjectFormField,
@@ -80,6 +79,31 @@ export type ObjectField<
     Key,
     TObjectSchema extends TypedForm
 > = BaseObjectFormField<Key, "object", TObjectSchema>;
+
+export type Plugin = Record<string, unknown>;
+
+type PluginStore<TPlugin> = {
+    get: (identifier: string) => TPlugin;
+    getIdentifiers: () => string[];
+};
+
+type PluginFieldExtra<TPluginType extends Plugin> = {
+    store: PluginStore<TPluginType>;
+    displayProp: keyof TPluginType;
+    formSchemaProp: keyof TPluginType;
+};
+
+export type PluginField<TKey, TPlugin extends Plugin> = BaseObjectFormField<
+    TKey,
+    "plugin",
+    Readonly<
+        [
+            PickListField<"type", Readonly<FixedOption[]>>,
+            ObjectField<"data", readonly FieldType<string>[]>
+        ]
+    >,
+    PluginFieldExtra<TPlugin>
+>;
 
 export type FieldType<Key> =
     | CheckboxField<Key>
