@@ -4,6 +4,7 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { FormField } from "@marcianosrs/ui";
+import { stringToBoolean } from "../schema/zodUtils";
 
 const Checkbox = ({ field }: FormFieldProps<CheckboxField<string>>) => {
     const { register, errors } = useCustomField(field);
@@ -29,5 +30,5 @@ export const checkboxPlugin: FormFieldPlugin<
     fieldType: "checkbox",
     Component: Checkbox,
     Show: ({ value }) => (value ? <span>✅</span> : null),
-    toZodSchema: () => z.boolean(),
+    toZodSchema: () => stringToBoolean,
 };

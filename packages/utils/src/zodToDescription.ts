@@ -8,6 +8,9 @@ import {
     ZodOptional,
     ZodUnknown,
     ZodLiteral,
+    ZodBoolean,
+    ZodDiscriminatedUnion,
+    ZodEffects,
 } from "zod";
 
 const indented = (amount: number, key: string, value: string) => {
@@ -31,6 +34,9 @@ export const zodToDescription = <Z extends z.ZodTypeAny>(zod: Z): string => {
     if (zod instanceof ZodNumber) {
         return "number";
     }
+    if (zod instanceof ZodBoolean) {
+        return "boolean";
+    }
     if (zod instanceof ZodUnknown) {
         return "unknown";
     }
@@ -42,6 +48,12 @@ export const zodToDescription = <Z extends z.ZodTypeAny>(zod: Z): string => {
     }
     if (zod instanceof ZodUnion) {
         return zod.options.map(zodToDescription).join(" | ");
+    }
+    if (zod instanceof ZodDiscriminatedUnion) {
+        return zod.options.map(zodToDescription).join(" | ");
+    }
+    if (zod instanceof ZodEffects) {
+        return `${zod._output}`;
     }
     if (zod instanceof ZodArray) {
         const elementStr = zodToDescription(zod.element);

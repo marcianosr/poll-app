@@ -17,7 +17,8 @@ const objectToFormMapping = (
         );
     }
     if (typeof object === "object" && object !== null) {
-        return Object.entries(object).reduce(
+        const entries = Object.entries(object);
+        return entries.reduce(
             (result, [name, value]) =>
                 value === undefined
                     ? result
@@ -25,7 +26,9 @@ const objectToFormMapping = (
                           ...result,
                           ...objectToFormMapping([...prefix, name], value),
                       },
-            { ...objectToFormMapping([...prefix, "__objKeep"], "true") }
+            entries.length === 0
+                ? { ...objectToFormMapping([...prefix, "__objKeep"], "true") }
+                : {}
         );
     }
     if (object === undefined) {

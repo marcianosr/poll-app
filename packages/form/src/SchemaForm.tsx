@@ -10,7 +10,6 @@ import {
 } from "@marcianosrs/form-schema";
 import { Button as SubmitButton } from "@marcianosrs/ui";
 import { HiddenFormData } from "./base-form/HiddenFormData";
-import { zodToDescription } from "@marcianosrs/utils";
 
 const FORM_ID_FIELD = "__formAction";
 
