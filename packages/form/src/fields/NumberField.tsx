@@ -4,21 +4,28 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
+import { FormField } from "@marcianosrs/ui";
 
 const NumberField = ({ field }: FormFieldProps<NumberField<string>>) => {
     const { register, errors } = useCustomField(field);
     return (
-        <div>
-            <label>{field.displayName}</label>
-            <input
-                type="number"
-                {...(field.integerValue ? {} : { step: "0.01" })}
-                {...register()}
-            ></input>
-            {errors?.map((e, i) => (
-                <p key={i}>{e}</p>
-            ))}
-        </div>
+        <FormField
+            fieldTitle={<label>{field.displayName}</label>}
+            fieldInput={
+                <input
+                    type="number"
+                    {...(field.integerValue ? {} : { step: "0.01" })}
+                    {...register()}
+                />
+            }
+            fieldErrors={
+                <>
+                    {errors?.map((e, i) => (
+                        <p key={i}>{e}</p>
+                    ))}
+                </>
+            }
+        />
     );
 };
 

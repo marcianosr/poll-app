@@ -1,0 +1,7 @@
+.formField {
+  background: linear-gradient(#eeeeff, #eeeeee);
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0.2rem 0.2rem 0.2rem #0002;
+}

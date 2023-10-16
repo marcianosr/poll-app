@@ -3,17 +3,22 @@ import type { ColorField } from "@marcianosrs/form-schema";
 import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
+import { FormField } from "@marcianosrs/ui";
 
 const ColorField = ({ field }: FormFieldProps<ColorField<string>>) => {
     const { register, errors } = useCustomField(field);
     return (
-        <div>
-            <label>{field.displayName}</label>
-            <input type="color" {...register()} />
-            {errors?.map((e, i) => (
-                <p key={i}>{e}</p>
-            ))}
-        </div>
+        <FormField
+            fieldTitle={<label>{field.displayName}</label>}
+            fieldInput={<input type="color" {...register()} />}
+            fieldErrors={
+                <>
+                    {errors?.map((e, i) => (
+                        <p key={i}>{e}</p>
+                    ))}
+                </>
+            }
+        />
     );
 };
 

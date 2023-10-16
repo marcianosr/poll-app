@@ -51,8 +51,6 @@ const PluginField = ({
         ? value.data ?? schemaToDefaultValues(objectSchema)
         : {};
 
-    console.log("pluginfield", value, objectSchema);
-
     return (
         <div>
             <ObjectScopeProvider<{}>

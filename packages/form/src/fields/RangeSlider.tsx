@@ -3,7 +3,10 @@ import type { RangeSlider } from "@marcianosrs/form-schema";
 import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
-import { RangeSlider as RangeSliderUIComponent } from "@marcianosrs/ui";
+import {
+    FormField,
+    RangeSlider as RangeSliderUIComponent,
+} from "@marcianosrs/ui";
 import { transform } from "@marcianosrs/utils";
 
 const RangeSlider = ({ field }: FormFieldProps<RangeSlider<string>>) => {
@@ -11,20 +14,25 @@ const RangeSlider = ({ field }: FormFieldProps<RangeSlider<string>>) => {
     const labels = [...field.labels];
 
     return (
-        <div>
-            <label>{field.displayName}</label>
-            <RangeSliderUIComponent
-                {...register()}
-                min={field.min}
-                max={field.max}
-                step={field.step}
-                labels={labels}
-            />
-
-            {errors?.map((e, i) => (
-                <p key={i}>{e}</p>
-            ))}
-        </div>
+        <FormField
+            fieldTitle={<label>{field.displayName}</label>}
+            fieldInput={
+                <RangeSliderUIComponent
+                    {...register()}
+                    min={field.min}
+                    max={field.max}
+                    step={field.step}
+                    labels={labels}
+                />
+            }
+            fieldErrors={
+                <>
+                    {errors?.map((e, i) => (
+                        <p key={i}>{e}</p>
+                    ))}
+                </>
+            }
+        />
     );
 };
 
