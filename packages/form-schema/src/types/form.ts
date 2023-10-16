@@ -1,4 +1,4 @@
-import { OmitNever } from "../../../utils/src/types/utils";
+import { OmitNever } from "@marcianosrs/utils";
 
 export type FormField =
     | BaseOpenFormField<unknown, string, ValueTypes>
@@ -83,18 +83,7 @@ export type BaseObjectFormField<
     objectSchema: ObjectSchema;
 } & Extra;
 
-export type ValueTypeOfField<Field extends FormField> =
-    Field extends BaseFixedFormField<string, string, infer FieldType>
-        ? FieldType[number] extends FixedOption<infer ValueType>
-            ? ValueType
-            : never
-        : Field extends BaseObjectListFormField<unknown, string, infer Schema>
-        ? FormDataObject<Schema>[]
-        : Field extends BaseObjectFormField<unknown, string, infer Schema>
-        ? FormDataObject<Schema>
-        : Field extends BaseOpenFormField<unknown, string, infer FieldKey>
-        ? TypeMapping[FieldKey & ValueTypes]
-        : never;
+type Prettify<O> = { [K in keyof O]: O[K] } & {};
 
 type SelectOptional<
     TFields extends FormSchema,
@@ -106,8 +95,19 @@ type SelectOptional<
         : never;
 }>;
 
-type Prettify<O> = { [K in keyof O]: O[K] } & {};
-
 export type FormDataObject<TFields extends FormSchema> = Prettify<
     SelectOptional<TFields, false> & Partial<SelectOptional<TFields, true>>
 >;
+
+export type ValueTypeOfField<Field extends FormField> =
+    Field extends BaseFixedFormField<string, string, infer FieldType>
+        ? FieldType[number] extends FixedOption<infer ValueType>
+            ? ValueType
+            : never
+        : Field extends BaseObjectListFormField<unknown, string, infer Schema>
+        ? FormDataObject<Schema>[]
+        : Field extends BaseObjectFormField<unknown, string, infer Schema>
+        ? SelectOptional<Schema, false> & Partial<SelectOptional<Schema, true>>
+        : Field extends BaseOpenFormField<unknown, string, infer FieldKey>
+        ? TypeMapping[FieldKey & ValueTypes]
+        : never;
