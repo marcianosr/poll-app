@@ -16,6 +16,7 @@ import {
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
 import { ZodSchemaType, schemaToZod } from "../schema/schemaToZod";
+import { KeysOfType } from "@marcianosrs/utils";
 
 const PluginField = ({
     field,
@@ -122,16 +123,16 @@ export const pluginField = <TKey extends string, TPluginType extends Plugin>(
     name: TKey,
     displayName: string,
     store: PluginStore<TPluginType>,
-    displayProp: keyof TPluginType,
-    formSchemaProp: keyof TPluginType
+    displayProp: KeysOfType<TPluginType, string>,
+    formSchemaProp: KeysOfType<TPluginType, TypedForm>
 ): Readonly<{
     name: TKey;
     displayName: string;
     fieldType: "plugin";
     valueType: "object";
     store: PluginStore<TPluginType>;
-    displayProp: keyof TPluginType;
-    formSchemaProp: keyof TPluginType;
+    displayProp: KeysOfType<TPluginType, string>;
+    formSchemaProp: KeysOfType<TPluginType, TypedForm>;
     optional: false;
     objectSchema: Readonly<
         [
