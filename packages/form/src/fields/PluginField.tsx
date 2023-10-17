@@ -15,7 +15,8 @@ import {
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
-import { schemaToZod } from "../schema/schemaToZod";
+import { ZodSchemaType, schemaToZod } from "../schema/schemaToZod";
+import { KeysOfType } from "@marcianosrs/utils";
 
 const PluginField = ({
     field,
@@ -50,8 +51,6 @@ const PluginField = ({
     const data = hasSettings
         ? value.data ?? schemaToDefaultValues(objectSchema)
         : {};
-
-    console.log("pluginfield", value, objectSchema);
 
     return (
         <div>
@@ -94,7 +93,8 @@ export const pluginFieldPlugin: FormFieldPlugin<
     toZodSchema: (field) => {
         const pluginIds = field.store.getIdentifiers();
 
-        return z.union(
+        return z.discriminatedUnion(
+            "type",
             pluginIds.map((id) => {
                 const plugin = field.store.get(id);
                 return z.object({
@@ -105,7 +105,16 @@ export const pluginFieldPlugin: FormFieldPlugin<
                         ] as unknown as Readonly<FieldType<string>[]>
                     ),
                 });
-            }) as unknown as Readonly<[z.ZodTypeAny, z.ZodTypeAny]>
+            }) as unknown as [
+                z.ZodObject<{
+                    type: z.ZodLiteral<string>;
+                    data: ZodSchemaType<readonly FieldType<string>[]>;
+                }>,
+                z.ZodObject<{
+                    type: z.ZodLiteral<string>;
+                    data: ZodSchemaType<readonly FieldType<string>[]>;
+                }>
+            ]
         );
     },
 };
@@ -114,16 +123,16 @@ export const pluginField = <TKey extends string, TPluginType extends Plugin>(
     name: TKey,
     displayName: string,
     store: PluginStore<TPluginType>,
-    displayProp: keyof TPluginType,
-    formSchemaProp: keyof TPluginType
+    displayProp: KeysOfType<TPluginType, string>,
+    formSchemaProp: KeysOfType<TPluginType, TypedForm>
 ): Readonly<{
     name: TKey;
     displayName: string;
     fieldType: "plugin";
     valueType: "object";
     store: PluginStore<TPluginType>;
-    displayProp: keyof TPluginType;
-    formSchemaProp: keyof TPluginType;
+    displayProp: KeysOfType<TPluginType, string>;
+    formSchemaProp: KeysOfType<TPluginType, TypedForm>;
     optional: false;
     objectSchema: Readonly<
         [
