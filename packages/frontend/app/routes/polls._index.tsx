@@ -4,7 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { API_ENDPOINT } from "~/util";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { getSession } from "~/util/session.server";
-import type { Poll } from "@marcianosrs/engine";
+import { questionTypeStore, type Poll } from "@marcianosrs/engine";
 
 type LoaderData = {
 	polls: Poll[];
@@ -28,12 +28,18 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
 	const { polls } = useLoaderData<LoaderData>();
+	console.log(polls, "POLLS");
+
+	const plugin = questionTypeStore.get("memoryQuestion");
+
+	console.log("plugin", plugin.getContentTitle(polls[0].question.data));
 
 	return (
 		<main>
 			<h1>Polls</h1>
 			<Link to={"/polls/new"}>Create new poll</Link>
-			<ul>
+
+			{/* <ul>
 				{polls.map((poll) => (
 					<li key={poll.id}>
 						#{poll.no} - {poll.question}
@@ -41,7 +47,7 @@ export default function Index() {
 						<Link to={`/polls/${poll.id}/edit`}>Edit</Link>
 					</li>
 				))}
-			</ul>
+			</ul> */}
 		</main>
 	);
 }
