@@ -2,6 +2,7 @@ import type { ThemePlugin } from "../../theming/types";
 import { Button } from "./Button";
 import { FormField } from "./FormField";
 import { RangeSlider } from "./RangeSlider";
+import { Table } from "./Table";
 import { themeSettings } from "./themeSettings";
 
 export const winterTheme: ThemePlugin<typeof themeSettings> = {
@@ -13,5 +14,6 @@ export const winterTheme: ThemePlugin<typeof themeSettings> = {
         button: Button,
         rangeSlider: RangeSlider,
         formField: FormField,
+        table: Table,
     },
 };

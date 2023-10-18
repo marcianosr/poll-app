@@ -3,6 +3,7 @@ import type { ThemePlugin } from "../../theming/types";
 import { Button } from "./Button";
 import { RangeSlider } from "./RangeSlider";
 import { FormField } from "./FormField";
+import { Table } from "./Table";
 
 const themeSettings = [] as const satisfies TypedForm;
 
@@ -15,5 +16,6 @@ export const htmlTheme: ThemePlugin<typeof themeSettings> = {
         button: Button,
         rangeSlider: RangeSlider,
         formField: FormField,
+        table: Table,
     },
 };
