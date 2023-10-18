@@ -3,33 +3,9 @@ import {
     ForwardRefExoticComponent,
     PropsWithChildren,
 } from "react";
-
-export type ButtonProps = PropsWithChildren<
-    {
-        /**
-         * This prop is just as test, the real interface props are not defined yet.
-         */
-        size?: "small" | "medium" | "large";
-    } & JSX.IntrinsicElements["button"]
->;
-
-export type RangeSliderProps = PropsWithChildren<
-    {
-        labels: {
-            title: string;
-            value: number;
-        }[];
-        min: number;
-        max: number;
-        step: number;
-    } & JSX.IntrinsicElements["input"]
->;
-
-export type FormFieldProps = {
-    fieldTitle: React.ReactNode;
-    fieldInput: React.ReactNode;
-    fieldErrors?: React.ReactNode;
-};
+import { FormFieldProps } from "../components/FormField";
+import { ButtonProps } from "../components/Button";
+import { RangeSliderProps } from "../components/RangeSlider";
 
 export type Theme = {
     button: ForwardRefExoticComponent<

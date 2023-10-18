@@ -1,8 +1,8 @@
 import React from "react";
 import { forwardRef } from "react";
-import { RangeSliderProps } from "../../theming/ThemeType";
 import * as styles from "./RangeSlider.module.css";
 import { useThemeSettings } from "./themeSettings";
+import { RangeSliderProps } from "../../components/RangeSlider";
 
 export const RangeSlider = forwardRef<HTMLInputElement, RangeSliderProps>(
     ({ children, labels, ...props }, ref) => {
