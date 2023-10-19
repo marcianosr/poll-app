@@ -1,8 +1,7 @@
 import type {
-    AppChannel,
-    AppChannelPlaylist,
-    Channel,
-    Poll,
+	AppChannel,
+	AppChannelPlaylist,
+	PollDTO,
 } from "@marcianosrs/engine";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -12,65 +11,65 @@ import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { getSession } from "~/util/session.server";
 
 type LoaderData = {
-    channel: AppChannel;
+	channel: AppChannel;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-    const session = await getSession(request.headers.get("cookie"));
+	const session = await getSession(request.headers.get("cookie"));
 
-    await throwIfNotAuthorized(request);
+	await throwIfNotAuthorized(request);
 
-    const id = params.id;
+	const id = params.id;
 
-    const channelsResponse = await fetch(`${API_ENDPOINT}/channels/${id}`, {
-        headers: {
-            Authorization: `Bearer ${session.get("accessToken")}`,
-        },
-    });
+	const channelsResponse = await fetch(`${API_ENDPOINT}/channels/${id}`, {
+		headers: {
+			Authorization: `Bearer ${session.get("accessToken")}`,
+		},
+	});
 
-    const pollsResponse = await fetch(`${API_ENDPOINT}/polls`, {
-        headers: {
-            Authorization: `Bearer ${session.get("accessToken")}`,
-        },
-    });
+	const pollsResponse = await fetch(`${API_ENDPOINT}/polls`, {
+		headers: {
+			Authorization: `Bearer ${session.get("accessToken")}`,
+		},
+	});
 
-    const channelsData: AppChannel = await channelsResponse.json();
-    const pollsData: Poll[] = await pollsResponse.json();
+	const channelsData: AppChannel = await channelsResponse.json();
+	const pollsData: PollDTO[] = await pollsResponse.json();
 
-    const getPollsByPlaylist = (playlist: AppChannelPlaylist[]) => {
-        return playlist.map((poll) => ({
-            ...pollsData.find((p) => p.id === poll.pollId),
-            ...poll,
-        }));
-    };
+	const getPollsByPlaylist = (playlist: AppChannelPlaylist[]) => {
+		return playlist.map((poll) => ({
+			...pollsData.find((p) => p.id === poll.pollId),
+			...poll,
+		}));
+	};
 
-    const data = {
-        ...channelsData,
-        playlist: getPollsByPlaylist(channelsData.playlist),
-    };
+	const data = {
+		...channelsData,
+		playlist: getPollsByPlaylist(channelsData.playlist),
+	};
 
-    return json({ channel: data });
+	return json({ channel: data });
 };
 
 export default function Index() {
-    const { channel } = useLoaderData<LoaderData>();
+	const { channel } = useLoaderData<LoaderData>();
 
-    return (
-        <main>
-            <h1>Channel: {channel.name}</h1>
+	return (
+		<main>
+			<h1>Channel: {channel.name}</h1>
 
-            <h2>Polls for this channel</h2>
-            <ul>
-                {channel.playlist.map((poll) => (
-                    <li key={poll.pollId}>
-                        <Link
-                            to={`/polls/${poll.pollId}?channel=${channel.slug}`}
-                        >
-                            {JSON.stringify(poll)}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </main>
-    );
+			<h2>Polls for this channel</h2>
+			<ul>
+				{channel.playlist.map((poll) => (
+					<li key={poll.pollId}>
+						<Link
+							to={`/polls/${poll.pollId}?channel=${channel.slug}`}
+						>
+							{JSON.stringify(poll)}
+						</Link>
+					</li>
+				))}
+			</ul>
+		</main>
+	);
 }

@@ -9,12 +9,14 @@ export const isAuthorizedUser = async (request: Request) => {
 };
 
 export const throwIfNotAuthorized = async (request: Request) => {
-	const { isLoggedIn, error } = await isAuthorizedUser(request);
+	const { isLoggedIn, decodedClaims } = await isAuthorizedUser(request);
 
-	if (!isLoggedIn) {
+	if (!isLoggedIn || !decodedClaims) {
 		throw new Response(null, {
 			status: 404,
 			statusText: "Not Found",
 		});
 	}
+
+	return { decodedClaims };
 };

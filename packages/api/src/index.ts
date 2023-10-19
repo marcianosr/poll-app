@@ -3,7 +3,7 @@ import express, { Request, Response } from "express";
 import { NextFunction } from "express";
 import cors from "cors";
 import {
-	CreatePoll,
+	CreatePollDTO,
 	validateCreatePoll,
 	validateCreateChannel,
 	AppChannelPlaylist,
@@ -131,11 +131,11 @@ app.post(
 	// checkIfAuthenticated,
 	async (req: Request, res: Response) => {
 		try {
-			const data: CreatePoll = req.body;
+			const data: CreatePollDTO = req.body;
 			const poll = {
 				...data,
 				createdAt: FieldValue.serverTimestamp(),
-				createdBy: null, // TODO: Should be the user ID
+				// createdBy: null, // TODO: Should be the user ID
 			};
 
 			const newPoll = await db.collection("polls").add(poll);

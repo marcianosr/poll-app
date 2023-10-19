@@ -13,6 +13,7 @@ export const POLL_TAGS = [
 	"flutter",
 ] as const;
 
+// Left for inspiration
 export const POLL_TYPES = [
 	"single-choice",
 	"multiple-choice",
@@ -20,34 +21,18 @@ export const POLL_TYPES = [
 	// "spot-the-bug",
 ] as const;
 
-export type PollType = (typeof POLL_TYPES)[number];
-
-export type PollOptionFormatting = "text" | "code";
-export type PollTag = (typeof POLL_TAGS)[number];
-
-export type PollOption = {
+export type PollDTO = {
 	id: string;
-	value: string;
-	isCorrect: boolean;
-	formatting: PollOptionFormatting;
-	explanation: string | null;
-};
-
-export type Poll = {
-	id: string;
-	question: string;
-	options: PollOption[];
-	type: PollType;
-	no: number;
-	tags: PollTag[];
-	codeBlockExample: string | null;
-	visualCodeExample: string | null;
+	question: {
+		type: string;
+		data: unknown;
+	};
 	createdAt: number;
 	createdBy: string | null;
 };
 
-export type CreatePoll = Poll;
-export type UpdatePoll = Partial<Poll>;
+export type CreatePollDTO = Omit<PollDTO, "id">;
+export type UpdatePoll = Partial<PollDTO>;
 
 export type CreateAppChannel = Channel<AppChannel>;
 
