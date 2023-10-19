@@ -1,6 +1,14 @@
-import React, { forwardRef } from "react";
-import { ButtonProps } from "../../theming/ThemeType";
+import React, { PropsWithChildren, forwardRef } from "react";
 import { useThemedElement } from "../../theming/useThemedElement";
+
+export type ButtonProps = PropsWithChildren<
+    {
+        /**
+         * This prop is just as test, the real interface props are not defined yet.
+         */
+        size?: "small" | "medium" | "large";
+    } & JSX.IntrinsicElements["button"]
+>;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ({ children, ...props }, ref) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import { FormFieldProps } from "../../theming/ThemeType";
 import styles from "./FormField.module.css";
+import { FormFieldProps } from "../../components/FormField";
 
 export const FormField: React.FC<FormFieldProps> = ({
     fieldTitle,
