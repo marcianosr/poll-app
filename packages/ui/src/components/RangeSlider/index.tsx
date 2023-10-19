@@ -1,15 +1,26 @@
-import React, { forwardRef } from "react";
-import { RangeSliderProps } from "../../theming/ThemeType";
+import React, { PropsWithChildren, forwardRef } from "react";
 import { useThemedElement } from "../../theming/useThemedElement";
 
-export const RangeSlider = forwardRef<HTMLInputElement, RangeSliderProps>(
-	({ children, ...props }, ref) => {
-		const ThemedRangeSlider = useThemedElement("rangeSlider");
+export type RangeSliderProps = PropsWithChildren<
+    {
+        labels: {
+            title: string;
+            value: number;
+        }[];
+        min: number;
+        max: number;
+        step: number;
+    } & JSX.IntrinsicElements["input"]
+>;
 
-		return (
-			<ThemedRangeSlider ref={ref} {...props}>
-				{children}
-			</ThemedRangeSlider>
-		);
-	}
+export const RangeSlider = forwardRef<HTMLInputElement, RangeSliderProps>(
+    ({ children, ...props }, ref) => {
+        const ThemedRangeSlider = useThemedElement("rangeSlider");
+
+        return (
+            <ThemedRangeSlider ref={ref} {...props}>
+                {children}
+            </ThemedRangeSlider>
+        );
+    }
 );

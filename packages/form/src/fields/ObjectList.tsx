@@ -6,7 +6,7 @@ import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
 import { FormFields } from "../base-form/FormFields";
 import { FormFieldValue } from "../base-form/FormFieldValue";
-import { Button } from "@marcianosrs/ui";
+import { Button, Table } from "@marcianosrs/ui";
 import {
     schemaToDefaultValues,
     type FormDataObject,
@@ -32,107 +32,84 @@ const ObjectList = <TForm extends TypedForm>({
         <div>
             <label>{field.displayName}</label>
             <div>
-                <table>
-                    <thead>
-                        <tr>
-                            {objectSchema.map((field) => (
-                                <th key={field.name}>{field.displayName}</th>
-                            ))}
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {objectList.map((item, index) => (
-                            <React.Fragment key={index}>
-                                <tr>
-                                    {objectSchema.map((field) => (
-                                        <td key={field.name}>
-                                            <FormFieldValue
-                                                field={field}
-                                                value={
-                                                    item[
-                                                        field.name as keyof RecordType
-                                                    ] as ValueTypeOfField<
-                                                        typeof field
-                                                    >
-                                                }
-                                            />
-                                        </td>
-                                    ))}
-                                    <td>
-                                        <Button
-                                            onClick={() => {
-                                                setEditIndex(index);
-                                            }}
-                                            disabled={editIndex === index}
-                                        >
-                                            Edit
-                                        </Button>{" "}
-                                        <Button
-                                            onClick={() => {
-                                                setEditIndex(undefined);
-                                                setValue(
-                                                    objectList.filter(
-                                                        (e) => e !== item
-                                                    )
-                                                );
-                                            }}
-                                        >
-                                            Remove
-                                        </Button>
-                                        {hasErrors([`${index}`]) && (
-                                            <span title="Item has errors">
-                                                ⚠️
-                                            </span>
-                                        )}
-                                    </td>
-                                </tr>
-                                {index === editIndex && (
-                                    <tr>
-                                        <td colSpan={objectSchema.length + 1}>
-                                            <fieldset>
-                                                <legend>Edit item</legend>
-                                                <ObjectScopeProvider<RecordType>
-                                                    path={[
-                                                        `${field.name}`,
-                                                        `${index}`,
-                                                    ]}
-                                                    defaultValues={item}
+                <Table
+                    data={objectList}
+                    headers={objectSchema
+                        .map<React.ReactNode>((field) => field.displayName)
+                        .concat(null)}
+                    mapDataToRow={(item, index) => {
+                        const cells = objectSchema
+                            .map((field) => (
+                                <FormFieldValue
+                                    field={field}
+                                    value={
+                                        item[
+                                            field.name as keyof RecordType
+                                        ] as ValueTypeOfField<typeof field>
+                                    }
+                                />
+                            ))
+                            .concat(
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setEditIndex(index);
+                                        }}
+                                        disabled={editIndex === index}
+                                    >
+                                        Edit
+                                    </Button>{" "}
+                                    <Button
+                                        onClick={() => {
+                                            setEditIndex(undefined);
+                                            setValue(
+                                                objectList.filter(
+                                                    (e) => e !== item
+                                                )
+                                            );
+                                        }}
+                                    >
+                                        Remove
+                                    </Button>
+                                    {hasErrors([`${index}`]) && (
+                                        <span title="Item has errors">⚠️</span>
+                                    )}
+                                </>
+                            );
+
+                        const detailRow =
+                            editIndex === index ? (
+                                <fieldset>
+                                    <legend>Edit item</legend>
+                                    <ObjectScopeProvider<RecordType>
+                                        path={[`${field.name}`, `${index}`]}
+                                        defaultValues={item}
+                                    >
+                                        {({ getValues }) => (
+                                            <>
+                                                <FormFields
+                                                    schema={objectSchema}
+                                                />
+                                                <Button
+                                                    onClick={(event) => {
+                                                        event.preventDefault();
+                                                        setEditIndex(undefined);
+                                                        setValue(
+                                                            objectList.map<RecordType>(
+                                                                (item, index) =>
+                                                                    index ===
+                                                                    editIndex
+                                                                        ? {
+                                                                              ...getValues(),
+                                                                          }
+                                                                        : item
+                                                            )
+                                                        );
+                                                    }}
                                                 >
-                                                    {({ getValues }) => (
-                                                        <>
-                                                            <FormFields
-                                                                schema={
-                                                                    objectSchema
-                                                                }
-                                                            />
-                                                            <Button
-                                                                onClick={(
-                                                                    event
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setEditIndex(
-                                                                        undefined
-                                                                    );
-                                                                    setValue(
-                                                                        objectList.map<RecordType>(
-                                                                            (
-                                                                                item,
-                                                                                index
-                                                                            ) =>
-                                                                                index ===
-                                                                                editIndex
-                                                                                    ? {
-                                                                                          ...getValues(),
-                                                                                      }
-                                                                                    : item
-                                                                        )
-                                                                    );
-                                                                }}
-                                                            >
-                                                                Update item
-                                                            </Button>
-                                                            {/* <Button
+                                                    Update item
+                                                </Button>
+                                                {/* <Button
                                                                 onClick={(
                                                                     event
                                                                 ) => {
@@ -144,17 +121,15 @@ const ObjectList = <TForm extends TypedForm>({
                                                             >
                                                                 Cancel
                                                             </Button> */}
-                                                        </>
-                                                    )}
-                                                </ObjectScopeProvider>
-                                            </fieldset>
-                                        </td>
-                                    </tr>
-                                )}
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
+                                            </>
+                                        )}
+                                    </ObjectScopeProvider>
+                                </fieldset>
+                            ) : null;
+
+                        return { cells, detailRow };
+                    }}
+                />
 
                 <Button
                     onClick={(event) => {
