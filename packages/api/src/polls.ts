@@ -1,5 +1,4 @@
 import { CreatePollDTO, PollDTO } from "@marcianosrs/engine";
-import "./server"; // Server mode (will be removed in future)
 import { FieldValue, db } from "./firebase";
 
 export const createPoll = async (newPoll: CreatePollDTO): Promise<PollDTO> => {
@@ -27,4 +26,5 @@ export const getPolls = async (): Promise<PollDTO[]> =>
 						id: doc.id,
 					} as PollDTO)
 			)
-		);
+		)
+		.catch(() => []);

@@ -1,35 +1,23 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { API_ENDPOINT } from "~/util";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
-import { getSession } from "~/util/session.server";
 import { questionTypeStore, type PollDTO } from "@marcianosrs/engine";
+import { getPolls } from "./api.server";
 
 type LoaderData = {
 	polls: PollDTO[];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-	const session = await getSession(request.headers.get("cookie"));
-
 	await throwIfNotAuthorized(request);
 
-	const response = await fetch(`${API_ENDPOINT}/polls`, {
-		headers: {
-			Authorization: `Bearer ${session.get("accessToken")}`,
-		},
-	});
-
-	const data = await response.json();
-	console.log(data);
-
-	return json({ polls: data });
+	const polls = await getPolls();
+	return json({ polls });
 };
 
 export default function Index() {
 	const { polls } = useLoaderData<LoaderData>();
-	console.log(polls, "POLLS");
 
 	return (
 		<main>

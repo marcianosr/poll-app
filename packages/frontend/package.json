@@ -13,7 +13,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@marcianosrs/api": "workspace:*",
+    "@marcianosrs/api": "workspace:^",
     "@marcianosrs/client-auth": "workspace:*",
     "@marcianosrs/engine": "workspace:*",
     "@marcianosrs/form": "workspace:*",

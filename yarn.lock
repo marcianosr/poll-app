@@ -2952,7 +2952,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@marcianosrs/api@workspace:*, @marcianosrs/api@workspace:packages/api":
+"@marcianosrs/api@workspace:^, @marcianosrs/api@workspace:packages/api":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/api@workspace:packages/api"
   dependencies:
@@ -3029,7 +3029,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marcianosrs/frontend@workspace:packages/frontend"
   dependencies:
-    "@marcianosrs/api": "workspace:*"
+    "@marcianosrs/api": "workspace:^"
     "@marcianosrs/client-auth": "workspace:*"
     "@marcianosrs/engine": "workspace:*"
     "@marcianosrs/form": "workspace:*"

@@ -30,7 +30,7 @@ export type PollDTO = {
 	id: string;
 	question: {
 		type: string;
-		data: unknown;
+		data: { [x: string]: unknown };
 	};
 	createdAt: TimestampDTO;
 	createdBy: string | null;

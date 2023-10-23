@@ -7,8 +7,7 @@ import { Link } from "@remix-run/react";
 import { makeDomainFunction } from "domain-functions";
 import { formAction } from "../form-action.server";
 import { throwIfNotAuthorized } from "../util/isAuthorized";
-import { API_ENDPOINT } from "~/util";
-import { getSession } from "~/util/session.server";
+import { createPoll } from "./api.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
@@ -27,34 +26,22 @@ const schema = [
 
 const zodSchema = schemaToZod(schema);
 
-const mutation = (userId: string, accessToken: string) =>
+const mutation = (userId: string) =>
 	makeDomainFunction(zodSchema)(async (values) => {
 		const newPoll: CreatePollDTO = {
 			...values,
 			createdBy: userId,
-			createdAt: new Date().getTime(),
 		};
-
-		await fetch(`${API_ENDPOINT}/polls/new`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${accessToken}`,
-			},
-			body: JSON.stringify(newPoll),
-		});
-
-		return values;
+		const createdPoll = await createPoll(newPoll);
+		return createdPoll;
 	});
 
 export const action: ActionFunction = async ({ request }) => {
 	const { decodedClaims } = await throwIfNotAuthorized(request);
-	const session = await getSession(request.headers.get("cookie"));
-
 	return formAction({
 		request,
 		schema: zodSchema,
-		mutation: mutation(decodedClaims.uid, session.get("accessToken")),
+		mutation: mutation(decodedClaims.uid),
 		successPath: "/polls/",
 	});
 };
