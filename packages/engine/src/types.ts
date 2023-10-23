@@ -21,17 +21,22 @@ export const POLL_TYPES = [
 	// "spot-the-bug",
 ] as const;
 
+export type TimestampDTO = {
+	_seconds: number;
+	_nanoseconds: number;
+};
+
 export type PollDTO = {
 	id: string;
 	question: {
 		type: string;
 		data: unknown;
 	};
-	createdAt: number;
+	createdAt: TimestampDTO;
 	createdBy: string | null;
 };
 
-export type CreatePollDTO = Omit<PollDTO, "id">;
+export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
 export type UpdatePoll = Partial<PollDTO>;
 
 export type CreateAppChannel = Channel<AppChannel>;
