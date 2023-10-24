@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"name": "✨ poll-app",
+			"path": "../../.."
+		},
+		{
+			"name": "🚀 @marcianosrs/api",
+			"path": ".."
+		},
+		{
+			"name": "📦 @marcianosrs/engine",
+			"path": "../../engine"
+		},
+		{
+			"name": "📦 @marcianosrs/form",
+			"path": "../../form"
+		},
+		{
+			"name": "📦 @marcianosrs/form-schema",
+			"path": "../../form-schema"
+		},
+		{
+			"name": "🚀 @marcianosrs/frontend",
+			"path": "../../frontend"
+		},
+		{
+			"name": "📦 @marcianosrs/ui",
+			"path": "../../ui"
+		},
+		{
+			"name": "📦 @marcianosrs/utils",
+			"path": "../../utils"
+		}
+	],
+	"settings": {}
+}

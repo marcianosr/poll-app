@@ -29,7 +29,8 @@
     "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
     "frontend": "yarn workspace @marcianosrs/frontend run dev",
     "start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\"",
-    "start-local": "concurrently -n \"API,FE,FIRE\" -c \"magenta,blue,yellow\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\" \"yarn firestore\"",
+    "start-local-api": "concurrently -n \"API,FE,FIRE\" -c \"magenta,blue,yellow\" --kill-others-on-fail \"yarn api\" \"yarn frontend\" \"yarn firestore\"",
+    "start-local": "concurrently -n \"FE,FIRE\" -c \"blue,yellow\" --kill-others-on-fail \"yarn frontend\" \"yarn firestore\"",
     "storybook": "yarn workspace @marcianosrs/ui storybook"
   },
   "packageManager": "yarn@3.6.4"

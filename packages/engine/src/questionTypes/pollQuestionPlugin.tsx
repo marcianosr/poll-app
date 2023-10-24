@@ -1,4 +1,4 @@
-import { TypedForm } from "@marcianosrs/form-schema";
+import { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 import { PollQuestionPlugin } from "../types/poll";
 import React from "react";
 
@@ -100,6 +100,18 @@ const pollQuestionForm = [
 
 type PollQuestionData = typeof pollQuestionForm;
 
+const isPollQuestionData = (
+	e: unknown
+): e is FormDataObject<PollQuestionData> => {
+	if (typeof e !== "object" || e === null) return false;
+
+	const pollQuestionFields = ["question", "answers", "difficulty"].every(
+		(field) => field in e
+	);
+
+	return pollQuestionFields;
+};
+
 export const pollQuestion: PollQuestionPlugin<
 	PollQuestionData,
 	{ pickedAnswers: string[] }
@@ -112,5 +124,9 @@ export const pollQuestion: PollQuestionPlugin<
 			<p>Hello World</p>
 		</div>
 	),
+	getContentTitle: (data) => {
+		if (!isPollQuestionData(data)) return "Error: No question data";
+		return data.question;
+	},
 	// verifySettings: (e: unknown): e is PollQuestionData => false,
 };

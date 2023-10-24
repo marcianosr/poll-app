@@ -43,13 +43,22 @@ export const SchemaForm = <Schema extends TypedForm>({
             schema={zodSchema}
             values={values as RemixFormValues<Schema>}
         >
-            {({ Field, Errors, watch, setValue, register, formState }) => (
+            {({
+                Field,
+                Errors,
+                watch,
+                setValue,
+                register,
+                formState,
+                ...rest
+            }) => (
                 <FieldProvider
                     watch={watch}
                     setValue={setValue}
                     register={register}
                     state={formState}
                 >
+                    {/* {console.log("ERROR", Errors, "formState", formState)} */}
                     <input type="hidden" name={FORM_ID_FIELD} value={formId} />
                     {schema.map((field) => (
                         <Field key={field.name} name={field.name}>
@@ -60,7 +69,6 @@ export const SchemaForm = <Schema extends TypedForm>({
                         <HiddenFormData field={field} key={field.name} />
                     ))}
                     <Errors />
-
                     <SubmitButton type="submit">Ok</SubmitButton>
                 </FieldProvider>
             )}

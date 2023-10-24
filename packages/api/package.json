@@ -20,6 +20,6 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "start": "yarn build && nodemon --delay 500ms src/index.ts"
+    "start": "yarn build && nodemon --delay 500ms src/server.ts"
   }
 }
