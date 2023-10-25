@@ -1,37 +1,38 @@
 {
-  "name": "poll-app",
-  "version": "0.0.1",
-  "description": "Have your daily trivia in IT",
-  "main": "index.js",
-  "repository": "git@github.com:marcianosr/poll-app.git",
-  "author": "Marciano Schildmeijer <marciano@kabisa.nl>",
-  "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "devDependencies": {
-    "@parcel/packager-ts": "2.9.2",
-    "@parcel/transformer-typescript-types": "2.9.2",
-    "nx": "16.10.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "ts-node": "^10.9.1",
-    "typescript": ">=3.0.0"
-  },
-  "dependencies": {
-    "concurrently": "^8.0.1"
-  },
-  "scripts": {
-    "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
-    "check-types": "yarn nx run-many --target=check-types",
-    "api": "yarn workspace @marcianosrs/api start",
-    "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
-    "frontend": "yarn workspace @marcianosrs/frontend run dev",
-    "start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\"",
-    "start-local-api": "concurrently -n \"API,FE,FIRE\" -c \"magenta,blue,yellow\" --kill-others-on-fail \"yarn api\" \"yarn frontend\" \"yarn firestore\"",
-    "start-local": "concurrently -n \"FE,FIRE\" -c \"blue,yellow\" --kill-others-on-fail \"yarn frontend\" \"yarn firestore\"",
-    "storybook": "yarn workspace @marcianosrs/ui storybook"
-  },
-  "packageManager": "yarn@3.6.4"
+	"name": "poll-app",
+	"version": "0.0.1",
+	"description": "Have your daily trivia in IT",
+	"main": "index.js",
+	"repository": "git@github.com:marcianosr/poll-app.git",
+	"author": "Marciano Schildmeijer <marciano@kabisa.nl>",
+	"license": "MIT",
+	"private": true,
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"@parcel/packager-ts": "2.9.2",
+		"@parcel/transformer-typescript-types": "2.9.2",
+		"nx": "16.10.0",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"ts-node": "^10.9.1",
+		"typescript": ">=3.0.0"
+	},
+	"dependencies": {
+		"concurrently": "^8.0.1"
+	},
+	"scripts": {
+		"build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
+		"check-types": "yarn nx run-many --target=check-types",
+		"api": "yarn workspace @marcianosrs/api start",
+		"firestore": "yarn nx run @marcianosrs/server-auth:firestore",
+		"frontend": "yarn workspace @marcianosrs/frontend run dev",
+		"start": "concurrently -n \"API,FE\" -c \"magenta,blue\" --kill-others-on-fail \"yarn api\"  \"yarn frontend\"",
+		"start-local-api": "concurrently -n \"API,FE,FIRE\" -c \"magenta,blue,yellow\" --kill-others-on-fail \"yarn api\" \"yarn frontend\" \"yarn firestore\"",
+		"start-local": "concurrently -n \"FE,FIRE\" -c \"blue,yellow\" --kill-others-on-fail \"yarn frontend\" \"yarn firestore\"",
+		"storybook": "yarn workspace @marcianosrs/ui storybook",
+		"test:all": "yarn nx run-many --target=test --all"
+	},
+	"packageManager": "yarn@3.6.4"
 }
