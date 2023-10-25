@@ -42,7 +42,7 @@ export const getChannelBySlug = async (slug: string): Promise<ChannelDTO> => {
 		.collection("channels")
 		.where("slug", "==", slug)
 		.get();
-	if (!channelSnapshot.empty) {
+	if (channelSnapshot.empty) {
 		throw new Error(`Channel with slug '${slug}' not found`);
 	}
 
