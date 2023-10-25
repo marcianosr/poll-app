@@ -1,6 +1,7 @@
 import { CreateChannelDTO, ChannelDTO } from "@marcianosrs/engine";
 import { FieldValue, db } from "./firebase";
 import { toSlug } from "@marcianosrs/utils";
+import { docToDomainObject } from "./document-helpers";
 
 export const createChannel = async (
 	newChannel: CreateChannelDTO
@@ -23,8 +24,8 @@ export const createChannel = async (
 
 	const result = await db.collection("channels").add(channel);
 
-	const data = (await result.get()).data() as ChannelDTO;
-	return data;
+	const doc = await result.get();
+	return docToDomainObject<ChannelDTO>(doc);
 };
 
 export const getChannels = async (): Promise<ChannelDTO[]> =>
@@ -32,12 +33,19 @@ export const getChannels = async (): Promise<ChannelDTO[]> =>
 		.collection("channels")
 		.get()
 		.then((snapshot) =>
-			snapshot.docs.map<ChannelDTO>(
-				(doc) =>
-					({
-						...doc.data(),
-						id: doc.id,
-					} as ChannelDTO)
-			)
+			snapshot.docs.map((doc) => docToDomainObject<ChannelDTO>(doc))
 		)
 		.catch(() => []);
+
+export const getChannelBySlug = async (slug: string): Promise<ChannelDTO> => {
+	const channelSnapshot = await db
+		.collection("channels")
+		.where("slug", "==", slug)
+		.get();
+	if (!channelSnapshot.empty) {
+		throw new Error(`Channel with slug '${slug}' not found`);
+	}
+
+	const data = channelSnapshot.docs[0];
+	return docToDomainObject<ChannelDTO>(data);
+};
