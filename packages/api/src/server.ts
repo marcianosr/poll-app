@@ -4,11 +4,11 @@ import cors from "cors";
 import {
 	CreatePollDTO,
 	validateCreatePoll,
-	validateCreateChannel,
-	AppChannelPlaylist,
+	CreateChannelDTO,
 } from "@marcianosrs/engine";
 import { FieldValue, auth, db } from "./firebase";
 import { createPoll, getPolls } from "./polls";
+import { createChannel, getChannels } from "./channels";
 
 const app = express();
 
@@ -171,70 +171,14 @@ app.get(
 	}
 );
 
-app.post("/polls/:id/vote", async (req: Request, res: Response) => {
-	try {
-		const channel = await db
-			.collection("channels")
-			.where("slug", "==", req.body.channel)
-			.get();
-
-		if (!channel.docs.length) {
-			throw new Error("404 channel not found");
-		}
-
-		const userDidVote = channel.docs[0]
-			.data()
-			.playlist.find(
-				(playlistItem: AppChannelPlaylist) =>
-					playlistItem.pollId === req.params.id &&
-					playlistItem.votedBy.includes(req.body.uid)
-			);
-
-		if (userDidVote) {
-			return res.status(400).json({ error: "User already voted" });
-		}
-
-		const currentChannel = channel.docs[0].data();
-
-		const updatedPlaylist = currentChannel.playlist.map(
-			(playlistItem: AppChannelPlaylist) => {
-				if (playlistItem.pollId === req.params.id) {
-					playlistItem.votedBy.push(req.body.uid);
-				}
-
-				return playlistItem;
-			}
-		);
-
-		channel.docs[0].ref.update({ playlist: updatedPlaylist });
-
-		return res.json({ message: "Vote added" });
-	} catch (err) {
-		console.log("Error getting document", err);
-		return res.status(500).json({ error: "Internal server error" });
-	}
-});
-
 app.get(
 	"/channels",
-	async (req: Request, res: Response, next: NextFunction) => {
+	async (_req: Request, res: Response, next: NextFunction) => {
 		console.log("Call channels route");
 		try {
-			const channels = db
-				.collection("channels")
-				.get()
-				.then((snapshot) => {
-					const polls = snapshot.docs.map((doc) => {
-						return {
-							...doc.data(),
-							id: doc.id,
-						};
-					});
+			const channels = await getChannels();
 
-					return polls;
-				});
-
-			res.json(await channels);
+			res.json(channels);
 		} catch (err) {
 			console.log("Error getting document", err);
 			next(err);
@@ -285,22 +229,10 @@ app.post(
 	"/channels/new",
 	async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const channel = req.body;
+			const data: CreateChannelDTO = req.body;
 
-			const channelSnapshot = await db
-				.collection("channels")
-				.where("name", "==", channel.name)
-				.get();
-
-			const errors = validateCreateChannel(channel, channelSnapshot);
-
-			if (errors.length > 0) {
-				return res.status(400).json(errors);
-			}
-
-			const newChannel = await db.collection("channels").add(channel);
-
-			return res.json({ message: "Channel created" });
+			const createdPoll = await createChannel(data);
+			return res.json(createdPoll);
 		} catch (err) {
 			console.log("Error getting document", err);
 			next(err);

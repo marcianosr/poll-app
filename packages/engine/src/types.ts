@@ -35,61 +35,29 @@ export type PollDTO = {
 	createdAt: TimestampDTO;
 	createdBy: string | null;
 };
-
 export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
 export type UpdatePoll = Partial<PollDTO>;
 
-export type CreateAppChannel = Channel<AppChannel>;
-
-export type PollStatus = "open" | "upcoming" | "closed";
-type ChannelPlaylist = {
-	pollId: string;
-	status: PollStatus;
-	openedAt: number | null;
-};
-
-export type Channel<P> = {
+export type ChannelDTO = {
 	id: string;
 	name: string;
 	slug: string;
-	moderatorIds: string[];
-	createdAt: number;
+	theme: {
+		type: string;
+		data: { [x: string]: unknown };
+	};
+	createdAt: TimestampDTO;
 	createdBy: string | null;
-	playlist: P[];
-	distributionChannelName: DistributionChannelName;
 };
+export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
+export type UpdateChannel = Partial<ChannelDTO>;
 
-type DistributionChannelName = "App" | "Slack" | "LinkedIn";
-
-type AppChannelPlaylist = ChannelPlaylist & {
-	votedBy: string[];
-};
-
-type AppChannel = Channel<AppChannelPlaylist> & {
-	playerIds: string[];
-	plugins: PollPlugins[];
-};
-
-type SlackChannel = Channel<ChannelPlaylist>;
-type LinkedInChannel = Channel<ChannelPlaylist>;
-
-export type ChannelTypeMap = {
-	App: AppChannel;
-	Slack: SlackChannel;
-	LinkedIn: LinkedInChannel;
-};
-
-export type CreateChannelFn<K extends keyof ChannelTypeMap> = (
-	key: K,
-	channel: ChannelTypeMap[K]
-) => ChannelTypeMap[K];
-
-type PollPlugins =
-	| "seasons"
-	| "teams"
-	| "christmas-2023"
-	| "easter-2023"
-	| "harry-potter"
-	| "kabisino"
-	| "double-points"
-	| "1-vs-1";
+// type PollPlugins =
+// 	| "seasons"
+// 	| "teams"
+// 	| "christmas-2023"
+// 	| "easter-2023"
+// 	| "harry-potter"
+// 	| "kabisino"
+// 	| "double-points"
+// 	| "1-vs-1";
