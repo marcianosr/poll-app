@@ -23,3 +23,6 @@ packages/frontend/api/version.txt
 !/old-app/.yarn/releases
 !/old-app/.yarn/sdks
 !/old-app/.yarn/versions
+/test-results/
+/playwright-report/
+/playwright/.cache/
