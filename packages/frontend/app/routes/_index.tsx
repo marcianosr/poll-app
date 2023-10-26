@@ -4,7 +4,7 @@ import type {
 	MetaFunction,
 } from "@remix-run/node";
 import { Title } from "@marcianosrs/ui";
-import { useLoaderData, useSubmit } from "@remix-run/react";
+import { NavLink, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { loginAndCreate } from "@marcianosrs/client-auth";
 import {
@@ -12,6 +12,8 @@ import {
 	sessionLogin,
 	sessionLogout,
 } from "~/util/session.server";
+import { getChannels } from "./api.server";
+import type { ChannelDTO } from "@marcianosrs/engine";
 
 export const meta: MetaFunction = () => {
 	return [{ title: "New Remix App" }];
@@ -37,15 +39,17 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const loader: LoaderFunction = async ({ request }) => {
 	const { decodedClaims, error } = await isSessionValid(request);
-	return { decodedClaims, error };
+	const channels = await getChannels();
+	return { decodedClaims, error, channels };
 };
 
 export default function Index() {
 	const submit = useSubmit();
-	const { decodedClaims } = useLoaderData<{
+	const { decodedClaims, channels } = useLoaderData<{
 		decodedClaims: Awaited<
 			ReturnType<typeof isSessionValid>
 		>["decodedClaims"];
+		channels: ChannelDTO[];
 	}>();
 	const isLoggedIn = !!decodedClaims?.email;
 
@@ -83,33 +87,13 @@ export default function Index() {
 				<li>
 					<a href="/polls/new">Suggest a poll</a>
 				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/blog"
-						rel="noreferrer"
-					>
-						15m Quickstart Blog Tutorial
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/tutorials/jokes"
-						rel="noreferrer"
-					>
-						Deep Dive Jokes App Tutorial
-					</a>
-				</li>
-				<li>
-					<a
-						target="_blank"
-						href="https://remix.run/docs"
-						rel="noreferrer"
-					>
-						Remix Docs
-					</a>
-				</li>
+				{channels.map((channel) => (
+					<li key={channel.slug}>
+						<NavLink to={`/c/${channel.slug}`}>
+							{channel.name}
+						</NavLink>
+					</li>
+				))}
 			</ul>
 		</div>
 	);

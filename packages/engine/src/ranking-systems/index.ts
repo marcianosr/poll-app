@@ -1,7 +1,14 @@
-import { scoreSystemStore } from "./scoreSystems";
-import { pointScoreSystem } from "./systems/point-score-system";
+import { pointRankingSystem } from "./pointRankingSystem";
+import { TypedForm } from "@marcianosrs/form-schema";
+import { createPluginStore } from "@marcianosrs/utils";
+import { RankingSystemPlugin } from "../types/ranking-system";
 
-scoreSystemStore.add(pointScoreSystem);
+const rankingSystemStore = createPluginStore<
+	RankingSystemPlugin<TypedForm, unknown>,
+	unknown
+>((p) => p.rankingSystemType);
+
+rankingSystemStore.add(pointRankingSystem);
 
 // Here we can add different supporting score systems.
 // The score goes in, and stores it in its own administrative system, and can render a page to display it.
@@ -14,4 +21,4 @@ scoreSystemStore.add(pointScoreSystem);
 // Ranking can be determined from the score system.
 // It could be based in points, time since opening, answering speed, teams or a combination.
 
-export default scoreSystemStore;
+export { rankingSystemStore };
