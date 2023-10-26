@@ -3,7 +3,7 @@ import { getChannelBySlug } from "./api.server";
 import type { ChannelDTO } from "@marcianosrs/engine";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 
 type LoaderData = {
@@ -33,7 +33,13 @@ export default function Channel() {
 			<nav>
 				<p>Hello</p>
 			</nav>
-			<Outlet context={channel} />
+			<header>
+				<h1>Channel: {channel.name}</h1>
+			</header>
+			<Outlet context={{ channel }} />
+			<footer>
+				<NavLink to={"/polls/new"}>Suggest a poll</NavLink>
+			</footer>
 		</ThemeProvider>
 	);
 }
