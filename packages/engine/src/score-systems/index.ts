@@ -1,6 +1,8 @@
 import { scoreSystemStore } from "./scoreSystems";
+import { pointScoreSystem } from "./systems/point-score-system";
 
-// scoreSystemStore.add(ScoreMultiplier);
+scoreSystemStore.add(pointScoreSystem);
+
 // Here we can add different supporting score systems.
 // The score goes in, and stores it in its own administrative system, and can render a page to display it.
 

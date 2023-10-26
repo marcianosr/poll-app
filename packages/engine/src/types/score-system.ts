@@ -1,7 +1,7 @@
 import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 import type { QuestionScoreResult } from "./poll-result";
 
-type PlayerData = unknown;
+type PlayerData = { id: string };
 
 /**
  * Score systems define how ranking works.
@@ -25,20 +25,19 @@ export type ScoreSystemPlugin<
     verifySettings: (
         settings: unknown
     ) => settings is FormDataObject<FormDefinition>;
+    initializeSystemData: () => ScoreSystemData;
 
     editForm: FormDefinition;
 
-    renderScorePage: () => Promise<
-        React.FC<{
-            settings: FormDataObject<FormDefinition>;
-            data: ScoreSystemData;
-        }>
-    >;
+    ScorePage: React.FC<{
+        settings: FormDataObject<FormDefinition>;
+        data: ScoreSystemData;
+    }>;
 
-    processResult: <Settings extends FormDataObject<FormDefinition>>(
+    processResult: (
         score: QuestionScoreResult,
         player: PlayerData,
-        settings: Settings,
+        settings: FormDataObject<FormDefinition>,
         systemData: ScoreSystemData
     ) => ScoreSystemData;
 };
