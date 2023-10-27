@@ -3,7 +3,7 @@ import { questionTypeStore } from "@marcianosrs/engine";
 import { SchemaForm, pluginField, schemaToZod } from "@marcianosrs/form";
 import type { TypedForm } from "@marcianosrs/form-schema";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 import { makeDomainFunction } from "domain-functions";
 import { formAction } from "../form-action.server";
 import { throwIfNotAuthorized } from "../util/isAuthorized";
@@ -49,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
 export default function NewPoll() {
 	return (
 		<main>
-			<Link to="/polls">Back to list of polls</Link>
+			<NavLink to="/polls">Back to list of polls</NavLink>
 			<h1>Create new poll</h1>
 			<SchemaForm schema={schema} formId="questionType" />
 		</main>

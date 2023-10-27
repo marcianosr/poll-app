@@ -2958,6 +2958,7 @@ __metadata:
   dependencies:
     "@marcianosrs/engine": "*"
     "@marcianosrs/server-auth": "*"
+    "@marcianosrs/utils": "*"
     "@types/cors": ^2.8.13
     "@types/express": ^4.17.17
     cors: ^2.8.5
@@ -2985,6 +2986,7 @@ __metadata:
     "@marcianosrs/form-schema": "workspace:*"
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/utils": "workspace:*"
+    immer: ^10.0.3
     parcel: 2.9.2
     typescript: ^5.2.2
   peerDependencies:
@@ -3100,7 +3102,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@marcianosrs/utils@workspace:*, @marcianosrs/utils@workspace:packages/utils":
+"@marcianosrs/utils@*, @marcianosrs/utils@workspace:*, @marcianosrs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@marcianosrs/utils@workspace:packages/utils"
   dependencies:
@@ -12439,6 +12441,13 @@ __metadata:
   version: 5.2.4
   resolution: "ignore@npm:5.2.4"
   checksum: 3d4c309c6006e2621659311783eaea7ebcd41fe4ca1d78c91c473157ad6666a57a2df790fe0d07a12300d9aac2888204d7be8d59f9aaf665b1c7fcdb432517ef
+  languageName: node
+  linkType: hard
+
+"immer@npm:^10.0.3":
+  version: 10.0.3
+  resolution: "immer@npm:10.0.3"
+  checksum: 76acabe6f40e752028313762ba477a5d901e57b669f3b8fb406b87b9bb9b14e663a6fbbf5a6d1ab323737dd38f4b2494a4e28002045b88948da8dbf482309f28
   languageName: node
   linkType: hard
 

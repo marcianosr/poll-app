@@ -5,14 +5,15 @@ import { pollQuestion } from "./pollQuestionPlugin";
 import { memoryQuestion } from "./memoryQuestionPlugin";
 
 export type GenericPollQuestionPlugin = PollQuestionPlugin<
-    TypedForm,
-    Record<string, unknown>
+	TypedForm,
+	Record<string, unknown>
 >;
 
-export const questionTypeStore = createPluginStore<
-    GenericPollQuestionPlugin,
-    unknown
->((p) => p.contentType);
+const questionTypeStore = createPluginStore<GenericPollQuestionPlugin, unknown>(
+	(p) => p.contentType
+);
 
 questionTypeStore.add(pollQuestion);
 questionTypeStore.add(memoryQuestion);
+
+export { questionTypeStore };
