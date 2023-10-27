@@ -8,9 +8,5 @@ export function getPollIndexForDate(
 	const cron = parseCronExpression(channel.frequency.cronExpression);
 	const upcomingDates = cron.getNextDates(channel.collection.length);
 
-	console.log(targetDate);
-
-	console.log(upcomingDates);
-
 	return upcomingDates.findIndex((d) => d.getTime() === targetDate.getTime());
 }
