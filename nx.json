@@ -1,22 +1,27 @@
 {
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "build-storybook", "check-types"]
-      }
-    }
-  },
-  "targetDefaults": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["{projectRoot}/dist"]
-    },
-    "build-storybook": {
-      "outputs": ["{projectRoot}/storybook-static"]
-    }
-  },
-  "affected": {
-    "defaultBase": "main"
-  }
+	"tasksRunnerOptions": {
+		"default": {
+			"runner": "nx/tasks-runners/default",
+			"options": {
+				"cacheableOperations": [
+					"build",
+					"build-storybook",
+					"check-types",
+					"test:all"
+				]
+			}
+		}
+	},
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["{projectRoot}/dist"]
+		},
+		"build-storybook": {
+			"outputs": ["{projectRoot}/storybook-static"]
+		}
+	},
+	"affected": {
+		"defaultBase": "main"
+	}
 }
