@@ -20,7 +20,8 @@
 		"typescript": ">=3.0.0"
 	},
 	"dependencies": {
-		"concurrently": "^8.0.1"
+		"concurrently": "^8.0.1",
+		"cron-schedule": "^4.0.0"
 	},
 	"scripts": {
 		"build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",

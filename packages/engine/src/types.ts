@@ -38,6 +38,21 @@ export type PollDTO = {
 export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
 export type UpdatePoll = Partial<PollDTO>;
 
+export type ChannelCollection = {
+	pluginId: string;
+	pluginType: string; // Should become plugin type?
+	isOpen: boolean;
+	userActions: ChannelCollectionUserAction[];
+};
+
+export type ChannelCollectionUserAction = {
+	userId: string;
+	action: {
+		type: string;
+		data: { [x: string]: unknown };
+	};
+};
+
 export type ChannelDTO = {
 	id: string;
 	name: string;
@@ -48,7 +63,13 @@ export type ChannelDTO = {
 	};
 	createdAt: TimestampDTO;
 	createdBy: string | null;
+	frequency: {
+		cronExpression: string;
+		description: string;
+	};
+	collection: ChannelCollection[];
 };
+
 export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
 export type UpdateChannel = Partial<ChannelDTO>;
 
