@@ -1,6 +1,7 @@
-import { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
-import { PollQuestionPlugin } from "../types/poll";
-import React from "react";
+import type { PollQuestionPlugin } from "@marcianosrs/engine";
+import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
+import { Button } from "@marcianosrs/ui";
+import React, { useState } from "react";
 
 const answerSchema = [
 	{
@@ -119,11 +120,56 @@ export const pollQuestion: PollQuestionPlugin<
 	contentType: "pollQuestion",
 	displayName: "Regular poll question",
 	editForm: pollQuestionForm,
-	ShowQuestion: () => (
-		<div>
-			<p>Hello World</p>
-		</div>
-	),
+	ShowQuestion: ({ settings, onAnswer }) => {
+		const [answersSelected, setAnswersSelected] = useState<string[]>([]);
+
+		if (!isPollQuestionData(settings)) {
+			return <div>Sorry the data of this poll question is not valid</div>;
+		}
+
+		return (
+			<div>
+				<h1>{settings.question}</h1>
+				{settings.answers.map((a) => (
+					<div key={a.answerOption}>
+						<Button
+							onClick={() => {
+								setAnswersSelected((v) =>
+									v.includes(a.answerOption)
+										? v.filter((r) => r !== a.answerOption)
+										: v.concat(a.answerOption)
+								);
+							}}
+						>
+							{answersSelected.includes(a.answerOption) && "✅"}{" "}
+							{a.answerOption}
+						</Button>
+					</div>
+				))}
+
+				{onAnswer && (
+					<Button
+						onClick={() => {
+							onAnswer?.(
+								{ pickedAnswers: answersSelected },
+								{
+									rawPoints: 1,
+									maxPointsAvailable: 2,
+									answeredOrderNumber: 1,
+									answeredOrderNumberCorrect: 1,
+									questionDifficulty: settings.difficulty,
+									timeTaken: 5_000,
+									timeSinceQuestion: 30 * 60_000,
+								}
+							);
+						}}
+					>
+						Submit result
+					</Button>
+				)}
+			</div>
+		);
+	},
 	getContentTitle: (data) => {
 		if (!isPollQuestionData(data)) return "Error: No question data";
 		return data.question;

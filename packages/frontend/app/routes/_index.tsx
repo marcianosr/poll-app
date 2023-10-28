@@ -14,6 +14,7 @@ import {
 } from "~/util/session.server";
 import { getChannels } from "./api.server";
 import type { ChannelDTO } from "@marcianosrs/engine";
+import "../plugins";
 
 export const meta: MetaFunction = () => {
 	return [{ title: "New Remix App" }];

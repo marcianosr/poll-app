@@ -3,7 +3,7 @@ import { getChannelBySlug } from "./api.server";
 import type { ChannelDTO } from "@marcianosrs/engine";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { NavLink, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 
 type LoaderData = {
@@ -14,16 +14,26 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 	await throwIfNotAuthorized(request);
 
 	const id = params.id;
-	if (!id) {
-		throw new Error("No channel slug provided");
-	}
-	const channel = await getChannelBySlug(id);
+	try {
+		const channel = await getChannelBySlug(id);
 
-	return json({ channel });
+		return json({ channel });
+	} catch (e) {
+		return json({});
+	}
 };
 
 export default function Channel() {
 	const { channel } = useLoaderData<LoaderData>();
+	const { id } = useParams();
+	if (!channel) {
+		return (
+			<div>
+				<p>Channel "{id}" not found</p>
+				<NavLink to="/admin/channels/new">Create channel</NavLink>
+			</div>
+		);
+	}
 
 	return (
 		<ThemeProvider
@@ -35,6 +45,16 @@ export default function Channel() {
 			</nav>
 			<header>
 				<h1>Channel: {channel.name}</h1>
+				<menu>
+					<li>
+						<NavLink to={`/c/${channel.slug}/`}>Poll</NavLink>
+					</li>
+					<li>
+						<NavLink to={`/c/${channel.slug}/rankings/`}>
+							Rankings
+						</NavLink>
+					</li>
+				</menu>
 			</header>
 			<Outlet context={{ channel }} />
 			<footer>
