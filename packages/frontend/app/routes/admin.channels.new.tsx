@@ -8,6 +8,7 @@ import { formAction } from "../form-action.server";
 import { throwIfNotAuthorized } from "../util/isAuthorized";
 import { createChannel } from "./api.server";
 import { themeStore } from "@marcianosrs/ui";
+import { mockChannel } from "~/util/getCollectionIndexForDate.spec";
 
 export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
@@ -55,6 +56,12 @@ const mutation = (userId: string) =>
 		const newChannel: CreateChannelDTO = {
 			...values,
 			createdBy: userId,
+			frequency: mockChannel.frequency,
+			collection: mockChannel.collection,
+			theme: {
+				data: values.theme,
+				type: "theme",
+			},
 		};
 		const createdChannel = await createChannel(newChannel);
 		return createdChannel;

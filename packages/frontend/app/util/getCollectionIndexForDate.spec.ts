@@ -2,7 +2,7 @@ import { afterAll, beforeAll, expect, test, vitest } from "vitest";
 import type { CreateChannelDTO } from "@marcianosrs/engine";
 import { getPollIndexForDate } from "./getCollectionIndexForDate";
 
-const mockChannel: CreateChannelDTO = {
+export const mockChannel: CreateChannelDTO = {
 	name: "Test Channel",
 	theme: {
 		type: "default",
