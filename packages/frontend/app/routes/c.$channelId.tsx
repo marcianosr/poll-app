@@ -13,7 +13,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request, params }) => {
 	await throwIfNotAuthorized(request);
 
-	const id = params.id;
+	const id = params.channelId;
 	if (id === undefined) {
 		return json({});
 	}
@@ -54,7 +54,7 @@ export default function Channel() {
 						<NavLink to={`/c/${channel.slug}/`}>Poll</NavLink>
 					</li>
 					<li>
-						<NavLink to={`/c/${channel.slug}/rankings/`}>
+						<NavLink to={`/c/${channel.slug}/rankings/0`}>
 							Rankings
 						</NavLink>
 					</li>

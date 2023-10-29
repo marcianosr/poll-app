@@ -10,7 +10,7 @@ type LoaderData = {
 	poll: PollDTO;
 };
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
 	const polls = await getPolls();
 	return json({ poll: polls[0] });
