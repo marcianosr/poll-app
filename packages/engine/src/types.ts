@@ -39,8 +39,7 @@ export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
 export type UpdatePoll = Partial<PollDTO>;
 
 export type ChannelCollection = {
-	pluginId: string;
-	pluginType: string; // Should become plugin type?
+	id: Pick<PollDTO, "id">;
 	isOpen: boolean;
 	userActions: ChannelCollectionUserAction[];
 };
