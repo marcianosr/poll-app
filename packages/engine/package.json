@@ -12,10 +12,8 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@marcianosrs/form": "workspace:*",
     "@marcianosrs/form-schema": "workspace:*",
     "@marcianosrs/server-auth": "workspace:*",
-    "@marcianosrs/ui": "workspace:*",
     "@marcianosrs/utils": "workspace:*",
     "immer": "^10.0.3"
   },

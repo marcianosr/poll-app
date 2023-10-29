@@ -1,9 +1,12 @@
-import { pluginField } from "@marcianosrs/form";
 import { FirebaseBaseDTO } from "../types";
 import type { ContentIdentifier } from "./identifiers";
 import { rankingSystemStore } from "../ranking-systems";
-import { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
-import { themeStore } from "@marcianosrs/ui";
+import {
+	FormDataObject,
+	TypedForm,
+	pluginField,
+} from "@marcianosrs/form-schema";
+import { themeStore } from "../themeStore";
 
 const rankingSystemSchema = [
 	pluginField(

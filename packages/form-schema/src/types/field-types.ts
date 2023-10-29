@@ -1,3 +1,4 @@
+import { KeysOfType } from "@marcianosrs/utils";
 import {
 	BaseFixedFormField,
 	BaseObjectFormField,
@@ -122,3 +123,75 @@ export type FieldType<Key> =
 	| Title<Key>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;
+
+export const pluginField = <TKey extends string, TPluginType extends Plugin>(
+	name: TKey,
+	displayName: string,
+	store: PluginStore<TPluginType>,
+	displayProp: KeysOfType<TPluginType, string>,
+	formSchemaProp: KeysOfType<TPluginType, TypedForm>
+): Readonly<{
+	name: TKey;
+	displayName: string;
+	fieldType: "plugin";
+	valueType: "object";
+	store: PluginStore<TPluginType>;
+	displayProp: KeysOfType<TPluginType, string>;
+	formSchemaProp: KeysOfType<TPluginType, TypedForm>;
+	optional: false;
+	objectSchema: Readonly<
+		[
+			{
+				name: "type";
+				displayName: string;
+				fieldType: "select";
+				valueType: "list";
+				optional: false;
+				options: Readonly<FixedOption<string>[]>;
+				defaultValue: "";
+			},
+			{
+				name: "data";
+				displayName: "Settings";
+				fieldType: "object";
+				valueType: "object";
+				optional: false;
+				objectSchema: Readonly<[]>;
+			}
+		]
+	>;
+}> => {
+	const pluginForm = [
+		{
+			name: "type",
+			displayName,
+			fieldType: "select",
+			valueType: "list",
+			optional: false,
+			options: [],
+			defaultValue: "",
+		},
+		{
+			name: "data",
+			displayName: "Settings",
+			fieldType: "object",
+			valueType: "object",
+			optional: false,
+			objectSchema: [],
+		},
+	] as const satisfies PluginForm;
+
+	const fieldDef = {
+		name,
+		displayName,
+		fieldType: "plugin",
+		valueType: "object",
+		store,
+		displayProp,
+		formSchemaProp,
+		optional: false,
+		objectSchema: pluginForm,
+	} as const satisfies PluginField<TKey, TPluginType>;
+
+	return fieldDef;
+};

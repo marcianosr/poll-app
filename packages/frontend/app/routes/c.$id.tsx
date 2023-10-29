@@ -14,6 +14,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 	await throwIfNotAuthorized(request);
 
 	const id = params.id;
+	if (id === undefined) {
+		return json({});
+	}
+
 	try {
 		const channel = await getChannelBySlug(id);
 

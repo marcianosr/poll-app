@@ -1,9 +1,12 @@
-import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
-import { pluginField } from "@marcianosrs/form";
+import {
+	type TypedForm,
+	type FormDataObject,
+	pluginField,
+} from "@marcianosrs/form-schema";
 import type { ContentIdentifier, UserId } from "./identifiers";
 import type { QuestionScoreResult } from "./poll-result";
 import { FirebaseBaseDTO } from "../types";
-import { questionTypeStore } from "../questionTypes";
+import { questionTypeStore } from "../questionTypeStore";
 
 export const pollSchema = [
 	pluginField(

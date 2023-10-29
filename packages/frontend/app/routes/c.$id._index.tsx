@@ -37,7 +37,10 @@ export default function Poll() {
 				mode="answer"
 				settings={poll.question.data}
 				onAnswer={(answerData, result) => {
-					// answerData must be stored, result must be processed through plugins and score systems
+					// answerData must be stored,
+					// result must be processed through plugins and score systems
+					// how much can we do in the handle action in terms of timing etc?
+					console.log(answerData, result);
 				}}
 			/>
 		</main>

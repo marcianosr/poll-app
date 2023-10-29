@@ -5,21 +5,15 @@ import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import {
 	type PluginField,
 	type Plugin,
-	type PluginStore,
 	type FixedOption,
 	type PickListField,
 	type TypedForm,
 	schemaToDefaultValues,
 	type FieldType,
-	type PluginForm,
-	ValueTypeOfField,
-	SelectOptional,
-	Prettify,
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
 import { ZodSchemaType, schemaToZod } from "../schema/schemaToZod";
-import { KeysOfType, OmitNever } from "@marcianosrs/utils";
 
 type PluginFieldValue = { type: string; data: unknown };
 
@@ -118,6 +112,7 @@ export const pluginFieldPlugin: FormFieldPlugin<
 				const plugin = field.store.get(id);
 				return z.object({
 					type: z.literal(id),
+					// Not sure how to fix this :-(
 					data: schemaToZod(plugin[`${field.formSchemaProp}`]),
 				});
 			}) as unknown as [
@@ -132,76 +127,4 @@ export const pluginFieldPlugin: FormFieldPlugin<
 			]
 		);
 	},
-};
-
-export const pluginField = <TKey extends string, TPluginType extends Plugin>(
-	name: TKey,
-	displayName: string,
-	store: PluginStore<TPluginType>,
-	displayProp: KeysOfType<TPluginType, string>,
-	formSchemaProp: KeysOfType<TPluginType, TypedForm>
-): Readonly<{
-	name: TKey;
-	displayName: string;
-	fieldType: "plugin";
-	valueType: "object";
-	store: PluginStore<TPluginType>;
-	displayProp: KeysOfType<TPluginType, string>;
-	formSchemaProp: KeysOfType<TPluginType, TypedForm>;
-	optional: false;
-	objectSchema: Readonly<
-		[
-			{
-				name: "type";
-				displayName: string;
-				fieldType: "select";
-				valueType: "list";
-				optional: false;
-				options: Readonly<FixedOption<string>[]>;
-				defaultValue: "";
-			},
-			{
-				name: "data";
-				displayName: "Settings";
-				fieldType: "object";
-				valueType: "object";
-				optional: false;
-				objectSchema: Readonly<[]>;
-			}
-		]
-	>;
-}> => {
-	const pluginForm = [
-		{
-			name: "type",
-			displayName,
-			fieldType: "select",
-			valueType: "list",
-			optional: false,
-			options: [],
-			defaultValue: "",
-		},
-		{
-			name: "data",
-			displayName: "Settings",
-			fieldType: "object",
-			valueType: "object",
-			optional: false,
-			objectSchema: [],
-		},
-	] as const satisfies PluginForm;
-
-	const fieldDef = {
-		name,
-		displayName,
-		fieldType: "plugin",
-		valueType: "object",
-		store,
-		displayProp,
-		formSchemaProp,
-		optional: false,
-		objectSchema: pluginForm,
-	} as const satisfies PluginField<TKey, TPluginType>;
-
-	return fieldDef;
 };

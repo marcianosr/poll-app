@@ -1,5 +1,7 @@
 // General types: might move to a shared central package
 
+import { ContentIdentifier } from "./types/identifiers";
+
 export const POLL_TAGS = [
 	"javascript",
 	"typescript",
@@ -27,7 +29,7 @@ export type TimestampDTO = {
 };
 
 export type FirebaseBaseDTO = {
-	id: string;
+	id: ContentIdentifier;
 	createdAt: TimestampDTO;
 	createdBy: string | null;
 };
