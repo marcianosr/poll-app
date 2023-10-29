@@ -39,17 +39,9 @@ export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
 export type UpdatePoll = Partial<PollDTO>;
 
 export type ChannelCollection = {
-	id: Pick<PollDTO, "id">;
+	pollId: string;
 	isOpen: boolean;
-	userActions: ChannelCollectionUserAction[];
-};
-
-export type ChannelCollectionUserAction = {
-	userId: string;
-	action: {
-		type: string;
-		data: { [x: string]: unknown };
-	};
+	result: Pick<PollDTO, "question">;
 };
 
 export type ChannelDTO = {

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, expect, test, vitest } from "vitest";
 import type { CreateChannelDTO } from "@marcianosrs/engine";
-import { getPollIndexForDate } from "./getCollectionIndexForDate";
+import { getPollIndexForDate } from "./getPollIndexForDate";
 
 export const mockChannel: CreateChannelDTO = {
 	name: "Test Channel",
@@ -15,22 +15,49 @@ export const mockChannel: CreateChannelDTO = {
 	},
 	collection: [
 		{
-			pluginId: "sa7fg72dff",
-			pluginType: "pollQuestion", // represents a poll question plugin type for now
+			pollId: "poll-1",
 			isOpen: false,
-			userActions: [],
+			result: {
+				question: {
+					type: "pollQuestion",
+					data: {
+						question: "What is React?",
+						description: undefined,
+						answers: [Array],
+						difficulty: 5,
+					},
+				},
+			},
 		},
 		{
-			pluginId: "sa7fg72dff",
-			pluginType: "pollQuestion",
+			pollId: "poll-2",
 			isOpen: false,
-			userActions: [],
+			result: {
+				question: {
+					type: "pollQuestion",
+					data: {
+						question: "What is React?",
+						description: undefined,
+						answers: [Array],
+						difficulty: 5,
+					},
+				},
+			},
 		},
 		{
-			pluginId: "sa7fg72dff",
-			pluginType: "memoryQuestion",
+			pollId: "poll-3",
 			isOpen: false,
-			userActions: [],
+			result: {
+				question: {
+					type: "pollQuestion",
+					data: {
+						question: "What is React?",
+						description: undefined,
+						answers: [Array],
+						difficulty: 5,
+					},
+				},
+			},
 		},
 	],
 };
@@ -77,7 +104,7 @@ test("returns the correct collection index for the current date", () => {
 	const pollIndex = getPollIndexForDate(mockChannel, currentDate);
 
 	expect(pollIndex).toBe(0);
-	expect(mockChannel.collection[pollIndex].pluginType).toBe("pollQuestion");
+	expect(mockChannel.collection[pollIndex].pollId).toBe("poll-1");
 });
 
 test("returns the correct collection index for the current date", () => {
@@ -86,5 +113,5 @@ test("returns the correct collection index for the current date", () => {
 	const pollIndex = getPollIndexForDate(mockChannel, currentDate);
 
 	expect(pollIndex).toBe(2);
-	expect(mockChannel.collection[pollIndex].pluginType).toBe("memoryQuestion");
+	expect(mockChannel.collection[pollIndex].pollId).toBe("poll-3");
 });
