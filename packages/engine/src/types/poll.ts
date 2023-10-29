@@ -7,6 +7,7 @@ import type { ContentIdentifier, UserId } from "./identifiers";
 import type { QuestionScoreResult } from "./poll-result";
 import { FirebaseBaseDTO } from "../types";
 import { questionTypeStore } from "../questionTypeStore";
+import React from "react";
 
 export const pollSchema = [
 	pluginField(

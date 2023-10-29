@@ -29,11 +29,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export default function Channel() {
 	const { channel } = useLoaderData<LoaderData>();
-	const { id } = useParams();
+	const { channelId } = useParams();
 	if (!channel) {
 		return (
 			<div>
-				<p>Channel "{id}" not found</p>
+				<p>Channel "{channelId}" not found</p>
 				<NavLink to="/admin/channels/new">Create channel</NavLink>
 			</div>
 		);

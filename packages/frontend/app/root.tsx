@@ -9,7 +9,10 @@ import {
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
 import { registerQuestionPlugins } from "~/plugins/questionTypes";
+import { registerRankingPlugins } from "./plugins/rankingSystems";
+
 registerQuestionPlugins();
+registerRankingPlugins();
 
 export const links: LinksFunction = () =>
 	cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : [];

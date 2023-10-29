@@ -1,6 +1,6 @@
 import { FirebaseBaseDTO } from "../types";
 import type { ContentIdentifier } from "./identifiers";
-import { rankingSystemStore } from "../ranking-systems";
+import { rankingSystemStore } from "../rankingSystemStore";
 import {
 	FormDataObject,
 	TypedForm,
