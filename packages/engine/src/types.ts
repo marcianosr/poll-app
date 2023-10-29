@@ -26,31 +26,11 @@ export type TimestampDTO = {
 	_nanoseconds: number;
 };
 
-export type PollDTO = {
+export type FirebaseBaseDTO = {
 	id: string;
-	question: {
-		type: string;
-		data: { [x: string]: unknown };
-	};
 	createdAt: TimestampDTO;
 	createdBy: string | null;
 };
-export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
-export type UpdatePoll = Partial<PollDTO>;
-
-export type ChannelDTO = {
-	id: string;
-	name: string;
-	slug: string;
-	theme: {
-		type: string;
-		data: { [x: string]: unknown };
-	};
-	createdAt: TimestampDTO;
-	createdBy: string | null;
-};
-export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
-export type UpdateChannel = Partial<ChannelDTO>;
 
 // type PollPlugins =
 // 	| "seasons"

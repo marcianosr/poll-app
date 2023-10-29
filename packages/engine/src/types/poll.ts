@@ -1,32 +1,38 @@
 import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import { pluginField } from "@marcianosrs/form";
 import type { ContentIdentifier, UserId } from "./identifiers";
 import type { QuestionScoreResult } from "./poll-result";
+import { FirebaseBaseDTO } from "../types";
+import { questionTypeStore } from "../questionTypes";
 
-export type PollQuestion<QuestionData extends Record<string, unknown>> = {
-	id: ContentIdentifier;
-	submitter: UserId;
-	created: Date;
-	status: "draft" | "approved";
+export const pollSchema = [
+	pluginField(
+		"question",
+		"Question",
+		questionTypeStore,
+		"displayName",
+		"editForm"
+	),
+] as const satisfies TypedForm;
 
-	content: QuestionData;
-	contentType: string;
-	tags: string[];
-};
+export type PollDTO = FirebaseBaseDTO & FormDataObject<typeof pollSchema>;
+export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
+export type UpdatePoll = Partial<PollDTO>;
 
-export type QuestionFeedback = {
-	questionId: ContentIdentifier;
-	feedbackType: "confusing";
-	details: string;
-	resolved: boolean;
-};
+// export type QuestionFeedback = {
+// 	questionId: ContentIdentifier;
+// 	feedbackType: "confusing";
+// 	details: string;
+// 	resolved: boolean;
+// };
 
-export type PollItem = {
-	id: ContentIdentifier;
-	channelId: ContentIdentifier;
-	orderId: number;
-	status: "closed" | "open" | "upcoming";
-	questionId: ContentIdentifier;
-};
+// export type PollItem = {
+// 	id: ContentIdentifier;
+// 	channelId: ContentIdentifier;
+// 	orderId: number;
+// 	status: "closed" | "open" | "upcoming";
+// 	questionId: ContentIdentifier;
+// };
 
 export type PollUserResult<AnswerData extends Record<string, unknown>> = {
 	pollId: ContentIdentifier;
