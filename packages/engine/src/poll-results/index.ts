@@ -5,4 +5,4 @@ import { ScoreThresholdCutOff } from "./processors/scoreThresholdCutOff";
 scoreProcessorStore.add(ScoreMultiplier);
 scoreProcessorStore.add(ScoreThresholdCutOff);
 
-export default scoreProcessorStore;
+export { scoreProcessorStore };

@@ -4,3 +4,4 @@ export * from "./types/channel";
 export * from "./questionTypeStore";
 export * from "./themeStore";
 export * from "./rankingSystemStore";
+export * from "./poll-results/index";

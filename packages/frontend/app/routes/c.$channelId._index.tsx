@@ -1,8 +1,12 @@
 // import type { ChannelDTO } from "@marcianosrs/engine";
 import { objectToFormMapping } from "@marcianosrs/form";
-import { getPolls } from "./api.server";
-import { questionTypeStore } from "@marcianosrs/engine";
-import type { PollUserResult, PollDTO } from "@marcianosrs/engine";
+import { getChannelBySlug, getPolls } from "./api.server";
+import { questionTypeStore, scoreProcessorStore } from "@marcianosrs/engine";
+import type {
+	PollUserResult,
+	PollDTO,
+	QuestionScoreResult,
+} from "@marcianosrs/engine";
 import { json } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
@@ -25,8 +29,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 	return json({ poll });
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
 	const { decodedClaims } = await throwIfNotAuthorized(request);
+
+	const channelId = params.channelId;
+	if (channelId === undefined) {
+		return null;
+	}
+
+	const channel = await getChannelBySlug(channelId);
 
 	const data = await request.text();
 	const formData = parse(data);
@@ -42,13 +53,30 @@ export const action: ActionFunction = async ({ request }) => {
 		earlierQuestionResults
 	);
 
+	const scorePluginsActive = (channel.scoreModifiers ?? []).map<string>(
+		(m) => m.processor.type
+	);
+
+	const processors = (channel.scoreModifiers ?? []).map<
+		(score: QuestionScoreResult) => QuestionScoreResult
+	>((m) => {
+		const processor = scoreProcessorStore.get(m.processor.type);
+		return (score: QuestionScoreResult) =>
+			processor.processResult(score, m.processor.data);
+	});
+
+	const processedScoreResult = processors.reduce(
+		(score, processor) => processor(score),
+		questionResult
+	);
+
 	const newResult: PollUserResult<Record<string, unknown>> = {
 		originalScoreResult: questionResult,
-		processedScoreResult: questionResult,
+		processedScoreResult,
 		pollId: poll.id,
 		questionId: "Id-of-channel-question-thingie",
 		questionResult: formData,
-		scorePluginsActive: [],
+		scorePluginsActive,
 		userId: decodedClaims.uid,
 	};
 

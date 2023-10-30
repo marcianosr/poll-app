@@ -7,7 +7,7 @@ import {
 	pluginField,
 } from "@marcianosrs/form-schema";
 import { themeStore } from "../themeStore";
-import scoreProcessorStore from "../poll-results";
+import { scoreProcessorStore } from "../poll-results";
 
 const rankingSystemSchema = [
 	pluginField(
