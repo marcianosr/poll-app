@@ -7,6 +7,7 @@ import {
 	pluginField,
 } from "@marcianosrs/form-schema";
 import { themeStore } from "../themeStore";
+import scoreProcessorStore from "../poll-results";
 
 const rankingSystemSchema = [
 	pluginField(
@@ -14,6 +15,16 @@ const rankingSystemSchema = [
 		"Ranking system",
 		rankingSystemStore,
 		"rankingSystemType",
+		"editForm"
+	),
+] as const satisfies TypedForm;
+
+const scoreModifierSchema = [
+	pluginField(
+		"processor",
+		"ScoreModifier",
+		scoreProcessorStore,
+		"processorType",
 		"editForm"
 	),
 ] as const satisfies TypedForm;
@@ -36,6 +47,15 @@ export const channelSchema = [
 		objectSchema: rankingSystemSchema,
 		optional: false,
 		minimalAmount: 1,
+	},
+	{
+		name: "scoreModifiers",
+		displayName: "ScoreModifiers",
+		fieldType: "objectList",
+		valueType: "objects",
+		objectSchema: scoreModifierSchema,
+		optional: true,
+		minimalAmount: 0,
 	},
 ] as const satisfies TypedForm;
 
