@@ -1,24 +1,65 @@
 // import type { ChannelDTO } from "@marcianosrs/engine";
+import { objectToFormMapping } from "@marcianosrs/form";
 import { getPolls } from "./api.server";
-import { questionTypeStore, type PollDTO } from "@marcianosrs/engine";
-import { json, type LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { questionTypeStore } from "@marcianosrs/engine";
+import type { PollUserResult, PollDTO } from "@marcianosrs/engine";
+import { json } from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { useLoaderData, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 // import { useOutletContext } from "@remix-run/react";
+import { parse } from "qs";
 
 type LoaderData = {
 	poll: PollDTO;
 };
 
+const getActivePoll = async () => {
+	const polls = await getPolls();
+	return polls[0];
+};
+
 export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
-	const polls = await getPolls();
-	return json({ poll: polls[0] });
+	const poll = await getActivePoll();
+	return json({ poll });
+};
+
+export const action: ActionFunction = async ({ request }) => {
+	const data = await request.text();
+	const formData = parse(data);
+
+	const poll = await getActivePoll();
+	const pollPlugin = questionTypeStore.get(poll.question.type);
+	const earlierQuestionResults: PollUserResult<Record<string, unknown>>[] =
+		[];
+
+	const questionResult = pollPlugin.createScoreResult(
+		poll.question.data,
+		formData,
+		earlierQuestionResults
+	);
+
+	console.log(questionResult);
+
+	return null;
+};
+
+const objectToFormData = (answerData: Record<string, unknown>): FormData => {
+	const result = new FormData();
+	for (const [key, value] of Object.entries(
+		objectToFormMapping([], answerData)
+	)) {
+		result.append(key, value);
+	}
+
+	return result;
 };
 
 export default function Poll() {
 	const { poll } = useLoaderData<LoaderData>();
 	// const { channel } = useOutletContext<{ channel: ChannelDTO }>();
+	const submit = useSubmit();
 
 	if (!poll) {
 		return (
@@ -36,11 +77,13 @@ export default function Poll() {
 			<pollPlugin.ShowQuestion
 				mode="answer"
 				settings={poll.question.data}
-				onAnswer={(answerData, result) => {
+				onAnswer={(answerData) => {
 					// answerData must be stored,
 					// result must be processed through plugins and score systems
 					// how much can we do in the handle action in terms of timing etc?
-					console.log(answerData, result);
+					submit(objectToFormData(answerData), {
+						method: "POST",
+					});
 				}}
 			/>
 		</main>

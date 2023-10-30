@@ -30,6 +30,7 @@
     "domain-functions": "^2.4.0",
     "dotenv": "^16.0.3",
     "isbot": "^3.6.8",
+    "qs": "^6.11.2",
     "react-hook-form": "^7.47.0",
     "remix-forms": "^2.1.0",
     "uuid": "^9.0.0",

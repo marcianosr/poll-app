@@ -69,11 +69,17 @@ export type PollQuestionPlugin<
 
 	editForm: FormDefinition;
 
+	createScoreResult: (
+		question: FormDataObject<FormDefinition>,
+		data: AnswerData,
+		results: PollUserResult<AnswerData>[]
+	) => QuestionScoreResult;
+
 	ShowQuestion: React.FC<{
 		settings: FormDataObject<FormDefinition>;
 		mode: "preview" | "answer" | "result";
 		pollUserResults?: PollUserResult<AnswerData>[];
-		onAnswer?: (data: AnswerData, result: QuestionScoreResult) => void;
+		onAnswer?: (data: AnswerData) => void;
 	}>;
 	getContentTitle: (data: unknown) => string;
 };

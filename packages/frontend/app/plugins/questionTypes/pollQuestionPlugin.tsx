@@ -69,9 +69,9 @@ const pollQuestionForm = [
 		valueType: "number",
 		name: "difficulty",
 		displayName: "Difficulty",
-		defaultValue: 0.5,
-		min: 0,
-		max: 10,
+		defaultValue: 3,
+		min: 1,
+		max: 5,
 		optional: false,
 		step: 1,
 		labels: [
@@ -113,6 +113,8 @@ const isPollQuestionData = (
 	return pollQuestionFields;
 };
 
+const MAX_POINTS_MAX_DIFFICULTY = 3; // will be 3 * 5 = 15
+
 export const pollQuestion: PollQuestionPlugin<
 	PollQuestionData,
 	{ pickedAnswers: string[] }
@@ -120,6 +122,52 @@ export const pollQuestion: PollQuestionPlugin<
 	contentType: "pollQuestion",
 	displayName: "Regular poll question",
 	editForm: pollQuestionForm,
+	createScoreResult: (question, data, results) => {
+		// TODO: This function should be thoroughly unit tested.
+
+		const amountCorrectAnswers = question.answers.filter(
+			(a) => a.correctAnswer
+		).length;
+		const amountCorrect = question.answers.filter(
+			(answer) =>
+				answer.correctAnswer &&
+				data.pickedAnswers.includes(answer.answerOption)
+		).length;
+
+		const amountCorrectResults = results.filter(
+			(f) =>
+				f.originalScoreResult.rawPoints ===
+				f.originalScoreResult.maxPointsAvailable
+		).length;
+
+		const maxPointsAvailable =
+			question.difficulty * MAX_POINTS_MAX_DIFFICULTY;
+
+		const perfectAnswer =
+			amountCorrectAnswers === amountCorrect &&
+			amountCorrect === data.pickedAnswers.length;
+
+		const pointsPerWrongAnswer =
+			maxPointsAvailable / question.answers.length;
+
+		const rawPoints = perfectAnswer
+			? maxPointsAvailable
+			: (amountCorrect / amountCorrectAnswers) * maxPointsAvailable -
+			  (data.pickedAnswers.length - amountCorrect) *
+					pointsPerWrongAnswer;
+
+		return {
+			answeredOrderNumber: results.length,
+			answeredOrderNumberCorrect: perfectAnswer
+				? amountCorrectResults
+				: null,
+			maxPointsAvailable,
+			rawPoints,
+			questionDifficulty: question.difficulty,
+			timeSinceQuestion: 0, // will be implemented later
+			timeTaken: 0, // will be implemented later
+		};
+	},
 	ShowQuestion: ({ settings, onAnswer }) => {
 		const [answersSelected, setAnswersSelected] = useState<string[]>([]);
 
@@ -150,18 +198,7 @@ export const pollQuestion: PollQuestionPlugin<
 				{onAnswer && (
 					<Button
 						onClick={() => {
-							onAnswer?.(
-								{ pickedAnswers: answersSelected },
-								{
-									rawPoints: 1,
-									maxPointsAvailable: 2,
-									answeredOrderNumber: 1,
-									answeredOrderNumberCorrect: 1,
-									questionDifficulty: settings.difficulty,
-									timeTaken: 5_000,
-									timeSinceQuestion: 30 * 60_000,
-								}
-							);
+							onAnswer?.({ pickedAnswers: answersSelected });
 						}}
 					>
 						Submit result

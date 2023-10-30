@@ -2983,7 +2983,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@marcianosrs/engine@workspace:packages/engine"
   dependencies:
-    "@marcianosrs/form": "workspace:*"
     "@marcianosrs/form-schema": "workspace:*"
     "@marcianosrs/server-auth": "workspace:*"
     "@marcianosrs/utils": "workspace:*"
@@ -3055,6 +3054,7 @@ __metadata:
     dotenv: ^16.0.3
     eslint: ^8.38.0
     isbot: ^3.6.8
+    qs: ^6.11.2
     react-hook-form: ^7.47.0
     remix-forms: ^2.1.0
     typescript: ^4.9.5
