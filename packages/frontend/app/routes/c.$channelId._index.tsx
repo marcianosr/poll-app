@@ -26,13 +26,15 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+	const { decodedClaims } = await throwIfNotAuthorized(request);
+
 	const data = await request.text();
 	const formData = parse(data);
 
 	const poll = await getActivePoll();
 	const pollPlugin = questionTypeStore.get(poll.question.type);
 	const earlierQuestionResults: PollUserResult<Record<string, unknown>>[] =
-		[];
+		[]; // <-- This should come from channel-question model, user answers
 
 	const questionResult = pollPlugin.createScoreResult(
 		poll.question.data,
@@ -40,7 +42,17 @@ export const action: ActionFunction = async ({ request }) => {
 		earlierQuestionResults
 	);
 
-	console.log(questionResult);
+	const newResult: PollUserResult<Record<string, unknown>> = {
+		originalScoreResult: questionResult,
+		processedScoreResult: questionResult,
+		pollId: poll.id,
+		questionId: "Id-of-channel-question-thingie",
+		questionResult: formData,
+		scorePluginsActive: [],
+		userId: decodedClaims.uid,
+	};
+
+	console.log(newResult); // <-- This should be stored in the channel-question model as user answer
 
 	return null;
 };
@@ -78,9 +90,6 @@ export default function Poll() {
 				mode="answer"
 				settings={poll.question.data}
 				onAnswer={(answerData) => {
-					// answerData must be stored,
-					// result must be processed through plugins and score systems
-					// how much can we do in the handle action in terms of timing etc?
 					submit(objectToFormData(answerData), {
 						method: "POST",
 					});
