@@ -1,4 +1,4 @@
-import { FirebaseBaseDTO } from "../types";
+import { FirebaseBaseDTO, TimestampDTO } from "../types";
 import type { ContentIdentifier } from "./identifiers";
 import { rankingSystemStore } from "../rankingSystemStore";
 import {
@@ -38,6 +38,14 @@ export const channelSchema = [
 		displayName: "name",
 		optional: false,
 	},
+	{
+		valueType: "string",
+		fieldType: "hidden",
+		defaultValue: "0 10 * * 1-5",
+		optional: true,
+		displayName: "Frequency",
+		name: "frequency",
+	},
 	pluginField("theme", "Theme", themeStore, "displayName", "editForm"),
 	{
 		name: "rankingSystems",
@@ -59,44 +67,16 @@ export const channelSchema = [
 	},
 ] as const satisfies TypedForm;
 
-export type ChannelCollection = {
-	pollId: ContentIdentifier;
-	isOpen: boolean;
-	// result: Pick<PollDTO, "question">;
-};
-
 export type ChannelDTO = FirebaseBaseDTO &
 	FormDataObject<typeof channelSchema> & {
 		slug: string;
-
-		frequency: {
-			cronExpression: string;
-			description: string; // Should we be able to deduct this from the pattern?
-		};
-		collection: ChannelCollection[];
+		startedAt: TimestampDTO | null;
+		playlist: ContentIdentifier[];
 	};
 
-export type CreateChannelDTO = Omit<
-	ChannelDTO,
-	"id" | "createdAt" | "slug" | "frequency" | "collection"
->;
+export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
 
 export type UpdateChannel = Partial<ChannelDTO>;
-
-// export type Channel = {
-//     id: ContentIdentifier;
-//     name: string;
-//     description: string;
-//     owner: UserId;
-//     theme: ContentIdentifier;
-//     scoreSystems: ContentIdentifier[];
-//     moderatorIds: string[];
-//     createdAt: number;
-//     createdBy: string;
-//     playlist: PollItem[];
-//     frequency: "daily" | "weekly";
-//     order: "shuffle" | "asc" | "desc";
-// };
 
 // export type Season = {
 //     id: ContentIdentifier;

@@ -19,6 +19,8 @@ export const createChannel = async (
 	const channel = {
 		...newChannel,
 		slug,
+		playlist: [],
+		startedAt: null,
 		createdAt,
 	};
 
