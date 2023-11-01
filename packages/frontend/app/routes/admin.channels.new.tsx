@@ -18,33 +18,9 @@ const mutation = (userId: string) =>
 	makeDomainFunction(zodSchema)(async (values) => {
 		const newChannel: CreateChannelDTO = {
 			...values,
+			startedAt: null,
+			playlist: [],
 			createdBy: userId,
-			// Mock data that can be removed
-			frequency: {
-				cronExpression: "0 10 * * 1-5",
-				description: "Every weekday around 10 'o' clock",
-			},
-			collection: [
-				{
-					isOpen: true,
-					pollId: "1",
-					result: {
-						question: {
-							type: "pollQuestion",
-							data: {
-								question: "What is React?",
-								description: undefined,
-								answers: [],
-								difficulty: 5,
-							},
-						},
-					},
-				},
-			],
-			theme: {
-				data: values.theme,
-				type: "theme",
-			},
 		};
 		const createdChannel = await createChannel(newChannel);
 		return createdChannel;

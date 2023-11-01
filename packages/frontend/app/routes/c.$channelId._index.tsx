@@ -1,31 +1,39 @@
-// import type { ChannelDTO } from "@marcianosrs/engine";
 import { objectToFormMapping } from "@marcianosrs/form";
-import { getChannelBySlug, getPolls } from "./api.server";
+import { getChannelBySlug } from "./api.server";
 import { questionTypeStore, scoreProcessorStore } from "@marcianosrs/engine";
 import type {
 	PollUserResult,
 	PollDTO,
 	QuestionScoreResult,
+	ChannelDTO,
+	ChannelPollItemDTO,
 } from "@marcianosrs/engine";
 import { json } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
-// import { useOutletContext } from "@remix-run/react";
 import { parse } from "qs";
 
 type LoaderData = {
 	poll: PollDTO;
 };
 
-const getActivePoll = async () => {
-	const polls = await getPolls();
-	return polls[0];
+const getActivePoll = async (
+	channel: ChannelDTO
+): Promise<ChannelPollItemDTO | null> => {
+	// const polls = await getPolls();
+	return null;
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction = async ({ request, params }) => {
 	await throwIfNotAuthorized(request);
-	const poll = await getActivePoll();
+	const channelId = params.channelId;
+	if (channelId === undefined) {
+		return null;
+	}
+	const channel = await getChannelBySlug(channelId);
+
+	const poll = await getActivePoll(channel);
 	return json({ poll });
 };
 
@@ -42,13 +50,17 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const data = await request.text();
 	const formData = parse(data);
 
-	const poll = await getActivePoll();
-	const pollPlugin = questionTypeStore.get(poll.question.type);
+	const channelPollItem = await getActivePoll(channel);
+	if (!channelPollItem) {
+		throw new Error("Poll Question not found");
+	}
+
+	const pollPlugin = questionTypeStore.get(channelPollItem.question.type);
 	const earlierQuestionResults: PollUserResult<Record<string, unknown>>[] =
 		[]; // <-- This should come from channel-question model, user answers
 
 	const questionResult = pollPlugin.createScoreResult(
-		poll.question.data,
+		channelPollItem.question.data,
 		formData,
 		earlierQuestionResults
 	);
@@ -73,7 +85,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const newResult: PollUserResult<Record<string, unknown>> = {
 		originalScoreResult: questionResult,
 		processedScoreResult,
-		pollId: poll.id,
+		pollId: channelPollItem.id,
 		questionId: "Id-of-channel-question-thingie",
 		questionResult: formData,
 		scorePluginsActive,

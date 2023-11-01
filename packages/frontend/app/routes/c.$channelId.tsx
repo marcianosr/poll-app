@@ -58,6 +58,11 @@ export default function Channel() {
 							Rankings
 						</NavLink>
 					</li>
+					<li>
+						<NavLink to={`/c/${channel.slug}/manage/add-content`}>
+							Add content
+						</NavLink>
+					</li>
 				</menu>
 			</header>
 			<Outlet context={{ channel }} />
