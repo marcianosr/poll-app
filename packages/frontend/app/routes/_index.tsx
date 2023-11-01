@@ -3,7 +3,7 @@ import type {
 	LoaderFunction,
 	MetaFunction,
 } from "@remix-run/node";
-import { Title } from "@marcianosrs/ui";
+import { Heading } from "@marcianosrs/ui";
 import { NavLink, useLoaderData, useSubmit } from "@remix-run/react";
 
 import { loginAndCreate } from "@marcianosrs/client-auth";
@@ -77,7 +77,7 @@ export default function Index() {
 	return (
 		<div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
 			<h1>Welcome to Remix</h1>
-			<Title>Remix!</Title>
+			<Heading as="h2">Remix!</Heading>
 			{isLoggedIn ? (
 				<button onClick={logout}>Logout</button>
 			) : (

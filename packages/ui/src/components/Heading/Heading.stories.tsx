@@ -1,12 +1,12 @@
 import React from "react";
-import { Title as TitleComponent } from ".";
+import { Heading as HeadingComponent } from ".";
 // import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 const Story = {
-	component: TitleComponent,
-	title: "Elements/Title",
+	component: HeadingComponent,
+	title: "Elements/Heading",
 	args: {
-		children: "Title",
+		children: "Heading",
 	},
 	argTypes: {},
 };
@@ -14,5 +14,5 @@ const Story = {
 export default Story;
 
 export const Template = (props) => (
-	<TitleComponent {...props}>{props.children}</TitleComponent>
+	<HeadingComponent {...props}>{props.children}</HeadingComponent>
 );
