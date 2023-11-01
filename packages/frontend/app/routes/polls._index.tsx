@@ -13,6 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
 
 	const polls = await getPolls();
+
 	return json({ polls });
 };
 
@@ -27,6 +28,9 @@ export default function Index() {
 			<ul>
 				{polls.map((poll) => {
 					const pluginType = poll.question.type;
+
+					if (!pluginType) return null;
+
 					const plugin = questionTypeStore.get(pluginType);
 					const name = plugin.getContentTitle(poll.question.data);
 

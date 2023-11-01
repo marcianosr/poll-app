@@ -59,9 +59,28 @@ export const channelSchema = [
 	},
 ] as const satisfies TypedForm;
 
+export type ChannelCollection = {
+	pollId: ContentIdentifier;
+	isOpen: boolean;
+	// result: Pick<PollDTO, "question">;
+};
+
 export type ChannelDTO = FirebaseBaseDTO &
-	FormDataObject<typeof channelSchema> & { slug: string };
-export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
+	FormDataObject<typeof channelSchema> & {
+		slug: string;
+
+		frequency: {
+			cronExpression: string;
+			description: string; // Should we be able to deduct this from the pattern?
+		};
+		collection: ChannelCollection[];
+	};
+
+export type CreateChannelDTO = Omit<
+	ChannelDTO,
+	"id" | "createdAt" | "slug" | "frequency" | "collection"
+>;
+
 export type UpdateChannel = Partial<ChannelDTO>;
 
 // export type Channel = {
