@@ -3205,6 +3205,7 @@ __metadata:
     "@types/react-dom": ^18.0.11
     "@types/uuid": ^9.0.1
     "@vercel/node": ^2.10.3
+    cron-schedule: ^4.0.0
     domain-functions: ^2.4.0
     dotenv: ^16.0.3
     eslint: ^8.38.0
@@ -3213,6 +3214,7 @@ __metadata:
     remix-forms: ^2.1.0
     typescript: ^4.9.5
     uuid: ^9.0.0
+    vitest: ^0.34.6
     zod: ^3.22.4
   peerDependencies:
     react: ^18.2.0
@@ -9542,6 +9544,13 @@ __metadata:
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
   checksum: a9a1503d4390d8b59ad86f4607de7870b39cad43d929813599a23714831e81c520bddf61bcdd1f8e30f05fd3a2b71ae8538e946eb2786dc65c2bbc520f692eff
+  languageName: node
+  linkType: hard
+
+"cron-schedule@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "cron-schedule@npm:4.0.0"
+  checksum: c4d3eb663a7c7d4762a5158bf663af8438a9ab9be841cbe205d8b059205ef5c1bae4c87f22241be95731ca88affe0839852bb5d0c662adc09592d84f6478c60e
   languageName: node
   linkType: hard
 
