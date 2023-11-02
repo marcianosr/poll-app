@@ -1,4 +1,8 @@
-import { CreateChannelDTO, ChannelDTO } from "@marcianosrs/engine";
+import {
+	CreateChannelDTO,
+	ChannelDTO,
+	ContentIdentifier,
+} from "@marcianosrs/engine";
 import { FieldValue, db } from "./firebase";
 import { toSlug } from "@marcianosrs/utils";
 import { docToDomainObject } from "./document-helpers";
@@ -50,4 +54,24 @@ export const getChannelBySlug = async (slug: string): Promise<ChannelDTO> => {
 
 	const data = channelSnapshot.docs[0];
 	return docToDomainObject<ChannelDTO>(data);
+};
+
+export const addPollToChannel = async (
+	channelId: ContentIdentifier,
+	pollId: ContentIdentifier
+) => {
+	const channelPoll = {
+		pollId,
+		channelId,
+		openedAt: null,
+		closedAt: null,
+		answers: [],
+	};
+
+	const result = await db.collection("channelPolls").add(channelPoll);
+
+	await db
+		.collection("channels")
+		.doc(channelId)
+		.update({ playlist: FieldValue.arrayUnion(result.id) });
 };

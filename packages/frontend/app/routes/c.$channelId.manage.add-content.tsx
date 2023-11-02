@@ -3,11 +3,16 @@ import {
 	type ChannelDTO,
 	questionTypeStore,
 } from "@marcianosrs/engine";
-import { json, type LoaderFunction } from "@remix-run/node";
+import {
+	json,
+	type LoaderFunction,
+	type ActionFunction,
+} from "@remix-run/node";
 import { useOutletContext, useLoaderData, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
-import { getPolls } from "./api.server";
+import { addPollToChannel, getPolls } from "./api.server";
 import { Button } from "@marcianosrs/ui";
+import { parse } from "qs";
 
 type LoaderData = {
 	polls: PollDTO[];
@@ -19,6 +24,16 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const polls = await getPolls();
 
 	return json({ polls });
+};
+
+export const action: ActionFunction = async ({ request }) => {
+	await throwIfNotAuthorized(request);
+	const data = await request.text();
+	const formData = parse(data) as { channelId: string; pollId: string };
+
+	addPollToChannel(formData.channelId, formData.pollId);
+
+	return null;
 };
 
 export default function Channel() {
