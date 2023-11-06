@@ -71,7 +71,7 @@ export type ChannelDTO = FirebaseBaseDTO &
 	FormDataObject<typeof channelSchema> & {
 		slug: string;
 		startedAt: TimestampDTO | null;
-		playlist: ContentIdentifier[];
+		queue: ContentIdentifier[];
 	};
 
 export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;

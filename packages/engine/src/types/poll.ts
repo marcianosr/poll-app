@@ -8,6 +8,7 @@ import type { QuestionScoreResult } from "./poll-result";
 import { FirebaseBaseDTO } from "../types";
 import { questionTypeStore } from "../questionTypeStore";
 import React from "react";
+import { PluginData } from "./plugin-data";
 
 export const pollSchema = [
 	pluginField(
@@ -47,7 +48,7 @@ export type PollUserResult<AnswerData extends Record<string, unknown>> = {
 	originalScoreResult: QuestionScoreResult;
 	// After the scorePlugins have mutated the result
 	processedScoreResult: QuestionScoreResult;
-	scorePluginsActive: ContentIdentifier[];
+	userScorePluginsActive: PluginData[];
 };
 
 /**
