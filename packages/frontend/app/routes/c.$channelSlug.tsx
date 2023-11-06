@@ -7,33 +7,29 @@ import { NavLink, Outlet, useLoaderData, useParams } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 
 type LoaderData = {
-	channel: ChannelDTO;
+	channel: ChannelDTO | null;
+	userId: string;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
-	await throwIfNotAuthorized(request);
+	const { decodedClaims } = await throwIfNotAuthorized(request);
 
-	const id = params.channelId;
-	if (id === undefined) {
-		return json({});
+	const slug = params.channelSlug;
+	if (slug === undefined) {
+		return json({ channel: null, userId: decodedClaims.uid });
 	}
 
-	try {
-		const channel = await getChannelBySlug(id);
-
-		return json({ channel });
-	} catch (e) {
-		return json({});
-	}
+	const channel = await getChannelBySlug(slug);
+	return json({ channel, userId: decodedClaims.uid });
 };
 
 export default function Channel() {
-	const { channel } = useLoaderData<LoaderData>();
-	const { channelId } = useParams();
+	const { channel, userId } = useLoaderData<LoaderData>();
+	const { channelSlug } = useParams();
 	if (!channel) {
 		return (
 			<div>
-				<p>Channel "{channelId}" not found</p>
+				<p>Channel "{channelSlug}" not found</p>
 				<NavLink to="/admin/channels/new">Create channel</NavLink>
 			</div>
 		);
@@ -65,7 +61,7 @@ export default function Channel() {
 					</li>
 				</menu>
 			</header>
-			<Outlet context={{ channel }} />
+			<Outlet context={{ channel, userId }} />
 			<footer>
 				<NavLink to={"/polls/new"}>Suggest a poll</NavLink>
 			</footer>

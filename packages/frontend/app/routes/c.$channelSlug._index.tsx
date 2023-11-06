@@ -1,80 +1,78 @@
 import { objectToFormMapping } from "@marcianosrs/form";
-import { getChannelBySlug } from "./api.server";
+import {
+	createPollResult,
+	getChannelBySlug,
+	getOpenPollForChannel,
+	getPollById,
+} from "./api.server";
 import { questionTypeStore, scoreProcessorStore } from "@marcianosrs/engine";
 import type {
 	PollUserResult,
 	PollDTO,
 	QuestionScoreResult,
-	ChannelDTO,
 	ChannelPollItemDTO,
 } from "@marcianosrs/engine";
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { useLoaderData, useSubmit } from "@remix-run/react";
+import { useLoaderData, useOutletContext, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { parse } from "qs";
 
 type LoaderData = {
-	poll: PollDTO;
-};
-
-const getActivePoll = async (
-	channel: ChannelDTO
-): Promise<ChannelPollItemDTO | null> => {
-	// const polls = await getPolls();
-	return null;
+	channelPoll: ChannelPollItemDTO | null;
+	poll: PollDTO | null;
+	userId: string;
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
 	await throwIfNotAuthorized(request);
-	const channelId = params.channelId;
-	if (channelId === undefined) {
+	const slug = params.channelSlug;
+	if (slug === undefined) {
 		return null;
 	}
-	const channel = await getChannelBySlug(channelId);
+	const channel = await getChannelBySlug(slug);
+	const channelPoll = channel && (await getOpenPollForChannel(channel.id));
+	const poll = channelPoll && (await getPollById(channelPoll.pollId));
 
-	const poll = await getActivePoll(channel);
-	return json({ poll });
+	return json({ channelPoll, poll });
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
 	const { decodedClaims } = await throwIfNotAuthorized(request);
 
-	const channelId = params.channelId;
-	if (channelId === undefined) {
+	const channelSlug = params.channelSlug;
+	if (channelSlug === undefined) {
 		return null;
 	}
 
-	const channel = await getChannelBySlug(channelId);
+	const channel = await getChannelBySlug(channelSlug);
 
 	const data = await request.text();
 	const formData = parse(data);
 
-	const channelPollItem = await getActivePoll(channel);
-	if (!channelPollItem) {
+	const channelPollItem =
+		channel && (await getOpenPollForChannel(channel.id));
+	const poll = channelPollItem && (await getPollById(channelPollItem.pollId));
+	if (!poll) {
 		throw new Error("Poll Question not found");
 	}
 
-	const pollPlugin = questionTypeStore.get(channelPollItem.question.type);
+	const pollPlugin = questionTypeStore.get(poll.question.type);
 	const earlierQuestionResults: PollUserResult<Record<string, unknown>>[] =
-		[]; // <-- This should come from channel-question model, user answers
+		channelPollItem.answers;
 
 	const questionResult = pollPlugin.createScoreResult(
-		channelPollItem.question.data,
+		poll.question.data,
 		formData,
 		earlierQuestionResults
 	);
 
-	const scorePluginsActive = (channel.scoreModifiers ?? []).map<string>(
-		(m) => m.processor.type
-	);
-
-	const processors = (channel.scoreModifiers ?? []).map<
+	const processors = (channelPollItem.questionScorePluginsActive ?? []).map<
 		(score: QuestionScoreResult) => QuestionScoreResult
 	>((m) => {
-		const processor = scoreProcessorStore.get(m.processor.type);
+		const processor = scoreProcessorStore.get(m.type);
 		return (score: QuestionScoreResult) =>
-			processor.processResult(score, m.processor.data);
+			processor.processResult(score, m.data);
 	});
 
 	const processedScoreResult = processors.reduce(
@@ -85,16 +83,13 @@ export const action: ActionFunction = async ({ request, params }) => {
 	const newResult: PollUserResult<Record<string, unknown>> = {
 		originalScoreResult: questionResult,
 		processedScoreResult,
-		pollId: channelPollItem.id,
-		questionId: "Id-of-channel-question-thingie",
 		questionResult: formData,
-		scorePluginsActive,
+		userScorePluginsActive: [],
 		userId: decodedClaims.uid,
 	};
+	createPollResult(channelPollItem.id, newResult);
 
-	console.log(newResult); // <-- This should be stored in the channel-question model as user answer
-
-	return null;
+	return redirect(`/c/${channel.slug}/`);
 };
 
 const objectToFormData = (answerData: Record<string, unknown>): FormData => {
@@ -109,8 +104,8 @@ const objectToFormData = (answerData: Record<string, unknown>): FormData => {
 };
 
 export default function Poll() {
-	const { poll } = useLoaderData<LoaderData>();
-	// const { channel } = useOutletContext<{ channel: ChannelDTO }>();
+	const { poll, channelPoll } = useLoaderData<LoaderData>();
+	const { userId } = useOutletContext<{ userId: string }>();
 	const submit = useSubmit();
 
 	if (!poll) {
@@ -123,17 +118,27 @@ export default function Poll() {
 
 	const pollPlugin = questionTypeStore.get(poll.question.type);
 
+	const mode = channelPoll?.answers.some((a) => a.userId === userId)
+		? "result"
+		: "answer";
+
 	return (
 		<main>
 			<h2>Polls for this channel</h2>
 			<pollPlugin.ShowQuestion
-				mode="answer"
+				mode={mode}
 				settings={poll.question.data}
-				onAnswer={(answerData) => {
-					submit(objectToFormData(answerData), {
-						method: "POST",
-					});
-				}}
+				pollUserResults={channelPoll?.answers}
+				currentUserId={userId}
+				onAnswer={
+					mode === "answer"
+						? (answerData) => {
+								submit(objectToFormData(answerData), {
+									method: "POST",
+								});
+						  }
+						: undefined
+				}
 			/>
 		</main>
 	);

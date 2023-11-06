@@ -168,7 +168,13 @@ export const pollQuestion: PollQuestionPlugin<
 			timeTaken: 0, // will be implemented later
 		};
 	},
-	ShowQuestion: ({ settings, onAnswer }) => {
+	ShowQuestion: ({
+		settings,
+		onAnswer,
+		mode,
+		pollUserResults = [],
+		currentUserId,
+	}) => {
 		const [answersSelected, setAnswersSelected] = useState<string[]>([]);
 
 		if (!isPollQuestionData(settings)) {
@@ -182,16 +188,28 @@ export const pollQuestion: PollQuestionPlugin<
 					<div key={a.answerOption}>
 						<Button
 							onClick={() => {
-								setAnswersSelected((v) =>
-									v.includes(a.answerOption)
-										? v.filter((r) => r !== a.answerOption)
-										: v.concat(a.answerOption)
-								);
+								onAnswer &&
+									setAnswersSelected((v) =>
+										v.includes(a.answerOption)
+											? v.filter(
+													(r) => r !== a.answerOption
+											  )
+											: v.concat(a.answerOption)
+									);
 							}}
 						>
 							{answersSelected.includes(a.answerOption) && "✅"}{" "}
 							{a.answerOption}
 						</Button>
+						{mode === "result" && a.correctAnswer ? "✅" : "🚫"}
+						{mode === "result" &&
+							pollUserResults.some(
+								(r) =>
+									r.questionResult.pickedAnswers.includes(
+										a.answerOption
+									) && r.userId === currentUserId
+							) &&
+							"You!"}
 					</div>
 				))}
 

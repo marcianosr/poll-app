@@ -40,8 +40,6 @@ export type UpdatePoll = Partial<PollDTO>;
 // };
 
 export type PollUserResult<AnswerData extends Record<string, unknown>> = {
-	pollId: ContentIdentifier;
-	questionId: ContentIdentifier;
 	userId: UserId;
 	questionResult: AnswerData;
 
@@ -79,6 +77,7 @@ export type PollQuestionPlugin<
 	ShowQuestion: React.FC<{
 		settings: FormDataObject<FormDefinition>;
 		mode: "preview" | "answer" | "result";
+		currentUserId: string;
 		pollUserResults?: PollUserResult<AnswerData>[];
 		onAnswer?: (data: AnswerData) => void;
 	}>;

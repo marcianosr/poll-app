@@ -14,15 +14,7 @@ export const docToDomainObject = <T>(
 export const getDocumentById = async <T>(
 	collection: string,
 	id: ContentIdentifier
-): T => {
-	const itemSnapshot = await db
-		.collection(collection)
-		.where("id", "==", id)
-		.get();
-	if (itemSnapshot.empty) {
-		throw new Error(`Item from ${collection} with id ${id} not found`);
-	}
-
-	const data = itemSnapshot.docs[0];
+): Promise<T | null> => {
+	const data = await db.collection(collection).doc(id).get();
 	return docToDomainObject<T>(data);
 };

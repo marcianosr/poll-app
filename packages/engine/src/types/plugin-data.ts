@@ -1,1 +1,1 @@
-export type PluginData = { type: string; data: unknown };
+export type PluginData = { type: string; data: Record<string, unknown> };
