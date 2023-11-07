@@ -1,4 +1,9 @@
-import type { PollUserResult, QuestionScoreResult } from "@marcianosrs/engine";
+import type {
+	ChannelDTO,
+	PluginData,
+	PollUserResult,
+	QuestionScoreResult,
+} from "@marcianosrs/engine";
 import {
 	questionTypeStore,
 	rankingSystemStore,
@@ -15,6 +20,49 @@ import {
 
 type AnswerData = Record<string, unknown>;
 
+const createProcessorChain = (processorPlugins: PluginData[]) => {
+	const processors = processorPlugins.map<
+		(score: QuestionScoreResult) => QuestionScoreResult
+	>(
+		(plugin) => (score: QuestionScoreResult) =>
+			scoreProcessorStore
+				.get(plugin.type)
+				.processResult(score, plugin.data)
+	);
+
+	return {
+		process: (score: QuestionScoreResult): QuestionScoreResult =>
+			processors.reduce((score, processor) => processor(score), score),
+	};
+};
+
+const updateRankingSystems = async (
+	rankingSystems: ChannelDTO["rankingSystems"],
+	scoreResult: QuestionScoreResult,
+	userId: string
+) => {
+	for (const ranking of rankingSystems) {
+		const { type: pluginType, data: pluginSettings } = ranking.ranking;
+
+		if (!ranking.rankingSystemId) continue;
+
+		const rankingPlugin = rankingSystemStore.get(pluginType);
+		if (!rankingPlugin.verifySettings(pluginSettings)) continue;
+
+		const rankingData = await getRankingSystemById(ranking.rankingSystemId);
+		const data =
+			rankingData?.content ?? rankingPlugin.initializeSystemData();
+
+		const updatedRankingData = rankingPlugin.processResult(
+			scoreResult,
+			{ id: userId },
+			pluginSettings,
+			data
+		);
+		await updateRankingSystem(ranking.rankingSystemId, updatedRankingData);
+	}
+};
+
 export const answerPollQuestion = async (
 	channelSlug: string,
 	answerData: AnswerData,
@@ -22,35 +70,27 @@ export const answerPollQuestion = async (
 ) => {
 	const channel = await getChannelBySlug(channelSlug);
 
+	// used for storing and retrieving answers of this question instance
 	const channelPollItem =
 		channel && (await getOpenPollForChannel(channel.id));
+
+	// contains the question and answer data
 	const poll = channelPollItem && (await getPollById(channelPollItem.pollId));
 	if (!poll) {
 		throw new Error("Poll Question not found");
 	}
-
 	const pollPlugin = questionTypeStore.get(poll.question.type);
-	const earlierQuestionResults: PollUserResult<AnswerData>[] =
-		channelPollItem.answers;
 
+	// Initial poll result, before further processing
 	const questionResult = pollPlugin.createScoreResult(
 		poll.question.data,
 		answerData,
-		earlierQuestionResults
+		channelPollItem.answers
 	);
 
-	const processors = (channelPollItem.questionScorePluginsActive ?? []).map<
-		(score: QuestionScoreResult) => QuestionScoreResult
-	>((m) => {
-		const processor = scoreProcessorStore.get(m.type);
-		return (score: QuestionScoreResult) =>
-			processor.processResult(score, m.data);
-	});
-
-	const processedScoreResult = processors.reduce(
-		(score, processor) => processor(score),
-		questionResult
-	);
+	const processedScoreResult = createProcessorChain(
+		channelPollItem.questionScorePluginsActive ?? []
+	).process(questionResult);
 
 	const newResult: PollUserResult<Record<string, unknown>> = {
 		originalScoreResult: questionResult,
@@ -59,23 +99,13 @@ export const answerPollQuestion = async (
 		userScorePluginsActive: [],
 		userId,
 	};
+
+	// Store user answer into poll question
 	createPollResult(channelPollItem.id, newResult);
 
-	for (const ranking of channel.rankingSystems) {
-		if (!ranking.rankingSystemId) continue;
-
-		const rankingData = await getRankingSystemById(ranking.rankingSystemId);
-		const rankingPlugin = rankingSystemStore.get(ranking.ranking.type);
-		if (rankingPlugin.verifySettings(ranking.ranking.data)) {
-			const data =
-				rankingData?.content ?? rankingPlugin.initializeSystemData();
-			const updatedData = rankingPlugin.processResult(
-				processedScoreResult,
-				{ id: userId },
-				ranking.ranking.data,
-				data
-			);
-			await updateRankingSystem(ranking.rankingSystemId, updatedData);
-		}
-	}
+	await updateRankingSystems(
+		channel.rankingSystems,
+		processedScoreResult,
+		userId
+	);
 };
