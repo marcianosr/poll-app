@@ -3,6 +3,8 @@ import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
 import { z } from "zod";
 import { useCustomField } from "../base-form/FieldContext";
 import type { HiddenField } from "@marcianosrs/form-schema";
+import { transform } from "@marcianosrs/utils";
+import { makeOptionalString } from "../schema/zodUtils";
 
 const HiddenField = ({ field }: FormFieldProps<HiddenField<string>>) => {
 	const { register } = useCustomField(field);
@@ -12,10 +14,13 @@ const HiddenField = ({ field }: FormFieldProps<HiddenField<string>>) => {
 
 export const hiddenFieldPlugin: FormFieldPlugin<
 	HiddenField<string>,
-	z.ZodString
+	z.ZodString | z.ZodOptional<z.ZodString>
 > = {
 	fieldType: "hidden",
 	Component: HiddenField,
 	Show: () => null,
-	toZodSchema: () => z.string().min(1),
+	toZodSchema: (field) =>
+		transform(z.string().min(1))
+			.apply(field.optional, makeOptionalString)
+			.result(),
 };
