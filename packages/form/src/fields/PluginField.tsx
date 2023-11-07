@@ -113,7 +113,11 @@ export const pluginFieldPlugin: FormFieldPlugin<
 				return z.object({
 					type: z.literal(id),
 					// Not sure how to fix this :-(
-					data: schemaToZod(plugin[`${field.formSchemaProp}`]),
+					data: schemaToZod(
+						(plugin[`${field.formSchemaProp}`] ?? []) as Readonly<
+							FieldType<string>[]
+						>
+					),
 				});
 			}) as unknown as [
 				z.ZodObject<{
