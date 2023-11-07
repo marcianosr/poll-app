@@ -29,5 +29,5 @@ jobs:
         run: yarn install --immutable
       - name: Build internal dependencies
         run: yarn build-libs
-      - name: Run Unit tests
+      - name: Checking types
         run: yarn check-types
