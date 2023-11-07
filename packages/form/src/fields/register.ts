@@ -10,6 +10,7 @@ import { selectFieldPlugin } from "./SelectField";
 import { textFieldPlugin } from "./TextField";
 import { titlePlugin } from "./Title";
 import { checkboxPlugin } from "./Checkbox";
+import { autoCompleteTextFieldPlugin } from "./AutocompleteTextField";
 
 formFieldPlugins.add(colorFieldPlugin);
 formFieldPlugins.add(hiddenFieldPlugin);
@@ -22,3 +23,4 @@ formFieldPlugins.add(selectFieldPlugin);
 formFieldPlugins.add(textFieldPlugin);
 formFieldPlugins.add(titlePlugin);
 formFieldPlugins.add(checkboxPlugin);
+formFieldPlugins.add(autoCompleteTextFieldPlugin);

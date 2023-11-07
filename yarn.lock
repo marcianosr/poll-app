@@ -3251,6 +3251,7 @@ __metadata:
     "@storybook/testing-library": ^0.1.0
     parcel: 2.9.2
     prop-types: ^15.8.1
+    react-tag-input: ^6.8.1
     storybook: ^7.0.7
     typescript: ^5.2.2
   peerDependencies:
@@ -9130,6 +9131,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:~2.3.1":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
+  languageName: node
+  linkType: hard
+
 "clean-css@npm:^5.2.2":
   version: 5.3.2
   resolution: "clean-css@npm:5.3.2"
@@ -14343,7 +14351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:^4.17.21, lodash@npm:~4.17.12":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -17400,6 +17408,22 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 7ee8ef3aab74c7ae1d70ff34a27643d11ba1a8d62d072c767827d9ff9a520905223e567002e0bf6c772929d8ea1c781a3ba0cc4a563e92b1e3dc2eaa817ecbe8
+  languageName: node
+  linkType: hard
+
+"react-tag-input@npm:^6.8.1":
+  version: 6.8.1
+  resolution: "react-tag-input@npm:6.8.1"
+  dependencies:
+    classnames: ~2.3.1
+    lodash: ~4.17.12
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^17.0.2 || ^18.2.0
+    react-dnd: ^14.0.2
+    react-dnd-html5-backend: ^14.0.0
+    react-dom: 17.0.2 || ^18.2.0
+  checksum: b0b26bb3416455ab6af9f0fc69df28c1e573410b6dc1a349ae5eb20164d79934d727ec696776768ef2037a0fcb004fd28ed4c841f1a6e1266adca130f60dca26
   languageName: node
   linkType: hard
 
