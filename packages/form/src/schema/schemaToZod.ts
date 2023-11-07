@@ -1,66 +1,41 @@
 import { z } from "zod";
-import { formFieldPlugins } from "../field-plugins";
-import {
-    BaseFixedFormField,
-    BaseObjectFormField,
-    BaseObjectListFormField,
-    BaseOpenFormField,
-    FieldType,
-    FixedOption,
-    FormField,
-    FormSchema,
-    TypedForm,
-} from "@marcianosrs/form-schema";
+import type { FieldType, TypedForm } from "@marcianosrs/form-schema";
 import { FormFieldPlugin } from "../types/field-plugin";
+import { formFieldPlugins } from "../field-plugins";
+import { ZodSchemaType } from "./zodSchemaType";
 
 export type TypeMapping = {
-    none: never;
-    string: z.ZodString;
-    number: z.ZodNumber;
-    boolean: z.ZodBoolean;
-    unknown: z.ZodUnknown;
+	none: never;
+	string: z.ZodString;
+	number: z.ZodNumber;
+	boolean: z.ZodBoolean;
+	unknown: z.ZodUnknown;
 };
 
 export type ValueTypes = keyof TypeMapping;
 
-export type ZodFieldType<TField extends FormField> =
-    TField extends BaseObjectListFormField<unknown, string, infer Schema>
-        ? z.ZodArray<ZodSchemaType<Schema>>
-        : TField extends BaseObjectFormField<unknown, string, infer Schema>
-        ? ZodSchemaType<Schema>
-        : TField extends BaseFixedFormField<string, string, infer FieldType>
-        ? FieldType[number] extends FixedOption<infer ValueType>
-            ? z.ZodType<ValueType>
-            : never
-        : TField extends BaseOpenFormField<string, string, infer TValueType>
-        ? TypeMapping[TValueType & ValueTypes]
-        : z.ZodTypeAny;
-
-export type ZodSchemaType<Fields extends FormSchema> = z.ZodObject<{
-    [Field in Fields[number] as Field["name"] & string]: ZodFieldType<Field>;
-}>;
-
 export const schemaToZod = <T extends TypedForm>(
-    schema: T
+	schema: T
 ): ZodSchemaType<T> => {
-    const fields: Record<string, z.ZodTypeAny> = {};
+	const fields: Record<string, z.ZodTypeAny> = {};
 
-    for (const field of schema) {
-        const plugin = formFieldPlugins.get(field.fieldType) as unknown as
-            | FormFieldPlugin<FieldType<string>>
-            | undefined;
+	for (const field of schema) {
+		const plugin = formFieldPlugins.get(field.fieldType) as unknown as
+			| FormFieldPlugin<FieldType<string>>
+			| undefined;
 
-        const fieldType = plugin?.toZodSchema(field) ?? z.never();
+		const fieldType =
+			plugin?.toZodSchema(field, schemaToZod as any) ?? z.never();
 
-        if (fieldType instanceof z.ZodNever) continue;
-        if (
-            fieldType instanceof z.ZodOptional &&
-            fieldType.unwrap() instanceof z.ZodNever
-        )
-            continue;
+		if (fieldType instanceof z.ZodNever) continue;
+		if (
+			fieldType instanceof z.ZodOptional &&
+			fieldType.unwrap() instanceof z.ZodNever
+		)
+			continue;
 
-        fields[field.name] = fieldType;
-    }
+		fields[field.name] = fieldType;
+	}
 
-    return z.object(fields) as ZodSchemaType<T>;
+	return z.object(fields) as unknown as ZodSchemaType<T>;
 };
