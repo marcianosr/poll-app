@@ -12,6 +12,8 @@ jobs:
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --immutable
+      - name: Build internal dependencies
+        run: yarn build-libs
       - name: Run Unit tests
         run: yarn test
   typeCheck:
@@ -25,5 +27,7 @@ jobs:
           cache: "yarn"
       - name: Install dependencies
         run: yarn install --immutable
+      - name: Build internal dependencies
+        run: yarn build-libs
       - name: Run Unit tests
         run: yarn check-types
