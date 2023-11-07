@@ -42,9 +42,6 @@ export const sessionLogin = async (
 					redirectTo,
 					idToken
 				);
-				return {
-					error: "not implemented yet!",
-				};
 			},
 			(error) => {
 				return {
