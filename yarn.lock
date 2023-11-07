@@ -3143,6 +3143,7 @@ __metadata:
     immer: ^10.0.3
     parcel: 2.9.2
     typescript: ^5.2.2
+    vitest: ^0.34.6
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -3174,7 +3175,6 @@ __metadata:
     parcel: 2.9.2
     remix-forms: ^2.1.0
     typescript: ^5.2.2
-    vitest: ^0.34.6
     zod: ^3.22.4
   peerDependencies:
     react: 18.2.0
