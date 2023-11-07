@@ -116,6 +116,26 @@ export const openNextPoll = async (
 	});
 };
 
+export const closeCurrentPoll = async (
+	channel: ContentIdentifier | ChannelDTO
+) => {
+	const channelObj = isIdentifier(channel)
+		? await getDocumentById<ChannelDTO>(CHANNELS, channel)
+		: channel;
+	const firstInQueue = channelObj?.queue[0];
+	if (!firstInQueue) return;
+
+	await db.collection(CHANNEL_POLLS).doc(firstInQueue).update({
+		closedAt: FieldValue.serverTimestamp(),
+	});
+	await db
+		.collection(CHANNELS)
+		.doc(channelObj.id)
+		.update({
+			queue: FieldValue.arrayRemove(firstInQueue),
+		});
+};
+
 export const getOpenPollForChannel = async (
 	channelId: ContentIdentifier
 ): Promise<ChannelPollItemDTO | null> => {

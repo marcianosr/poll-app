@@ -14,6 +14,7 @@ import { useOutletContext, useLoaderData, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import {
 	addPollToChannel,
+	closeCurrentPoll,
 	getChannelBySlug,
 	getOpenPollForChannel,
 	getPolls,
@@ -54,10 +55,15 @@ export const action: ActionFunction = async ({ params, request }) => {
 				channelId: string;
 				pollId: string;
 		  }
-		| { action: "open-poll" };
+		| { action: "open-poll" }
+		| { action: "close-poll"; channelId: string };
 
 	if (formData.action === "add-poll") {
 		addPollToChannel(formData.channelId, formData.pollId);
+	}
+
+	if (formData.action === "close-poll") {
+		closeCurrentPoll(formData.channelId);
 	}
 
 	if (formData.action === "open-poll" && params.channelSlug) {
@@ -81,7 +87,18 @@ export default function Channel() {
 
 	return (
 		<div>
-			{openPoll && <div>Close Poll</div>}
+			{openPoll && (
+				<Button
+					onClick={() => {
+						submit(
+							{ action: "close-poll", channelId: channel.id },
+							{ method: "POST" }
+						);
+					}}
+				>
+					Close Poll
+				</Button>
+			)}
 			{!openPoll && channel.queue.length > 0 && (
 				<Button
 					onClick={() => {
