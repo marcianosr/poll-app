@@ -10,6 +10,7 @@ import { FieldValue, db } from "./firebase";
 import { toSlug } from "@marcianosrs/utils";
 import { docToDomainObject, getDocumentById } from "./document-helpers";
 import { CHANNELS, CHANNEL_POLLS } from "./collection-consts";
+import { createRankingSystem } from "./rankingSystems";
 
 export const createChannel = async (
 	newChannel: CreateChannelDTO
@@ -24,8 +25,20 @@ export const createChannel = async (
 	}
 
 	const createdAt = FieldValue.serverTimestamp();
+
+	const rankingSystems: ChannelDTO["rankingSystems"] = [];
+	for (const rankingSystem of newChannel.rankingSystems) {
+		if (rankingSystem.rankingSystemId === undefined) {
+			const rankingSystemId = await createRankingSystem();
+			rankingSystems.push({ ...rankingSystem, rankingSystemId });
+		} else {
+			rankingSystems.push(rankingSystem);
+		}
+	}
+
 	const channel = {
 		...newChannel,
+		rankingSystems,
 		slug,
 		queue: [],
 		startedAt: null,

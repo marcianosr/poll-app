@@ -1,7 +1,16 @@
 import type { FormDataObject, TypedForm } from "@marcianosrs/form-schema";
 import type { QuestionScoreResult } from "./poll-result";
+import { ContentIdentifier } from "./identifiers";
+import { TimestampDTO } from "../types";
 
 type PlayerData = { id: string };
+
+export type RankingSystemDTO = {
+	id: ContentIdentifier;
+	startedAt: TimestampDTO | null;
+	closedAt: TimestampDTO | null;
+	content: unknown;
+};
 
 /**
  * Score systems define how ranking works.

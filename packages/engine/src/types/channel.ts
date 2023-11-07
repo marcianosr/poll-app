@@ -17,6 +17,14 @@ const rankingSystemSchema = [
 		"rankingSystemType",
 		"editForm"
 	),
+	{
+		name: "rankingSystemId",
+		defaultValue: undefined,
+		optional: true,
+		fieldType: "hidden",
+		valueType: "string",
+		displayName: "internal id",
+	},
 ] as const satisfies TypedForm;
 
 const scoreModifierSchema = [
