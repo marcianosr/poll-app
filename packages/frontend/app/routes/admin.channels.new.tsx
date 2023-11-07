@@ -19,7 +19,7 @@ const mutation = (userId: string) =>
 		const newChannel: CreateChannelDTO = {
 			...values,
 			startedAt: null,
-			playlist: [],
+			queue: [],
 			createdBy: userId,
 		};
 		const createdChannel = await createChannel(newChannel);
