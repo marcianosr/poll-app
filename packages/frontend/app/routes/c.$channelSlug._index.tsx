@@ -1,28 +1,17 @@
 import { objectToFormMapping } from "@marcianosrs/form";
 import {
-	createPollResult,
 	getChannelBySlug,
 	getOpenPollForChannel,
 	getPollById,
-	getRankingSystemById,
-	updateRankingSystem,
 } from "./api.server";
-import {
-	questionTypeStore,
-	rankingSystemStore,
-	scoreProcessorStore,
-} from "@marcianosrs/engine";
-import type {
-	PollUserResult,
-	PollDTO,
-	QuestionScoreResult,
-	ChannelPollItemDTO,
-} from "@marcianosrs/engine";
+import { questionTypeStore } from "@marcianosrs/engine";
+import type { PollDTO, ChannelPollItemDTO } from "@marcianosrs/engine";
 import { json, redirect } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useOutletContext, useSubmit } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { parse } from "qs";
+import { answerPollQuestion } from "./poll.server";
 
 type LoaderData = {
 	channelPoll: ChannelPollItemDTO | null;
@@ -51,69 +40,12 @@ export const action: ActionFunction = async ({ request, params }) => {
 		return null;
 	}
 
-	const channel = await getChannelBySlug(channelSlug);
-
 	const data = await request.text();
 	const formData = parse(data);
 
-	const channelPollItem =
-		channel && (await getOpenPollForChannel(channel.id));
-	const poll = channelPollItem && (await getPollById(channelPollItem.pollId));
-	if (!poll) {
-		throw new Error("Poll Question not found");
-	}
+	await answerPollQuestion(channelSlug, formData, decodedClaims.uid);
 
-	const pollPlugin = questionTypeStore.get(poll.question.type);
-	const earlierQuestionResults: PollUserResult<Record<string, unknown>>[] =
-		channelPollItem.answers;
-
-	const questionResult = pollPlugin.createScoreResult(
-		poll.question.data,
-		formData,
-		earlierQuestionResults
-	);
-
-	const processors = (channelPollItem.questionScorePluginsActive ?? []).map<
-		(score: QuestionScoreResult) => QuestionScoreResult
-	>((m) => {
-		const processor = scoreProcessorStore.get(m.type);
-		return (score: QuestionScoreResult) =>
-			processor.processResult(score, m.data);
-	});
-
-	const processedScoreResult = processors.reduce(
-		(score, processor) => processor(score),
-		questionResult
-	);
-
-	const newResult: PollUserResult<Record<string, unknown>> = {
-		originalScoreResult: questionResult,
-		processedScoreResult,
-		questionResult: formData,
-		userScorePluginsActive: [],
-		userId: decodedClaims.uid,
-	};
-	createPollResult(channelPollItem.id, newResult);
-
-	for (const ranking of channel.rankingSystems) {
-		if (!ranking.rankingSystemId) continue;
-
-		const rankingData = await getRankingSystemById(ranking.rankingSystemId);
-		const rankingPlugin = rankingSystemStore.get(ranking.ranking.type);
-		if (rankingPlugin.verifySettings(ranking.ranking.data)) {
-			const data =
-				rankingData?.content ?? rankingPlugin.initializeSystemData();
-			const updatedData = rankingPlugin.processResult(
-				processedScoreResult,
-				{ id: decodedClaims.uid },
-				ranking.ranking.data,
-				data
-			);
-			await updateRankingSystem(ranking.rankingSystemId, updatedData);
-		}
-	}
-
-	return redirect(`/c/${channel.slug}/`);
+	return redirect(`/c/${channelSlug}/`);
 };
 
 const objectToFormData = (answerData: Record<string, unknown>): FormData => {
@@ -135,7 +67,7 @@ export default function Poll() {
 	if (!poll) {
 		return (
 			<div>
-				<p>No Poll question found!</p>{" "}
+				<p>No Poll question found!</p>
 			</div>
 		);
 	}

@@ -40,9 +40,6 @@ export default function Channel() {
 			theme={channel.theme.type}
 			themeSettings={channel.theme.data}
 		>
-			<nav>
-				<p>Hello</p>
-			</nav>
 			<header>
 				<h1>Channel: {channel.name}</h1>
 				<menu>
