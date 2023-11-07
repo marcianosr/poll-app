@@ -4,16 +4,6 @@ import { FormFieldPlugin } from "../types/field-plugin";
 import { formFieldPlugins } from "../field-plugins";
 import { ZodSchemaType } from "./zodSchemaType";
 
-export type TypeMapping = {
-	none: never;
-	string: z.ZodString;
-	number: z.ZodNumber;
-	boolean: z.ZodBoolean;
-	unknown: z.ZodUnknown;
-};
-
-export type ValueTypes = keyof TypeMapping;
-
 export const schemaToZod = <T extends TypedForm>(
 	schema: T
 ): ZodSchemaType<T> => {

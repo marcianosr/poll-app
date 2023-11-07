@@ -6,10 +6,18 @@ import {
 	FixedOption,
 	FormField,
 	FormSchema,
-	TypeMapping,
-	ValueTypes,
 } from "@marcianosrs/form-schema";
 import { z } from "zod";
+
+export type TypeMapping = {
+	none: never;
+	string: z.ZodString;
+	number: z.ZodNumber;
+	boolean: z.ZodBoolean;
+	unknown: z.ZodUnknown;
+};
+
+export type ValueTypes = keyof TypeMapping;
 
 export type ZodFieldType<TField extends FormField> =
 	TField extends BaseObjectListFormField<unknown, string, infer Schema>
