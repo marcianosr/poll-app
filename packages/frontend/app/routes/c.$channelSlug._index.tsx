@@ -4,8 +4,14 @@ import {
 	getChannelBySlug,
 	getOpenPollForChannel,
 	getPollById,
+	getRankingSystemById,
+	updateRankingSystem,
 } from "./api.server";
-import { questionTypeStore, scoreProcessorStore } from "@marcianosrs/engine";
+import {
+	questionTypeStore,
+	rankingSystemStore,
+	scoreProcessorStore,
+} from "@marcianosrs/engine";
 import type {
 	PollUserResult,
 	PollDTO,
@@ -88,6 +94,24 @@ export const action: ActionFunction = async ({ request, params }) => {
 		userId: decodedClaims.uid,
 	};
 	createPollResult(channelPollItem.id, newResult);
+
+	for (const ranking of channel.rankingSystems) {
+		if (!ranking.rankingSystemId) continue;
+
+		const rankingData = await getRankingSystemById(ranking.rankingSystemId);
+		const rankingPlugin = rankingSystemStore.get(ranking.ranking.type);
+		if (rankingPlugin.verifySettings(ranking.ranking.data)) {
+			const data =
+				rankingData?.content ?? rankingPlugin.initializeSystemData();
+			const updatedData = rankingPlugin.processResult(
+				processedScoreResult,
+				{ id: decodedClaims.uid },
+				ranking.ranking.data,
+				data
+			);
+			await updateRankingSystem(ranking.rankingSystemId, updatedData);
+		}
+	}
 
 	return redirect(`/c/${channel.slug}/`);
 };

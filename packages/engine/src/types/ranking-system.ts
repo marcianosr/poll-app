@@ -9,7 +9,7 @@ export type RankingSystemDTO = {
 	id: ContentIdentifier;
 	startedAt: TimestampDTO | null;
 	closedAt: TimestampDTO | null;
-	content: unknown;
+	content: Record<string, unknown> | unknown[] | undefined | null;
 };
 
 /**

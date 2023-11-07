@@ -1,14 +1,43 @@
-import { rankingSystemStore, type ChannelDTO } from "@marcianosrs/engine";
-import { NavLink, useOutletContext, useParams } from "@remix-run/react";
+import { getChannelBySlug, getRankingSystemById } from "./api.server";
+import { rankingSystemStore } from "@marcianosrs/engine";
+import type { RankingSystemDTO, ChannelDTO } from "@marcianosrs/engine";
+import { json, type LoaderFunction } from "@remix-run/node";
+import {
+	NavLink,
+	useLoaderData,
+	useOutletContext,
+	useParams,
+} from "@remix-run/react";
+import { throwIfNotAuthorized } from "~/util/isAuthorized";
 
-export default function Channel() {
+type LoaderData = {
+	rankingData: RankingSystemDTO | null;
+};
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+	await throwIfNotAuthorized(request);
+	const { rankingId, channelSlug } = params;
+	const channel = channelSlug ? await getChannelBySlug(channelSlug) : null;
+	const index = parseInt(rankingId ?? "0", 10);
+
+	const system = channel?.rankingSystems[index];
+	const rankingData =
+		system && system.rankingSystemId
+			? await getRankingSystemById(system.rankingSystemId)
+			: null;
+
+	return json({ rankingData });
+};
+
+export default function Ranking() {
 	const { channel } = useOutletContext<{ channel: ChannelDTO }>();
+	const { rankingData } = useLoaderData<LoaderData>();
 	const { rankingId } = useParams();
 	const index = parseInt(rankingId ?? "0", 10);
 	const system = channel.rankingSystems[index];
 
 	const rankingPlugin = rankingSystemStore.get(system.ranking.type);
-	const rankingData = rankingPlugin.initializeSystemData();
+	const data = rankingData?.content ?? rankingPlugin.initializeSystemData();
 
 	return (
 		<div>
@@ -23,7 +52,7 @@ export default function Channel() {
 			<main>
 				<rankingPlugin.RankingPage
 					settings={system.ranking.data}
-					data={rankingData}
+					data={data}
 				/>
 			</main>
 		</div>

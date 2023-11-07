@@ -20,4 +20,4 @@ export const getRankingSystemById = (id: ContentIdentifier) =>
 	getDocumentById<RankingSystemDTO>(RANKING_SYSTEMS, id);
 
 export const updateRankingSystem = (id: ContentIdentifier, data: unknown) =>
-	db.collection(RANKING_SYSTEMS).doc(id).update({ data });
+	db.collection(RANKING_SYSTEMS).doc(id).update({ content: data });
