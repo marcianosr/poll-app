@@ -64,6 +64,14 @@ const pollQuestionForm = [
 		minimalAmount: 2,
 	},
 	{
+		fieldType: "autocomplete-text",
+		valueType: "string",
+		name: "tags",
+		displayName: "Select your tags",
+		defaultValue: "",
+		optional: false,
+	},
+	{
 		fieldType: "range",
 		valueType: "number",
 		name: "difficulty",
