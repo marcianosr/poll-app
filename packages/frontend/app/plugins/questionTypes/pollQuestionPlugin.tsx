@@ -201,7 +201,7 @@ export const pollQuestion: PollQuestionPlugin<
 							{answersSelected.includes(a.answerOption) && "✅"}{" "}
 							{a.answerOption}
 						</Button>
-						{mode === "result" && a.correctAnswer ? "✅" : "🚫"}
+						{mode === "result" && (a.correctAnswer ? "✅" : "🚫")}
 						{mode === "result" &&
 							pollUserResults.some(
 								(r) =>
