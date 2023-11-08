@@ -14,7 +14,8 @@
   "dependencies": {
     "@marcianosrs/form-schema": "workspace:*",
     "@marcianosrs/server-auth": "workspace:*",
-    "@marcianosrs/utils": "workspace:*"
+    "@marcianosrs/utils": "workspace:*",
+    "immer": "^10.0.3"
   },
   "devDependencies": {
     "parcel": "2.9.2",

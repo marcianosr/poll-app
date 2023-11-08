@@ -4,6 +4,7 @@
   "description": "Frontend of the poll app with Remix",
   "sideEffects": false,
   "scripts": {
+    "test": "vitest",
     "build": "remix build",
     "dev": "remix dev",
     "check-types": "tsc --noEmit"
@@ -27,12 +28,15 @@
     "@remix-run/vercel": "1.19.3",
     "@types/uuid": "^9.0.1",
     "@vercel/node": "^2.10.3",
+    "cron-schedule": "^4.0.0",
     "domain-functions": "^2.4.0",
     "dotenv": "^16.0.3",
     "isbot": "^3.6.8",
+    "qs": "^6.11.2",
     "react-hook-form": "^7.47.0",
     "remix-forms": "^2.1.0",
     "uuid": "^9.0.0",
+    "vitest": "^0.34.6",
     "zod": "^3.22.4"
   },
   "devDependencies": {

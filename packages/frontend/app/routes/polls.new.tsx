@@ -1,9 +1,8 @@
 import type { CreatePollDTO } from "@marcianosrs/engine";
-import { questionTypeStore } from "@marcianosrs/engine";
-import { SchemaForm, pluginField, schemaToZod } from "@marcianosrs/form";
-import type { TypedForm } from "@marcianosrs/form-schema";
+import { pollSchema } from "@marcianosrs/engine";
+import { SchemaForm, schemaToZod } from "@marcianosrs/form";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import { NavLink } from "@remix-run/react";
 import { makeDomainFunction } from "domain-functions";
 import { formAction } from "../form-action.server";
 import { throwIfNotAuthorized } from "../util/isAuthorized";
@@ -14,17 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	return {};
 };
 
-const schema = [
-	pluginField(
-		"question",
-		"Question",
-		questionTypeStore,
-		"displayName",
-		"editForm"
-	),
-] as const satisfies TypedForm;
-
-const zodSchema = schemaToZod(schema);
+const zodSchema = schemaToZod(pollSchema);
 
 const mutation = (userId: string) =>
 	makeDomainFunction(zodSchema)(async (values) => {
@@ -49,9 +38,9 @@ export const action: ActionFunction = async ({ request }) => {
 export default function NewPoll() {
 	return (
 		<main>
-			<Link to="/polls">Back to list of polls</Link>
+			<NavLink to="/polls">Back to list of polls</NavLink>
 			<h1>Create new poll</h1>
-			<SchemaForm schema={schema} formId="questionType" />
+			<SchemaForm schema={pollSchema} formId="questionType" />
 		</main>
 	);
 }

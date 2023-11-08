@@ -1,5 +1,7 @@
-import { CreatePollDTO, PollDTO } from "@marcianosrs/engine";
+import { ContentIdentifier, CreatePollDTO, PollDTO } from "@marcianosrs/engine";
 import { FieldValue, db } from "./firebase";
+import { docToDomainObject, getDocumentById } from "./document-helpers";
+import { POLLS } from "./collection-consts";
 
 export const createPoll = async (newPoll: CreatePollDTO): Promise<PollDTO> => {
 	const timestamp = FieldValue.serverTimestamp();
@@ -8,23 +10,20 @@ export const createPoll = async (newPoll: CreatePollDTO): Promise<PollDTO> => {
 		createdAt: timestamp,
 	};
 
-	const result = await db.collection("polls").add(poll);
+	const result = await db.collection(POLLS).add(poll);
 
-	const data = (await result.get()).data() as PollDTO;
-	return data;
+	const doc = await result.get();
+	return docToDomainObject<PollDTO>(doc);
 };
 
 export const getPolls = async (): Promise<PollDTO[]> =>
 	db
-		.collection("polls")
+		.collection(POLLS)
 		.get()
 		.then((snapshot) =>
-			snapshot.docs.map<PollDTO>(
-				(doc) =>
-					({
-						...doc.data(),
-						id: doc.id,
-					} as PollDTO)
-			)
+			snapshot.docs.map((doc) => docToDomainObject<PollDTO>(doc))
 		)
 		.catch(() => []);
+
+export const getPollById = (id: ContentIdentifier): Promise<PollDTO | null> =>
+	getDocumentById<PollDTO>(POLLS, id);

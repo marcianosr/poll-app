@@ -1,6 +1,6 @@
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { NavLink, useLoaderData } from "@remix-run/react";
 import { throwIfNotAuthorized } from "~/util/isAuthorized";
 import { questionTypeStore, type PollDTO } from "@marcianosrs/engine";
 import { getPolls } from "./api.server";
@@ -13,6 +13,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	await throwIfNotAuthorized(request);
 
 	const polls = await getPolls();
+
 	return json({ polls });
 };
 
@@ -22,19 +23,26 @@ export default function Index() {
 	return (
 		<main>
 			<h1>Polls</h1>
-			<Link to={"/polls/new"}>Create new poll</Link>
+			<NavLink to={"/polls/new"}>Create new poll</NavLink>
 
 			<ul>
 				{polls.map((poll) => {
 					const pluginType = poll.question.type;
+
+					if (!pluginType) return null;
+
 					const plugin = questionTypeStore.get(pluginType);
 					const name = plugin.getContentTitle(poll.question.data);
 
 					return (
 						<li key={poll.id}>
 							# {name}{" "}
-							<Link to={`/polls/${poll.id}`}>Go to poll</Link>{" "}
-							<Link to={`/polls/${poll.id}/edit`}>Edit</Link>
+							<NavLink to={`/polls/${poll.id}`}>
+								Go to poll
+							</NavLink>{" "}
+							<NavLink to={`/polls/${poll.id}/edit`}>
+								Edit
+							</NavLink>
 						</li>
 					);
 				})}

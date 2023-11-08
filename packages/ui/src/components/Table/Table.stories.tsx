@@ -27,7 +27,7 @@ export const TableStory: Story = {
                 <>
                     <Button>Edit</Button>
                 </>,
-            ];
+            ]
         }),
     },
 };
