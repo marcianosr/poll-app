@@ -8,12 +8,17 @@ import {
 } from "@marcianosrs/engine";
 import { FieldValue, db } from "./firebase";
 import { toSlug } from "@marcianosrs/utils";
-import { docToDomainObject, getDocumentById } from "./document-helpers";
+import {
+	docToDomainObject,
+	getDocumentById,
+	type ReplaceTimestamp,
+} from "./document-helpers";
 import { CHANNELS, CHANNEL_POLLS } from "./collection-consts";
 import { createRankingSystem } from "./rankingSystems";
 
 export const createChannel = async (
-	newChannel: CreateChannelDTO
+	newChannel: CreateChannelDTO,
+	userId: string
 ): Promise<ChannelDTO> => {
 	const slug = toSlug(newChannel.name);
 	const channelSnapshot = await db
@@ -36,13 +41,14 @@ export const createChannel = async (
 		}
 	}
 
-	const channel = {
+	const channel: Omit<ReplaceTimestamp<ChannelDTO>, "id"> = {
 		...newChannel,
 		rankingSystems,
 		slug,
 		queue: [],
 		startedAt: null,
 		createdAt,
+		createdBy: userId,
 	};
 
 	const result = await db.collection(CHANNELS).add(channel);

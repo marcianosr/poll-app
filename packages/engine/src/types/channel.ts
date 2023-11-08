@@ -82,7 +82,10 @@ export type ChannelDTO = FirebaseBaseDTO &
 		queue: ContentIdentifier[];
 	};
 
-export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
+export type CreateChannelDTO = Omit<
+	ChannelDTO,
+	keyof FirebaseBaseDTO | "slug" | "queue" | "startedAt"
+>;
 
 export type UpdateChannel = Partial<ChannelDTO>;
 
