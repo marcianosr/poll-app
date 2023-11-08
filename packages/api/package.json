@@ -24,7 +24,6 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "start": "yarn build && nodemon --delay 500ms src/server.ts",
     "check-types": "tsc --noEmit"
   }
 }
