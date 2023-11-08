@@ -5,7 +5,10 @@ require("dotenv").config({
 	path: `../../.env`,
 });
 
-const sessionSecret = process.env.SESSION_SECRET;
+const sessionSecret =
+	process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"
+		? "test-env-secret"
+		: process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
 	throw new Error("SESSION_SECRET must be set");
@@ -27,7 +30,7 @@ export const sessionLogin = async (
 	idToken: any,
 	redirectTo: any
 ) => {
-	// const token = await auth.verifyIdToken(idToken); // this toke should be send to the backend as auth
+	// const token = await auth.verifyIdToken(idToken); // this token should be send to the backend as auth
 
 	return auth
 		.createSessionCookie(idToken, {
@@ -42,9 +45,6 @@ export const sessionLogin = async (
 					redirectTo,
 					idToken
 				);
-				return {
-					error: "not implemented yet!",
-				};
 			},
 			(error) => {
 				return {
