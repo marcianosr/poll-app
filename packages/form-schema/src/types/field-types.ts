@@ -9,6 +9,14 @@ import {
 
 export type Title<Key> = BaseOpenFormField<Key, "title", "none", {}, undefined>;
 
+export type Description<Key> = BaseOpenFormField<
+	Key,
+	"description",
+	"none",
+	{},
+	undefined
+>;
+
 export type TextFieldExtra = {
 	prefix?: string;
 	postfix?: string;
@@ -120,7 +128,8 @@ export type FieldType<Key> =
 	| RadioField<Key, Readonly<FixedOption[]>>
 	| RangeSlider<Key>
 	| TextField<Key>
-	| Title<Key>;
+	| Title<Key>
+	| Description<Key>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;
 
