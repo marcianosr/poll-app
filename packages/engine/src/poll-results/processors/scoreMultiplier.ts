@@ -1,10 +1,18 @@
-import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import {
+	type TypedForm,
+	type FormDataObject,
+	description,
+} from "@marcianosrs/form-schema";
 import type { PollScoreProcessorPlugin } from "../../types/poll-result";
 
 const form = [
+	description(
+		"info",
+		"You can use this plugin to double or half scores. The maximum able points to score will be modified as well."
+	),
 	{
 		name: "multiplier",
-		displayName: "multiplier",
+		displayName: "Multiplier",
 		valueType: "number",
 		fieldType: "number",
 		optional: false,
