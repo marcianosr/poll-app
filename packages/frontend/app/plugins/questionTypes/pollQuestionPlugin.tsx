@@ -229,5 +229,4 @@ export const pollQuestion: PollQuestionPlugin<
 		if (!isPollQuestionData(data)) return "Error: No question data";
 		return data.question;
 	},
-	// verifySettings: (e: unknown): e is PollQuestionData => false,
 };

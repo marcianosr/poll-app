@@ -24,6 +24,7 @@ export const pointRankingSystem: RankingSystemPlugin<
 	{ ranking: Ranking[] }
 > = {
 	rankingSystemType: "points",
+	displayName: "Point based ranking",
 	editForm: formDefinition,
 	verifySettings: (
 		settings

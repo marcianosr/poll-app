@@ -35,6 +35,7 @@ const updateScore = (points: number, settings: ThresholdSettings): number => {
 
 export const ScoreThresholdCutOff: PollScoreProcessorPlugin<typeof form> = {
 	processorType: "thresholdCutOff",
+	displayName: "Score clamping",
 	verifySettings: (e): e is ThresholdSettings =>
 		typeof e === "object" &&
 		e !== null &&

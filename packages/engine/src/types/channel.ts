@@ -14,7 +14,7 @@ const rankingSystemSchema = [
 		"ranking",
 		"Ranking system",
 		rankingSystemStore,
-		"rankingSystemType",
+		"displayName",
 		"editForm"
 	),
 	{
@@ -32,7 +32,7 @@ const scoreModifierSchema = [
 		"processor",
 		"ScoreModifier",
 		scoreProcessorStore,
-		"processorType",
+		"displayName",
 		"editForm"
 	),
 ] as const satisfies TypedForm;

@@ -18,6 +18,7 @@ type MultiplierSettings = FormDataObject<typeof form>;
 
 export const ScoreMultiplier: PollScoreProcessorPlugin<typeof form> = {
 	processorType: "multiplier",
+	displayName: "Score multiplier",
 	verifySettings: (e): e is MultiplierSettings =>
 		typeof e === "object" && e !== null && "multiplier" in e,
 	editForm: form,
