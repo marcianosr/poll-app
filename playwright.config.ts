@@ -98,7 +98,7 @@ export default defineConfig({
 			env: {
 				ENVIRONMENT: "test",
 				NODE_ENV: "development",
-				FIRESTORE_EMULATOR_HOST: "localhost:8080",
+				FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080",
 				FIREBASE_AUTH_EMULATOR_HOST: "127.0.0.1:9099",
 				SESSION_SECRET: "test-env-secret",
 			},

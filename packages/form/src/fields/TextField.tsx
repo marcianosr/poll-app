@@ -8,31 +8,35 @@ import { makeOptionalString } from "../schema/zodUtils";
 import { FormField } from "@marcianosrs/ui";
 
 const TextField = ({ field }: FormFieldProps<TextField<string>>) => {
-    const { register, errors } = useCustomField(field);
-    return (
-        <FormField
-            fieldTitle={<label>{field.displayName}</label>}
-            fieldInput={<input type="text" {...register()}></input>}
-            fieldErrors={
-                <>
-                    {errors?.map((e, i) => (
-                        <p key={i}>{e}</p>
-                    ))}
-                </>
-            }
-        />
-    );
+	const { register, errors, fieldPathKey } = useCustomField(field);
+	return (
+		<FormField
+			fieldTitle={
+				<label htmlFor={fieldPathKey}>{field.displayName}</label>
+			}
+			fieldInput={
+				<input id={fieldPathKey} type="text" {...register()}></input>
+			}
+			fieldErrors={
+				<>
+					{errors?.map((e, i) => (
+						<p key={i}>{e}</p>
+					))}
+				</>
+			}
+		/>
+	);
 };
 
 export const textFieldPlugin: FormFieldPlugin<
-    TextField<string>,
-    z.ZodString | z.ZodOptional<z.ZodString>
+	TextField<string>,
+	z.ZodString | z.ZodOptional<z.ZodString>
 > = {
-    fieldType: "text",
-    Component: TextField,
-    Show: ({ value }) => value ?? null,
-    toZodSchema: (field) =>
-        transform(z.string().min(1))
-            .apply(field.optional, makeOptionalString)
-            .result(),
+	fieldType: "text",
+	Component: TextField,
+	Show: ({ value }) => value ?? null,
+	toZodSchema: (field) =>
+		transform(z.string().min(1))
+			.apply(field.optional, makeOptionalString)
+			.result(),
 };

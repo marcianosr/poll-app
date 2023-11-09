@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test("has title", async ({ page }) => {
+test("is authenticated", async ({ page }) => {
 	await page.goto("/");
 
 	await expect(page.getByRole("button", { name: "Logout" })).toBeVisible();
