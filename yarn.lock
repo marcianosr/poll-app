@@ -3321,7 +3321,6 @@ __metadata:
   dependencies:
     dotenv: ^16.0.3
     firebase: ^9.20.0
-    firebase-admin: ^11.7.0
     parcel: 2.9.2
   languageName: unknown
   linkType: soft

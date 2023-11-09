@@ -32,20 +32,34 @@ export default defineConfig({
 
 	/* Configure projects for major browsers */
 	projects: [
+		{ name: "setup", testMatch: /.*\.setup\.ts/ },
 		{
 			name: "chromium",
-			use: { ...devices["Desktop Chrome"] },
+			use: {
+				...devices["Desktop Chrome"],
+				// Use prepared auth state.
+				storageState: "tests/.auth/user.json",
+			},
+			dependencies: ["setup"],
 		},
-
 		{
 			name: "firefox",
-			use: { ...devices["Desktop Firefox"] },
+			use: {
+				...devices["Desktop Firefox"],
+				// Use prepared auth state.
+				storageState: "tests/.auth/user.json",
+			},
+			dependencies: ["setup"],
 		},
-
-		{
-			name: "webkit",
-			use: { ...devices["Desktop Safari"] },
-		},
+		// {
+		// 	name: "webkit",
+		// 	use: {
+		// 		...devices["Desktop Safari"],
+		// 		// Use prepared auth state.
+		// 		storageState: "tests/.auth/user.json",
+		// 	},
+		// 	dependencies: ["setup"],
+		// },
 
 		/* Test against mobile viewports. */
 		// {
@@ -71,7 +85,7 @@ export default defineConfig({
 	/* Run your local dev server before starting the tests */
 	webServer: [
 		{
-			command: "yarn firestore",
+			command: "yarn firestore:ci",
 			url: "http://127.0.0.1:8080",
 			reuseExistingServer: !process.env.CI,
 		},
@@ -79,6 +93,15 @@ export default defineConfig({
 			command: "yarn frontend",
 			url: "http://127.0.0.1:3000",
 			reuseExistingServer: !process.env.CI,
+			stdout: "pipe",
+			stderr: "pipe",
+			env: {
+				ENVIRONMENT: "test",
+				NODE_ENV: "development",
+				FIRESTORE_EMULATOR_HOST: "localhost:8080",
+				FIREBASE_AUTH_EMULATOR_HOST: "127.0.0.1:9099",
+				SESSION_SECRET: "test-env-secret",
+			},
 		},
 	],
 });

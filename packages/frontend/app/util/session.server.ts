@@ -1,14 +1,7 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import { auth } from "../lib/firebaseAdmin.server";
 
-require("dotenv").config({
-	path: `../../.env`,
-});
-
-const sessionSecret =
-	process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test"
-		? "test-env-secret"
-		: process.env.SESSION_SECRET;
+const sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
 	throw new Error("SESSION_SECRET must be set");
@@ -27,31 +20,13 @@ let { getSession, commitSession, destroySession } = createCookieSessionStorage({
 
 export const sessionLogin = async (
 	request: Request,
-	idToken: any,
-	redirectTo: any
+	idToken: string,
+	redirectTo: string
 ) => {
-	// const token = await auth.verifyIdToken(idToken); // this token should be send to the backend as auth
-
-	return auth
-		.createSessionCookie(idToken, {
-			expiresIn: 60 * 60 * 24 * 5 * 1000,
-		})
-		.then(
-			(sessionCookie) => {
-				// Set cookie policy for session cookie.
-				return setCookieAndRedirect(
-					request,
-					sessionCookie,
-					redirectTo,
-					idToken
-				);
-			},
-			(error) => {
-				return {
-					error: `sessionLogin error!: ${error.message}`,
-				};
-			}
-		);
+	const sessionCookie = await auth.createSessionCookie(idToken, {
+		expiresIn: 60 * 60 * 24 * 5 * 1000,
+	});
+	return setCookieAndRedirect(request, sessionCookie, redirectTo, idToken);
 };
 
 export const isSessionValid = async (request: Request) => {
