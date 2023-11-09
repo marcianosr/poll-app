@@ -22,7 +22,8 @@
     "typescript": ">=3.0.0"
   },
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "firebase-tools": "^12.8.1"
   },
   "scripts": {
     "api": "yarn workspace @marcianosrs/api start",
