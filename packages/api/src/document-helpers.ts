@@ -1,3 +1,6 @@
+import { ContentIdentifier } from "@marcianosrs/engine";
+import { db } from "./firebase";
+
 export const docToDomainObject = <T>(
 	doc:
 		| FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
@@ -7,3 +10,11 @@ export const docToDomainObject = <T>(
 		...doc.data(),
 		id: doc.id,
 	} as T);
+
+export const getDocumentById = async <T>(
+	collection: string,
+	id: ContentIdentifier
+): Promise<T | null> => {
+	const data = await db.collection(collection).doc(id).get();
+	return docToDomainObject<T>(data);
+};

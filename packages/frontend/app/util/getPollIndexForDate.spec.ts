@@ -1,117 +1,44 @@
-import { afterAll, beforeAll, expect, test, vitest } from "vitest";
-import type { CreateChannelDTO } from "@marcianosrs/engine";
+import { expect, test } from "vitest";
 import { getPollIndexForDate } from "./getPollIndexForDate";
+import { channelFactory } from "./channelFactory";
+import { createTimestamp } from "./factory";
 
-export const mockChannel: CreateChannelDTO = {
-	name: "Test Channel",
-	theme: {
-		type: "default",
-		data: {},
-	},
-	createdBy: "user-id",
-	frequency: {
-		cronExpression: "0 10 * * 1-5",
-		description: "Every weekday around 10 'o' clock",
-	},
-	collection: [
-		{
-			pollId: "poll-1",
-			isOpen: false,
-			result: {
-				question: {
-					type: "pollQuestion",
-					data: {
-						question: "What is React?",
-						description: undefined,
-						answers: [Array],
-						difficulty: 5,
-					},
-				},
-			},
-		},
-		{
-			pollId: "poll-2",
-			isOpen: false,
-			result: {
-				question: {
-					type: "pollQuestion",
-					data: {
-						question: "What is React?",
-						description: undefined,
-						answers: [Array],
-						difficulty: 5,
-					},
-				},
-			},
-		},
-		{
-			pollId: "poll-3",
-			isOpen: false,
-			result: {
-				question: {
-					type: "pollQuestion",
-					data: {
-						question: "What is React?",
-						description: undefined,
-						answers: [Array],
-						difficulty: 5,
-					},
-				},
-			},
-		},
-	],
-};
-
-const mockUpcomingDates = [
-	new Date("2023-10-25T09:00:00.000Z"),
-	new Date("2023-10-26T09:00:00.000Z"),
-	new Date("2023-10-27T09:00:00.000Z"),
-	new Date("2023-10-30T09:00:00.000Z"),
-	new Date("2023-10-31T09:00:00.000Z"),
-	new Date("2023-11-01T09:00:00.000Z"),
-	new Date("2023-11-02T09:00:00.000Z"),
-];
-
-vitest.mock("cron-schedule", () => {
-	return {
-		parseCronExpression: vitest.fn(() => {
-			return {
-				getNextDates: vitest.fn().mockReturnValue(mockUpcomingDates),
-			};
-		}),
-	};
-});
-
-beforeAll(() => {
-	vitest.useFakeTimers();
-});
-
-afterAll(() => {
-	vitest.useRealTimers();
-});
-
-test("returns -1 if the date is not in the upcoming dates", () => {
+test("returns -1 if the channel is not started", () => {
+	const mockChannel = channelFactory({ startedAt: null });
 	const futureDate = new Date("2023-12-31T09:00:00.000Z");
 
 	const pollIndex = getPollIndexForDate(mockChannel, futureDate);
-
 	expect(pollIndex).toBe(-1);
 });
 
-test("returns the correct collection index for the current date", () => {
-	const currentDate = new Date("2023-10-25T09:00:00.000Z");
+test("returns -1 if the channel has no frequency", () => {
+	const mockChannel = channelFactory({ frequency: undefined });
+	const futureDate = new Date("2023-12-31T09:00:00.000Z");
 
-	const pollIndex = getPollIndexForDate(mockChannel, currentDate);
-
-	expect(pollIndex).toBe(0);
-	expect(mockChannel.collection[pollIndex].pollId).toBe("poll-1");
+	const pollIndex = getPollIndexForDate(mockChannel, futureDate);
+	expect(pollIndex).toBe(-1);
 });
 
-test("returns the correct collection index for the current date", () => {
-	const currentDate = new Date("2023-10-27T09:00:00.000Z");
+test("returns the index for the question active today", () => {
+	const mockChannel = channelFactory({
+		startedAt: createTimestamp("2023-10-13:10:00.000Z"),
+		playlist: ["poll-fri-13", "poll-mo-16", "poll-tu-17", "poll-wed-18"],
+	});
+	const today = new Date("2023-10-17T08:00:00.000Z"); // 4 days later, but contains a weekend
 
-	const pollIndex = getPollIndexForDate(mockChannel, currentDate);
-
+	const pollIndex = getPollIndexForDate(mockChannel, today);
 	expect(pollIndex).toBe(2);
-	expect(mockChannel.collection[pollIndex].pollId).toBe("poll-3");
+	expect(mockChannel.playlist[pollIndex]).toEqual("poll-tu-17");
+});
+
+test("returns the last known index if date is too far in future", () => {
+	const mockChannel = channelFactory({
+		startedAt: createTimestamp("2023-10-13:10:00.000Z"),
+		playlist: ["poll-fri-13", "poll-mo-16", "poll-tu-17", "poll-wed-18"],
+	});
+	const today = new Date("2024-10-17T08:00:00.000Z");
+
+	const pollIndex = getPollIndexForDate(mockChannel, today);
+	expect(pollIndex).toBe(3);
+	expect(mockChannel.playlist[pollIndex]).toEqual("poll-wed-18");
 });

@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "@marcianosrs/engine": "workspace:*",
     "@marcianosrs/form-schema": "workspace:*",
     "@marcianosrs/utils": "workspace:*"
   },

@@ -1,5 +1,5 @@
-import { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
-import { RankingSystemPlugin } from "../types/ranking-system";
+import type { RankingSystemPlugin } from "@marcianosrs/engine";
+import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
 import { produce } from "immer";
 import React from "react";
 
@@ -56,7 +56,7 @@ export const pointRankingSystem: RankingSystemPlugin<
 				<h1>{settings.name}</h1>
 				<ol>
 					{sortedRanking.map(({ playerId, points }) => (
-						<li>
+						<li key={playerId}>
 							name: {playerId}. points: {points}
 						</li>
 					))}

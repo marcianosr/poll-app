@@ -1,5 +1,7 @@
 // General types: might move to a shared central package
 
+import { ContentIdentifier } from "./types/identifiers";
+
 export const POLL_TAGS = [
 	"javascript",
 	"typescript",
@@ -26,43 +28,11 @@ export type TimestampDTO = {
 	_nanoseconds: number;
 };
 
-export type PollDTO = {
-	id: string;
-	question: {
-		type: string;
-		data: { [x: string]: unknown };
-	};
+export type FirebaseBaseDTO = {
+	id: ContentIdentifier;
 	createdAt: TimestampDTO;
 	createdBy: string | null;
 };
-export type CreatePollDTO = Omit<PollDTO, "id" | "createdAt">;
-export type UpdatePoll = Partial<PollDTO>;
-
-export type ChannelCollection = {
-	pollId: string;
-	isOpen: boolean;
-	result: Pick<PollDTO, "question">;
-};
-
-export type ChannelDTO = {
-	id: string;
-	name: string;
-	slug: string;
-	theme: {
-		type: string;
-		data: { [x: string]: unknown };
-	};
-	createdAt: TimestampDTO;
-	createdBy: string | null;
-	frequency: {
-		cronExpression: string;
-		description: string;
-	};
-	collection: ChannelCollection[];
-};
-
-export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
-export type UpdateChannel = Partial<ChannelDTO>;
 
 // type PollPlugins =
 // 	| "seasons"
