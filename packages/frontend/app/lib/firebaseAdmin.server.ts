@@ -17,5 +17,5 @@ if (process.env.ENVIRONMENT === "test") {
 }
 
 export const { auth, app, db } = initServerFirebase(
-	!!process.env.FIRESTORE_EMULATOR_HOST
+	!!process.env.FIREBASE_AUTH_EMULATOR_HOST
 );
