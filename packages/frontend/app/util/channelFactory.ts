@@ -12,7 +12,7 @@ const BASE_CHANNEL: ChannelDTO = {
 	createdBy: "user-id",
 	frequency: "0 10 * * 1-5",
 	startedAt: createTimestamp("2023-10-25T09:50:00.000Z"),
-	playlist: [],
+	queue: [],
 	rankingSystems: [],
 	createdAt: createTimestamp("2023-10-25T09:15:00.000Z"),
 };

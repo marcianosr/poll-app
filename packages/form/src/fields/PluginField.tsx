@@ -13,9 +13,8 @@ import {
 } from "@marcianosrs/form-schema";
 import { selectFieldPlugin } from "./SelectField";
 import { FormFields } from "../base-form/FormFields";
-import { ZodSchemaType, schemaToZod } from "../schema/schemaToZod";
 
-type PluginFieldValue = { type: string; data: unknown };
+type PluginFieldValue = { type: string; data: Record<string, unknown> };
 
 const PluginField = ({
 	field,
@@ -103,8 +102,13 @@ export const pluginFieldPlugin: FormFieldPlugin<
 		const plugin = field.store.get(value.type);
 		return plugin ? `${plugin[field.displayProp]}` : "unknown plugin";
 	},
-	toZodSchema: (field) => {
+	toZodSchema: (field, resolver) => {
 		const pluginIds = field.store.getIdentifiers();
+
+		type ZodPluginObject = z.ZodObject<{
+			type: z.ZodLiteral<string>;
+			data: z.ZodObject<{ [x: string]: z.ZodTypeAny }>;
+		}>;
 
 		return z.discriminatedUnion(
 			"type",
@@ -112,19 +116,13 @@ export const pluginFieldPlugin: FormFieldPlugin<
 				const plugin = field.store.get(id);
 				return z.object({
 					type: z.literal(id),
-					// Not sure how to fix this :-(
-					data: schemaToZod(plugin[`${field.formSchemaProp}`]),
+					data: resolver(
+						(plugin[`${field.formSchemaProp}`] ?? []) as Readonly<
+							FieldType<string>[]
+						>
+					),
 				});
-			}) as unknown as [
-				z.ZodObject<{
-					type: z.ZodLiteral<string>;
-					data: ZodSchemaType<readonly FieldType<string>[]>;
-				}>,
-				z.ZodObject<{
-					type: z.ZodLiteral<string>;
-					data: ZodSchemaType<readonly FieldType<string>[]>;
-				}>
-			]
+			}) as unknown as [ZodPluginObject, ZodPluginObject]
 		);
 	},
 };

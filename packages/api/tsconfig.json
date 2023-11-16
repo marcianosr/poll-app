@@ -1,14 +1,16 @@
 {
-	"include": ["**/*.ts", "**/*.tsx"],
-	"compilerOptions": {
-		"lib": ["ES2019", "dom"],
-		"isolatedModules": true,
-		"esModuleInterop": true,
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"target": "ES2019",
-		"strict": true,
-		"allowJs": true,
-		"forceConsistentCasingInFileNames": true
-	}
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["dist/"],
+  "compilerOptions": {
+    "lib": ["ES2019", "dom"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "target": "ES2019",
+    "strict": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true
+  }
 }

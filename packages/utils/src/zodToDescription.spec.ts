@@ -1,4 +1,4 @@
-import { test as it, expect } from "vitest"; // this was easier than setting up Jest with TS
+import { test as it, expect } from "vitest";
 import { z } from "zod";
 import { zodToDescription } from "./zodToDescription";
 

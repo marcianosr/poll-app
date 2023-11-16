@@ -1,11 +1,7 @@
 import express, { Request, Response } from "express";
 import { NextFunction } from "express";
 import cors from "cors";
-import {
-	CreatePollDTO,
-	validateCreatePoll,
-	CreateChannelDTO,
-} from "@marcianosrs/engine";
+import type { CreatePollDTO, CreateChannelDTO } from "@marcianosrs/engine";
 import { FieldValue, auth, db } from "./firebase";
 import { createPoll, getPolls } from "./polls";
 import { createChannel, getChannels } from "./channels";
@@ -132,12 +128,6 @@ app.put("/polls/:id/edit", async (req: Request, res: Response) => {
 	console.log("Updating poll", req.body);
 	try {
 		const poll = req.body;
-
-		const errors = validateCreatePoll(poll);
-
-		if (errors.length > 0) {
-			return res.status(400).json(errors);
-		}
 
 		const updatePoll = await db
 			.collection("polls")

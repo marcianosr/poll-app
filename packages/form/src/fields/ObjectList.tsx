@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import type { FormFieldPlugin, FormFieldProps } from "../types/field-plugin";
-import { z, z } from "zod";
-import { schemaToZod } from "../schema/schemaToZod";
+import { z } from "zod";
 import { ObjectScopeProvider, useCustomField } from "../base-form/FieldContext";
 import { transform } from "@marcianosrs/utils";
 import { FormFields } from "../base-form/FormFields";
@@ -119,18 +118,6 @@ const ObjectList = <TForm extends TypedForm>({
 												>
 													Update item
 												</Button>
-												{/* <Button
-                                                                onClick={(
-                                                                    event
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setEditIndex(
-                                                                        undefined
-                                                                    );
-                                                                }}
-                                                            >
-                                                                Cancel
-                                                            </Button> */}
 											</>
 										)}
 									</ObjectScopeProvider>
@@ -165,8 +152,8 @@ export const objectListPlugin: FormFieldPlugin<
 	fieldType: "objectList",
 	Component: ObjectList,
 	Show: ({ value = [] }) => `${value.length} items`,
-	toZodSchema: (field) =>
-		transform(schemaToZod(field.objectSchema).array())
+	toZodSchema: (field, resolver) =>
+		transform(resolver(field.objectSchema).array())
 			.apply(field.minimalAmount, (z, min) =>
 				min > 0
 					? z.min(min, {

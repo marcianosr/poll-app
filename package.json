@@ -26,7 +26,6 @@
     "firebase-tools": "^12.8.1"
   },
   "scripts": {
-    "api": "yarn workspace @marcianosrs/api start",
     "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
     "check-types": "yarn nx run-many --target=check-types",
     "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
@@ -36,7 +35,7 @@
     "start-local": "concurrently -n \"FE,FIRE\" -c \"blue,yellow\" --kill-others-on-fail \"yarn frontend\" \"yarn firestore\"",
     "start-local-api": "concurrently -n \"API,FE,FIRE\" -c \"magenta,blue,yellow\" --kill-others-on-fail \"yarn api\" \"yarn frontend\" \"yarn firestore\"",
     "storybook": "yarn workspace @marcianosrs/ui storybook",
-    "test:all": "yarn nx run-many --target=test --all"
+    "test": "yarn nx run-many --target=test --all run"
   },
   "packageManager": "yarn@3.6.4"
 }
