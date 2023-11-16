@@ -1,11 +1,23 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+	GoogleAuthProvider,
+	signInWithPopup,
+	signInWithCredential,
+} from "firebase/auth";
 import { initFirebaseClient } from "./client";
 
 export const loginAndCreate = async () => {
 	const { auth } = initFirebaseClient();
 
 	const provider = new GoogleAuthProvider();
-	const result = signInWithPopup(auth, provider);
+	return signInWithPopup(auth, provider);
+};
 
-	return result;
+export const loginForTesting = async () => {
+	const { auth } = initFirebaseClient(true);
+	return signInWithCredential(
+		auth,
+		GoogleAuthProvider.credential(
+			'{"sub": "abc123", "email": "test-poll-user@example.com", "email_verified": true}'
+		)
+	);
 };
