@@ -46,6 +46,7 @@ export type QuestionMutator<T extends Record<string, unknown>> = {
  */
 export type PollScoreProcessorPlugin<FormDefinition extends TypedForm> = {
 	processorType: string;
+	displayName: string;
 	verifySettings: (
 		settings: unknown
 	) => settings is FormDataObject<FormDefinition>;

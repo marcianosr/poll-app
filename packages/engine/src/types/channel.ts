@@ -14,7 +14,7 @@ const rankingSystemSchema = [
 		"ranking",
 		"Ranking system",
 		rankingSystemStore,
-		"rankingSystemType",
+		"displayName",
 		"editForm"
 	),
 	{
@@ -32,7 +32,7 @@ const scoreModifierSchema = [
 		"processor",
 		"ScoreModifier",
 		scoreProcessorStore,
-		"processorType",
+		"displayName",
 		"editForm"
 	),
 ] as const satisfies TypedForm;
@@ -82,7 +82,10 @@ export type ChannelDTO = FirebaseBaseDTO &
 		queue: ContentIdentifier[];
 	};
 
-export type CreateChannelDTO = Omit<ChannelDTO, "id" | "createdAt" | "slug">;
+export type CreateChannelDTO = Omit<
+	ChannelDTO,
+	keyof FirebaseBaseDTO | "slug" | "queue" | "startedAt"
+>;
 
 export type UpdateChannel = Partial<ChannelDTO>;
 

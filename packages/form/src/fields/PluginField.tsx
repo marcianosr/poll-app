@@ -19,7 +19,7 @@ type PluginFieldValue = { type: string; data: Record<string, unknown> };
 const PluginField = ({
 	field,
 }: FormFieldProps<PluginField<string, Plugin>>) => {
-	const { errors, watch, setValue } = useCustomField(field);
+	const { errors, watch } = useCustomField(field);
 
 	const SelectField = selectFieldPlugin.Component;
 
@@ -36,7 +36,7 @@ const PluginField = ({
 			const plugin = field.store.get(id);
 			return { value: id, display: `${plugin[field.displayProp]}` };
 		}),
-	} as const satisfies PickListField<"type", readonly FixedOption[]>;
+	} as const satisfies PickListField<"type", readonly FixedOption<string>[]>;
 
 	const value = watch() as PluginFieldValue;
 
@@ -52,7 +52,7 @@ const PluginField = ({
 
 	return (
 		<div>
-			<ObjectScopeProvider<{}>
+			<ObjectScopeProvider<{ type: string; data: any }>
 				path={[`${field.name}`]}
 				defaultValues={{ type: selectedPluginId, data }}
 			>

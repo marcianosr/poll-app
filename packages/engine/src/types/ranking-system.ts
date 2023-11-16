@@ -31,6 +31,7 @@ export type RankingSystemPlugin<
 	RankingSystemData
 > = {
 	rankingSystemType: string;
+	displayName: string;
 	verifySettings: (
 		settings: unknown
 	) => settings is FormDataObject<FormDefinition>;

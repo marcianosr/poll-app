@@ -1,9 +1,13 @@
 import type { RankingSystemPlugin } from "@marcianosrs/engine";
-import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import {
+	type TypedForm,
+	type FormDataObject,
+	description,
+} from "@marcianosrs/form-schema";
 import { produce } from "immer";
-import React from "react";
 
 const formDefinition = [
+	description("info", "Create a highscore ranking based on points"),
 	{
 		name: "name",
 		fieldType: "text",
@@ -24,6 +28,7 @@ export const pointRankingSystem: RankingSystemPlugin<
 	{ ranking: Ranking[] }
 > = {
 	rankingSystemType: "points",
+	displayName: "Point based ranking",
 	editForm: formDefinition,
 	verifySettings: (
 		settings

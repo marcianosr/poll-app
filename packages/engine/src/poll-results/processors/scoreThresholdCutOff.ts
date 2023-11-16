@@ -1,7 +1,15 @@
-import type { TypedForm, FormDataObject } from "@marcianosrs/form-schema";
+import {
+	type TypedForm,
+	type FormDataObject,
+	description,
+} from "@marcianosrs/form-schema";
 import type { PollScoreProcessorPlugin } from "../../types/poll-result";
 
 const form = [
+	description(
+		"info",
+		"Use this plugin to limit the range of points. You could use this to prevent users to score negative points."
+	),
 	{
 		name: "threshold",
 		displayName: "Threshold",
@@ -35,6 +43,7 @@ const updateScore = (points: number, settings: ThresholdSettings): number => {
 
 export const ScoreThresholdCutOff: PollScoreProcessorPlugin<typeof form> = {
 	processorType: "thresholdCutOff",
+	displayName: "Score clamping",
 	verifySettings: (e): e is ThresholdSettings =>
 		typeof e === "object" &&
 		e !== null &&

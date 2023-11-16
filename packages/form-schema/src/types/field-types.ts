@@ -9,6 +9,14 @@ import {
 
 export type Title<Key> = BaseOpenFormField<Key, "title", "none", {}, undefined>;
 
+export type Description<Key> = BaseOpenFormField<
+	Key,
+	"description",
+	"none",
+	{},
+	undefined
+>;
+
 export type TextFieldExtra = {
 	prefix?: string;
 	postfix?: string;
@@ -120,9 +128,48 @@ export type FieldType<Key> =
 	| RadioField<Key, Readonly<FixedOption[]>>
 	| RangeSlider<Key>
 	| TextField<Key>
-	| Title<Key>;
+	| Title<Key>
+	| Description<Key>;
 
 export type TypedForm = Readonly<FieldType<string>[]>;
+
+export const title = <TKey extends string, TContent extends string>(
+	field: TKey,
+	title: TContent
+): {
+	name: TKey;
+	displayName: TContent;
+	fieldType: "title";
+	valueType: "none";
+	optional: true;
+	defaultValue: undefined;
+} => ({
+	name: field,
+	displayName: title,
+	fieldType: "title",
+	valueType: "none",
+	optional: true,
+	defaultValue: undefined,
+});
+
+export const description = <TKey extends string, TContent extends string>(
+	field: TKey,
+	title: TContent
+): {
+	name: TKey;
+	displayName: TContent;
+	fieldType: "description";
+	valueType: "none";
+	optional: true;
+	defaultValue: undefined;
+} => ({
+	name: field,
+	displayName: title,
+	fieldType: "description",
+	valueType: "none",
+	optional: true,
+	defaultValue: undefined,
+});
 
 export const pluginField = <TKey extends string, TPluginType extends Plugin>(
 	name: TKey,

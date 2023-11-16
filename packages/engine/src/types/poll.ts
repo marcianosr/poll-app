@@ -3,7 +3,7 @@ import {
 	type FormDataObject,
 	pluginField,
 } from "@marcianosrs/form-schema";
-import type { ContentIdentifier, UserId } from "./identifiers";
+import type { UserId } from "./identifiers";
 import type { QuestionScoreResult } from "./poll-result";
 import { FirebaseBaseDTO } from "../types";
 import { questionTypeStore } from "../questionTypeStore";
@@ -31,14 +31,6 @@ export type UpdatePoll = Partial<PollDTO>;
 // 	resolved: boolean;
 // };
 
-// export type PollItem = {
-// 	id: ContentIdentifier;
-// 	channelId: ContentIdentifier;
-// 	orderId: number;
-// 	status: "closed" | "open" | "upcoming";
-// 	questionId: ContentIdentifier;
-// };
-
 export type PollUserResult<AnswerData extends Record<string, unknown>> = {
 	userId: UserId;
 	questionResult: AnswerData;
@@ -57,6 +49,9 @@ export type PollUserResult<AnswerData extends Record<string, unknown>> = {
  * - Poll with one / multiple correct answers
  * - Poll where chain of answers should be provided (like going to flow chart)
  * - Minigame
+ * - Regex crossword
+ * - Memory game with function names or HTML tags
+ * - Spot the x differences in 2 pieces of code
  * - Question about opinion where you can choose to already see what others voted or not (Tabs vs spaces!!!)
  */
 export type PollQuestionPlugin<

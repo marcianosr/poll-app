@@ -1,4 +1,4 @@
-import { type CreateChannelDTO, channelSchema } from "@marcianosrs/engine";
+import { channelSchema } from "@marcianosrs/engine";
 import { SchemaForm, schemaToZod } from "@marcianosrs/form";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
@@ -16,14 +16,7 @@ const zodSchema = schemaToZod(channelSchema);
 
 const mutation = (userId: string) =>
 	makeDomainFunction(zodSchema)(async (values) => {
-		const newChannel: CreateChannelDTO = {
-			...values,
-			startedAt: null,
-			queue: [],
-			createdBy: userId,
-		};
-		const createdChannel = await createChannel(newChannel);
-		return createdChannel;
+		return await createChannel(values, userId);
 	});
 
 export const action: ActionFunction = async ({ request }) => {
