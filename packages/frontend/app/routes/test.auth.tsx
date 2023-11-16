@@ -13,7 +13,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const isGoogleLogin = formData.get("google-login");
 
 	if (isGoogleLogin) {
-		const idToken = formData.get("idToken");
+		const idToken = formData.get("idToken") as string;
 		return await sessionLogin(request, idToken, "/");
 	}
 
