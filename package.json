@@ -13,6 +13,8 @@
   "devDependencies": {
     "@parcel/packager-ts": "2.9.2",
     "@parcel/transformer-typescript-types": "2.9.2",
+    "@playwright/test": "^1.39.0",
+    "@types/node": "^20.8.8",
     "nx": "16.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,12 +22,14 @@
     "typescript": ">=3.0.0"
   },
   "dependencies": {
-    "concurrently": "^8.0.1"
+    "concurrently": "^8.0.1",
+    "firebase-tools": "^12.8.1"
   },
   "scripts": {
     "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
     "check-types": "yarn nx run-many --target=check-types",
     "firestore": "yarn nx run @marcianosrs/server-auth:firestore",
+    "firestore:ci": "yarn nx run @marcianosrs/server-auth:firestore-ci",
     "start": "yarn workspace @marcianosrs/frontend run dev",
     "start-local": "concurrently -n \"FE,FIRE\" -c \"blue,yellow\" --kill-others-on-fail \"yarn start\" \"yarn firestore\"",
     "storybook": "yarn workspace @marcianosrs/ui storybook",

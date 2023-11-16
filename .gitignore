@@ -1,6 +1,5 @@
 node_modules
 .parcel-cache
-yarn-error.log
 dist
 polls-d8b3d-fa6512eea816.json
 .env
@@ -23,3 +22,8 @@ packages/frontend/api/version.txt
 !/old-app/.yarn/releases
 !/old-app/.yarn/sdks
 !/old-app/.yarn/versions
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/tests/.auth/
+*.log

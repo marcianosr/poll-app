@@ -7,42 +7,43 @@ import { transform } from "@marcianosrs/utils";
 import { FormField } from "@marcianosrs/ui";
 
 const SelectField = ({
-    field,
+	field,
 }: FormFieldProps<PickListField<string, FixedOption[]>>) => {
-    const { register, errors } = useCustomField(field);
-
-    return (
-        <FormField
-            fieldTitle={<label>{field.displayName}</label>}
-            fieldInput={
-                <select {...register()}>
-                    {field.options.map((option) => (
-                        <option key={option.display} value={`${option.value}`}>
-                            {option.display}
-                        </option>
-                    ))}
-                </select>
-            }
-            fieldErrors={
-                <>
-                    {errors?.map((e, i) => (
-                        <p key={i}>{e}</p>
-                    ))}
-                </>
-            }
-        />
-    );
+	const { register, errors, fieldPathKey } = useCustomField(field);
+	return (
+		<FormField
+			fieldTitle={
+				<label htmlFor={fieldPathKey}>{field.displayName}</label>
+			}
+			fieldInput={
+				<select {...register()} id={fieldPathKey}>
+					{field.options.map((option) => (
+						<option key={option.display} value={`${option.value}`}>
+							{option.display}
+						</option>
+					))}
+				</select>
+			}
+			fieldErrors={
+				<>
+					{errors?.map((e, i) => (
+						<p key={i}>{e}</p>
+					))}
+				</>
+			}
+		/>
+	);
 };
 
 export const selectFieldPlugin: FormFieldPlugin<
-    PickListField<string, FixedOption[]>,
-    z.ZodString | z.ZodOptional<z.ZodString>
+	PickListField<string, FixedOption[]>,
+	z.ZodString | z.ZodOptional<z.ZodString>
 > = {
-    fieldType: "select",
-    Component: SelectField,
-    Show: ({ value }) => value ?? null,
-    toZodSchema: (field) =>
-        transform(z.string().min(1))
-            .apply(field.optional, (z) => z.optional())
-            .result(),
+	fieldType: "select",
+	Component: SelectField,
+	Show: ({ value }) => value ?? null,
+	toZodSchema: (field) =>
+		transform(z.string().min(1))
+			.apply(field.optional, (z) => z.optional())
+			.result(),
 };

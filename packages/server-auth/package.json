@@ -8,7 +8,6 @@
   "author": "Marciano",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.0.3",
     "firebase": "^9.20.0",
     "firebase-admin": "^11.7.0",
     "parcel": "2.9.2"
@@ -16,9 +15,9 @@
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
-    "dev": "NODE_ENV=development parcel build",
     "firestore:seed": "firebase emulators:start --export-on-exit ./exports --import ./exports --only firestore",
     "firestore:import": "firebase emulators:start --import ./exports --only firestore",
-    "firestore": "firebase emulators:start --only firestore"
+    "firestore": "firebase emulators:start --only firestore",
+    "firestore-ci": "firebase emulators:start --only firestore,auth"
   }
 }
