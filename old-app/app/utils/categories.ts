@@ -1,4 +1,4 @@
-import { PollData } from "./polls";
+import type { PollData } from "./polls";
 
 // Remove this in favour of getAllUniqueCategories
 export const CATEGORIES = [
@@ -9,6 +9,7 @@ export const CATEGORIES = [
 	"react",
 	"typescript",
 	"git",
+	"next",
 ] as const;
 
 export type PollCategory = typeof CATEGORIES[number];

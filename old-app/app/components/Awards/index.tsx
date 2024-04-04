@@ -1,12 +1,9 @@
 import classNames from "classnames";
-import React, { FC, Fragment, useState } from "react";
-import {
-	createSeason,
-	PollAwardData,
-	SeasonAwardData,
-	SeasonData,
-} from "~/utils/seasons";
-import { PollData } from "~/utils/polls";
+import type { FC } from "react";
+import React, { Fragment, useState } from "react";
+import type { SeasonAwardData } from "~/utils/seasons";
+import { createSeason, PollAwardData, SeasonData } from "~/utils/seasons";
+import type { PollData } from "~/utils/polls";
 import styles from "./styles.css";
 import { Award, links as awardLinks } from "~/ui/Award";
 import { links as textLinks } from "../../ui/Text";
@@ -15,7 +12,7 @@ import { Text } from "~/ui/Text";
 import { useLoaderData } from "@remix-run/react";
 import { LoaderData } from "~/routes/polls/$id";
 import { EggConditional } from "~/seasonal/Egg/EggContainer";
-import { PollCategory } from "~/utils/categories";
+import type { PollCategory } from "~/utils/categories";
 
 export const links = () => [
 	...textLinks(),
@@ -253,6 +250,20 @@ export const awards = (users: any, polls: PollData[]) => [
 		description: "Have the most correct Git answers",
 		requirements: (users: any) =>
 			getUserWithMostCorrectPollsByCategory(users, polls, "git"),
+	},
+	{
+		name: "The Next Generation",
+		type: "award",
+		description: "Participated in Next.js polls the most",
+		requirements: (users: any) =>
+			getUserWithMostPollsAnsweredByCategory(users, polls, "next"),
+	},
+	{
+		name: "Next Level",
+		type: "award",
+		description: "Have the most correct Next.js answers",
+		requirements: (users: any) =>
+			getUserWithMostCorrectPollsByCategory(users, polls, "next"),
 	},
 	{
 		name: "Speed Demon",

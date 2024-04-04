@@ -29,6 +29,7 @@
 	--lavender-tint: #673ab7;
 	--celadon-tint: #d9ffdb;
 	--pewter-tint: #b9b9b9;
+	--viridian-tint: #397562;
 
 	--saffron-gradient: linear-gradient(
 		45deg,
@@ -66,6 +67,11 @@
 		var(--pewter),
 		var(--pewter-tint)
 	);
+	--viridian-gradient: linear-gradient(
+		45deg,
+		var(--viridian),
+		var(--viridian-tint)
+	);
 
 	--saffron-20: #f4c43020;
 	--fuchsia-20: #ff00ff20;
@@ -74,6 +80,7 @@
 	--cerulean-20: #2a52be20;
 	--lavender-20: #e6e6fa20;
 	--pewter-20: #e9eaec20;
+	--viridian-20: #39756220;
 
 	--theme-color: var(--saffron);
 	--theme-color-gradient: var(--saffron-gradient);
@@ -148,8 +155,12 @@
 	--theme-color: var(--indigo);
 }
 
+.next,
 .viridian {
 	--theme-color: var(--viridian);
+	--theme-color-gradient: var(--viridian-gradient);
+	--theme-color-20: var(--viridian-20);
+	--theme-color-tint: var(--viridian-tint);
 }
 
 .git,
