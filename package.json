@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "concurrently": "^8.0.1",
-    "firebase-tools": "^12.8.1"
+    "firebase-tools": "^12.8.1",
+    "node-gyp": "^10.1.0"
   },
   "scripts": {
     "build-libs": "yarn nx run-many --target=build --exclude=@marcianosrs/frontend --no-cache",
