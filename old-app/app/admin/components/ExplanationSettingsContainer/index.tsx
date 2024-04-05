@@ -1,6 +1,6 @@
 import { TextAreaField } from "~/ui/TextAreaField";
 import { Text } from "~/ui/Text";
-import { Mode, NewPollType } from "../PollForm";
+import type { Mode, NewPollType } from "../PollForm";
 import { Button } from "~/ui/Button";
 
 type ExplanationSettingsContainerProps = {
@@ -64,7 +64,7 @@ export const ExplanationSettingsContainer = ({
 						]);
 					}}
 				>
-					Delete explanation
+					➖ ℹ️
 				</Button>
 			</section>
 		</>

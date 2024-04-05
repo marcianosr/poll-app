@@ -12,7 +12,7 @@ const DeleteButton: FC<Props> = ({ fieldId, fields, setFields }) => {
 
 	return (
 		<button type="button" onClick={() => onDelete(fieldId)}>
-			Delete answer
+			🗑️
 		</button>
 	);
 };
