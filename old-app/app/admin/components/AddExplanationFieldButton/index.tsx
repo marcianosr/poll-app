@@ -1,5 +1,5 @@
 import { Button } from "~/ui/Button";
-import { NewPollType } from "../PollForm";
+import type { NewPollType } from "../PollForm";
 
 type AddExplanationFieldButtonProps = {
 	field: NewPollType;
@@ -11,6 +11,6 @@ export const AddExplanationFieldButton = ({
 	addField,
 }: AddExplanationFieldButtonProps) => (
 	<Button type="button" variant="submit" onClick={() => addField(field)}>
-		Add explanation
+		➕ ℹ️
 	</Button>
 );
