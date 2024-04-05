@@ -145,7 +145,6 @@ const PollForm: FC<Props> = ({ poll }) => {
 								id="codeBlock"
 								value={poll?.codeBlock || ""}
 							/>
-							<AddAnswerButton addField={addField} />
 
 							{fields.map((field, index) => (
 								<Fieldset
@@ -187,6 +186,7 @@ const PollForm: FC<Props> = ({ poll }) => {
 									/>
 								</Fieldset>
 							))}
+							<AddAnswerButton addField={addField} />
 						</>
 					</>
 
