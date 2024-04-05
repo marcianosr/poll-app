@@ -1,5 +1,6 @@
 .sidebar-settings-container {
 	display: grid;
 	grid-auto-columns: 300px;
+	grid-auto-rows: min-content;
 	gap: 1rem;
 }
