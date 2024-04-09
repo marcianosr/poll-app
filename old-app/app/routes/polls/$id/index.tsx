@@ -254,7 +254,7 @@ export default function PollDetail() {
 		<section
 			className={classNames({
 				[poll.category]: true,
-				[styles.fourOFour]: openedPollNumber === 404,
+				fourOFour: openedPollNumber === 404,
 			})}
 		>
 			<div className="page-container">
