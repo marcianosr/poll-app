@@ -267,11 +267,6 @@ export default function PollDetail() {
 							admin page
 						</a>
 					</p>
-					<hr />
-					<i>
-						Apache/5.0 Server at
-						https://poll-app-ivory.vercel.app/polls Port 80{" "}
-					</i>
 				</section>
 			)}
 			<div className="page-container">
