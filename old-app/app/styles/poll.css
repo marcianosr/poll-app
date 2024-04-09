@@ -49,8 +49,9 @@ button {
 	font-family: var(--default-font);
 }
 
-.fourOFour {
-	background: white !important;
+.fourOFour body,
+body:has(.fourOFour) {
+	background-color: white !important;
 	color: black !important;
 	font-family: "Times New Roman", Times, serif !important;
 }
