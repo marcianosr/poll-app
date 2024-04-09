@@ -257,10 +257,10 @@ export default function PollDetail() {
 				fourOFour: openedPollNumber === 404,
 			})}
 		>
+			{openedPollNumber === 404 && (
+				<h1 className="poll-not-found">Poll not found</h1>
+			)}
 			<div className="page-container">
-				{openedPollNumber === 404 && (
-					<h1 className="poll-not-found">Poll not found</h1>
-				)}
 				{(openedPollNumber === 100 || openedPollNumber === 200) &&
 					typeof window !== "undefined" && (
 						<Confetti
