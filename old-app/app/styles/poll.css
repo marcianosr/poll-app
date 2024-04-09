@@ -58,7 +58,8 @@ body:has(.fourOFour) {
 }
 
 .poll-not-found {
-	font-size: 10rem;
+	font-size: 5rem;
+	margin-bottom: 1rem;
 }
 .not-found-container {
 	margin-bottom: 100rem;
@@ -70,4 +71,8 @@ body:has(.fourOFour) {
 
 body:has(.fourOFour) header {
 	display: none;
+}
+
+body:has(.fourOFour) i {
+	font-size: 1rem;
 }
