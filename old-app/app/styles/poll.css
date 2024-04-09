@@ -58,8 +58,14 @@ body:has(.fourOFour) {
 }
 
 .poll-not-found {
+	font-size: 10rem;
+}
+.not-found-container {
 	margin-bottom: 100rem;
-	font-size: 20rem;
+}
+
+.not-found-container p {
+	font-size: 1.5rem;
 }
 
 body:has(.fourOFour) header {
