@@ -72,7 +72,3 @@ body:has(.fourOFour) {
 body:has(.fourOFour) header {
 	display: none;
 }
-
-body:has(.fourOFour) i {
-	font-size: 1rem;
-}
