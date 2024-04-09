@@ -54,9 +54,8 @@ body:has(.fourOFour) {
 	background-color: white !important;
 	color: black !important;
 	font-family: "Times New Roman", Times, serif !important;
-	--theme-color: black;
-	--theme-color-gradient: black;
-	--theme-color-20: black;
-	--theme-color-tint: black;
-	text-shadow: none;
+}
+
+.poll-not-found {
+	margin-bottom: 50rem;
 }
