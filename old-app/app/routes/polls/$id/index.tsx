@@ -258,7 +258,16 @@ export default function PollDetail() {
 			})}
 		>
 			{openedPollNumber === 404 && (
-				<h1 className="poll-not-found">Poll not found</h1>
+				<>
+					<h1 className="poll-not-found">Poll not found</h1>
+					<p>
+						The requested poll could not be found. Please check the
+						URL or go back to the{" "}
+						<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+							admin page
+						</a>
+					</p>
+				</>
 			)}
 			<div className="page-container">
 				{(openedPollNumber === 100 || openedPollNumber === 200) &&
